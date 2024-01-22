@@ -1,9 +1,0 @@
-/**
- * 
- */
-/**
- * @author isaiahkenny
- *
- */
-module tester {
-}
