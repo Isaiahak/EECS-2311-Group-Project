@@ -1,25 +1,25 @@
 package dogs;
 
 public class Tag {
-    private int weight;
+    private int preferenceWeight;
     private String tagName;
 
     public Tag(){
-        this.weight = 0;
+        this.preferenceWeight = 0;
         this.tagName = "Unnamed Tag";
     }
 
     public Tag(int weight, String tagName){
-        this.weight = weight;
+        this.preferenceWeight = weight;
         this.tagName = tagName;
     }
 
     public int getWeight() {
-        return weight;
+        return this.preferenceWeight;
     }
 
     public void setWeight(int weight) {
-        this.weight = weight;
+        this.preferenceWeight = weight;
     }
 
     public String getTagName() {
