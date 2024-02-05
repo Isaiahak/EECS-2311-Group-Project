@@ -1,12 +1,12 @@
 package user;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import dogs.Dogs;
 
 public class User {
 	
-	private List<Tags> preferences;
+	private ArrayList<Tag> preferences;
 	
 	private String username;
 	
@@ -16,7 +16,7 @@ public class User {
 	
 	private Wallet wallet;
 	
-	private List<Dogs> likedDogs;
+	private ArrayList<Dog> likedDogs;
 
 	
 	/*public List<Tags> getPreferences() {
@@ -59,11 +59,11 @@ public class User {
 		this.wallet = wallet;
 	}
 
-	public List<Dogs> getLikedDogs() {
+	public ArrayList<Dog> getLikedDogs() {
 		return likedDogs;
 	}
 
-	public void setLikedDogs(List<Dogs> likedDogs) {
+	public void setLikedDogs(ArrayList<Dog> likedDogs) {
 		this.likedDogs = likedDogs;
 	}
 	
