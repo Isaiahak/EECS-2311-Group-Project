@@ -1,0 +1,75 @@
+Jan 18, 2024
+
+Edson has met with Carolina, one of our customers. Carolina has explained some of the aspects from the application she would like to see being implemented.
+
+A description of the interview can be found below:
+
+Customer Call #1: Carolina
+
+Customer Description: Carolina is a 20 year-old medical student currently living in Brazil. She is an animal lover and currently has 13 dogs with 2 living with her. 
+
+Big stories:
+Energy Bar: Profiles should include an “energy bar” that illustrates the energy level of the dog. This is of great value to our customer as they are an active individual who would like to adopt a dog that matches their energy level. 
+Dog Size: Our customer would like us to add the dog’s size on the dog’s profile so they know how big the dog is and if they will be a good match for our customer. 
+Sponsorship: For customers like Carolina, who are animal lovers,  we will be adding a sponsor feature which will allow them to sponsor dogs they are unable to adopt. 
+
+
+Jan 19, 2024
+
+The team has met with Adrian, our second customer. Adrian is a 19-year old urban planning student currently living in Toronto. He is an animal lover and is looking to adopt a dog to keep him company. 
+
+The Big Stories proposed by Carolina have been proposed to Adrian who agreed on the proposals. 
+
+
+Jan 29, 2024 8:00pm - 9:00pm
+
+Project name: Pawfect Pairs
+
+Roles:
+ADD TAGS TO DOGS - Connor
+DISPLAY TAGS ON DOG PROFILE - Sidney
+SHOW MAIN DOG INFO - Katya
+VIEW EXPANDED DOG INFO - Edson
+USER FORM - Isaiah
+POSTER PROFILE - Zainab
+
+GOALS:
+BY SUNDAY's 6:00 MEETING (Soft Deadline): 
+- Finish and upload classes assigned to GIT (check Miro for brief UML and 'teams' for first week, ping for questions)
+- Set up NoSQL database (soft goal)
+
+Miro Board has been created with additional information on tasks and roles.
+
+Feb 4, 2024 6:00pm - 7:00pm
+Roles:
+CREATE 'TAGS' DISPLAY COMPONENT (JAVAFX) - Connor
+CREATE 'EXTENDED INFO' DISPLAY COMPONENT (JAVAFX) - Sidney
+CREATE 'MAIN DOGS' DISPLAY PAGE (JAVAFX) - Katya
+FINISH BREED SUPERCLASS, TEST CORRECTNESS/COMMUNICATION OF CLASSES - Edson
+CREATE 'USER FORM' DISPLAY PAGE (JAVAFX)- Isaiah
+CREATE 'POSTER PROFILE' DISPLAY PAGE (JAVAFX) - Zainab
+
+GOALS:
+BY SUNDAY's 6:00 MEETING: 
+- Finish and upload JavaFX components to your own branch 
+- Ensure all the attribute names across classes are consistent and communicate well
+- Finish all needed classes on UML
+
+REMINDER: This is what our GitHub Page should look like: (Edson, please ensure that this is what it looks like and that all the package names match)
+
+src/
+├─ users/
+│  ├─ User.java/
+│  ├─ Poster.java/
+├─ dogs/
+│  ├─ Tag.java/
+│  ├─ Dog.java/
+│  ├─ Attribute,java/
+
+
+**Link to uml here as well: ** https://lucid.app/lucidchart/fb4932be-8559-4b62-8f66-adfd7b8a6d0a/edit?viewport_loc=-735%2C-1277%2C5450%2C2669%2C0_0&invitationId=inv_6b2bb8e9-669e-420d-b6d5-6ad9f2dd9716
+
+Feb 12 4:30 pm - 5:30 pm
+
+Each student has been updated on their tasks for this week. Tasks will be due on Jan 16, 2024 alongside ITR1 01. 
+ 
