@@ -2,21 +2,29 @@ package poster;
 
 import java.util.*;
 
+import dogs.Dog;
 public class poster {
 private int score; 
 private String displayName;
 private String uniqueId;
-//TODO:add list of "dog" object
 
+private ArrayList<Dog> dogs;
 
 public int getScore() {
 	return score;
 }
-public poster(int score, String displayName, String uniqueId) {
+public poster(int score, String displayName, String uniqueId, ArrayList<Dog> dogs) {
 	super();
 	this.score = score;
 	this.displayName = displayName;
 	this.uniqueId = uniqueId;
+	this.dogs=dogs;
+}
+public ArrayList<Dog> getDogs() {
+	return dogs;
+}
+public void setDogs(ArrayList<Dog> dogs) {
+	this.dogs = dogs;
 }
 public void setScore(int score) {
 	this.score = score;
