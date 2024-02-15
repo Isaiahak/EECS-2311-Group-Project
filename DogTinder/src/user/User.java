@@ -2,8 +2,8 @@ package user;
 
 import java.util.ArrayList;
 
-import dogs.Dog;
-import dogs.Tag;
+//import dogs.Dog;
+//import dogs.Tag;
 
 public class User {
 	

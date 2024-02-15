@@ -1,7 +1,7 @@
 package dogs;
 
 public class Attribute implements Comparable<Attribute>{
-    // attributes abstract class to implement comparable, order-able attributes, such as size, energy level, etc
+    // attributes parent class to implement comparable, order-able attributes, such as size, energy level, etc
     private int weight;
     private String name;
 
@@ -56,6 +56,10 @@ class Size extends Attribute {
                 throw new IllegalArgumentException("Error. No matching name for weight entered.");
         }
     }
+    @Override
+	public String toString() {
+		return this.getName()+"";
+	}
 }
 
 class EnergyLevel extends Attribute {
@@ -76,6 +80,12 @@ class EnergyLevel extends Attribute {
                 throw new IllegalArgumentException("Error. No matching name for weight entered.");
         }
     }
-}
 
+	@Override
+	public String toString() {
+		return this.getName()+"";
+	}
+    
+    
+}
 
