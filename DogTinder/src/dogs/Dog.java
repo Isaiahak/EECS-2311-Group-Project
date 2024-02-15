@@ -2,6 +2,8 @@ package dogs;
 
 import java.util.ArrayList;
 
+import poster.Poster;
+
 public class Dog {
     private String name;
     private int id;

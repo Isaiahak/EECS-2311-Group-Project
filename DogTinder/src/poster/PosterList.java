@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Set;
 import java.util.TreeMap;
 
+import dogs.Dog;
+
 public class PosterList {
 	private TreeMap<String, Poster> PosterMap = new TreeMap<>();
     

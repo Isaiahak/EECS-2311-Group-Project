@@ -2,6 +2,8 @@ package poster;
 
 import java.util.*;
 
+import dogs.Dog;
+
 public class Poster {
 private int score; 
 private String displayName;

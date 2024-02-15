@@ -4,6 +4,9 @@ import java.util.List;
 //import dogs.Dog;
 //import dogs.Tag;
 
+import dogs.Dog;
+import dogs.Tag;
+
 public class UserConfig {
 	
 private List<Tag> preferences;
