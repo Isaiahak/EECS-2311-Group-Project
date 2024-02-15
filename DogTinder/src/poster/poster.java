@@ -2,29 +2,23 @@ package poster;
 
 import java.util.*;
 
-import dogs.Dog;
-public class poster {
+public class Poster {
 private int score; 
 private String displayName;
-private String uniqueId;
+private int uniqueId;
 
-private ArrayList<Dog> dogs;
+private TreeMap<String, Dog> dogPosterMap = new TreeMap<>();
+//TODO:add list of "dog" object
+
 
 public int getScore() {
 	return score;
 }
-public poster(int score, String displayName, String uniqueId, ArrayList<Dog> dogs) {
-	super();
+public  Poster(int score, String displayName, int uniqueId) {
+	//super(); //why did we add super here?
 	this.score = score;
 	this.displayName = displayName;
 	this.uniqueId = uniqueId;
-	this.dogs=dogs;
-}
-public ArrayList<Dog> getDogs() {
-	return dogs;
-}
-public void setDogs(ArrayList<Dog> dogs) {
-	this.dogs = dogs;
 }
 public void setScore(int score) {
 	this.score = score;
@@ -35,10 +29,20 @@ public String getDisplayName() {
 public void setDisplayName(String displayName) {
 	this.displayName = displayName;
 }
-public String getUniqueId() {
+public int getUniqueId() {
 	return uniqueId;
 }
-public void setUniqueId(String uniqueId) {
+public void setUniqueId(int uniqueId) {
 	this.uniqueId = uniqueId;
+}
+
+public TreeMap <String, Poster> getPosterDogs () {
+	//Iterate through the Dog Tree Map and if poster is the Poster we want then you save the values in a new list
+	TreeMap<String, Dog> posterDogs = new TreeMap<>();
+    
+    for (Dog dog : dogMap.values()) {
+        if (dog.getPoster().equals(desiredPoster)) {
+            posterDogs.put(dog.getName(), dog);
+        }
 }
 }

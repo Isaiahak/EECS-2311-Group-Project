@@ -1,31 +1,30 @@
 package dogs;
-
 public class Tag {
     private int preferenceWeight;
     private String tagName;
 
-    public Tag(){
-        this.preferenceWeight = 0;
-        this.tagName = "Unnamed Tag";
-    }
-
-    public Tag(int weight, String tagName){
-        this.preferenceWeight = weight;
+    // Constructor
+    public Tag(int preferenceWeight, String tagName) {
+        this.preferenceWeight = preferenceWeight;
         this.tagName = tagName;
     }
 
+    // Getter for preferenceWeight
     public int getWeight() {
-        return this.preferenceWeight;
+        return preferenceWeight;
     }
 
-    public void setWeight(int weight) {
-        this.preferenceWeight = weight;
+    // Setter for preferenceWeight
+    public void setWeight(int preferenceWeight) {
+        this.preferenceWeight = preferenceWeight;
     }
 
+    // Getter for tagName
     public String getTagName() {
         return tagName;
     }
 
+    // Setter for tagName
     public void setTagName(String tagName) {
         this.tagName = tagName;
     }
