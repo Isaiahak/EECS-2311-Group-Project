@@ -76,4 +76,9 @@ Each student has been updated on their tasks for this week. Tasks will be due on
 Feb 13, 2024
 
 Edson has been working on ensuring that classes have been communicating correctly. 
- 
+
+Feb 14, 2024 
+
+Zainab has been attempting to integrate JavaFX into the project with downloaded JAR files, encountered boot layer errors and issues with classpath and modulepath configuration. Also attempted using maven as a build tool.
+
+Katya converted project to gradle, successfully set up the build grade file and was able to run a mock UI page. 
