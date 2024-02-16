@@ -1,5 +1,6 @@
-package DogTinder;
+package poster;
 
+import dogs.*;
 import java.util.ArrayList;
 import java.util.Set;
 import java.util.TreeMap;

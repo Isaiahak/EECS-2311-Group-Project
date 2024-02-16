@@ -1,4 +1,4 @@
-package DogTinder;
+package poster;
 
 import java.util.*;
 
