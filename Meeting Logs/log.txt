@@ -82,3 +82,7 @@ Feb 14, 2024
 Zainab has been attempting to integrate JavaFX into the project with downloaded JAR files, encountered boot layer errors and issues with classpath and modulepath configuration. Also attempted using maven as a build tool.
 
 Katya converted project to gradle, successfully set up the build grade file and was able to run a mock UI page. 
+
+Feb 15, 2024
+
+Yuqian(Sidney) has been working on creating junit tests for the Attribute class.
