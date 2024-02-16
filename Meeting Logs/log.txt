@@ -87,7 +87,13 @@ Zainab has been attempting to integrate JavaFX into the project with downloaded 
 
 Ekaterina has created a Gradle build (which we decided not to use for ITR1); has implemented JavaFX; Created DogProfile mock UI element; Updated file directory and installed + uploaded necessary libraries
 
+
 Feb 15, 2024
 
-Yuqian(Sidney) created and added junit tests for the Attribute class, and started working on junit tests for teh Dog class.
+Yuqian created and added junit tests for the Attribute class, and started working on junit tests for the Dog class.
 - Ekaterina worked on, and pushed JavaFX update into her branch 
+
+
+Feb 16, 2024
+
+Yuqian added the junt tests for Dog class (may still need to make some minor changes)
