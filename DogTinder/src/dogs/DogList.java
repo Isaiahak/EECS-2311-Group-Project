@@ -1,4 +1,4 @@
-package dogs;
+package DogTinder;
 
 import java.util.ArrayList;
 import java.util.Set;
@@ -9,6 +9,15 @@ private TreeMap<String, Dog> dogMap = new TreeMap<>();
     
     public void addDog(String name, Dog dog) {
         dogMap.put(name, dog);
+    }
+    
+    public void removeDog(String name, Dog dog) {
+        dogMap.remove(name, dog);
+    }
+    
+    
+    public int getNumDogs() {
+        return dogMap.size();
     }
     
     public TreeMap<String, Dog> getDogMap() {
