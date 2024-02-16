@@ -1,5 +1,8 @@
-package poster;
+package test;
 
+import dogs.DogList;
+import poster.Poster;
+import dogs.Dog;
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.Before;
@@ -16,9 +19,9 @@ class DogTinderMainTester {
     @BeforeEach
     public void setUp() {
         list = new DogList();
-        dog1 = new Dog("Max", 1, 3, new EnergyLevel(0), new Size(2), "M", );
-        dog2 = new Dog("Buddy", 2, 4, new EnergyLevel(1), new Size(2), "M",);
-        dog3 = new Dog("Bella", 3, 2, new EnergyLevel(1), new Size(1), "F",);
+        dog1 = new Dog("Max", 1, 3, 0, 2, "M", new Poster(0, "John", 1), false);
+        dog2 = new Dog("Buddy", 2, 4, 1, 2, "M", new Poster(0, "John", 2), false);
+        dog3 = new Dog("Bella", 3, 2, 1, 1, "F", new Poster(0, "Anna", 1), false);
 
         list.addDog(dog1.getName(), dog1);
         list.addDog(dog2.getName(), dog2);

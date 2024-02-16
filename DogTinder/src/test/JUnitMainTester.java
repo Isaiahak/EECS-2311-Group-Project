@@ -1,6 +1,13 @@
-package DogTinder;
+package test;
 
+
+import dogs.*;
+import poster.*;
+import tags.*;
+import user.*;
+import matchmaking.*;
 import static org.junit.Assert.assertEquals;
+
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -26,9 +33,9 @@ class JUnitMainTester {
         
 
         // Create dogs
-        dog1 = new Dog("Max", 1, 3, new EnergyLevel(0), new Size(2), "M", new Poster(0, "John", 1), false);
-        dog2 = new Dog("Buddy", 2, 4, new EnergyLevel(1), new Size(2), "M", new Poster(0, "John", 2), false);
-        dog3 = new Dog("Bella", 3, 2, new EnergyLevel(1), new Size(1), "F", new Poster(0, "Anna", 1), false);
+        dog1 = new Dog("Max", 1, 3, 0, 2, "M", new Poster(0, "John", 1), false);
+        dog2 = new Dog("Buddy", 2, 4, 1, 2, "M", new Poster(0, "John", 2), false);
+        dog3 = new Dog("Bella", 3, 2, 1, 1, "F", new Poster(0, "Anna", 1), false);
 
         // Add dogs to list
         dogList.addDog(dog1.getName(), dog1);
