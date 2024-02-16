@@ -1,16 +1,13 @@
-package user;
+package DogTinder;
 
 import java.util.ArrayList;
-
-import dogs.Dog;
-import dogs.Tag;
 
 //import dogs.Dog;
 //import dogs.Tag;
 
 public class User {
 	
-	private ArrayList<Tag> preferences;
+	private ArrayList<Tag> preferences =  new ArrayList<Tag>();
 	
 	private String username;
 	
@@ -20,16 +17,24 @@ public class User {
 	
 	private Wallet wallet;
 	
-	private ArrayList<Dog> likedDogs;
+	private ArrayList<Dog> likedDogs = new ArrayList<Dog>();
 
 	
-	/*public List<Tags> getPreferences() {
-		return preferences;
-	}*/
+	
+	public User(String username, String email, String password) {
+		super();
+		this.username = username;
+		this.email = email;
+		this.password = password;
+	}
 
-	/*public void setPreferences(List<Tags> preferences) {
+	public ArrayList<Tag> getPreferences() {
+		return preferences;
+	}
+
+	public void setPreferences(ArrayList<Tag> preferences) {
 		this.preferences = preferences;
-	}*/
+	}
 
 	public String getUsername() {
 		return username;
@@ -70,6 +75,18 @@ public class User {
 	public void setLikedDogs(ArrayList<Dog> likedDogs) {
 		this.likedDogs = likedDogs;
 	}
+	
+	 public ArrayList<Tag> getTags() {
+	        return preferences;
+	    }
+
+	@Override
+	public String toString() {
+		return "User [username=" + username + ", email=" + email + ", password="
+				+ password + "]";
+	}
+	
+	
 	
 
 }
