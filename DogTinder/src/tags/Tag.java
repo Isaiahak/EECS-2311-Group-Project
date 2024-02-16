@@ -1,4 +1,4 @@
-package DogTinder;
+package tags;
 public class Tag {
     private int preference;
     private String tagName;
