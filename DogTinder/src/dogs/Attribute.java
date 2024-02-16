@@ -1,7 +1,7 @@
-package dogs;
+package DogTinder;
 
 public class Attribute implements Comparable<Attribute>{
-    // attributes parent class to implement comparable, order-able attributes, such as size, energy level, etc
+    // attributes abstract class to implement comparable, order-able attributes, such as size, energy level, etc
     private int weight;
     private String name;
 

@@ -1,4 +1,4 @@
-package dogs;
+package DogTinder;
 
 import java.util.ArrayList;
 import java.util.Set;

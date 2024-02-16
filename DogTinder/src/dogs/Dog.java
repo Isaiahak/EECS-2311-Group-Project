@@ -1,8 +1,6 @@
-package dogs;
+package DogTinder;
 
 import java.util.ArrayList;
-
-import poster.Poster;
 
 public class Dog {
     private String name;
@@ -12,6 +10,7 @@ public class Dog {
     private Size size; // class + implement comparable?
     private String sex; // M or F // maybe do 0 or 1?
     private Poster poster;
+    private boolean adopted;
 
     private ArrayList<Tag> tags = new ArrayList<Tag>();
     
@@ -23,7 +22,7 @@ public class Dog {
 
     }
     
-    public Dog(String name, int id, int age, EnergyLevel energyLevel, Size size, String sex, Poster poster) {
+    public Dog(String name, int id, int age, EnergyLevel energyLevel, Size size, String sex, Poster poster, boolean adopted) {
         this.name = name;
         this.id = id;
         this.age = age;
@@ -31,6 +30,7 @@ public class Dog {
         this.size = size;
         this.sex = sex;
         this.poster = poster;
+        this.adopted = adopted;
     }
     
 
@@ -90,7 +90,24 @@ public class Dog {
         this.sex = sex;
     }
     
-    @Override
+    public Poster getPoster() {
+		// TODO Auto-generated method stub
+		return this.poster;
+	}
+    
+    public boolean getAdopted() {
+		return adopted;
+	}
+
+	public void setAdopted(boolean adopted) {
+		this.adopted = adopted;
+	}
+
+	public void setPoster(Poster poster) {
+		this.poster = poster;
+	}
+
+	@Override
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("Dog: ").append(this.getName()).append("\n");
@@ -99,10 +116,13 @@ public class Dog {
         stringBuilder.append("Energy Level: ").append(this.getEnergyLevel()).append("\n");
         stringBuilder.append("Size: ").append(this.getSize()).append("\n");
         stringBuilder.append("Sex: ").append(this.getSex()).append("\n");
+        stringBuilder.append("Adopted: ").append(this.getAdopted()).append("\n");
         stringBuilder.append("Tags:\n");
         for (Tag tag : this.getTags()) {
             stringBuilder.append("- ").append(tag.getTagName()).append(": ").append(tag.getWeight()).append("\n");
         }
         return stringBuilder.toString();
     }
+
+	
 }
