@@ -1,15 +1,14 @@
-package poster;
+package DogTinder;
 
 import java.util.ArrayList;
 import java.util.Set;
 import java.util.TreeMap;
 
-import dogs.Dog;
-
 public class PosterList {
 	private TreeMap<String, Poster> PosterMap = new TreeMap<>();
+	
     
-    public void addPoser(String name, Poster poster) {
+    public void addPoster(String name, Poster poster) {
     	PosterMap.put(name, poster);
     }
     
@@ -17,9 +16,19 @@ public class PosterList {
         return PosterMap;
     }
     
-    public Poster getPoster(String name, TreeMap<String, Dog> DogMap) {
-    	
+    public Poster getPoster(String name) {
         return PosterMap.get(name);
+    }
+    
+    public TreeMap<String, Dog> getPosterDogs(String name, TreeMap<String, Dog> dogMap) {
+    	TreeMap<String, Dog> PosterDogsMap = new TreeMap<>();
+    
+    	for (Dog dog : dogMap.values()) {
+            if (dog.getPoster().equals(name)) { //implement Comparable Interface 
+                PosterDogsMap.put(dog.getName(), dog);
+            }
+    	}
+        return PosterDogsMap;
     }
 
 	@Override
