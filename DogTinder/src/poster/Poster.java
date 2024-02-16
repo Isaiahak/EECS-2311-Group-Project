@@ -1,13 +1,12 @@
-package poster;
+package DogTinder;
 
 import java.util.*;
 
-public class Poster {
+public class Poster implements Comparable<Poster> {
 private int score; 
 private String displayName;
 private int uniqueId;
 
-//TODO:add list of "dog" object
 
 
 public int getScore() {
@@ -37,6 +36,18 @@ public void setUniqueId(int uniqueId) {
 @Override
 public String toString() {
 	return "Poster [score=" + score + ", displayName=" + displayName + ", uniqueId=" + uniqueId + "]";
+}
+@Override
+public int compareTo(Poster o) {
+	if (Integer.compare(this.uniqueId,o.uniqueId) != 0) {
+        return Integer.compare(this.uniqueId,o.uniqueId);
+    }
+    else if (this.displayName.compareTo(o.displayName)!=0) {
+      //compare name if id is equal
+        return this.displayName.compareTo(o.displayName);
+    }
+    else //compare score if both id and name are equal
+    	return Integer.compare(this.score, o.score);
 }
 
 
