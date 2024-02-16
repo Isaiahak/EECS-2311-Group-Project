@@ -89,4 +89,4 @@ Katya converted project to gradle, successfully set up the build grade file and 
 
 Feb 15, 2024
 
-Yuqian(Sidney) has been working on creating junit tests for the Attribute class.
+Yuqian(Sidney) created and added junit tests for the Attribute class, and started working on junit tests for teh Dog class.
