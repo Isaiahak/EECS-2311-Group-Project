@@ -1,4 +1,4 @@
-package DogTinder;
+package user;
 
 public class Wallet {
 	

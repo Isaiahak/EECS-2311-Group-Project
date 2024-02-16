@@ -1,8 +1,8 @@
-package DogTinder;
+package user;
 
 import java.util.List;
-//import dogs.Dog;
-//import dogs.Tag;
+import dogs.Dog;
+import tags.Tag;
 
 public class UserConfig {
 	
