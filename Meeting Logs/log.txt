@@ -68,7 +68,8 @@ src/
 
 
 **Link to uml here as well: ** https://lucid.app/lucidchart/fb4932be-8559-4b62-8f66-adfd7b8a6d0a/edit?viewport_loc=-735%2C-1277%2C5450%2C2669%2C0_0&invitationId=inv_6b2bb8e9-669e-420d-b6d5-6ad9f2dd9716
-
+Feb 3, 2024
+- Ekaterina has created the classes: Dog, Attribute (and child classes)
 
 Feb 12 4:30 pm - 5:30 pm
 
@@ -84,9 +85,9 @@ Feb 14, 2024
 
 Zainab has been attempting to integrate JavaFX into the project with downloaded JAR files, encountered boot layer errors and issues with classpath and modulepath configuration. Also attempted using maven as a build tool.
 
-Katya converted project to gradle, successfully set up the build grade file and was able to run a mock UI page. 
-
+Ekaterina has created a Gradle build (which we decided not to use for ITR1); has implemented JavaFX; Created DogProfile mock UI element; Updated file directory and installed + uploaded necessary libraries
 
 Feb 15, 2024
 
 Yuqian(Sidney) created and added junit tests for the Attribute class, and started working on junit tests for teh Dog class.
+- Ekaterina worked on, and pushed JavaFX update into her branch 
