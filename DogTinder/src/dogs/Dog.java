@@ -1,6 +1,9 @@
-package dog;
+package dogs;
 
 import java.util.ArrayList;
+
+import poster.Poster;
+import tags.Tag;
 
 public class Dog {
     private String name;
@@ -17,17 +20,19 @@ public class Dog {
 	
 
     public Dog(int dogSize, int dogEnergyLevel){ //why do we have this here? //its a constructor that does not set the other attributes
-        setSize(new Size(0));
-        setEnergyLevel(new EnergyLevel(0));
+        setSize(new Size(dogSize));
+        setEnergyLevel(new EnergyLevel(dogEnergyLevel));
 
     }
     
-    public Dog(String name, int id, int age, EnergyLevel energyLevel, Size size, String sex, Poster poster, boolean adopted) {
+    public Dog(String name, int id, int age, int energyLevel, int size, String sex, Poster poster, boolean adopted) {
         this.name = name;
         this.id = id;
         this.age = age;
-        this.energyLevel = energyLevel;
-        this.size = size;
+        setSize(new Size(size));
+        setEnergyLevel(new EnergyLevel(energyLevel));
+        //this.energyLevel = energyLevel;
+        //this.size = size;
         this.sex = sex;
         this.poster = poster;
         this.adopted = adopted;

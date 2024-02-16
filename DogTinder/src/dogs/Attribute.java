@@ -1,4 +1,4 @@
-package dog;
+package dogs;
 
 public class Attribute implements Comparable<Attribute>{
     // attributes abstract class to implement comparable, order-able attributes, such as size, energy level, etc
