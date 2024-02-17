@@ -47,6 +47,7 @@ If this is the case, please create a .classpath file, place it as seen below:
 
 
 The .classpath should look like this:
+```
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER">
@@ -59,5 +60,5 @@ The .classpath should look like this:
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JavaFX"/>
 	<classpathentry kind="output" path="EECS-2311-Group-Project-main/PawfectPairs/bin"/>
 </classpath>
-
+```
 
