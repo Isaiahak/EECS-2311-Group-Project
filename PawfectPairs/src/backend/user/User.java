@@ -21,10 +21,9 @@ public class User {
 
 	
 	
-	public User(String username, String email, String password) {
+	public User(String username, String password) {
 		super();
 		this.username = username;
-		this.email = email;
 		this.password = password;
 	}
 
@@ -72,14 +71,10 @@ public class User {
 		return likedDogs;
 	}
 
-	public void setLikedDogs(ArrayList<Dog> likedDogs) {
-		this.likedDogs = likedDogs;
+	public void addLikedDogs(Dog likedDog) {
+		likedDogs.add(likedDog);
 	}
 	
-	 public ArrayList<Tag> getTags() {
-	        return preferences;
-	    }
-
 	@Override
 	public String toString() {
 		return "User [username=" + username + ", email=" + email + ", password="
