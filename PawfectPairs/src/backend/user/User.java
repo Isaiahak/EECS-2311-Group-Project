@@ -71,8 +71,8 @@ public class User {
 		return likedDogs;
 	}
 
-	public void setLikedDogs(ArrayList<Dog> likedDogs) {
-		this.likedDogs = likedDogs;
+	public void addLikedDogs(Dog likedDog) {
+		likedDogs.add(likedDog);
 	}
 	
 	 public ArrayList<Tag> getTags() {
