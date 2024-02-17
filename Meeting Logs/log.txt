@@ -97,3 +97,6 @@ Yuqian created and added junit tests for the Attribute class, and started workin
 Feb 16, 2024
 
 Yuqian added the junt tests for Dog class (may still need to make some minor changes)
+
+Connor worked on the Tag JUnit test file and added it to his branch.
+Connor worked on the User JUnit test file that tests username, email, and password and added it to his branch.
