@@ -34,6 +34,8 @@ public class LoginScene extends Application{
     	DogProfileScene dogProfileScene = DogProfileScene.getInstance();
     	User userInfo = new User("","");
         primaryStage.setTitle("Login UI");
+        int width = 900;
+		int height = 900;
 
         // Create a GridPane layout
         GridPane grid = new GridPane();
@@ -90,7 +92,7 @@ public class LoginScene extends Application{
             clearFields(userTextField, passwordField);
         });
 
-        Scene scene = new Scene(grid, 400, 200);
+        Scene scene = new Scene(grid, width, height);
         primaryStage.setScene(scene);
         primaryStage.show();
     }

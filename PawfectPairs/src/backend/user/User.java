@@ -75,10 +75,6 @@ public class User {
 		likedDogs.add(likedDog);
 	}
 	
-	 public ArrayList<Tag> getTags() {
-	        return preferences;
-	    }
-
 	@Override
 	public String toString() {
 		return "User [username=" + username + ", email=" + email + ", password="

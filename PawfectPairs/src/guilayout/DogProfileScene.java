@@ -78,7 +78,7 @@ public class DogProfileScene extends Application {
 
       
         Button settingsButton = new Button("Settings");
-        settingsButton.setAlignment(Pos.TOP_LEFT);
+        settingsButton.setAlignment(Pos.TOP_RIGHT);
         root.setTop(settingsButton);
         settingsButton.setOnAction(e -> {
             userProfile.start(primaryStage);

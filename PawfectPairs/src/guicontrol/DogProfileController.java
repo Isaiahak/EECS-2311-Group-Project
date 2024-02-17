@@ -5,7 +5,6 @@ import java.util.List;
 
 import backend.dog.Dog;
 import backend.poster.Poster;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 
 public class DogProfileController {
