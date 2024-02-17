@@ -18,6 +18,9 @@ Right click on "Pawfect Pairs/src" --> Build Path --> Configure Build Path... --
 4. Click "Ok and Close" then select your new user libary, and click 'Finish'. 
 5. You should now see your new library under class path!
 
+![image](https://github.com/Isaiahak/EECS-2311-Group-Project/assets/119365237/a134a816-4d4d-461d-8a5f-ad852b9acf80)
+
+
 Step 3: VM Arguments
 Navigate to ApplicationStart (\src\guilayout\ApplicationStart.java). Right click, and select: Run as --> Run Configuration 
 Double click on " Java Application" to create a new run config. Ensure the main class and project is set correctly, as seen below.
