@@ -34,6 +34,9 @@ Dog dog3= new Dog("Nala", 3, 8,weight3, weight3, "F", poster1, true);
 	 @Override  
 	    public void start(Stage primaryStage) throws Exception {  
 	    	DogProfileScene dogProfileScene = DogProfileScene.getInstance();
+	    	LoginScene login = LoginScene.getInstance();
+
+	    	
 	    	PosterProfileController instance;
 
 	        // TODO Auto-generated method stub  
@@ -101,6 +104,11 @@ PosterInfo.setPadding(new Insets(10, 10, 10, 10));
 	        dog3button.setOnAction(e -> {
 	        	//DogProfileScene.main();
                 dogProfileScene.start(primaryStage);
+
+	        });
+	        returnButton.setOnAction(e -> {
+	        	//DogProfileScene.main();
+                login.start(primaryStage);//right now returns to login page
 
 	        });
 	        
