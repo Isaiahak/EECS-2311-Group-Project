@@ -26,6 +26,12 @@ public class User {
 		this.username = username;
 		this.password = password;
 	}
+	public User(String username, String email, String password) {
+		super();
+		this.username = username;
+		this.password = password;
+		this.email = email;
+	}
 
 	public ArrayList<Tag> getPreferences() {
 		return preferences;
