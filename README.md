@@ -2,7 +2,8 @@
 Group Project 
 
 
-HOW TO RUN:
+**HOW TO RUN:**
+_and a little bit of a troubleshooting guide...._
 
 Step 1:
 Ensure JavaFX SDK is installed on your computer - https://gluonhq.com/products/javafx/
