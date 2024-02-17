@@ -106,3 +106,5 @@ Ekaterina worked on troubleshooting JavaFX and ensuring the project had proper s
 Zainab worked on the User class/Test cases, as well as the UI element for the poster profile. She helped out with the other Ui elements as well. Zainab worked on the wiki. 
 
 Isaiah worked on the user profile and login screen. He also helped out with other UI elements. 
+
+Edson worked on JUnit files and the additional classes
