@@ -67,7 +67,7 @@ public class DogProfileScene extends Application {
         Button likeButton = new Button("likes");
         likeButton.setAlignment(Pos.BOTTOM_CENTER);
         HBox bottomBox = new HBox();
-        profileController = new DogProfileController(nameLabel, ageLabel, sizeLabel, energyLabel);
+        profileController = new DogProfileController(nameLabel, ageLabel, sizeLabel, energyLabel, petImageView);
         bottomBox.getChildren().addAll(createArrowButton("Previous", -1, Pos.BOTTOM_LEFT), createArrowButton("Next", 1, Pos.BOTTOM_RIGHT),likeButton);
         bottomBox.setSpacing(10);
         bottomBox.setStyle("-fx-alignment: center;");

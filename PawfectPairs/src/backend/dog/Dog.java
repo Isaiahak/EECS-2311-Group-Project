@@ -11,6 +11,7 @@ public class Dog {
 	    private String sex; // M or F // maybe do 0 or 1?
 	    private Poster poster;
 	    private boolean adopted;
+	    private String imagePath; 
 	    private ArrayList<Tag> tags = new ArrayList<Tag>();
 	   
 		
@@ -19,8 +20,9 @@ public class Dog {
 	        setEnergyLevel(new EnergyLevel(dogEnergyLevel));
 	    }
 	   
-	    public Dog(String name, int id, int age, int energyLevel, int size, String sex, Poster poster, boolean adopted) {
+	    public Dog(String name, int id, int age, int energyLevel, int size, String sex, Poster poster, boolean adopted, String imagePath) {
 	        this.name = name;
+	        this.imagePath = imagePath; 
 	        this.id = id;
 	        this.age = age;
 	        setSize(new Size(size));
@@ -30,6 +32,10 @@ public class Dog {
 	        this.sex = sex;
 	        this.poster = poster;
 	        this.adopted = adopted;
+	    }
+	    
+	    public String getImagePath() {
+	    	return this.imagePath;
 	    }
 	   
 	    public ArrayList<Tag> getTags() {
