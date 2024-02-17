@@ -38,27 +38,9 @@ Now, click "Apply" and "Run"!
 
 Enjoy :D
 
-PS
+**EXTRA TROUBLESHOOTING**
 
-We were having issues with the .classpath file being deleted upon pushing changes.
-If this is the case, please create a .classpath file, place it as seen below:
+We were having issues with the .classpath file being deleted upon pushing changes, thus changing our project layout and breaking it.
 
-![image](https://github.com/Isaiahak/EECS-2311-Group-Project/assets/119365237/cdc74695-c89f-4a74-8327-235533129e65)
-
-
-The .classpath should look like this:
-```
-<?xml version="1.0" encoding="UTF-8"?>
-<classpath>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER">
-		<attributes>
-			<attribute name="module" value="true"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="src" path="EECS-2311-Group-Project-main/PawfectPairs/src"/>
-	<classpathentry kind="src" path="EECS-2311-Group-Project-main/PawfectPairs/test"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JavaFX"/>
-	<classpathentry kind="output" path="EECS-2311-Group-Project-main/PawfectPairs/bin"/>
-</classpath>
-```
+If you find that this is the case, please download and use "pawfectpairs.zip" in eclipse and follow the prior steps to set up the library. 
 
