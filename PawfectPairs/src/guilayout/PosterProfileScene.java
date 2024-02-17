@@ -1,5 +1,112 @@
 package guilayout;
 
-public class PosterProfileScene {
+import backend.dog.Dog;
+import backend.poster.Poster;
+import guicontrol.PosterProfileController;
+import javafx.application.Application;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
+import javafx.scene.text.Text;
+import javafx.stage.Stage;  
+public class PosterProfileScene extends Application {
+	String name="John";
+	int rating=5;
+	int id = 0;
+	Poster poster1= new Poster(rating, name, id);
+	int width =550;
+	int height =500;
+	//        Dog dog = new Dog("Buddy", 1, 3, new EnergyLevel(1), new Size(2), "M", null);
+	
+int weight =1;
+int weight2=2;
+int weight3=0;
+	
+Dog dog1= new Dog("Pal", 2, 8, weight,weight, "M", poster1, false);
+Dog dog2= new Dog("Simba", 3, 8, weight2,weight2, "M", poster1, false);
+Dog dog3= new Dog("Nala", 3, 8,weight3, weight3, "F", poster1, true);
+	 @Override  
+	    public void start(Stage primaryStage) throws Exception {  
+	    	DogProfileScene dogProfileScene = DogProfileScene.getInstance();
+	    	PosterProfileController instance;
 
+	        // TODO Auto-generated method stub  
+		 BorderPane base=new BorderPane();  
+		   // base.setPadding(new Insets(10, 20, 10, 20));
+		    base.setPadding(new Insets(20, 20, 20, 20));
+
+		 //base.setAlignment(Pos.CENTER);
+		// GridPane base = new GridPane();
+	        //Label l = new Label("");
+
+	      Label text1 = new Label("Rating: "+ poster1.getScore()); 
+	      Label text2 = new Label("Name: "+ poster1.getDisplayName()); 
+	      HBox PosterInfo = new HBox(10);
+	      PosterInfo.setAlignment(Pos.CENTER);
+	      PosterInfo.getChildren().add(text2);
+	      PosterInfo.getChildren().add(text1);
+
+	      base.setTop(PosterInfo);
+	      
+	      Button dog1button= new Button (dog1.toString());
+	      HBox hbBtn = new HBox(10);
+	      hbBtn.setAlignment(Pos.CENTER);
+	      hbBtn.getChildren().add(dog1button);
+
+	      
+	      Button dog2button= new Button (dog2.toString());
+	      HBox hbBtn2 = new HBox(10);
+	      hbBtn2.setAlignment(Pos.CENTER);
+	      hbBtn2.getChildren().add(dog2button);
+	      
+	      Button dog3button= new Button (dog3.toString());
+	      HBox hbBtn3 = new HBox(10);
+	      hbBtn3.setAlignment(Pos.CENTER);
+	      hbBtn3.getChildren().add(dog3button);
+
+	      Button returnButton= new Button ("return");
+	      HBox returnbox = new HBox(width);
+	      returnbox.setAlignment(Pos.CENTER);
+	      returnbox.getChildren().add(returnButton);
+
+base.setCenter(hbBtn2);
+base.setLeft(hbBtn);
+base.setRight(hbBtn3);
+base.setBottom(returnButton);
+PosterInfo.setPadding(new Insets(10, 10, 10, 10));
+
+	      Scene scene = new Scene(base, width, height);
+	        primaryStage.setScene(scene);
+	        primaryStage.show();
+	        
+	        
+	        dog1button.setOnAction(e -> {
+	        	//DogProfileScene.main();
+                dogProfileScene.start(primaryStage);
+
+	        });
+	        
+	        dog2button.setOnAction(e -> {
+	        	//DogProfileScene.main();
+                dogProfileScene.start(primaryStage);
+
+	        });
+	        
+	        dog3button.setOnAction(e -> {
+	        	//DogProfileScene.main();
+                dogProfileScene.start(primaryStage);
+
+	        });
+	        
+	    }  
+	 public static void main(String[] args) {
+	        launch(); // launch THIS class
+	    }
 }
+
