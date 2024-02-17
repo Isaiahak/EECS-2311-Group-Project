@@ -100,3 +100,9 @@ Yuqian added the junt tests for Dog class (may still need to make some minor cha
 
 Connor worked on the Tag JUnit test file and added it to his branch.
 Connor worked on the User JUnit test file that tests username, email, and password and added it to his branch.
+
+Ekaterina worked on troubleshooting JavaFX and ensuring the project had proper structure. She worked on and finished the dog profile and helped out with the other UI elements. She created the readme file.
+
+Zainab worked on the User class/Test cases, as well as the UI element for the poster profile. She helped out with the other Ui elements as well. Zainab worked on the wiki. 
+
+Isaiah worked on the user profile and login screen. He also helped out with other UI elements. 
