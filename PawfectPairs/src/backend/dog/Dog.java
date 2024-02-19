@@ -6,7 +6,7 @@ public class Dog {
 	 private String name;
 	    private int id;
 	    private int age;
-	    private EnergyLevel energyLevel ; // possibly do a class + implement a comparable interface ?
+	    private EnergyLevel energyLevel; // possibly do a class + implement a comparable interface ?
 	    private Size size; // class + implement comparable?
 	    private String sex; // M or F // maybe do 0 or 1?
 	    private Poster poster;
