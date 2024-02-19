@@ -108,3 +108,13 @@ Zainab worked on the User class/Test cases, as well as the UI element for the po
 Isaiah worked on the user profile and login screen. He also helped out with other UI elements. 
 
 Edson worked on JUnit files and the additional classes
+
+
+
+Feb 19, 2024
+
+Fix Architecture
+Add matchmaking class
+Add bio parameter (attribute) to dog 
+Streamline GUI Code 
+Dowload GIT
