@@ -118,3 +118,6 @@ Add matchmaking class
 Add bio parameter (attribute) to dog 
 Streamline GUI Code 
 Dowload GIT
+
+Feb 20, 2024
+- Ekaterina worked on updating the GUI features for every class
