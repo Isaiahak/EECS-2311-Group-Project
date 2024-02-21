@@ -2,16 +2,21 @@ package guilayout;
 import backend.dog.Dog;
 import backend.poster.Poster;
 import backend.user.User;
+import guilayout.Components;
 import guicontrol.DogProfileController;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
 
 public class DogProfileScene extends Application {
@@ -32,10 +37,15 @@ public class DogProfileScene extends Application {
     private DogProfileController profileController;
 
     private ImageView petImageView;
-    private Label nameLabel;
-    private Label ageLabel;
     private Label sizeLabel;
     private Label energyLabel;
+    private Label primaryInfoLabel; 
+    private TextFlow biographyText;
+    private Hyperlink posterLink;
+    
+//    private int l = 1080; 
+//    private int w = 1920; 
+
 //    private Label bioLabel;
 //    private Label tagsLabel;
 
@@ -45,105 +55,103 @@ public class DogProfileScene extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        primaryStage.setTitle("Pet Profile Viewer");
+    	
+    	//root is v box
+		VBox root = new VBox();
+		root.setSpacing(15);
+		root.setAlignment(Pos.CENTER);
+		
+
+        primaryStage.setTitle("Pawfect Pairs");
+        
         UserProfile userProfile = UserProfile.getInstance();
         LoginScene loginScene = LoginScene.getInstance();
         PosterProfileScene posterProfile = PosterProfileScene.getInstance();
+
+        petImageView = Components.imageView(500,500);
+     
         
-
-        // Initialize UI components
-        petImageView = new ImageView();
-        petImageView.setFitHeight(200);
-        petImageView.setFitWidth(200);
-        petImageView.setPreserveRatio(true);
-
-        nameLabel = new Label();
-        ageLabel = new Label();
-        sizeLabel = new Label();
-        energyLabel = new Label();
-//        bioLabel = new Label();
-//        tagsLabel = new Label();
-
-        // Initialize layout
-        BorderPane root = new BorderPane();
-        Button likeButton = new Button("likes");
-        likeButton.setAlignment(Pos.BOTTOM_CENTER);
-        HBox bottomBox = new HBox();
-        profileController = new DogProfileController(nameLabel, ageLabel, sizeLabel, energyLabel, petImageView);
-        bottomBox.getChildren().addAll(createArrowButton("Previous", -1, Pos.BOTTOM_LEFT), createArrowButton("Next", 1, Pos.BOTTOM_RIGHT),likeButton);
-        bottomBox.setSpacing(10);
-        bottomBox.setStyle("-fx-alignment: center;");
-
-        VBox infoBox = new VBox();
-        infoBox.getChildren().addAll(nameLabel, ageLabel, sizeLabel, energyLabel);
-        infoBox.setSpacing(10);
+        primaryInfoLabel = Components.largeLabel(); // Name, Age, Sex
+		
+		sizeLabel =  Components.mediumLabel(); // Attributes 
+		energyLabel = Components.mediumLabel();
+		
+		
+		//		  Initialize layout
+        // attributes hBox
+        HBox secondaryInfo = new HBox(); 
+        secondaryInfo.setAlignment(Pos.CENTER);
+        secondaryInfo.setSpacing(10); 
+        secondaryInfo.getChildren().addAll(sizeLabel, energyLabel);
         
-//        root.setCenter(infoBox);
+        // bio textBox
+        Label biographyText = Components.smallLabel(); 
+        biographyText.setPrefWidth(600);
+        // tags box - TO BE IMPLEMENTED -
         
         
-
-      Button posterButton = new Button("Poster's profile");
-        posterButton.setAlignment(Pos.TOP_LEFT);
-//        root.setTop(posterButton);
-        
-        posterButton.setOnAction(e -> {
-        	//DogProfileScene.main();
-        	try {
-				posterProfile.start(primaryStage);
-			} catch (Exception e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-
-        });
-        Button settingsButton = new Button("Settings");
-        settingsButton.setAlignment(Pos.TOP_RIGHT);
-//        root.setTop(settingsButton);
-        settingsButton.setOnAction(e -> {
-            userProfile.start(primaryStage);
-        });
-        
-        HBox topBox = new HBox();
-        topBox.getChildren().addAll(
-        		settingsButton, 
-        		posterButton
-        		);
-        
-        topBox.setSpacing(10);
-        topBox.setStyle("-fx-alignment: center;");
-       
-   
-        likeButton.setOnAction(e -> {
-           Dog dog = profileController.getCurrentDog();
-           dog.setAdopted(true);
-           User user = loginScene.sendUserInfo();
-           user.addLikedDogs(dog);
-        		   
-        });
-        // Set the layout as the scene root
-        
-       
-
-        // Show the stage
-
-        root.setCenter(infoBox);
-        root.setTop(topBox);
-        root.setBottom(bottomBox);
-        root.setLeft(petImageView);
-
-        // Display the initial pet profile
-        profileController.displayCurrentPetProfile();
-
-        primaryStage.setScene(new Scene(root, 600, 400));
-        primaryStage.show();
-    }
-
-    private Button createArrowButton(String text, int direction, Pos Position) {
-        Button button = new Button(text);
-        button.setAlignment(Position);
-        button.setOnAction(event -> {
-            profileController.changeProfile(direction);
+        // nav tab
+        HBox navTab = Components.navTab(userProfile, primaryStage);
+      
+       // bottom likes tab
+        HBox bottomTab = new HBox(); 
+     
+        Button leftArrowButton = Components.button("←");
+        leftArrowButton.setOnAction(event -> {
+            profileController.changeProfile(-1);
             profileController.displayCurrentPetProfile();
         });
-        return button;
-    }}
+        
+        Button rightArrowButton = Components.button("→");
+        rightArrowButton.setOnAction(event -> {
+            profileController.changeProfile(1);
+            profileController.displayCurrentPetProfile();
+        });
+        
+        Button likeButton = Components.button("♥");
+        likeButton.setOnAction(e -> {
+            Dog dog = profileController.getCurrentDog();
+            dog.setAdopted(true);
+            User user = loginScene.sendUserInfo();
+            user.addLikedDogs(dog);
+         		   
+         });
+        
+        bottomTab.getChildren().addAll(leftArrowButton, likeButton, rightArrowButton); 
+        bottomTab.setSpacing(20);
+        bottomTab.setAlignment(Pos.CENTER);
+        
+       
+        
+        // poster link
+        posterLink = Components.hyperlink();
+        posterLink.setOnAction(event -> {
+        	try {
+				posterProfile.start(primaryStage);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+        });
+        
+         // add to root vbox
+        root.getChildren().addAll(navTab, petImageView, primaryInfoLabel, posterLink, secondaryInfo, biographyText, bottomTab);
+        
+		profileController = new DogProfileController(primaryInfoLabel, sizeLabel, energyLabel, petImageView, biographyText, posterLink);
+		
+
+      // Display the initial pet profile
+      profileController.displayCurrentPetProfile();
+      StackPane stackPane = new StackPane(root);
+      stackPane.setAlignment(javafx.geometry.Pos.CENTER);
+      
+      Scene scene = new Scene(stackPane, Components.screenWidth, Components.screenHeight);
+
+      primaryStage.setScene(scene);
+      
+      primaryStage.setMaximized(true);
+      primaryStage.show();
+		
+		
+    }
+    }
