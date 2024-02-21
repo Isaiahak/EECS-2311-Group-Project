@@ -6,12 +6,13 @@ public class Dog {
 	 private String name;
 	    private int id;
 	    private int age;
-	    private EnergyLevel energyLevel; // possibly do a class + implement a comparable interface ?
+	    private EnergyLevel energyLevel ; // possibly do a class + implement a comparable interface ?
 	    private Size size; // class + implement comparable?
 	    private String sex; // M or F // maybe do 0 or 1?
 	    private Poster poster;
 	    private boolean adopted;
 	    private String imagePath; 
+	    private String biography;
 	    private ArrayList<Tag> tags = new ArrayList<Tag>();
 	   
 		
@@ -20,7 +21,7 @@ public class Dog {
 	        setEnergyLevel(new EnergyLevel(dogEnergyLevel));
 	    }
 	   
-	    public Dog(String name, int id, int age, int energyLevel, int size, String sex, Poster poster, boolean adopted, String imagePath) {
+	    public Dog(String name, int id, int age, int energyLevel, int size, String sex, Poster poster, boolean adopted, String imagePath, String biography) {
 	        this.name = name;
 	        this.imagePath = imagePath; 
 	        this.id = id;
@@ -32,6 +33,7 @@ public class Dog {
 	        this.sex = sex;
 	        this.poster = poster;
 	        this.adopted = adopted;
+	        this.biography = biography;
 	    }
 	    
 	    public Dog(String name, int id, int age, int energyLevel, int size, String sex, Poster poster, boolean adopted) {
@@ -110,6 +112,9 @@ public class Dog {
 		}
 		public void setPoster(Poster poster) {
 			this.poster = poster;
+		}
+		public String getBiography() {
+			return this.biography;
 		}
 		@Override
 	    public String toString() {
