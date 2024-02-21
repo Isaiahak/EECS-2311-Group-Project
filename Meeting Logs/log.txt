@@ -122,3 +122,14 @@ Dowload GIT
 Feb 20, 2024
 - Ekaterina worked on updating the GUI features for every class
 - Ekaterina has created all the GUI components within the components class (up to this point)
+
+Feb 21, 2024
+
+- Edson has fixed the file path for the JUnit files 
+- Edson has added the matchmaking class to the program
+- Edson has added more attributes to dogs
+- Edson has tested the program. here is his thoughts:
+  - Description of dogs does fully not appear in full page
+  - Mispelling are present in dog description
+  - Page cannot be maximized properly
+  - Poster Profile page is smaller than the other pages
