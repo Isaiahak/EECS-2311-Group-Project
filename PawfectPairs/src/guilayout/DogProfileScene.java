@@ -101,12 +101,14 @@ public class DogProfileScene extends Application {
             profileController.changeProfile(-1);
             profileController.displayCurrentPetProfile();
         });
+        leftArrowButton.setStyle("-fx-background-color: #0a0f40; -fx-text-fill: white;");
         
         Button rightArrowButton = Components.button("→");
         rightArrowButton.setOnAction(event -> {
             profileController.changeProfile(1);
             profileController.displayCurrentPetProfile();
         });
+        rightArrowButton.setStyle("-fx-background-color: #0a0f40; -fx-text-fill: white;");
         
         Button likeButton = Components.button("♥");
         likeButton.setOnAction(e -> {
@@ -116,6 +118,7 @@ public class DogProfileScene extends Application {
             user.addLikedDogs(dog);
          		   
          });
+        likeButton.setStyle("-fx-background-color: #db2a4d; -fx-text-fill: white; -fx-font-size: 60;");
         
         bottomTab.getChildren().addAll(leftArrowButton, likeButton, rightArrowButton); 
         bottomTab.setSpacing(20);

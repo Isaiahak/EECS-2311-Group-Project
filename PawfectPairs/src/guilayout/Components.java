@@ -1,12 +1,17 @@
 package guilayout;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
+import backend.dog.Attribute;
+import backend.dog.Dog;
+import backend.tag.Tag;
 import javafx.application.Application;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
-import javafx.scene.control.Hyperlink;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
@@ -23,7 +28,75 @@ public class Components{
 	private static int fontLg = 50; 
 	
 	private static String font = "Verdana";
-
+	
+	
+	/*
+	 * Collecting lists of all tags and attributes to create dynamically updating GUI components
+	 */
+	
+	public static ArrayList<Attribute> allAttributes = new ArrayList<Attribute>();
+	public static ArrayList<Tag> allTags = new ArrayList<Tag>(Arrays.asList(
+			new Tag("Friendly"),
+			new Tag("Adventerous"),
+			new Tag("Skittish"),
+			new Tag("Good with Kids"),
+			new Tag("Loyal"),
+			new Tag("Intelligent"),
+			new Tag("Aggressive"),
+			new Tag("Special Needs"),
+			new Tag("Couch Potato"),
+			new Tag("Athletic"),
+			new Tag("Hypoallergenic"),
+			new Tag("Vocal"),
+			new Tag("Calm"),
+			new Tag("Playful"),
+			new Tag("Protective"),
+			new Tag("Shy"),
+			new Tag("Smart"),
+			new Tag("Independent"),
+			new Tag("Affectionate"),
+			new Tag("Aggressive"),
+			new Tag("Trainable"),
+			new Tag("Sociable"),
+			new Tag("Quiet"),
+			new Tag("Noisy"),
+			new Tag("Easygoing"),
+			new Tag("Anxious"),
+			new Tag("Curious"),
+			new Tag("Gentle"),
+			new Tag("Stubborn"),
+			new Tag("Well-behaved"),
+			new Tag("High-maintenance"),
+			new Tag("Low-maintenance"),
+			new Tag("Good with other pets"),
+			new Tag("Allergic"),
+			new Tag("Lap dog"),
+			new Tag("Water lover"),
+			new Tag("Hypoallergenic"),
+			new Tag("Therapy dog"),
+			new Tag("Service dog"),
+			new Tag("Good on a leash"),
+			new Tag("Escape artist"),
+			new Tag("House trained"),
+			new Tag("Mellow"),
+			new Tag("Frisbee enthusiast"),
+			new Tag("High prey drive"),
+			new Tag("Treat motivated"),
+			new Tag("Vocal"),
+			new Tag("Loves car rides")
+			));
+			
+	
+	public static String[] tagColours = {
+			"#d9ed92",
+			"#b5e48c",
+			"#99d98c",
+			"#76c893",
+			"#52b69a",
+			"#34a0a4",
+			"#168aad"
+		
+	};
 	
 	public static Button button(String text) {
 		Button button = new Button(text);
@@ -67,9 +140,9 @@ public class Components{
 		
 		return label;
 	}
-	public static Label mediumLabel(String text, Pos pos) {
+	public static Label mediumLabel(String text) {
 		Label label = new Label(text);
-		label.setAlignment(pos);
+//		label.setAlignment(pos);
 		label.setFont(Font.font(font, fontMd));
 
 		
@@ -120,6 +193,111 @@ public class Components{
 		return imageView;
 		
 	}
-
+	public static Label tagLabel(String tag) {
+		Label label = new Label(tag);
+		label.setFont(Font.font(font, fontSm));
+		label.setWrapText(true);
+		
+		label.maxWidth(50);
+		
+		
+		
+		String defaultStyle = 
+				"-fx-background-color: #e1fcf6;" + // Background color
+		        "-fx-padding: 10px;" + // Padding
+		        "-fx-border-radius: 10px;" + // Border radius
+//		        "-fx-border-color: navy;" + // Border color
+//		        "-fx-font-size: 14px;" + // Font size
+		        "-fx-alignment: center;"; // Text alignment;
+		
+		String highLightedStyle = 
+				"-fx-background-color: #98f5e1;" + // Background color
+		        "-fx-padding: 10px;" + // Padding
+		        "-fx-border-radius: 10px;" + // Border radius
+//		        "-fx-border-color: navy;" + // Border color
+//		        "-fx-font-size: 14px;" + // Font size
+		        "-fx-alignment: center;"; // Text alignment;
+		
+		
+		
+		label.setStyle(defaultStyle);
+		
+		
+		label.setOnMouseClicked(event -> {
+            // Toggle background color on click
+            if (label.getStyle().equals(defaultStyle)) {
+            	label.setStyle(highLightedStyle); // highlight if not highlighted
+            	//add tag to user here
+            	
+            } else {
+            	label.setStyle(defaultStyle);
+            	//remove tag from user
+            	
+            }
+        });
+		
+		
+		return label;
+	}
 	
+	public static GridPane createTags(ArrayList<Tag> tags) {
+		GridPane gridPane = new GridPane();
+		int row = 0;
+        int col = 0;
+        
+        int maxRows = 5;
+        
+        int i = 0; // current index
+        
+		for(Tag t : tags) {
+			
+			Label label = tagLabel(t.getTagName());
+			
+            // Add the label to the grid
+            gridPane.add(label, row, col);
+
+            // Increment column and row counters
+            row++;
+            if (row >= maxRows) {
+                row = 0; // Reset column counter
+                col++;   // Move to the next col
+            }
+			i++;
+		}
+		
+		return gridPane;
+		
+	}
+	
+	public static HBox likedDogView(Dog dog) {
+		
+		
+		
+		
+		ImageView img = Components.imageView(200, 200);
+		img.setImage(new Image(dog.getImagePath()));
+		
+		Label primaryInfoLabel = Components.mediumLabel(dog.getName() + ", " + dog.getAge() + " years, " + dog.getSex()); 
+		Hyperlink posterLink = Components.hyperlink();
+		
+		posterLink.setText(dog.getPoster().getDisplayName());
+		
+		
+		VBox info = new VBox(
+				primaryInfoLabel,
+				posterLink
+				);
+		
+		return new HBox(img, info);
+//		posterLink.setOnAction(event -> { // implement later
+//        	try {
+//				posterProfile.start(primaryStage);
+//			} catch (Exception e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//        });
+		
+	}
+
 }
