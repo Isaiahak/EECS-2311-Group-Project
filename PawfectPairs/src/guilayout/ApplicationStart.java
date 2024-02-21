@@ -32,7 +32,8 @@ public class ApplicationStart extends Application {
 
 //        Application.launch(DogProfile.class, args);
     	
-    	LoginScene.main(args); // launch a different class. 
+//    	LoginScene.main(args); // launch a different class. 
+    	DogProfileScene.main(args);
     }
 
 }

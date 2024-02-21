@@ -7,7 +7,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import backend.dog.*;
 import backend.poster.*;
 
-
 import org.junit.jupiter.api.Test;
 
 

@@ -1,4 +1,5 @@
 package backend.tag;
+
 public class Tag {
     private int preference;
     private String tagName;
@@ -8,8 +9,12 @@ public class Tag {
         this.preference = preferenceWeight;
         this.tagName = tagName;
     }
+    
+    public Tag(String tagName) {
+    	this.tagName = tagName;
+    	this.preference = 0; // default
+    }
 
- 
 
 	// Getter for preferenceWeight
     public int getWeight() {
