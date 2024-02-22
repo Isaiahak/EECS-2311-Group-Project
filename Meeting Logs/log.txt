@@ -135,4 +135,5 @@ Feb 21, 2024
   - Poster Profile page is smaller than the other pages
 
 - Ekaterina added Gradle to the project, fixed image file paths, and updated build.gradle.kts
+- Ekaterina fixed all the testing files and fixed their imports. She updated the build.gradle.kts to include the correct dependencies for testing. She updated the testing directory. 
 
