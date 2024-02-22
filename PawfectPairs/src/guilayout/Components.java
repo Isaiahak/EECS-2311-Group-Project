@@ -3,8 +3,12 @@ package guilayout;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import backend.dog.Attribute;
 import backend.dog.Dog;
+import backend.dog.Attributes.Age;
+import backend.dog.Attributes.Attribute;
+import backend.dog.Attributes.EnergyLevel;
+import backend.dog.Attributes.Sex;
+import backend.dog.Attributes.Size;
 import backend.tag.Tag;
 import javafx.application.Application;
 import javafx.geometry.Pos;
@@ -107,18 +111,27 @@ public class Components{
 		return button;
 	}
 	
-	public static HBox navTab(UserProfile userScene, Stage stage) { //create a navigation tab: settings, schedule, messages, etc
+	public static HBox navTab(UserProfile userScene,LikedDogScene likedDog, Stage stage) { //create a navigation tab: settings, schedule, messages, etc
 		// settings hBox
         HBox navTab = new HBox();
         navTab.setStyle("-fx-background-color: #f5f5f5;");
         
         Button settingsButton = Components.button("Settings ⚙");
+        Button likedDogButton = Components.button("♥ Liked Dogs  🐶");
+  
         settingsButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
+        likedDogButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
+        
+        
         settingsButton.setOnAction(event -> {
         	userScene.start(stage);
         });
+        likedDogButton.setOnAction(event -> {
+        	likedDog.start(stage);
+        });
+       
         
-        navTab.getChildren().addAll(settingsButton);
+        navTab.getChildren().addAll(likedDogButton,settingsButton);
         
         return navTab; 
 	}
@@ -140,6 +153,7 @@ public class Components{
 		
 		return label;
 	}
+	
 	public static Label mediumLabel(String text) {
 		Label label = new Label(text);
 //		label.setAlignment(pos);
@@ -148,6 +162,7 @@ public class Components{
 		
 		return label;
 	}
+	
 	public static Label smallLabel(String text, Pos pos) {
 		Label label = new Label(text);
 		label.setAlignment(pos);
@@ -158,7 +173,6 @@ public class Components{
 		return label;
 	}
 	
-	
 	public static Label largeLabel() {
 		Label label = new Label();
 		label.setFont(Font.font(font, fontLg));
@@ -166,19 +180,19 @@ public class Components{
 		
 		return label;
 	}
+	
 	public static Label mediumLabel() {
 		Label label = new Label();
 		label.setFont(Font.font(font, fontMd));
-
-		
+	
 		return label;
 	}
+	
 	public static Label smallLabel() {
 		Label label = new Label();
 		label.setFont(Font.font(font, fontSm));
 		label.setWrapText(true);
 
-		
 		return label;
 	}
 	
@@ -193,15 +207,14 @@ public class Components{
 		return imageView;
 		
 	}
+	
 	public static Label tagLabel(String tag) {
 		Label label = new Label(tag);
 		label.setFont(Font.font(font, fontSm));
 		label.setWrapText(true);
 		
 		label.maxWidth(50);
-		
-		
-		
+			
 		String defaultStyle = 
 				"-fx-background-color: #e1fcf6;" + // Background color
 		        "-fx-padding: 10px;" + // Padding
@@ -217,9 +230,7 @@ public class Components{
 		        "-fx-border-color: #98f5e1;" + // Border color
 //		        "-fx-border-width: 4px;"   +
 		        "-fx-alignment: center;"; // Text alignment;
-		
-		
-		
+
 		label.setStyle(defaultStyle);
 		
 		
@@ -269,11 +280,85 @@ public class Components{
 		
 	}
 	
+	public static Label attributeLabel(String name) {
+		Label label = new Label(name);
+		label.setFont(Font.font(font, fontSm));
+		label.setWrapText(true);
+		
+		label.maxWidth(50);
+	
+		String defaultStyle = 
+				"-fx-background-color: #e1fcf6;" + // Background color
+		        "-fx-padding: 10px;" + // Padding
+		        "-fx-border-radius: 10px;" + // Border radius
+//		        "-fx-border-color: navy;" + // Border color
+//		        "-fx-font-size: 14px;" + // Font size
+		        "-fx-alignment: center;"; // Text alignment;
+		
+		String highLightedStyle = 
+				"-fx-background-color: #98f5e1;" + // Background color
+		        "-fx-padding: 10px;" + // Padding
+		        "-fx-border-radius: 10px;" + // Border radius
+//		        "-fx-border-color: navy;" + // Border color
+//		        "-fx-font-size: 14px;" + // Font size
+		        "-fx-alignment: center;"; // Text alignment;
+
+		label.setStyle(defaultStyle);
+	
+		label.setOnMouseClicked(event -> {
+            // Toggle background color on click
+            if (label.getStyle().equals(defaultStyle)) {
+            	label.setStyle(highLightedStyle); // highlight if not highlighted
+            	//add tag to user here
+            	
+            } else {
+            	label.setStyle(defaultStyle);
+            	//remove tag from user
+            	
+            }
+        });
+		
+		
+		return label;
+	}
+	public static GridPane createAttribute(Dog dog) {
+		GridPane gridPane = new GridPane();
+		int row = 0;
+        int col = 0;
+          
+        ArrayList<Attribute> attributes = new ArrayList<Attribute>();
+        attributes.add(new Age(0));
+        attributes.add(new Size(0));
+        attributes.add(new EnergyLevel(0));
+        attributes.add(new Sex(0));
+        
+        int i = 0; // current index
+        int maxRows;
+		for(Attribute a : attributes ) {
+			
+			String[] names = a.getNames();
+			row = 0;
+			for(int j = 0; j < names.length; j++) {
+				// Add the label to the grid
+				
+				Label label = attributeLabel(names[j]);
+				
+	            gridPane.add(label, row, col);
+	            maxRows = names.length;
+	            // Increment column and row counters
+	            
+				i++;
+				row++;  	
+			} 
+			col++;
+		}
+		
+		return gridPane;
+		
+	}
+	
 	public static HBox likedDogView(Dog dog) {
-		
-		
-		
-		
+
 		ImageView img = Components.imageView(200, 200);
 		img.setImage(new Image(dog.getImagePath()));
 		
@@ -281,7 +366,6 @@ public class Components{
 		Hyperlink posterLink = Components.hyperlink();
 		
 		posterLink.setText(dog.getPoster().getDisplayName());
-		
 		
 		VBox info = new VBox(
 				primaryInfoLabel,

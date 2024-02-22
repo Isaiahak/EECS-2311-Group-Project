@@ -32,12 +32,13 @@ public class UserProfile extends Application{
     	LoginScene loginScene  = LoginScene.getInstance();
 		DogProfileScene dogProfileScene = DogProfileScene.getInstance();  
     	User user = loginScene.sendUserInfo();	
-    	ArrayList<Dog> likedDogs = user.getLikedDogs();
-    	
-    	
+    	  	
     	// root container 
     	VBox root = new VBox();
     	
+    	
+    	// create navBar
+    	   	
     	// back button
     	Button backButton = Components.button("Back");
 		backButton.setAlignment(Pos.TOP_LEFT);
@@ -57,7 +58,6 @@ public class UserProfile extends Application{
     	// sliders
     	
 
-    	
     	// TO BE IMPLEMENTED: GET JAVAFX CONTROLSFX LIBRARY WITH GRADLE!
 //    	RangeSlider ageSlider = new RangeSlider();
     	
@@ -69,34 +69,35 @@ public class UserProfile extends Application{
     			
     			);
     	
-    	
     	//display all tags
     	
     	GridPane tagsGrid =  Components.createTags(Components.allTags);
     	tagsGrid.setAlignment(javafx.geometry.Pos.CENTER);
     	
-    	// display liked dogs
-    	VBox likedDogsDisplay = new VBox();
+    	VBox attributes = new VBox();
+    	attributes.setAlignment(javafx.geometry.Pos.CENTER);
     	
-    	for(Dog d : likedDogs) {
-    		likedDogsDisplay.getChildren().add(Components.likedDogView(d));
-    	}
-    	likedDogsDisplay.setAlignment(javafx.geometry.Pos.CENTER);
     	
-    	Label likedDogsLabel = Components.largeLabel("Dogs you've Liked", Pos.CENTER);
-    	   	
+    	Label attributesTitle = Components.largeLabel("Attributes", Pos.CENTER);
+    	
+    	attributes.getChildren().addAll(attributesTitle);
+    	
+    	
+    	GridPane attributeGrid = Components.createAttribute(user.getDog());
+    	attributeGrid.setAlignment(javafx.geometry.Pos.CENTER);   	
+    	
     	root.getChildren().addAll(
     			backButton,
     			preferences,
     			tagsGrid,
-    			likedDogsLabel,
-    			likedDogsDisplay
+    			attributes,
+    			attributeGrid
     			);
     	
     	root.setAlignment(javafx.geometry.Pos.CENTER);
     
     	root.setSpacing(20);
-    	
+    
     	StackPane stackPane = new StackPane(root);
     	stackPane.setAlignment(javafx.geometry.Pos.CENTER);
     	

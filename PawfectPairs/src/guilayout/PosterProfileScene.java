@@ -36,9 +36,11 @@ public class PosterProfileScene extends Application {
 
 	private static PosterProfileScene instance; 
 	    
-	Dog dog1 = new Dog("Charles", 1, 2, 1, 2, "M", new Poster(5, "doglover123", 12), false, "file:src/guilayout/dog.png", "Charles is involed in some shady stuff. Don't ask questions you don't want to know the answers to.");
-	Dog dog2 = new Dog("Sandy", 2, 3, 1, 2, "F", new Poster(5, "doglover123", 12), false,"file:src/guilayout/dog1.png", "Sandy looks like she knows something you don't... but that's what makes her so loveable!");
-	Dog dog3 = new Dog("Chuckles", 3, 8, 0, 0, "M", new Poster(5, "doglover123", 12), false,"file:src/guilayout/dog4.png", "Lazy and old Chuckles is the perfect lap dog for anyone who doesn't like to move.");
+
+	Dog dog1 = new Dog("Charles", 1, 2, 1, 2, 1, new Poster(5, "doglover123", 12), false, "file:src/guilayout/dog.png", "Charles is involed in some shady stuff. Don't ask questions you don't want to know the answers to.");
+	Dog dog2 = new Dog("Sandy", 2, 3, 1, 2, 0, new Poster(5, "doglover123", 12), false,"file:src/guilayout/dog1.png", "Sandy looks like she knows something you don't... but that's what makes her so loveable!");
+	Dog dog3 = new Dog("Chuckles", 3, 3, 0, 0, 1, new Poster(5, "doglover123", 12), false,"file:src/guilayout/dog4.png", "Lazy and old Chuckles is the perfect lap dog for anyone who doesn't like to move.");
+
 
 	 @Override  
 	    public void start(Stage primaryStage) throws Exception {  

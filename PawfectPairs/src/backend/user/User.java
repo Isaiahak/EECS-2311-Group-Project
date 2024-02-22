@@ -2,19 +2,20 @@ package backend.user;
 
 import java.util.ArrayList;
 
-import backend.dog.Attribute;
 import backend.dog.Dog;
-import backend.tag.Tag;
+import backend.poster.Poster;
+
+
 
 public class User {
 	
-	private ArrayList<Tag> tagPreferences =  new ArrayList<Tag>();
-	
-	private ArrayList<Attribute> attributePreferences = new ArrayList<Attribute>();
+	private Dog preferredDog = new Dog("", 0, 0, 0, 0, 0, new Poster(0, "DawgOwner", 0), false,"", "");
 	
 	private String username;
 	
 	private String email;
+	
+	private int userID;
 	
 	private String password;
 	
@@ -37,39 +38,17 @@ public class User {
 	/*
 	 * For adding and for removing attribute/tag preferences
 	 */
-
-	public ArrayList<Attribute> getAttributePreferences() {
-		return attributePreferences;
+	public Dog getDog() {
+		return preferredDog;
 	}
 	
-	public void addAttributePreference(Attribute att) {
-		this.attributePreferences.add(att);
-	}
-	public void removeAttributePreference(Attribute att) {
-		this.tagPreferences.remove(att);
-	}
-
-	public void setAttributePreferences(ArrayList<Attribute> preferences) {
-		this.attributePreferences = preferences;
+	public int getUserID() {
+		return userID;
 	}
 	
-	public ArrayList<Tag> getTagPreferences() {
-		return tagPreferences;
+	public void setUserID(int userID) {
+		this.userID = userID;
 	}
-	
-	public void addTagPreference(Tag tag) {
-		this.tagPreferences.add(tag);
-	}
-	public void removeTagPreference(Tag tag) {
-		this.tagPreferences.remove(tag);
-	}
-
-	public void setTagPreferences(ArrayList<Tag> preferences) {
-		this.tagPreferences = preferences;
-	}
-
-	
-	/*********************************/
 	
 	public String getUsername() {
 		return username;
@@ -116,8 +95,4 @@ public class User {
 		return "User [username=" + username + ", email=" + email + ", password="
 				+ password + "]";
 	}
-	
-	
-	
-
 }

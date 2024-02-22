@@ -1,14 +1,20 @@
 package backend.dog;
 import java.util.ArrayList;
+
+import backend.dog.Attributes.Age;
+import backend.dog.Attributes.EnergyLevel;
+import backend.dog.Attributes.Sex;
+import backend.dog.Attributes.Size;
 import backend.poster.Poster;
 import backend.tag.Tag;
 public class Dog {
 	 private String name;
+	 
 	    private int id;
-	    private int age;
+	    private Age age;
 	    private EnergyLevel energyLevel ; // possibly do a class + implement a comparable interface ?
 	    private Size size; // class + implement comparable?
-	    private String sex; // M or F // maybe do 0 or 1?
+	    private Sex sex; // M or F // maybe do 0 or 1?
 	    private Poster poster;
 	    private boolean adopted;
 	    private String imagePath; 
@@ -21,30 +27,35 @@ public class Dog {
 	        setEnergyLevel(new EnergyLevel(dogEnergyLevel));
 	    }
 	   
-	    public Dog(String name, int id, int age, int energyLevel, int size, String sex, Poster poster, boolean adopted, String imagePath, String biography) {
+	    public Dog(String name, int id, int age, int energyLevel, int size, int sex, Poster poster, boolean adopted, String imagePath, String biography) {
 	        this.name = name;
 	        this.imagePath = imagePath; 
 	        this.id = id;
-	        this.age = age;
+	        setAge(new Age(age));
+	        setSex(new Sex(sex));
 	        setSize(new Size(size));
 	        setEnergyLevel(new EnergyLevel(energyLevel));
+	        //this.age = age;
 	        //this.energyLevel = energyLevel;
 	        //this.size = size;
-	        this.sex = sex;
+	        //this.sex = sex;
 	        this.poster = poster;
 	        this.adopted = adopted;
 	        this.biography = biography;
 	    }
 	    
-	    public Dog(String name, int id, int age, int energyLevel, int size, String sex, Poster poster, boolean adopted) {
+	    public Dog(String name, int id, int age, int energyLevel, int size, int sex, Poster poster, boolean adopted) {
 	        this.name = name;
 	        this.id = id;
-	        this.age = age;
+	       
+	        setAge(new Age(age));
+	        setSex(new Sex(sex));
 	        setSize(new Size(size));
 	        setEnergyLevel(new EnergyLevel(energyLevel));
 	        //this.energyLevel = energyLevel;
+	        // this.age = age;
 	        //this.size = size;
-	        this.sex = sex;
+	        //this.sex = sex;
 	        this.poster = poster;
 	        this.adopted = adopted;
 	    }
@@ -72,10 +83,10 @@ public class Dog {
 	    public void setId(int id) {
 	        this.id = id;
 	    }
-	    public int getAge() {
+	    public Age getAge() {
 	        return age;
 	    }
-	    public void setAge(int age) {
+	    public void setAge(Age age) {
 	        this.age = age;
 	    }
 	    public String getEnergyLevel() {
@@ -92,10 +103,12 @@ public class Dog {
 	    public void setSize(Size size) {
 	        this.size = size;
 	    }
-	    public String getSex() {
+	    
+	    public Sex getSex() {
 	        return sex;
 	    }
-	    public void setSex(String sex) {
+	    
+	    public void setSex(Sex sex) {
 	        this.sex = sex;
 	    }
 	   

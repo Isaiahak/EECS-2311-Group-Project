@@ -68,7 +68,7 @@ public class DogProfileScene extends Application {
         UserProfile userProfile = UserProfile.getInstance();
         LoginScene loginScene = LoginScene.getInstance();
         PosterProfileScene posterProfile = PosterProfileScene.getInstance();
-
+        LikedDogScene likedDog = LikedDogScene.getInstance();
         petImageView = Components.imageView(500,500);
      
         
@@ -92,7 +92,7 @@ public class DogProfileScene extends Application {
         
         
         // nav tab
-        HBox navTab = Components.navTab(userProfile, primaryStage);
+        HBox navTab = Components.navTab(userProfile,likedDog,primaryStage);
       
        // bottom likes tab
         HBox bottomTab = new HBox(); 
