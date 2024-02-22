@@ -122,7 +122,7 @@ Dowload GIT
 Feb 20, 2024
 - Ekaterina worked on updating the GUI features for every class
 - Ekaterina has created all the GUI components within the components class (up to this point)
-
+- Zainab created architecture sketch that reflects the projects funtionality
 Feb 21, 2024
 
 - Edson has fixed the file path for the JUnit files 
