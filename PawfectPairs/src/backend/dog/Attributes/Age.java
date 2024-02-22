@@ -11,7 +11,7 @@ public class Age extends Attribute {
     
 	@Override
 	public String toString() {
-		return this.getName()+"";
+		return this.getName();
 	}
 
 	@Override

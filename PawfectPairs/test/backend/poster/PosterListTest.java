@@ -1,6 +1,6 @@
 package test;
-import static org.junit.Assert.*;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
 import backend.dog.Dog;
 import backend.poster.Poster;
 import backend.poster.PosterList;

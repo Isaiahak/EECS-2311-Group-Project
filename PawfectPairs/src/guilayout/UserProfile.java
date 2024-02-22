@@ -1,5 +1,4 @@
 package guilayout;
-
 import javafx.application.Application;
 import javafx.collections.*;
 import javafx.geometry.*;
@@ -98,15 +97,7 @@ public class UserProfile extends Application{
     	root.setAlignment(javafx.geometry.Pos.CENTER);
     
     	root.setSpacing(20);
-    	
-    	
-    	
-    	
-    	
-    	
-    	
-    	
-    	
+    
     	StackPane stackPane = new StackPane(root);
     	stackPane.setAlignment(javafx.geometry.Pos.CENTER);
     	

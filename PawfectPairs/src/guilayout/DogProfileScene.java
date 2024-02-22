@@ -1,5 +1,6 @@
 package guilayout;
 import backend.dog.Dog;
+
 import backend.poster.Poster;
 import backend.user.User;
 import guilayout.Components;
@@ -91,7 +92,7 @@ public class DogProfileScene extends Application {
         
         
         // nav tab
-        HBox navTab = Components.navTab(userProfile,likedDog,instance,primaryStage);
+        HBox navTab = Components.navTab(userProfile,likedDog,primaryStage);
       
        // bottom likes tab
         HBox bottomTab = new HBox(); 

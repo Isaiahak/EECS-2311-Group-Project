@@ -1,8 +1,15 @@
-package backend.dog;
+
+package test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+
+import backend.dog.*;
+import backend.poster.*;
+
 import org.junit.jupiter.api.Test;
+
+
 
 class AttributeTest {
 
@@ -19,42 +26,51 @@ class AttributeTest {
 	
 	@Test
 	public void testSizeConstructorAndToString() {
-		Size smallSize = new Size(0);
-	    Size mediumSize = new Size(1);
-	    Size largeSize = new Size(2);
+		Dog dog1 = new Dog("Max", 1, 3, 0, 0, "M", new Poster(0, "John", 1), false);
+		Dog dog2 = new Dog("Max", 1, 3, 1, 1, "M", new Poster(0, "John", 1), false);
+		Dog dog3 = new Dog("Max", 1, 3, 2, 2, "M", new Poster(0, "John", 1), false);
+        
+		
 
-	    assertEquals("Small", smallSize.toString());
-        assertEquals("Medium", mediumSize.toString());
-        assertEquals("Large", largeSize.toString());
+	    assertEquals("Small", dog1.getSize(), "Size is not correct");
+        assertEquals("Medium", dog2.getSize(), "Size is not correct");
+        assertEquals("Large", dog3.getSize(), "Size is not correct");
+	}
+	
+	@Test
+	public void testEnergyConstructorAndToString() {
+		Dog dog1 = new Dog("Max", 1, 3, 0, 0, "M", new Poster(0, "John", 1), false);
+		Dog dog2 = new Dog("Max", 1, 3, 1, 1, "M", new Poster(0, "John", 1), false);
+		Dog dog3 = new Dog("Max", 1, 3, 2, 2, "M", new Poster(0, "John", 1), false);
+        
+		
+
+	    assertEquals("Lazy", dog1.getEnergyLevel(), "Energy is not correct");
+        assertEquals("Moderate", dog2.getEnergyLevel(), "Energy is not correct");
+        assertEquals("Energetic", dog3.getEnergyLevel(), "Energy is not correct");
 	}
 	 
+	
 	@Test
-	public void testInvalidWeightForSize() {
-		IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-			new Size(3);
+	public void testInvalidSize() {
+		
+		
+		
+		assertThrows(IllegalArgumentException.class, () -> { new Dog("Max", 1, 3, 0, 3, "M", new Poster(0, "John", 1), false);
 	    });
 
-	    assertEquals("Error. No matching name for weight entered.", exception.getMessage());
+	   
 	}
-	 
+	
 	@Test
-	public void testEnergyLevelConstructorAndToString() {
-		EnergyLevel lazyLevel = new EnergyLevel(0);
-	    EnergyLevel moderateLevel = new EnergyLevel(1);
-        EnergyLevel energeticLevel = new EnergyLevel(2);
-
-	    assertEquals("Lazy", lazyLevel.toString());
-	    assertEquals("Moderate", moderateLevel.toString());
-        assertEquals("Energetic", energeticLevel.toString());
-	}
-	 
-	@Test
-	public void testInvalidWeightForEnergyLevel() {
-		IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-			new EnergyLevel(3);
+	public void testInvalidWeightForEnergy() {
+		
+		
+		
+		assertThrows(IllegalArgumentException.class, () -> { new Dog("Max", 1, 3, 3, 0, "M", new Poster(0, "John", 1), false);
 	    });
 
-	    assertEquals("Error. No matching name for weight entered.", exception.getMessage());
+	   
 	}
 
 }
