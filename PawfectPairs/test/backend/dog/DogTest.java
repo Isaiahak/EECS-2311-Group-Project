@@ -1,70 +1,95 @@
-package dogs;
+package test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.*;
 
-import org.junit.jupiter.api.Test;
+import java.util.ArrayList;
 
-//Note: currently containing some errors because of the poster class
-//Needs double check
+import org.junit.Test;
+import backend.dog.Dog;
+import backend.poster.Poster;
+import backend.tag.Tag;
 
-class DogTest {
-
-	@Test
-    public void testParameterlessConstructor() {
-        Dog dog = new Dog(0, 0);
-
-        assertNotNull(dog);
-        assertEquals(0, dog.getId());
-        assertEquals(0, dog.getAge());
-        assertEquals("Small", dog.getSize().toString());
-        assertEquals("Lazy", dog.getEnergyLevel().toString());
-        assertNull(dog.getName());
-        assertNull(dog.getSex());
-        assertNull(dog.getPoster()); 
-        assertTrue(dog.getTags().isEmpty());
-    }
+public class DogTest {
 
     @Test
-    public void testFullConstructor() {
-        EnergyLevel energyLevel = new EnergyLevel(1);
-        Size size = new Size(2);
-        Poster poster = new Poster(); 
-        ArrayList<Tag> tags = new ArrayList<>();
-        tags.add(new Tag("Tag1", 3));
-
-        Dog dog = new Dog("Buddy", 1, 3, energyLevel, size, "M", poster);
-        dog.setTags(tags);
-
+    public void testDogCreation() {
+        Dog dog = new Dog("Max", 1, 3, 0, 1, "M", new Poster(0, "John", 1), false);
         assertNotNull(dog);
-        assertEquals("Buddy", dog.getName());
+        assertEquals("Max", dog.getName());
         assertEquals(1, dog.getId());
         assertEquals(3, dog.getAge());
-        assertEquals("Moderate", dog.getEnergyLevel().toString());
-        assertEquals("Large", dog.getSize().toString());
+        assertEquals("Lazy", dog.getEnergyLevel()); // Assuming energy level 0 corresponds to "Lazy"
+        assertEquals("Medium", dog.getSize()); // Assuming size 1 corresponds to "Small"
         assertEquals("M", dog.getSex());
-        assertEquals(poster, dog.getPoster());
-        assertEquals(tags, dog.getTags());
+        assertFalse(dog.getAdopted());
+        assertNotNull(dog.getPoster());
     }
 
     @Test
-    public void testToString() {
-        Dog dog = new Dog("Buddy", 1, 3, new EnergyLevel(1), new Size(2), "M", null);
-        ArrayList<Tag> tags = new ArrayList<>();
-        tags.add(new Tag("Tag1", 3));
-        tags.add(new Tag("Tag2", 5));
-        dog.setTags(tags);
+    public void testSettingAndGettingAttributes() {
+        Dog dog = new Dog("Max", 1, 3, 0, 1, "M", new Poster(0, "John", 1), false);
+        assertEquals("Max", dog.getName());
+        dog.setName("Buddy");
+        assertEquals("Buddy", dog.getName());
 
-        String expected = "Dog: Buddy\n" +
-                "ID: 1\n" +
-                "Age: 3\n" +
-                "Energy Level: Moderate\n" +
-                "Size: Large\n" +
-                "Sex: M\n" +
-                "Tags:\n" +
-                "- Tag1: 3\n" +
-                "- Tag2: 5\n";
+        assertEquals(1, dog.getId());
+        dog.setId(2);
+        assertEquals(2, dog.getId());
 
-        assertEquals(expected, dog.toString());
+        assertEquals(3, dog.getAge());
+        dog.setAge(4);
+        assertEquals(4, dog.getAge());
+
+  
+        
+
+        assertEquals("M", dog.getSex());
+        dog.setSex("F");
+        assertEquals("F", dog.getSex());
+
+        assertFalse(dog.getAdopted());
+        dog.setAdopted(true);
+        assertTrue(dog.getAdopted());
+
+        Poster newPoster = new Poster(1, "Jane", 2);
+        dog.setPoster(newPoster);
+        assertEquals(newPoster, dog.getPoster());
+    }
+    
+    @Test
+    public void testInvalidEnergyLevelCreation() {
+        // Expecting IllegalArgumentException when creating Dog with invalid energy level
+        assertThrows(IllegalArgumentException.class, () -> {
+            new Dog("Max", 1, 3, 3, 1, "M", new Poster(0, "John", 1), false);
+        });
     }
 
+    @Test
+    public void testInvalidSizeCreation() {
+        // Expecting IllegalArgumentException when creating Dog with invalid size
+        assertThrows(IllegalArgumentException.class, () -> {
+            new Dog("Max", 1, 3, 0, 3, "M", new Poster(0, "John", 1), false);
+        });
+    }
+
+    @Test
+    public void testSetInvalidEnergyLevel() {
+        
+        // Expecting IllegalArgumentException when setting invalid energy level
+        assertThrows(IllegalArgumentException.class, () -> {
+        	Dog dog = new Dog("Max", 1, 3, 3, 2, "M", new Poster(0, "John", 1), false);
+        });
+    }
+
+    @Test
+    public void testSetInvalidSize() {
+       
+        // Expecting IllegalArgumentException when setting invalid size
+        assertThrows(IllegalArgumentException.class, () -> {
+        	Dog dog = new Dog("Max", 1, 3, 0, 3, "M", new Poster(0, "John", 1), false);
+        });
+    }
+    
+
+  
 }

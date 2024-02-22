@@ -1,5 +1,4 @@
 package guilayout;
-
 import javafx.application.Application;
 import javafx.collections.*;
 import javafx.geometry.*;

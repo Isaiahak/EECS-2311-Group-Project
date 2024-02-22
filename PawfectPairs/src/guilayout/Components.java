@@ -205,17 +205,17 @@ public class Components{
 		String defaultStyle = 
 				"-fx-background-color: #e1fcf6;" + // Background color
 		        "-fx-padding: 10px;" + // Padding
-		        "-fx-border-radius: 10px;" + // Border radius
-//		        "-fx-border-color: navy;" + // Border color
-//		        "-fx-font-size: 14px;" + // Font size
+//		        "-fx-border-radius: 10px;" + // Border radius
+		        "-fx-border-color: #e1fcf6;" + // Border color
+//		        "-fx-border-width: 4px;"   +
 		        "-fx-alignment: center;"; // Text alignment;
 		
 		String highLightedStyle = 
 				"-fx-background-color: #98f5e1;" + // Background color
 		        "-fx-padding: 10px;" + // Padding
-		        "-fx-border-radius: 10px;" + // Border radius
-//		        "-fx-border-color: navy;" + // Border color
-//		        "-fx-font-size: 14px;" + // Font size
+//		        "-fx-border-radius: 10px;" + // Border radius
+		        "-fx-border-color: #98f5e1;" + // Border color
+//		        "-fx-border-width: 4px;"   +
 		        "-fx-alignment: center;"; // Text alignment;
 		
 		

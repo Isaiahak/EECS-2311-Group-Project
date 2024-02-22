@@ -89,3 +89,52 @@ class EnergyLevel extends Attribute {
     
 }
 
+class BreedType extends Attribute {
+    public BreedType(int weight){
+        super(weight);
+
+        switch(weight) {
+            case 0:
+                this.setName("Pure");
+                break;
+            case 1:
+                this.setName("Mixed");
+                break;
+            case 2:
+                this.setName("Unknown");
+                break;
+            default:
+                throw new IllegalArgumentException("Error. No matching name for weight entered.");
+        }
+    }
+    @Override
+	public String toString() {
+		return this.getName()+"";
+	}
+}
+
+
+class Temper extends Attribute {
+    public Temper(int weight){
+        super(weight);
+
+        switch(weight) {
+            case 0:
+                this.setName("Friendly");
+                break;
+            case 1:
+                this.setName("Shy");
+                break;
+            case 2:
+                this.setName("Assertive");
+                break;
+            default:
+                throw new IllegalArgumentException("Error. No matching name for weight entered.");
+        }
+    }
+    @Override
+	public String toString() {
+		return this.getName()+"";
+	}
+}
+
