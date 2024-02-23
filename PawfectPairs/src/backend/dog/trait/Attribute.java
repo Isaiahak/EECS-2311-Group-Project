@@ -1,4 +1,4 @@
-package backend.dog.Attributes;
+package backend.dog.trait;
 
 public abstract class Attribute implements Comparable<Attribute>{
     // attributes abstract class to implement comparable, order-able attributes, such as size, energy level, etc

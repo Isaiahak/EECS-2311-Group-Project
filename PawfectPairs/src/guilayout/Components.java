@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import backend.dog.Dog;
-import backend.dog.Attributes.Age;
-import backend.dog.Attributes.Attribute;
-import backend.dog.Attributes.EnergyLevel;
-import backend.dog.Attributes.Sex;
-import backend.dog.Attributes.Size;
+import backend.dog.trait.Age;
+import backend.dog.trait.Attribute;
+import backend.dog.trait.EnergyLevel;
+import backend.dog.trait.Sex;
+import backend.dog.trait.Size;
 import backend.tag.Tag;
 import javafx.application.Application;
 import javafx.geometry.Pos;

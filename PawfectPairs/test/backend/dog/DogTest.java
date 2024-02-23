@@ -1,5 +1,5 @@
 
-package test;
+package test.backend.dog;
 
 import static org.junit.jupiter.api.Assertions.*;
 

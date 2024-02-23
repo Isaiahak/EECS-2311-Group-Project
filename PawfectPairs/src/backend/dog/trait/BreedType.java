@@ -1,4 +1,4 @@
-package backend.dog.Attributes;
+package backend.dog.trait;
 
 public class BreedType extends Attribute {
 	private String[] names = {"Pure","Mixed","Unknown"};

@@ -1,4 +1,4 @@
-package backend.dog.Attributes;
+package backend.dog.trait;
 
 public class Age extends Attribute {
 	
