@@ -119,16 +119,19 @@ Add bio parameter (attribute) to dog
 Streamline GUI Code 
 Dowload GIT
 
+
 Feb 20, 2024
 - Ekaterina worked on updating the GUI features for every class
 - Ekaterina has created all the GUI components within the components class (up to this point)
 - Zainab created architecture sketch that reflects the projects funtionality
+
+
 Feb 21, 2024
 
 - Edson has fixed the file path for the JUnit files 
 - Edson has added the matchmaking class to the program
 - Edson has added more attributes to dogs
-- Edson has tested the program. here is his thoughts:
+- Edson has tested the program. here are his thoughts:
   - Description of dogs does fully not appear in full page
   - Mispelling are present in dog description
   - Page cannot be maximized properly
@@ -136,4 +139,8 @@ Feb 21, 2024
 
 - Ekaterina added Gradle to the project, fixed image file paths, and updated build.gradle.kts
 - Ekaterina fixed all the testing files and fixed their imports. She updated the build.gradle.kts to include the correct dependencies for testing. She updated the testing directory. 
+
+Feb 22, 2024
+
+- Yuqian, Zainab and Edson worked on databse with postgresql together.
 
