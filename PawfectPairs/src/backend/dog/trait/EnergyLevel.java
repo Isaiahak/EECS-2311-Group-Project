@@ -1,4 +1,4 @@
-package backend.dog.Attributes;
+package backend.dog.trait;
 
 public class EnergyLevel extends Attribute {
 	private String[] names = {"Lazy","Moderate","Energetic"};

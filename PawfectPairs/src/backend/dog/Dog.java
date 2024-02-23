@@ -1,10 +1,10 @@
 package backend.dog;
 import java.util.ArrayList;
 
-import backend.dog.Attributes.Age;
-import backend.dog.Attributes.EnergyLevel;
-import backend.dog.Attributes.Sex;
-import backend.dog.Attributes.Size;
+import backend.dog.trait.Age;
+import backend.dog.trait.EnergyLevel;
+import backend.dog.trait.Sex;
+import backend.dog.trait.Size;
 import backend.poster.Poster;
 import backend.tag.Tag;
 public class Dog {
