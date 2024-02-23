@@ -96,7 +96,7 @@ Yuqian created and added junit tests for the Attribute class, and started workin
 
 Feb 16, 2024
 
-Yuqian added the junt tests for Dog class (may still need to make some minor changes)
+Yuqian worked on and added the junt tests for Dog class.
 
 Connor worked on the Tag JUnit test file and added it to his branch.
 Connor worked on the User JUnit test file that tests username, email, and password and added it to his branch.
@@ -141,6 +141,7 @@ Feb 21, 2024
 
 Feb 22, 2024
 
-- Yuqian, Zainab and Edson worked on database with postgresql together.
+- Yuqian, Zainab and Edson worked on database with postgresql together through online meeting.
   - created pawdb datatbase
-  - created table for users and dog
+  - created tables for users and dog
+  - attempted inputing information to the users and dog tables
