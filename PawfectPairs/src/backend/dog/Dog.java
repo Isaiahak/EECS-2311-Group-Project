@@ -1,5 +1,6 @@
 package backend.dog;
 import java.util.ArrayList;
+import java.sql.*;
 
 import backend.dog.trait.Age;
 import backend.dog.trait.EnergyLevel;
@@ -7,6 +8,8 @@ import backend.dog.trait.Sex;
 import backend.dog.trait.Size;
 import backend.poster.Poster;
 import backend.tag.Tag;
+
+// download this: import javax.Persistence.api;
 public class Dog {
 	 private String name;
 	 
