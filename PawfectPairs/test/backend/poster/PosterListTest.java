@@ -1,4 +1,4 @@
-package test;
+package test.backend.poster;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 import backend.dog.Dog;

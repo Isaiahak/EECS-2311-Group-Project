@@ -1,4 +1,4 @@
-package test;
+package test.backend.tag;
 
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
