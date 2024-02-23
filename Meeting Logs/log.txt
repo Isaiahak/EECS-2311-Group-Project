@@ -110,7 +110,6 @@ Isaiah worked on the user profile and login screen. He also helped out with othe
 Edson worked on JUnit files and the additional classes
 
 
-
 Feb 19, 2024
 
 Fix Architecture
@@ -142,5 +141,6 @@ Feb 21, 2024
 
 Feb 22, 2024
 
-- Yuqian, Zainab and Edson worked on databse with postgresql together.
-
+- Yuqian, Zainab and Edson worked on database with postgresql together.
+  - created pawdb datatbase
+  - created table for users and dog
