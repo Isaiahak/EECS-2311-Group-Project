@@ -17,6 +17,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 public class Components{
@@ -24,8 +25,11 @@ public class Components{
 	 * GUI components contained here to streamline GUI process and create more modular, thematic GUI parts
 	 */
 	
-	public static int screenHeight = 1024;
-	public static int screenWidth = 1280; 
+//	public static int screenHeight = 1024;
+//	public static int screenWidth = 1280; 
+	
+	public static int screenHeight =  (int) Screen.getPrimary().getVisualBounds().getHeight();
+	public static int screenWidth =  (int) Screen.getPrimary().getVisualBounds().getWidth(); 
 	
 	private static int fontSm = 20;
 	private static int fontMd = 30;
@@ -111,16 +115,19 @@ public class Components{
 		return button;
 	}
 	
-	public static HBox navTab(UserProfile userScene,LikedDogScene likedDog, Stage stage) { //create a navigation tab: settings, schedule, messages, etc
+	public static HBox navTab(UserProfile userScene,LikedDogScene likedDog, DogProfileScene dogProfile, Stage stage) { //create a navigation tab: settings, schedule, messages, etc
 		// settings hBox
         HBox navTab = new HBox();
         navTab.setStyle("-fx-background-color: #f5f5f5;");
+        navTab.setSpacing(20);
         
-        Button settingsButton = Components.button("Settings ⚙");
+        Button settingsButton = Components.button("⚙ Settings ⚙");
+        Button dogProfileButton = Components.button("🐕 Dog Profiles 🐕");
         Button likedDogButton = Components.button("♥ Liked Dogs  🐶");
   
         settingsButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
         likedDogButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
+        dogProfileButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
         
         
         settingsButton.setOnAction(event -> {
@@ -129,10 +136,14 @@ public class Components{
         likedDogButton.setOnAction(event -> {
         	likedDog.start(stage);
         });
+        dogProfileButton.setOnAction(event -> {
+        	dogProfile.start(stage);
+        });
        
         
-        navTab.getChildren().addAll(likedDogButton,settingsButton);
+        navTab.getChildren().addAll(settingsButton, dogProfileButton, likedDogButton);
         
+        navTab.setAlignment(Pos.TOP_CENTER);
         return navTab; 
 	}
 	
@@ -280,6 +291,36 @@ public class Components{
 		
 	}
 	
+	public static HBox generateStars(int num) {
+		int j = 0;
+		
+		HBox stars = new HBox();
+		
+		for (int i = 0; i < 10; i ++) {
+			//generate a star
+			Label star = new Label("★");
+			star.setStyle(
+				"-fx-text-fill: #d9d8d7;" + // Background color
+				"-fx-padding: 10px;" + // Padding
+				"-fx-font-size: 50px"); // Text alignment;);
+			
+			
+			if(j < num) {
+				//color it
+				star.setStyle(
+				"-fx-text-fill: #ffd952;" + 
+				"-fx-padding: 10px;" + // Padding
+				"-fx-font-size: 50px");
+				j++;
+			}
+			
+			stars.getChildren().add(star);
+			stars.setAlignment(Pos.CENTER);
+		}
+		
+		return stars; 
+	}
+	
 	public static Label attributeLabel(String name) {
 		Label label = new Label(name);
 		label.setFont(Font.font(font, fontSm));
@@ -372,7 +413,40 @@ public class Components{
 				posterLink
 				);
 		
-		return new HBox(img, info);
+		HBox HBox = new HBox(img, info);
+		HBox.setAlignment(Pos.CENTER);
+		HBox.setSpacing(50);
+		return HBox;
+//		posterLink.setOnAction(event -> { // implement later
+//        	try {
+//				posterProfile.start(primaryStage);
+//			} catch (Exception e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//        });
+		
+	}
+	
+	public static HBox posterDogView(Dog dog) {
+
+		ImageView img = Components.imageView(200, 200);
+		img.setImage(new Image(dog.getImagePath()));
+		
+		Label primaryInfoLabel = Components.mediumLabel(dog.getName() + ", " + dog.getAge() + " years, " + dog.getSex()); 
+//		Hyperlink posterLink = Components.hyperlink();
+		
+//		posterLink.setText(dog.getPoster().getDisplayName());
+		
+		VBox info = new VBox(
+				primaryInfoLabel
+//				posterLink
+				);
+		HBox ret = new HBox(img, info);
+		ret.setSpacing(50);
+//		ret.setAlignment(Pos.CENTER);
+		
+		return ret ;
 //		posterLink.setOnAction(event -> { // implement later
 //        	try {
 //				posterProfile.start(primaryStage);

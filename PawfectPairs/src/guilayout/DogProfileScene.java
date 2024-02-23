@@ -92,7 +92,7 @@ public class DogProfileScene extends Application {
         
         
         // nav tab
-        HBox navTab = Components.navTab(userProfile,likedDog,primaryStage);
+        HBox navTab = Components.navTab(userProfile, likedDog, DogProfileScene.getInstance(), primaryStage);
       
        // bottom likes tab
         HBox bottomTab = new HBox(); 
@@ -153,7 +153,7 @@ public class DogProfileScene extends Application {
 
       primaryStage.setScene(scene);
       
-      primaryStage.setMaximized(true);
+//      primaryStage.setMaximized(true);
       primaryStage.show();
 		
 		

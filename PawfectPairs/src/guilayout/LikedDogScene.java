@@ -30,17 +30,20 @@ public class LikedDogScene extends Application{
 		DogProfileScene dogProfileScene = DogProfileScene.getInstance();  
 		User user = loginScene.sendUserInfo();
 		ArrayList<Dog> likedDogs = user.getLikedDogs();
+		UserProfile userProfile = UserProfile.getInstance();
 		
 		VBox root = new VBox();
 		root.setAlignment(javafx.geometry.Pos.CENTER);
     	root.setSpacing(20);
     	
-		Button backButton = Components.button("Back");
-		backButton.setAlignment(Pos.TOP_LEFT);
+    	HBox navTab = Components.navTab(userProfile, LikedDogScene.getInstance(), dogProfileScene, stage);
+    	
+//		Button backButton = Components.button("Back");
+//		backButton.setAlignment(Pos.TOP_LEFT);
 		
-		 backButton.setOnAction(e -> {
-			 dogProfileScene.start(stage);
-	     });
+//		 backButton.setOnAction(e -> {
+//			 dogProfileScene.start(stage);
+//	     });
 		 
 		VBox likedDogsDisplay = new VBox();
 	    	
@@ -49,12 +52,15 @@ public class LikedDogScene extends Application{
     	}
     	likedDogsDisplay.setAlignment(javafx.geometry.Pos.CENTER);
     	
+    	ScrollPane scrollPane = new ScrollPane(likedDogsDisplay);  
+    	
     	Label likedDogsLabel = Components.largeLabel("Dogs you've Liked", Pos.CENTER);
-    	   	
+    	 
+    	
     	root.getChildren().addAll(
-    			backButton,
+    			navTab,
     			likedDogsLabel,
-    			likedDogsDisplay
+    			scrollPane
     			);
 	    	
 
@@ -62,17 +68,17 @@ public class LikedDogScene extends Application{
     	StackPane stackPane = new StackPane(root);
     	stackPane.setAlignment(javafx.geometry.Pos.CENTER);
     	
-    	ScrollPane scrollPane = new ScrollPane(stackPane);
+    	
     	
     	
 //	        scrollPane.setAlignment(javafx.geometry.Pos.CENTER);
         
         
-    	Scene scene = new Scene(scrollPane, Components.screenWidth, Components.screenHeight);
+    	Scene scene = new Scene(stackPane, Components.screenWidth, Components.screenHeight);
     	
 		stage.setScene(scene);
 		stage.setTitle("Pawfect Pairs");
-		stage.setMaximized(true);
+//		stage.setMaximized(true);
 		stage.show();
 		
 	}	
