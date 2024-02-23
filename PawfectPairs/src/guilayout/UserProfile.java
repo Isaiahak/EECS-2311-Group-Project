@@ -40,13 +40,7 @@ public class UserProfile extends Application{
     	// create navBar
     	   	
     	// back button
-    	Button backButton = Components.button("Back");
-		backButton.setAlignment(Pos.TOP_LEFT);
-		
-		 backButton.setOnAction(e -> {
-			 dogProfileScene.start(primaryStage);
-	            });
-    	
+    	HBox navTab = Components.navTab(UserProfile.getInstance(), LikedDogScene.getInstance(), dogProfileScene, primaryStage);
     	// set up preferences vbox
     	VBox preferences = new VBox();
     	preferences.setAlignment(javafx.geometry.Pos.CENTER);
@@ -87,7 +81,7 @@ public class UserProfile extends Application{
     	attributeGrid.setAlignment(javafx.geometry.Pos.CENTER);   	
     	
     	root.getChildren().addAll(
-    			backButton,
+    			navTab,
     			preferences,
     			tagsGrid,
     			attributes,
@@ -110,7 +104,7 @@ public class UserProfile extends Application{
     	
 		primaryStage.setScene(scene);
 		primaryStage.setTitle("Pawfect Pairs");
-		primaryStage.setMaximized(true);
+//		primaryStage.setMaximized(true);
 		primaryStage.show();
 		
 		
