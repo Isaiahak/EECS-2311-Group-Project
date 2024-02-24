@@ -8,8 +8,7 @@ import backend.dog.trait.Size;
 import backend.poster.Poster;
 import backend.tag.Tag;
 public class Dog {
-	 private String name;
-	 
+	 	private String name;
 	    private int id;
 	    private Age age;
 	    private EnergyLevel energyLevel ; // possibly do a class + implement a comparable interface ?
