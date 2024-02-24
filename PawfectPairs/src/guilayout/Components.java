@@ -243,9 +243,13 @@ public class Components{
 		        "-fx-border-color: #98f5e1;" + // Border color
 //		        "-fx-border-width: 4px;"   +
 		        "-fx-alignment: center;"; // Text alignment;
-
-		label.setStyle(defaultStyle);
-		
+		//function to be able to turn the label highlighted when loading them if in the dog tags list.
+		if(dogTags.contains(labelTag) == true) {
+			label.setStyle(highLightedStyle);
+		}
+		else {
+			label.setStyle(defaultStyle);
+		}
 		
 		label.setOnMouseClicked(event -> {
             // Toggle background color on click
@@ -351,9 +355,15 @@ public class Components{
 //		        "-fx-border-color: navy;" + // Border color
 //		        "-fx-font-size: 14px;" + // Font size
 		        "-fx-alignment: center;"; // Text alignment;
-		// add some function to be able to turn the label highlighted when loading them.
 		
-		label.setStyle(defaultStyle);
+		//function to be able to turn the label highlighted when loading them if dog attribute matches.
+		if(dogAttribute.getName().equals(label.toString()) == true) {
+			label.setStyle(highLightedStyle);
+		}
+		else {
+			label.setStyle(defaultStyle);
+		}
+		
 		label.setOnMouseClicked(event -> {	
             if (label.getStyle().equals(defaultStyle)) {
             	for(Node l : labels) {

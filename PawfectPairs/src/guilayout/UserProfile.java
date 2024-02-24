@@ -1,19 +1,11 @@
 package guilayout;
 import javafx.application.Application;
-import javafx.collections.*;
 import javafx.geometry.*;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
-
-import java.util.ArrayList;
-
 import backend.dog.Dog;
-import backend.dog.trait.Age;
-import backend.dog.trait.EnergyLevel;
-import backend.dog.trait.Sex;
-import backend.dog.trait.Size;
 import backend.user.User;
 
 public class UserProfile extends Application{
@@ -37,7 +29,6 @@ public class UserProfile extends Application{
 		DogProfileScene dogProfileScene = DogProfileScene.getInstance();  
     	User user = loginScene.sendUserInfo();	
     	Dog dog = user.getDog();    	  	
-    	// root container 
     	VBox root = new VBox();
     	
     	
