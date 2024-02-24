@@ -6,12 +6,16 @@ import java.util.Arrays;
 import backend.dog.Dog;
 import backend.dog.trait.Age;
 import backend.dog.trait.Attribute;
+import backend.dog.trait.BreedType;
 import backend.dog.trait.EnergyLevel;
 import backend.dog.trait.Sex;
 import backend.dog.trait.Size;
+import backend.dog.trait.Temper;
 import backend.tag.Tag;
 import javafx.application.Application;
+import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -165,9 +169,9 @@ public class Components{
 		return label;
 	}
 	
-	public static Label mediumLabel(String text) {
+	public static Label mediumLabel(String text, Pos pos) {
 		Label label = new Label(text);
-//		label.setAlignment(pos);
+		label.setAlignment(pos);
 		label.setFont(Font.font(font, fontMd));
 
 		
@@ -321,12 +325,12 @@ public class Components{
 		return stars; 
 	}
 	
-	public static Label attributeLabel(String name) {
+	public static Label attributeLabel(String name, GridPane gridPane,Dog dog) {
 		Label label = new Label(name);
 		label.setFont(Font.font(font, fontSm));
 		label.setWrapText(true);
-		
 		label.maxWidth(50);
+		ObservableList<Node> labels = gridPane.getChildren();
 	
 		String defaultStyle = 
 				"-fx-background-color: #e1fcf6;" + // Background color
@@ -349,12 +353,17 @@ public class Components{
 		label.setOnMouseClicked(event -> {
             // Toggle background color on click
             if (label.getStyle().equals(defaultStyle)) {
-            	label.setStyle(highLightedStyle); // highlight if not highlighted
-            	//add tag to user here
+            	for(Node l : labels) {
+            		if (l.getStyle().equals(highLightedStyle)) {
+            			l.setStyle(defaultStyle);
+            		}
+            	}
+            	label.setStyle(highLightedStyle); 
+            	
             	
             } else {
             	label.setStyle(defaultStyle);
-            	//remove tag from user
+            	
             	
             }
         });
@@ -362,40 +371,15 @@ public class Components{
 		
 		return label;
 	}
-	public static GridPane createAttribute(Dog dog) {
+	public static GridPane createAttribute(Dog dog, Attribute attributes) {
 		GridPane gridPane = new GridPane();
-		int row = 0;
-        int col = 0;
-          
-        ArrayList<Attribute> attributes = new ArrayList<Attribute>();
-        attributes.add(new Age(0));
-        attributes.add(new Size(0));
-        attributes.add(new EnergyLevel(0));
-        attributes.add(new Sex(0));
-        
-        int i = 0; // current index
-        int maxRows;
-		for(Attribute a : attributes ) {
-			
-			String[] names = a.getNames();
-			row = 0;
-			for(int j = 0; j < names.length; j++) {
-				// Add the label to the grid
-				
-				Label label = attributeLabel(names[j]);
-				
-	            gridPane.add(label, row, col);
-	            maxRows = names.length;
-	            // Increment column and row counters
-	            
-				i++;
-				row++;  	
-			} 
-			col++;
-		}
-		
+		String[] names = attributes.getNames();
+		for(int j = 0; j < names.length; j++) {
+			// Add the label to the grid
+			Label label = attributeLabel(names[j], gridPane, dog);
+            gridPane.add(label, j,0);
+		} 
 		return gridPane;
-		
 	}
 	
 	public static HBox likedDogView(Dog dog) {
@@ -403,7 +387,7 @@ public class Components{
 		ImageView img = Components.imageView(200, 200);
 		img.setImage(new Image(dog.getImagePath()));
 		
-		Label primaryInfoLabel = Components.mediumLabel(dog.getName() + ", " + dog.getAge() + " years, " + dog.getSex()); 
+		Label primaryInfoLabel = Components.mediumLabel(dog.getName() + ", " + dog.getAge() + " years, " + dog.getSex(),Pos.CENTER); 
 		Hyperlink posterLink = Components.hyperlink();
 		
 		posterLink.setText(dog.getPoster().getDisplayName());
@@ -433,7 +417,7 @@ public class Components{
 		ImageView img = Components.imageView(200, 200);
 		img.setImage(new Image(dog.getImagePath()));
 		
-		Label primaryInfoLabel = Components.mediumLabel(dog.getName() + ", " + dog.getAge() + " years, " + dog.getSex()); 
+		Label primaryInfoLabel = Components.mediumLabel(dog.getName() + ", " + dog.getAge() + " years, " + dog.getSex(),Pos.CENTER); 
 //		Hyperlink posterLink = Components.hyperlink();
 		
 //		posterLink.setText(dog.getPoster().getDisplayName());

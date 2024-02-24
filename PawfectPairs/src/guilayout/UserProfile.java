@@ -10,6 +10,12 @@ import javafx.stage.Stage;
 import java.util.ArrayList;
 
 import backend.dog.Dog;
+import backend.dog.trait.Age;
+import backend.dog.trait.BreedType;
+import backend.dog.trait.EnergyLevel;
+import backend.dog.trait.Sex;
+import backend.dog.trait.Size;
+import backend.dog.trait.Temper;
 import backend.user.User;
 
 public class UserProfile extends Application{
@@ -46,7 +52,7 @@ public class UserProfile extends Application{
     	preferences.setAlignment(javafx.geometry.Pos.CENTER);
     	
     	// preferences title
-    	Label preferencesTitle = Components.largeLabel("Preferences", Pos.CENTER);
+    	Label preferencesTitle = Components.mediumLabel("Preferences", Pos.CENTER);
     	
     	
     	// sliders
@@ -72,20 +78,57 @@ public class UserProfile extends Application{
     	attributes.setAlignment(javafx.geometry.Pos.CENTER);
     	
     	
-    	Label attributesTitle = Components.largeLabel("Attributes", Pos.CENTER);
+    	Label attributesTitle = Components.mediumLabel("Attributes", Pos.CENTER);
     	
-    	attributes.getChildren().addAll(attributesTitle);
+    	Label sexAttributesTitle = Components.smallLabel("Sex", Pos.BASELINE_LEFT);
+    	GridPane sexAttributeGrid = Components.createAttribute(user.getDog(), new Sex(0));
+    	sexAttributeGrid.setAlignment(javafx.geometry.Pos.CENTER);   	
+    	
+    	Label sizeAttributesTitle = Components.smallLabel("Size",  Pos.BASELINE_LEFT);
+    	GridPane sizeAttributeGrid = Components.createAttribute(user.getDog(), new Size(0));
+    	sizeAttributeGrid.setAlignment(javafx.geometry.Pos.CENTER);   	
+    	
+    	Label breedTypeAttributesTitle = Components.smallLabel("BreedType",  Pos.BASELINE_LEFT);
+    	GridPane breedTypeAttributeGrid = Components.createAttribute(user.getDog(), new BreedType(0));
+    	breedTypeAttributeGrid.setAlignment(javafx.geometry.Pos.CENTER);   	
+    	
+    	Label energyLevelAttributesTitle = Components.smallLabel("EnergyLevel",  Pos.BASELINE_LEFT);
+    	GridPane energyLevelAttributeGrid = Components.createAttribute(user.getDog(), new EnergyLevel(0));
+    	energyLevelAttributeGrid.setAlignment(javafx.geometry.Pos.CENTER);   	
     	
     	
-    	GridPane attributeGrid = Components.createAttribute(user.getDog());
-    	attributeGrid.setAlignment(javafx.geometry.Pos.CENTER);   	
+    	Label temperAttributesTitle = Components.smallLabel("Temper",  Pos.BASELINE_LEFT);
+    	GridPane temperAttributeGrid = Components.createAttribute(user.getDog(), new Temper(0));
+    	temperAttributeGrid.setAlignment(javafx.geometry.Pos.CENTER);   
+    	
+    	
+    	Label ageAttributesTitle = Components.smallLabel("Age",  Pos.BASELINE_LEFT);
+    	GridPane ageAttributeGrid = Components.createAttribute(user.getDog(), new Age(0));
+    	ageAttributeGrid.setAlignment(javafx.geometry.Pos.CENTER);   	
+    	
+    	
+    	
+    	attributes.getChildren().addAll(
+    	attributesTitle,
+    	sizeAttributesTitle,
+    	sizeAttributeGrid,
+    	sexAttributesTitle,
+		sexAttributeGrid,
+		ageAttributesTitle,
+		ageAttributeGrid,
+		temperAttributesTitle,
+		temperAttributeGrid,
+		energyLevelAttributesTitle,
+		energyLevelAttributeGrid,
+		breedTypeAttributesTitle,
+		breedTypeAttributeGrid
+    	);
     	
     	root.getChildren().addAll(
     			navTab,
     			preferences,
     			tagsGrid,
-    			attributes,
-    			attributeGrid
+    			attributes
     			);
     	
     	root.setAlignment(javafx.geometry.Pos.CENTER);
