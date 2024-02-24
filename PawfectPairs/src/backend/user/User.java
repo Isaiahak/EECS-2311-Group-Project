@@ -23,6 +23,8 @@ public class User {
 	
 	private ArrayList<Dog> likedDogs = new ArrayList<Dog>();
 	
+
+	
 	public User(String username, String password) {
 		super();
 		this.username = username;

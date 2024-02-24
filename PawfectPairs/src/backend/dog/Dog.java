@@ -89,16 +89,16 @@ public class Dog {
 	    public void setAge(Age age) {
 	        this.age = age;
 	    }
-	    public String getEnergyLevel() {
+	    public EnergyLevel getEnergyLevel() {
 	    	
-	        return energyLevel.getName();
+	        return energyLevel;
 	    }
 	    public void setEnergyLevel(EnergyLevel energyLevel) {
 	        this.energyLevel = energyLevel;
 	    }
-	    public String getSize() {
+	    public Size getSize() {
 	    	
-	        return size.getName();
+	        return size;
 	    }
 	    public void setSize(Size size) {
 	        this.size = size;

@@ -6,11 +6,9 @@ import java.util.Arrays;
 import backend.dog.Dog;
 import backend.dog.trait.Age;
 import backend.dog.trait.Attribute;
-import backend.dog.trait.BreedType;
 import backend.dog.trait.EnergyLevel;
 import backend.dog.trait.Sex;
 import backend.dog.trait.Size;
-import backend.dog.trait.Temper;
 import backend.tag.Tag;
 import javafx.application.Application;
 import javafx.collections.ObservableList;
@@ -223,7 +221,7 @@ public class Components{
 		
 	}
 	
-	public static Label tagLabel(String tag) {
+	public static Label tagLabel(String tag,Tag labelTag, ArrayList<Tag> dogTags) {
 		Label label = new Label(tag);
 		label.setFont(Font.font(font, fontSm));
 		label.setWrapText(true);
@@ -253,11 +251,17 @@ public class Components{
             // Toggle background color on click
             if (label.getStyle().equals(defaultStyle)) {
             	label.setStyle(highLightedStyle); // highlight if not highlighted
-            	//add tag to user here
+            	if(dogTags.contains(labelTag) == false) {
+            		dogTags.add(labelTag);
+            	}
+            	
             	
             } else {
+            	if(dogTags.contains(labelTag) == true) {
+            		dogTags.remove(labelTag);
+            	}
             	label.setStyle(defaultStyle);
-            	//remove tag from user
+            	
             	
             }
         });
@@ -266,7 +270,7 @@ public class Components{
 		return label;
 	}
 	
-	public static GridPane createTags(ArrayList<Tag> tags) {
+	public static GridPane createTags(ArrayList<Tag> tags,ArrayList<Tag> dogTags) {
 		GridPane gridPane = new GridPane();
 		int row = 0;
         int col = 0;
@@ -277,7 +281,7 @@ public class Components{
         
 		for(Tag t : tags) {
 			
-			Label label = tagLabel(t.getTagName());
+			Label label = tagLabel(t.getTagName(),t, dogTags);
 			
             // Add the label to the grid
             gridPane.add(label, row, col);
@@ -325,13 +329,13 @@ public class Components{
 		return stars; 
 	}
 	
-	public static Label attributeLabel(String name, GridPane gridPane,Dog dog) {
+	public static Label attributeLabel(String name, GridPane gridPane,Attribute dogAttribute) {
 		Label label = new Label(name);
 		label.setFont(Font.font(font, fontSm));
 		label.setWrapText(true);
 		label.maxWidth(50);
 		ObservableList<Node> labels = gridPane.getChildren();
-	
+		
 		String defaultStyle = 
 				"-fx-background-color: #e1fcf6;" + // Background color
 		        "-fx-padding: 10px;" + // Padding
@@ -347,11 +351,10 @@ public class Components{
 //		        "-fx-border-color: navy;" + // Border color
 //		        "-fx-font-size: 14px;" + // Font size
 		        "-fx-alignment: center;"; // Text alignment;
-
+		// add some function to be able to turn the label highlighted when loading them.
+		
 		label.setStyle(defaultStyle);
-	
-		label.setOnMouseClicked(event -> {
-            // Toggle background color on click
+		label.setOnMouseClicked(event -> {	
             if (label.getStyle().equals(defaultStyle)) {
             	for(Node l : labels) {
             		if (l.getStyle().equals(highLightedStyle)) {
@@ -359,25 +362,21 @@ public class Components{
             		}
             	}
             	label.setStyle(highLightedStyle); 
-            	
-            	
-            } else {
-            	label.setStyle(defaultStyle);
-            	
-            	
-            }
+            	dogAttribute.setName(label.getText());
+            } 
         });
 		
 		
 		return label;
 	}
-	public static GridPane createAttribute(Dog dog, Attribute attributes) {
+	public static GridPane createAttribute(Attribute dogAttribute) {
 		GridPane gridPane = new GridPane();
-		String[] names = attributes.getNames();
+		String[] names = dogAttribute.getNames();
 		for(int j = 0; j < names.length; j++) {
 			// Add the label to the grid
-			Label label = attributeLabel(names[j], gridPane, dog);
+			Label label = attributeLabel(names[j], gridPane, dogAttribute);
             gridPane.add(label, j,0);
+            
 		} 
 		return gridPane;
 	}
