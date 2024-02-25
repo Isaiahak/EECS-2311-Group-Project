@@ -7,6 +7,7 @@ import backend.dog.Dog;
 import backend.poster.Poster;
 import backend.user.User;
 import guilayout.Components;
+import guicontrol.AppData;
 import guicontrol.DogProfileController;
 import javafx.application.Application;
 import javafx.geometry.Pos;
@@ -22,7 +23,8 @@ public class DogProfileScene extends Application {
 	
 	
 	private static DogProfileScene instance;
-	
+	ArrayList<Dog> posterDogs = AppData.getInstance().getDogProfiles();//TEMP
+	User user = AppData.getInstance().getUser();
 	public static DogProfileScene getInstance() {
 		if (instance == null) {
 			instance = new DogProfileScene();		
@@ -65,10 +67,10 @@ public class DogProfileScene extends Application {
         primaryStage.setTitle("Pawfect Pairs");
         
         UserProfile userProfile = UserProfile.getInstance();
-        LoginScene loginScene = LoginScene.getInstance();
         PosterProfileScene posterProfile = PosterProfileScene.getInstance();
         LikedDogScene likedDog = LikedDogScene.getInstance();
         OutOfDogsScene outOfDogs = OutOfDogsScene.getInstance();
+       
         
         petImageView = Components.imageView(500,500);
      
@@ -128,8 +130,9 @@ public class DogProfileScene extends Application {
         likeButton.setOnAction(e -> {
             Dog dog = profileController.getCurrentDog();
             dog.setAdopted(true);
-            User user = loginScene.sendUserInfo();
+      
             user.addLikedDogs(dog);
+           
          		   
          });
         likeButton.setStyle("-fx-background-color: #db2a4d; -fx-text-fill: white; -fx-font-size: 60;");
@@ -181,6 +184,12 @@ public class DogProfileScene extends Application {
       
 //      primaryStage.setMaximized(true);
       primaryStage.show();
+      
+//      primaryStage.setOnCloseRequest(event -> {
+//    	    System.out.println("Window is closing. Perform cleanup if needed.");
+//    	    
+//    	    Database.onApplicationClose(user, posterDogs);
+//    	});
 		
 		
     }

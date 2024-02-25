@@ -5,12 +5,19 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
+
+import java.util.ArrayList;
+
+import backend.database.Database;
 import backend.dog.Dog;
 import backend.user.User;
+import guicontrol.AppData;
 
 public class UserProfile extends Application{
 	
 	private static UserProfile instance;
+	ArrayList<Dog> posterDogs = AppData.getInstance().getDogProfiles();//TEMP
+	User user = AppData.getInstance().getUser();
 	
 	public static UserProfile getInstance() {
 		if (instance == null) {
@@ -30,7 +37,6 @@ public class UserProfile extends Application{
     public void start(Stage primaryStage) {
     	LoginScene loginScene  = LoginScene.getInstance();
 		DogProfileScene dogProfileScene = DogProfileScene.getInstance();  
-    	User user = loginScene.sendUserInfo();	
     	Dog dog = user.getDog();    	  	
     	VBox root = new VBox();
     	
@@ -130,6 +136,12 @@ public class UserProfile extends Application{
 		primaryStage.setTitle("Pawfect Pairs");
 //		primaryStage.setMaximized(true);
 		primaryStage.show();
+		
+//		primaryStage.setOnCloseRequest(event -> {
+//    	    System.out.println("Window is closing. Perform cleanup if needed.");
+//    	    Database.onApplicationClose(user, posterDogs);
+//    	});
+		
 		
 		
 //		LoginScene loginScene  = LoginScene.getInstance();

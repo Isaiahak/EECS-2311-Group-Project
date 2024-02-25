@@ -7,6 +7,8 @@ import java.util.List;
 import backend.database.Database;
 import backend.dog.Dog;
 import backend.poster.Poster;
+import backend.user.User;
+import guicontrol.AppData;
 //import guicontrol.PosterProfileController;
 import javafx.application.Application;
 import javafx.geometry.Insets;
@@ -31,8 +33,12 @@ public class PosterProfileScene extends Application {
 	
 
 	
-	 ArrayList<Dog> posterDogs = Database.getAllDogs(); //TEMP
+	 ArrayList<Dog> posterDogs = AppData.getInstance().getDogProfiles();//TEMP
+	 User user = AppData.getInstance().getUser();
 	 Poster currentPoster; 
+	
+			 
+			
 	
 
 
@@ -91,6 +97,12 @@ public class PosterProfileScene extends Application {
 	    Scene scene = new Scene(scrollPane, Components.screenWidth, Components.screenHeight);
 		primaryStage.setScene(scene);
 		primaryStage.show();
+		
+//		primaryStage.setOnCloseRequest(event -> {
+//    	    System.out.println("Window is closing. Perform cleanup if needed.");
+//    	    
+//    	    Database.onApplicationClose(user, posterDogs);
+//    	});
 	        
 //	  System.out.println(currentPoster.getScore());
 	        
