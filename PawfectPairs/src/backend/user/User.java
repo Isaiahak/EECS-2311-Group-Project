@@ -50,7 +50,7 @@ public class User {
 		this.userID = userID;
 	}
 	
-	public String getUsername() {
+	public String getC() {
 		return username;
 	}
 
