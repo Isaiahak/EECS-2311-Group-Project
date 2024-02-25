@@ -145,3 +145,15 @@ Feb 22, 2024
   - created pawdb datatbase
   - created tables for users and dog
   - attempted inputing information to the users and dog tables
+
+Feb 23, 2024
+
+- Yuqian, Zainab and Edson continually worked on the DB.
+  - saved the DB into a sql file and shared with the group
+
+Feb 24, 2024
+
+- Yuqian, Zainab and Edson continually worked on the DB.
+  - modified the DB and shared the sql file with the rest of the group
+  - successfully made a copy of the DB
+  - attempted to connect it to eclipse
