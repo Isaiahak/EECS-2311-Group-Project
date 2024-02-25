@@ -22,7 +22,9 @@ public class LikedDogScene extends Application{
 		}
 		return instance;
 	}
-
+	private LikedDogScene() {
+		
+	}
 	
 	@Override
 	public void start(Stage stage){

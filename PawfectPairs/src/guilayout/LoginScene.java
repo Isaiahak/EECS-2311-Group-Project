@@ -24,6 +24,9 @@ public class LoginScene extends Application{
 		}
 		return instance;
 	}
+	private LoginScene() {
+		
+	}
 
     public static void main(String[] args) {
         launch(args);

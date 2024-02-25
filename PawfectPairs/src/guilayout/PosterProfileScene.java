@@ -111,6 +111,9 @@ public class PosterProfileScene extends Application {
 			}
 			return instance;
 		}
+	 private PosterProfileScene() {
+			
+		}
 	 public static void main(String[] args) {
 	        launch(); // launch THIS class
 	    }

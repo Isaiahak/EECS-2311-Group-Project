@@ -52,7 +52,7 @@ public class DogProfileController {
         	dogProfiles.remove(currentIndex);        	
         }
         if (dogProfiles.size() == 0) {
-        	// figure out what to do when there are no dog profiles
+        	
         	
         	
         	
@@ -83,5 +83,8 @@ public class DogProfileController {
     	return this.dogProfiles.get(currentIndex);
     }
     
+    public int getDogListSize() {
+    	return dogProfiles.size();
+    }
     
 }

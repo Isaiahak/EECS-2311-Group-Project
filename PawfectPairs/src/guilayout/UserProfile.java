@@ -18,6 +18,9 @@ public class UserProfile extends Application{
 		}
 		return instance;
 	}
+	private UserProfile() {
+		
+	}
 
   public static void main(String[] args) {
         launch(args);

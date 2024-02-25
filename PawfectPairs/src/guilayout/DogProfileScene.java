@@ -33,6 +33,8 @@ public class DogProfileScene extends Application {
 		return instance;
 	}
 	
+	
+	
    
     
     private DogProfileController profileController;
@@ -69,6 +71,8 @@ public class DogProfileScene extends Application {
         LoginScene loginScene = LoginScene.getInstance();
         PosterProfileScene posterProfile = PosterProfileScene.getInstance();
         LikedDogScene likedDog = LikedDogScene.getInstance();
+        OutOfDogsScene outOfDogs = OutOfDogsScene.getInstance();
+        
         petImageView = Components.imageView(500,500);
      
         
@@ -99,15 +103,27 @@ public class DogProfileScene extends Application {
      
         Button leftArrowButton = Components.button("←");
         leftArrowButton.setOnAction(event -> {
-            profileController.changeProfile(-1);
-            profileController.displayCurrentPetProfile();
+        	if(profileController.getDogListSize() == 0) {
+        		outOfDogs.start(primaryStage);
+	            profileController.changeProfile(-1);
+	            profileController.displayCurrentPetProfile();
+        	}
+        	else {
+        		profileController.changeProfile(-1);
+ 	            profileController.displayCurrentPetProfile();
+        	}
         });
         leftArrowButton.setStyle("-fx-background-color: #0a0f40; -fx-text-fill: white;");
         
         Button rightArrowButton = Components.button("→");
         rightArrowButton.setOnAction(event -> {
-            profileController.changeProfile(1);
-            profileController.displayCurrentPetProfile();
+        	if(profileController.getDogListSize() == 0) {
+        		outOfDogs.start(primaryStage);
+        	}
+        	else {
+        		profileController.changeProfile(1);
+	            profileController.displayCurrentPetProfile();
+        	}
         });
         rightArrowButton.setStyle("-fx-background-color: #0a0f40; -fx-text-fill: white;");
         
