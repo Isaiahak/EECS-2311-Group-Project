@@ -71,8 +71,8 @@ public class Database {
         Statement statement = connection.createStatement () ;
         ResultSet resultSet = statement.executeQuery ("SELECT * FROM dog") ;
         while (resultSet.next()) {
-        	// only add a dog if adoption = false
-			if(!resultSet.getBoolean("adopted")) {
+        	// only add a dog if adoption = false and its id is not negative (if negative, its a dummy dog)
+			if(!resultSet.getBoolean("adopted") && resultSet.getInt("dogid") >= 0) {
 			    Dog dog = new Dog(resultSet.getString ("dogname"), resultSet.getInt("dogid"), resultSet.getInt("ageid"),  resultSet.getInt("energyid"), resultSet.getInt("sizeid"), resultSet.getInt("sexid"), resultSet.getInt("posterid"), resultSet.getBoolean("adopted"), 
 			    resultSet.getString("imagePath"), resultSet.getString("biography"));
                 dogProfiles.add(dog);
@@ -287,13 +287,12 @@ Method to get a dog's tags*/
  
 Method to get user's liked dogs*/
 	
-
+}
 
 	class DatabaseConnector {
 	    public Connection connect() {
 	        // Code to establish a database connection
 	        try{
-	        	System.out.println("Trying to connect....");
 	        	
 	        	Class.forName("org.postgresql.Driver"); // Replace with your database driver
 	        	
@@ -314,6 +313,3 @@ Method to get user's liked dogs*/
 	    }
 	        
 	}
-}
-
-
