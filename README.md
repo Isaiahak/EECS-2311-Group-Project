@@ -48,6 +48,8 @@ If you find that this is the case, please download and use "pawfectpairs.zip" in
 
 
 **TO ESTABLISH A CONNECTION TO THE DATABASE WITH THE SQL FILE**
+
+
 Create a blank database in terminal and run the following command 
 pg_restore -U username -d dbname -1 newpawdb.sql
 Replace username with the username that you used to create the database you created, replace dbname with the name of the database you created. 
