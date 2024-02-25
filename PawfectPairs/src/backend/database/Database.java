@@ -56,12 +56,12 @@ public class Database {
         try{
         Connection connection = databaseConnector.connect();
         Statement statement = connection.createStatement () ;
-        ResultSet resultSet = statement.executeQuery ("SELECT * FROM dog") ;
+        ResultSet resultSet = statement.executeQuery ("SELECT dog.dogid, dog.dogname, age.agename, size.sizename, sex.sexname, energylevel.energylevelname, dog.posterid, dog.adopted, dog.imagepath, dog.biography FROM dog JOIN age ON dogs.ageid = age.ageid JOIN size dog.sizeid = size.sizeid JOIN sex ON dog.sexid = sex.sexid JOIN energylevel ON dog.energyid = energylevel.energylevelid") ;
         while (resultSet.next()) {
         	// only add a dog if adoption = false and its id is not negative (if negative, its a dummy dog)
 			if(!resultSet.getBoolean("adopted") && resultSet.getInt("dogid") >= 0) {
 			    Dog dog = new Dog(resultSet.getString ("dogname"), resultSet.getInt("dogid"), resultSet.getInt("ageid"),  resultSet.getInt("energyid"), resultSet.getInt("sizeid"), resultSet.getInt("sexid"), resultSet.getInt("posterid"), resultSet.getBoolean("adopted"), 
-			    resultSet.getString("imagePath"), resultSet.getString("biography"));
+			    resultSet.getString("imagepath"), resultSet.getString("biography"));
                 dogProfiles.add(dog);
                 }
          }
@@ -177,7 +177,8 @@ public class Database {
 	    try {
 	    	 connection = databaseConnector.connect();
 	    	 Statement statement = connection.createStatement ();
-	    	 ResultSet resultSet = statement.executeQuery("SELECT * FROM dogs JOIN userdogs ON dogs.dogid = userdogs.dogid userdogs.userid = " + userID +";");
+	    	  
+	    	 ResultSet resultSet = statement.executeQuery("SELECT dog.dogid, dog.dogname, age.agename, size.sizename, sex.sexname, energylevel.energylevelname, dog.posterid, dog.adopted, dog.imagepath, dog.biography FROM dogs JOIN age ON dogs.ageid = age.ageid JOIN size dog.sizeid = size.sizeid JOIN sex ON dog.sexid = sex.sexid JOIN energylevel ON dog.energyid = energylevel.energylevelid JOIN userdogs ON dogs.dogid = userdogs.dogid WHERE userdogs.userid = " + userID +";");
 	    	 while (resultSet.next()) {	
 	    		 Dog dog = new Dog(resultSet.getString ("dogname"), resultSet.getInt("dogid"), resultSet.getInt("ageid"),  resultSet.getInt("energyid"), resultSet.getInt("sizeid"), resultSet.getInt("sexid"), resultSet.getInt("posterid"), resultSet.getBoolean("adopted"), 
 						 	resultSet.getString("imagePath"), resultSet.getString("biography"));
