@@ -88,7 +88,7 @@ public class DogProfileScene extends Application {
         
         // bio textBox
         Label biographyText = Components.smallLabel(); 
-        biographyText.setPrefWidth(600);
+        biographyText.setPrefWidth(900);
         // tags box - TO BE IMPLEMENTED -
         
         
@@ -151,13 +151,19 @@ public class DogProfileScene extends Application {
 			}
         });
         
+        // add dog tags
+        
+        
+       	StackPane tagsPane = new StackPane();
+        
+        
          // add to root vbox
-        root.getChildren().addAll(navTab, petImageView, primaryInfoLabel, posterLink, secondaryInfo, biographyText, bottomTab);
+        root.getChildren().addAll(navTab, petImageView, primaryInfoLabel, posterLink, secondaryInfo, biographyText, tagsPane, bottomTab);
         
         
         ArrayList<Dog> dogProfiles = Database.getAllDogs();
         
-		profileController = new DogProfileController(primaryInfoLabel, sizeLabel, energyLabel, petImageView, biographyText, posterLink, dogProfiles);
+		profileController = new DogProfileController(primaryInfoLabel, sizeLabel, energyLabel, petImageView, biographyText, posterLink, dogProfiles, tagsPane, primaryStage);
 		
 
       // Display the initial pet profile
@@ -165,7 +171,11 @@ public class DogProfileScene extends Application {
       StackPane stackPane = new StackPane(root);
       stackPane.setAlignment(javafx.geometry.Pos.CENTER);
       
-      Scene scene = new Scene(stackPane, Components.screenWidth, Components.screenHeight);
+      ScrollPane scrollPane = new ScrollPane(stackPane);
+      scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+      scrollPane.setFitToWidth(true);
+      
+      Scene scene = new Scene(scrollPane, Components.screenWidth, Components.screenHeight);
 
       primaryStage.setScene(scene);
       

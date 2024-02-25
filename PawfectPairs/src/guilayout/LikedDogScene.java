@@ -50,11 +50,11 @@ public class LikedDogScene extends Application{
 		VBox likedDogsDisplay = new VBox();
 	    	
     	for(Dog d : likedDogs) {
-    		likedDogsDisplay.getChildren().add(Components.likedDogView(d));
+    		likedDogsDisplay.getChildren().add(Components.likedDogView(d, stage));
     	}
     	likedDogsDisplay.setAlignment(javafx.geometry.Pos.CENTER);
     	
-    	ScrollPane scrollPane = new ScrollPane(likedDogsDisplay);  
+//    	ScrollPane scrollPane = new ScrollPane(likedDogsDisplay);  
     	
     	Label likedDogsLabel = Components.largeLabel("Dogs you've Liked", Pos.CENTER);
     	 
@@ -62,7 +62,7 @@ public class LikedDogScene extends Application{
     	root.getChildren().addAll(
     			navTab,
     			likedDogsLabel,
-    			scrollPane
+    			likedDogsDisplay
     			);
 	    	
 
@@ -70,13 +70,16 @@ public class LikedDogScene extends Application{
     	StackPane stackPane = new StackPane(root);
     	stackPane.setAlignment(javafx.geometry.Pos.CENTER);
     	
+    	ScrollPane scrollPane = new ScrollPane(stackPane);
     	
+    	scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        scrollPane.setFitToWidth(true);
     	
     	
 //	        scrollPane.setAlignment(javafx.geometry.Pos.CENTER);
         
         
-    	Scene scene = new Scene(stackPane, Components.screenWidth, Components.screenHeight);
+    	Scene scene = new Scene(scrollPane, Components.screenWidth, Components.screenHeight);
     	
 		stage.setScene(scene);
 		stage.setTitle("Pawfect Pairs");

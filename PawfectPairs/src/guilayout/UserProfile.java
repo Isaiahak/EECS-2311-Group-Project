@@ -117,6 +117,9 @@ public class UserProfile extends Application{
     	stackPane.setAlignment(javafx.geometry.Pos.CENTER);
     	
     	ScrollPane scrollPane = new ScrollPane(stackPane);
+    	scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+	    scrollPane.setFitToWidth(true);
+
     	
 //        scrollPane.setAlignment(javafx.geometry.Pos.CENTER);
         
