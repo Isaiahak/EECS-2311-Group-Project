@@ -17,13 +17,16 @@ public class AppData {
 		instance = new AppData();
 	return instance;
 	}
+	
 
 	public User getUser() {
 		return user;
 	}
 
-	public void setUser(String user,String password) {
-		Database.getUser(user, password);
+	public void setUser(String user, String password) {
+		this.user = Database.getUser(user, password);
+		
+//		System.out.println("username: " + this.user.getUsername() + ", password: " + this.user.getPassword());
 	}
 
 	public ArrayList<Dog> getDogProfiles() {

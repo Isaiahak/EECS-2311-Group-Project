@@ -19,12 +19,9 @@ import javafx.scene.text.*;
 import javafx.stage.Stage;
 
 public class DogProfileScene extends Application {
+	private static DogProfileScene instance;
 
 	
-	
-	private static DogProfileScene instance;
-	ArrayList<Dog> posterDogs = AppData.getInstance().getDogProfiles();//TEMP
-	User user = AppData.getInstance().getUser();
 	public static DogProfileScene getInstance() {
 		if (instance == null) {
 			instance = new DogProfileScene();		
@@ -32,10 +29,7 @@ public class DogProfileScene extends Application {
 		return instance;
 	}
 	
-	
-	
-   
-    
+
     private DogProfileController profileController;
 
     private ImageView petImageView;
@@ -44,6 +38,9 @@ public class DogProfileScene extends Application {
     private Label primaryInfoLabel; 
     private TextFlow biographyText;
     private Hyperlink posterLink;
+    
+    User user;
+    ArrayList<Dog> posterDogs;
     
 //    private int l = 1080; 
 //    private int w = 1920; 
@@ -58,6 +55,10 @@ public class DogProfileScene extends Application {
     @Override
     public void start(Stage primaryStage) {
     	
+    	posterDogs = AppData.getInstance().getDogProfiles();//TEMP
+    	
+    	user = AppData.getInstance().getUser();
+    	
     	//root is v box
 		VBox root = new VBox();
 		root.setSpacing(10);
@@ -65,6 +66,8 @@ public class DogProfileScene extends Application {
 		
 
         primaryStage.setTitle("Pawfect Pairs");
+        
+        
         
         UserProfile userProfile = UserProfile.getInstance();
         PosterProfileScene posterProfile = PosterProfileScene.getInstance();
@@ -128,6 +131,9 @@ public class DogProfileScene extends Application {
         
         Button likeButton = Components.button("♥");
         likeButton.setOnAction(e -> {
+        	
+        	System.out.println("username: " + this.user.getUsername() + ", password: " + this.user.getPassword());
+        	
             Dog dog = profileController.getCurrentDog();
             dog.setAdopted(true);
       

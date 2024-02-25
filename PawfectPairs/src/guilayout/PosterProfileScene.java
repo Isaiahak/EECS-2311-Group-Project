@@ -29,12 +29,14 @@ import javafx.stage.Stage;
 
 public class PosterProfileScene extends Application {
 	
+	ArrayList<Dog> posterDogs;
+	User user;
 	private static PosterProfileScene instance; 
 	
 
-	
-	 ArrayList<Dog> posterDogs = AppData.getInstance().getDogProfiles();//TEMP
-	 User user = AppData.getInstance().getUser();
+//	
+//	 ArrayList<Dog> posterDogs = AppData.getInstance().getDogProfiles();//TEMP
+//	 User user = AppData.getInstance().getUser();
 	 Poster currentPoster; 
 	
 			 
@@ -44,6 +46,9 @@ public class PosterProfileScene extends Application {
 
 	 @Override  
 	    public void start(Stage primaryStage) throws Exception {  
+		 
+			posterDogs = AppData.getInstance().getDogProfiles();//TEMP
+			user = AppData.getInstance().getUser();
 	    	DogProfileScene dogProfileScene = DogProfileScene.getInstance();
 	    	LoginScene login = LoginScene.getInstance();
 	    	UserProfile userProfile = UserProfile.getInstance();

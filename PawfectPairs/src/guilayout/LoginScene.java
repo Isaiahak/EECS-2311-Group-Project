@@ -63,13 +63,14 @@ public class LoginScene extends Application{
         grid.add(passwordField, 1, 1);
         grid.add(signUpButton, 0, 2);
         grid.add(loginButton, 1, 2);
+        
         signUpButton.setOnAction(e -> {
             String username = userTextField.getText();
             String password = passwordField.getText();
-            user.setUsername(username);
-            user.setPassword(password);
-            userlist.add(user);
-            if (Database.addUser(username, password) == false|| password == "" && username == "")
+//            userInfo.setUsername(username);
+//            userInfo.setPassword(password);
+//            userlist.add(userInfo);
+            if (Database.addUser(username, password) == false || password == "" && username == "")
             	showAlert("Sign up Failed", "Please enter a valid username or password.");
             clearFields(userTextField, passwordField);
         });
@@ -78,10 +79,11 @@ public class LoginScene extends Application{
             String password = passwordField.getText();
 
             
-            if (/*Database.getUser(username, password)!= null*/ userlist.contains(user) && username != "" && password != "") {
+            if (Database.getUser(username, password) != null /*userlist.contains(userInfo)*/ ||  username != "" && password != "" ) {
                 AppData appData = AppData.getInstance();
                 appData.setDogProfiles();
                 appData.setUser(username, password);
+                System.out.println("Logging the user in!");
                 dogProfileScene.start(primaryStage);
             } else {
                 // Display an alert for unsuccessful login

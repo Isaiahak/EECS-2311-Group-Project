@@ -18,18 +18,7 @@ import javafx.stage.*;
 
 public class DogProfileController {
     private int currentIndex = 0;
-//    private ArrayList<Dog> dogProfiles = new ArrayList<>(List.of(
-//    
-//
-//
-//    		new Dog("Charles", 1, 2, 1, 2, 1, new Poster(5, "doglover123", 12), false, "file:src/guilayout/dog.png", "Charles is involed in some shady stuff. Don't ask questions you don't want to know the answers to."), 
-//    		new Dog("Sandy", 2, 3, 1, 2, 0, new Poster(5, "doglover123", 12), false,"file:src/guilayout/dog1.png", "Sandy looks like she knows something you don't... but that's what makes her so loveable!"),
-//    		new Dog("Chuckles", 3, 3, 0, 0, 1, new Poster(5, "doglover123", 12), false,"file:src/guilayout/dog4.png", "Lazy and old Chuckles is the perfect lap dog for anyone who doesn't like to move.")
-//
-//
-//
-//));
-    
+
     private ArrayList<Dog> dogProfiles;
     private Label primaryInfoLabel;
     private Label sizeLabel;
@@ -95,13 +84,6 @@ public class DogProfileController {
         tagsPane.getChildren().clear();
         
         tagsPane.getChildren().add(Components.createTags(Database.getDogTags(dogProfiles.get(currentIndex).getId()))); 
-//        posterLink.setOnAction(event -> {
-//        	userScene.start(stage);
-//        }); // change this when database is implemented
-//        
-        // change button for posterProfile
-        
-//        tagsLabel.setText("Tags: " + currentProfile.getTags());
         
     }
     

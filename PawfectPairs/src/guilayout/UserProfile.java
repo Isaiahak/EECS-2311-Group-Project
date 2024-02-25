@@ -16,8 +16,9 @@ import guicontrol.AppData;
 public class UserProfile extends Application{
 	
 	private static UserProfile instance;
-	ArrayList<Dog> posterDogs = AppData.getInstance().getDogProfiles();//TEMP
-	User user = AppData.getInstance().getUser();
+	
+    User user;
+    ArrayList<Dog> posterDogs;
 	
 	public static UserProfile getInstance() {
 		if (instance == null) {
@@ -35,6 +36,10 @@ public class UserProfile extends Application{
 
     @Override
     public void start(Stage primaryStage) {
+    	
+    	posterDogs = AppData.getInstance().getDogProfiles();//TEMP
+    	user = AppData.getInstance().getUser();
+    	
     	LoginScene loginScene  = LoginScene.getInstance();
 		DogProfileScene dogProfileScene = DogProfileScene.getInstance();  
     	Dog dog = user.getDog();    	  	
@@ -69,7 +74,7 @@ public class UserProfile extends Application{
     	
     	//display all tags
     	
-    	GridPane tagsGrid =  Components.createTags(Components.allTags,dog.getTags());
+    	GridPane tagsGrid =  Components.createTags(Database.getAllTags(),dog.getTags());
     	tagsGrid.setAlignment(javafx.geometry.Pos.CENTER);
     	
     	VBox attributes = new VBox();
@@ -143,82 +148,6 @@ public class UserProfile extends Application{
 //    	});
 		
 		
-		
-//		LoginScene loginScene  = LoginScene.getInstance();
-//		DogProfileScene dogProfileScene = DogProfileScene.getInstance();  
-//		User user = loginScene.sendUserInfo();	
-//		ArrayList<Dog> likedDogs = user.getLikedDogs();
-//		ObservableList<Dog> observableList = FXCollections.observableArrayList(likedDogs);
-//		int width = 900;
-//		int height = 900;
-//		
-//		GridPane gridPane = new GridPane();
-//		gridPane.setAlignment(javafx.geometry.Pos.CENTER);
-//        gridPane.setHgap(10);
-//        gridPane.setVgap(10);
-//        gridPane.setPadding(new Insets(25, 25, 25, 25));
-//        
-//        Label emailLabel = new Label("Email:");
-//        TextField emailTextField = new TextField();
-//        Label passwordLabel = new Label("Password:");
-//        PasswordField passwordField = new PasswordField();
-//
-//        Button updateButton = new Button("Update");
-//        
-//        gridPane.add(emailLabel, 0, 0);
-//        gridPane.add(emailTextField, 1, 0);
-//        gridPane.add(passwordLabel, 0, 1);
-//        gridPane.add(passwordField, 1, 1);
-//        gridPane.add(updateButton, 0, 2);
-//        
-//        updateButton.setOnAction(e -> {
-//            String email = emailTextField.getText();
-//            String password = passwordField.getText();
-//            if (password == "" && email == "") {
-//	            Alert alert = new Alert(Alert.AlertType.ERROR);
-//	            alert.setTitle("Update Failed");
-//	            alert.setHeaderText(null);
-//	            alert.setContentText("Please enter a valid email or password.");
-//	            alert.showAndWait();
-//            }
-//            else {
-//            	user.setEmail(email);
-//            	user.setPassword(password);
-//            	
-//           }
-//        });
-//        
-//        
-//		
-//		
-//		
-//		Button backButton = new Button("Back");
-//		backButton.setAlignment(Pos.TOP_RIGHT);
-//		
-//		 backButton.setOnAction(e -> {
-//			 dogProfileScene.start(primaryStage);
-//	            });
-//		// Convert ArrayList to ObservableList for the ListView
-//		 ListView<Dog> listView = new ListView<Dog>(observableList);
-//
-//        // Create ScrollPane and set ListView as its content
-//	 
-//        ScrollPane scrollPane = new ScrollPane(listView);
-//        scrollPane.setFitToWidth(true);
-//        scrollPane.setFitToHeight(true);
-//        
-//
-//        // Create BorderPane
-//        BorderPane borderPane = new BorderPane();
-//        borderPane.setBottom(scrollPane);
-//        borderPane.setCenter(gridPane);
-//        borderPane.setTop(backButton);
-//        // Create Scene
-//        Scene scene = new Scene(borderPane, width, height);
-//
-//        // Set the scene to the stage
-//        primaryStage.setScene(scene);
-//        primaryStage.setTitle("ScrollPane Example");
-//        primaryStage.show();
+
 	} 	 
 }

@@ -17,9 +17,10 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class OutOfDogsScene extends Application{
+	ArrayList<Dog> posterDogs;
+	User user;
 
-	ArrayList<Dog> posterDogs = AppData.getInstance().getDogProfiles();//TEMP
-	User user = AppData.getInstance().getUser();
+	
 	private static OutOfDogsScene instance;
 	
 	public static OutOfDogsScene getInstance() {
@@ -37,6 +38,10 @@ public class OutOfDogsScene extends Application{
 
 	@Override
 	public void start(Stage stage) {
+		
+		posterDogs = AppData.getInstance().getDogProfiles();//TEMP
+		user = AppData.getInstance().getUser();
+		
 		VBox root = new VBox();
 		root.setSpacing(15);
 		root.setAlignment(Pos.TOP_CENTER);

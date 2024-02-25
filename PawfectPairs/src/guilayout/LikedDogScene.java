@@ -16,10 +16,13 @@ import backend.dog.Dog;
 
 
 public class LikedDogScene extends Application{
+	
+	
+	ArrayList<Dog> posterDogs;
+	User user;
 
 	private static LikedDogScene instance;
-	ArrayList<Dog> posterDogs = AppData.getInstance().getDogProfiles();//TEMP
-	User user = AppData.getInstance().getUser();
+
 	public static LikedDogScene getInstance() {
 		if (instance == null) {
 			instance = new LikedDogScene();		
@@ -32,6 +35,9 @@ public class LikedDogScene extends Application{
 	
 	@Override
 	public void start(Stage stage){
+		posterDogs = AppData.getInstance().getDogProfiles();//TEMP
+		user = AppData.getInstance().getUser();
+		
 		DogProfileScene dogProfileScene = DogProfileScene.getInstance();  
 		ArrayList<Dog> likedDogs = user.getLikedDogs();
 		UserProfile userProfile = UserProfile.getInstance();

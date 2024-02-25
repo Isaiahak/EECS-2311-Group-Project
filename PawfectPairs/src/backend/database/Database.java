@@ -49,31 +49,36 @@ public class Database {
 		return poster;
 		 }
 
-	public static ArrayList<Dog> getAllDogs (){
+	
+	/*
+	 * DOG METHODS
+	 */
+	
+	 public static ArrayList<Dog> getAllDogs (){
 
-        ArrayList<Dog> dogProfiles = new ArrayList<>();
+	        ArrayList<Dog> dogProfiles = new ArrayList<>();
 
-        try{
-        Connection connection = databaseConnector.connect();
-        Statement statement = connection.createStatement () ;
-        ResultSet resultSet = statement.executeQuery ("SELECT dog.dogid, dog.dogname, age.agename, size.sizename, sex.sexname, energylevel.energylevelname, dog.posterid, dog.adopted, dog.imagepath, dog.biography FROM dog JOIN age ON dogs.ageid = age.ageid JOIN size dog.sizeid = size.sizeid JOIN sex ON dog.sexid = sex.sexid JOIN energylevel ON dog.energyid = energylevel.energylevelid") ;
-        while (resultSet.next()) {
-        	// only add a dog if adoption = false and its id is not negative (if negative, its a dummy dog)
-			if(!resultSet.getBoolean("adopted") && resultSet.getInt("dogid") >= 0) {
-			    Dog dog = new Dog(resultSet.getString ("dogname"), resultSet.getInt("dogid"), resultSet.getInt("ageid"),  resultSet.getInt("energyid"), resultSet.getInt("sizeid"), resultSet.getInt("sexid"), resultSet.getInt("posterid"), resultSet.getBoolean("adopted"), 
-			    resultSet.getString("imagepath"), resultSet.getString("biography"));
-                dogProfiles.add(dog);
-                }
-         }
-             connection.close () ;
+	        try{
+	        Connection connection = databaseConnector.connect();
+	        Statement statement = connection.createStatement () ;
+	        ResultSet resultSet = statement.executeQuery ("SELECT * FROM dog") ;
+	        while (resultSet.next()) {
+	        	// only add a dog if adoption = false and its id is not negative (if negative, its a dummy dog)
+				if(!resultSet.getBoolean("adopted") && resultSet.getInt("dogid") >= 0) {
+				    Dog dog = new Dog(resultSet.getString ("dogname"), resultSet.getInt("dogid"), resultSet.getInt("ageid"),  resultSet.getInt("energyid"), resultSet.getInt("sizeid"), resultSet.getInt("sexid"), resultSet.getInt("posterid"), resultSet.getBoolean("adopted"), 
+				    resultSet.getString("imagePath"), resultSet.getString("biography"));
+	                dogProfiles.add(dog);
+	                }
+	         }
+	             connection.close () ;
 
-           }
-         catch (SQLException e) {
-        	 	System.out.println ("Connection failure.") ;
-        	 	e.printStackTrace () ;
-          }
-         return dogProfiles;
-	}
+	           }
+	         catch (SQLException e) {
+	        	 	System.out.println ("Connection failure.") ;
+	        	 	e.printStackTrace () ;
+	          }
+	         return dogProfiles;
+		}
 	
 	public static void updateAllAdoptedDogs(ArrayList<Dog> doglist) {
 		for(Dog d : doglist) {
@@ -169,7 +174,7 @@ public class Database {
 	    }
 	}
 
-	public static ArrayList<Dog> getLikedDog(int userID){
+	public static ArrayList<Dog> getLikedDogs(int userID){
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		ArrayList<Dog> list = new ArrayList<Dog>();
@@ -178,8 +183,8 @@ public class Database {
 	    	 connection = databaseConnector.connect();
 	    	 Statement statement = connection.createStatement ();
 	    	  
-	    	 ResultSet resultSet = statement.executeQuery("SELECT dog.dogid, dog.dogname, age.agename, size.sizename, sex.sexname, energylevel.energylevelname, dog.posterid, dog.adopted, dog.imagepath, dog.biography FROM dogs JOIN age ON dogs.ageid = age.ageid JOIN size dog.sizeid = size.sizeid JOIN sex ON dog.sexid = sex.sexid JOIN energylevel ON dog.energyid = energylevel.energylevelid JOIN userdogs ON dogs.dogid = userdogs.dogid WHERE userdogs.userid = " + userID +";");
-	    	 while (resultSet.next()) {	
+	    	 ResultSet resultSet = statement.executeQuery("SELECT * FROM dog JOIN userdogs ON dog.dogid = userdogs.dogid WHERE userdogs.userid = " + userID +";");
+	    			 while (resultSet.next()) {	
 	    		 Dog dog = new Dog(resultSet.getString ("dogname"), resultSet.getInt("dogid"), resultSet.getInt("ageid"),  resultSet.getInt("energyid"), resultSet.getInt("sizeid"), resultSet.getInt("sexid"), resultSet.getInt("posterid"), resultSet.getBoolean("adopted"), 
 						 	resultSet.getString("imagePath"), resultSet.getString("biography"));
 	    		 list.add(dog);
@@ -209,6 +214,34 @@ public class Database {
 		}
 }
 
+	
+	/*
+	 * TAG METHODS
+	 */
+	
+	 public static ArrayList<Tag> getAllTags(){
+
+	        ArrayList<Tag> tags = new ArrayList<>();
+
+	        try{
+	        Connection connection = databaseConnector.connect();
+	        Statement statement = connection.createStatement () ;
+	        ResultSet resultSet = statement.executeQuery ("SELECT * FROM tags") ;
+	        while (resultSet.next()) {
+	        	tags.add(new Tag(resultSet.getString("tagname")));
+	                 
+	         }
+	             connection.close () ;
+
+	           }
+	         catch (SQLException e) {
+	        	 	System.out.println ("Connection failure.") ;
+	        	 	e.printStackTrace () ;
+	          }
+	         return tags;
+		}
+	 
+	 
 	public static ArrayList<Tag> getDogTags(int dogId){
 		ArrayList<Tag> tags = new ArrayList<Tag>();
 		
@@ -327,23 +360,39 @@ public class Database {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		User user = null;
+		
 	    try {
 	    	connection = databaseConnector.connect();
-	        Statement statement = connection.createStatement () ;
-	        ResultSet resultSet = statement.executeQuery ("SELECT * FROM user WHERE username = " + username + "AND userpassword  =" + password + ";") ;
+	    	
+//	        Statement statement = connection.createStatement ();
+//	        ResultSet resultSet = statement.executeQuery ("SELECT * FROM users WHERE username = " + username + " AND userpassword  = " + password + ";") ;
+	        
+	        String sql = "SELECT * FROM users WHERE username = ? AND userpassword = ?";
+	        
+	        preparedStatement = connection.prepareStatement(sql);
+	        
+	        preparedStatement.setString(1,  username);
+	        preparedStatement.setString(2, password);
+	        
+	        
+	        ResultSet resultSet = preparedStatement.executeQuery();
+	        
+	        if (resultSet.next()) {
 	        user = new User(resultSet.getString("username"),resultSet.getString("userpassword"));
 	        user.setUserID(resultSet.getInt("userid"));
 	        user.setEmail(resultSet.getString("email"));
-	       
+	        
+	       // we got the user from db but no doggy 
+		    for (Dog d : Database.getLikedDogs(user.getUserID())) {
+		    	user.addLikedDogs(d);
+		    }
+	        }
 	    } 
 	    catch (SQLException e) {
 	        e.printStackTrace();
 	      
 	    }
-	    // we got the user from db but no doggy 
-	    for (Dog d : Database.getLikedDog(user.getUserID())) {
-	    	user.addLikedDogs(d);
-	    }
+	    
 		return user; 	
 	}
 
@@ -398,6 +447,11 @@ public class Database {
 
 }
 
+
+
+
+
+
 class DatabaseConnector {
     public Connection connect() {
         // Code to establish a database connection
@@ -406,7 +460,7 @@ class DatabaseConnector {
         	
         	Class.forName("org.postgresql.Driver"); // Replace with your database driver
         	
-        	Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/paw", "postgres", "doglover123");
+        	Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/paw3", "postgres", "doglover123");
 //        	System.out.println( "Connected to the PostgreSQL server successfully.");
         	
         	return connection; 
