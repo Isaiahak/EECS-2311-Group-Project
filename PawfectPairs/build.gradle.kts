@@ -29,6 +29,7 @@ dependencies {
     implementation("org.antlr:antlr4:4.9.2")
     implementation("org.antlr:antlr4-runtime:4.9.2")
     implementation("com.formdev:flatlaf:1.1.1")
+    implementation("org.postgresql:postgresql:42.2.10")
 }
 sourceSets {
     main {
