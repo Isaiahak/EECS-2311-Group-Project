@@ -163,3 +163,8 @@ Feb 24, 2024
 - Connor worked on some of the things that needed to be done that were on the list.
   - fixed the dog class so that it can update the image path and the biography
   - fixed some of the test cases to reflect the changes from the dog class
+- Ekaterina implemented the database/several database methods into the program
+- Ekaterina created more components for the Ui
+- Ekaterina updated the hyperlinks/data on the GUI to display from the database
+- Isaiah worked on the database (we ended up not using his database)
+- Isaiah created the bulk of the database methods to gte and update the database 
