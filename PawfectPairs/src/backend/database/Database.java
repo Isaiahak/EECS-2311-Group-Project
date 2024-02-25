@@ -6,6 +6,8 @@ import java.util.ArrayList;
 
 import backend.dog.Dog;
 import backend.poster.Poster;
+import backend.tag.Tag;
+import backend.user.User;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -16,7 +18,11 @@ import java.sql.SQLException;
  */
 public class Database {
 	private static DatabaseConnector databaseConnector = new DatabaseConnector();
-//	private static Connection connection = databaseConnector.connect();
+	
+	
+	/*
+	 * Method to return poster by given id
+	 */
 	
 	 public static Poster getPosterById(int posterId){
 		 Poster poster = null; 
@@ -53,7 +59,7 @@ public class Database {
 
 
 /*
- * Method to return all dogs
+ * Method to return all dogs to show in dog profiles
  */
 
 	public static ArrayList<Dog> getAllDogs (){
@@ -69,11 +75,17 @@ public class Database {
 				//ResultSet resultSetPoster = statement.executeQuery("SELECT * FROM poster");
 				 while (resultSet.next()) {	 
 //					 	Poster poster = getPosterById(resultSet.getInt("posterId"));
-						  
-						Dog dog = new Dog(resultSet.getString ("dogname"), resultSet.getInt("dogid"), resultSet.getInt("ageid"),  resultSet.getInt("energyid"), resultSet.getInt("sizeid"), resultSet.getInt("sexid"), resultSet.getInt("posterid"), resultSet.getBoolean("adopted"), 
-					 	resultSet.getString("imagePath"), resultSet.getString("biography"));
+					 
+					 	// only add a dog if adoption = false
+						if(!resultSet.getBoolean("adopted")) {
+							Dog dog = new Dog(resultSet.getString ("dogname"), resultSet.getInt("dogid"), resultSet.getInt("ageid"),  resultSet.getInt("energyid"), resultSet.getInt("sizeid"), resultSet.getInt("sexid"), resultSet.getInt("posterid"), resultSet.getBoolean("adopted"), 
+									resultSet.getString("imagePath"), resultSet.getString("biography"));
 						
-					 	dogProfiles.add(dog);
+						
+						
+							dogProfiles.add(dog);
+						}
+						
 					 	
 				 }
 					 connection.close () ;
@@ -87,33 +99,96 @@ public class Database {
 		return dogProfiles;
 		
 	}
+	
+	
+	public static void uploadDog(User  user) {
 
+        String sql = "INSERT INTO tags (preference, tagname) VALUES (?, ?)";
+
+        // userid | username | userpassword |      email      | likeddogs
+
+        try{
+        	Connection connection = databaseConnector.connect();
+        	PreparedStatement pstmt = connection.prepareStatement(sql);
+            pstmt.setInt(1, 0);
+            pstmt.setString(2, "hey");
+           // pstmt.setString(3, "1234");
+            //pstmt.setString(4, "ajisjd");
+           // pstmt.setString(4, null);
+
+           // pstmt.setInt(2, user.getAge());
+            //pstmt.setString(3, user.getBreed());
+
+            pstmt.executeUpdate();
+            System.out.println("Dog uploaded successfully.");
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+	
 /*
- * method to return poster by given id
+ * Method to get a dog's tags
  */
+	
+	public static ArrayList<Tag> getDogTags(int dogId){
+		ArrayList<Tag> tags = new ArrayList<Tag>();
+		
+		// get all tags in dogtag data table associated with the dog id
+		
+		
+//		SELECT tagname
+//		FROM tags
+//		JOIN dogtag On tags.tagid = dogtag.tagid
+//		JOIN dog ON dogtag.dogid = dog.dogid
+//		WHERE dog.dogid = 0;
+//		
+		try {
+			Connection connection = databaseConnector.connect();
+			Statement statement = connection.createStatement () ;
+			ResultSet resultSet = statement.executeQuery ("SELECT tagname FROM tags JOIN dogtag On tags.tagid = dogtag.tagid JOIN dog ON dogtag.dogid = "
+					+ "dog.dogid WHERE dog.dogid ="+ dogId + ";");
+			
+			while (resultSet.next()) {	 
+//				System.out.println(resultSet.getString("tagname"));
+				tags.add(new Tag(resultSet.getString("tagname")));
+			}
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		
+		return tags;
+	}
 
 /*
  * Method to get user's liked dogs
  */
 	
-	public static ArrayList<Dog> getLikedDogs(int userId) {
-		ArrayList<Dog> likedDogs = new ArrayList<Dog>();
-		
-//		// get liked tags here 
+/*
+ * Method to add to user's liked dogs
+ */
+	
+	
+	
+//	public static ArrayList<Dog> getLikedDogs(int userId) {
+//		ArrayList<Dog> likedDogs = new ArrayList<Dog>();
+//		
+////		// get liked tags here 
+////		
+////		
+////		int[] likedDogsIds = query.split(",");
+////		// iterate through dogs by tags
+////		
+////		Object likedDogIds;
+////		for(int i = 0; i < likedDogIds.length; i++) {
+////			
+////		}
+////		
 //		
 //		
-//		int[] likedDogsIds = query.split(",");
-//		// iterate through dogs by tags
-//		
-//		Object likedDogIds;
-//		for(int i = 0; i < likedDogIds.length; i++) {
-//			
-//		}
-//		
-		
-		
-		return likedDogs;
-	}
+//		return likedDogs;
+//	}
 	
 	
 	
@@ -128,7 +203,7 @@ class DatabaseConnector {
         	
         	Class.forName("org.postgresql.Driver"); // Replace with your database driver
         	
-        	Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/paw2", "postgres", "doglover123");
+        	Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/paw3", "postgres", "doglover123");
 //        	System.out.println( "Connected to the PostgreSQL server successfully.");
         	
         	return connection; 
