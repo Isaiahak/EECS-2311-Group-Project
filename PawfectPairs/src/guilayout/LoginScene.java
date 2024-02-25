@@ -10,13 +10,19 @@ import javafx.stage.Stage;
 import java.util.ArrayList;
 import java.util.List;
 
+import backend.database.Database;
+import backend.dog.Dog;
 import backend.user.User;
+import guicontrol.AppData;
 
 
 public class LoginScene extends Application{
 	private User userInfo = new User("","");
 	private static LoginScene instance;
-	private List<User> userList = new ArrayList<>();
+	ArrayList<Dog> posterDogs = AppData.getInstance().getDogProfiles();//TEMP
+	User user = AppData.getInstance().getUser();
+	
+	ArrayList<User> userlist = new ArrayList<User>();
 	
 	public static LoginScene getInstance() {
 		if (instance == null) {
@@ -24,9 +30,7 @@ public class LoginScene extends Application{
 		}
 		return instance;
 	}
-	private LoginScene() {
-		
-	}
+	
 
     public static void main(String[] args) {
         launch(args);
@@ -35,19 +39,16 @@ public class LoginScene extends Application{
     @Override
     public void start(Stage primaryStage) {
     	DogProfileScene dogProfileScene = DogProfileScene.getInstance();
-    	User userInfo = new User("","");
         primaryStage.setTitle("Login UI");
         int width = 900;
 		int height = 900;
 
-        // Create a GridPane layout
         GridPane grid = new GridPane();
         grid.setAlignment(javafx.geometry.Pos.CENTER);
         grid.setHgap(10);
         grid.setVgap(10);
         grid.setPadding(new Insets(25, 25, 25, 25));
 
-        // Add controls to the GridPane
         Label userLabel = new Label("Username:");
         TextField userTextField = new TextField();
         Label passwordLabel = new Label("Password:");
@@ -62,30 +63,25 @@ public class LoginScene extends Application{
         grid.add(passwordField, 1, 1);
         grid.add(signUpButton, 0, 2);
         grid.add(loginButton, 1, 2);
-
-        // Event handling for Sign Up button
         signUpButton.setOnAction(e -> {
             String username = userTextField.getText();
             String password = passwordField.getText();
-            if (password == "" && username == "")
+            user.setUsername(username);
+            user.setPassword(password);
+            userlist.add(user);
+            if (Database.addUser(username, password) == false|| password == "" && username == "")
             	showAlert("Sign up Failed", "Please enter a valid username or password.");
-            else {
-            	userInfo.setUsername(username);
-            	userInfo.setPassword(password);
-            	userList.add(userInfo);
-            }
             clearFields(userTextField, passwordField);
         });
-
-        // Event handling for Login button
         loginButton.setOnAction(e -> {
             String username = userTextField.getText();
             String password = passwordField.getText();
 
-            // Check if the entered credentials match any user in the list
-            if (userList.stream().anyMatch(user -> user.getUsername().equals(username) && user.getPassword().equals(password)) && username != "" && password != "") {
-                
-				// Successful login, navigate to the main scene
+            
+            if (/*Database.getUser(username, password)!= null*/ userlist.contains(user) && username != "" && password != "") {
+                AppData appData = AppData.getInstance();
+                appData.setDogProfiles();
+                appData.setUser(username, password);
                 dogProfileScene.start(primaryStage);
             } else {
                 // Display an alert for unsuccessful login
@@ -98,6 +94,11 @@ public class LoginScene extends Application{
         Scene scene = new Scene(grid, width, height);
         primaryStage.setScene(scene);
         primaryStage.show();
+//        primaryStage.setOnCloseRequest(event -> {
+//    	    System.out.println("Window is closing. Perform cleanup if needed.");
+//    	    
+//    	    Database.onApplicationClose(user, posterDogs);
+//    	});
     }
 
     private void clearFields(TextField usernameField, PasswordField passwordField) {

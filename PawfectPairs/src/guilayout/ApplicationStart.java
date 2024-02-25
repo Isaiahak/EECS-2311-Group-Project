@@ -1,5 +1,6 @@
 package guilayout;
 
+import backend.database.Database;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -26,6 +27,7 @@ public class ApplicationStart extends Application {
         Scene scene = new Scene(new StackPane(l), 640, 480);
         stage.setScene(scene);
         stage.show();
+       
     }
 
     public static void main(String[] args) {

@@ -17,21 +17,13 @@ import java.sql.SQLException;
  * Public class to centralise all communcations to and from database
  */
 public class Database {
+	
 	private static DatabaseConnector databaseConnector = new DatabaseConnector();
 	
-	
-	/*
-	 * Method to return poster by given id
-	 */
-	
-	 public static Poster getPosterById(int posterId){
+	public static Poster getPosterById(int posterId){
 		 Poster poster = null; 
 		 try {
 			 	Connection connection = databaseConnector.connect();
-			 	
-			 	
-			 	
-			 	
 			    String sql = "SELECT * FROM poster WHERE poster_id = ?";
 			    
 			    try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
@@ -57,12 +49,7 @@ public class Database {
 		return poster;
 		 }
 
-
-/*
- * Method to return all dogs to show in dog profiles
- */
-
-	 public static ArrayList<Dog> getAllDogs (){
+	public static ArrayList<Dog> getAllDogs (){
 
         ArrayList<Dog> dogProfiles = new ArrayList<>();
 
@@ -88,7 +75,6 @@ public class Database {
          return dogProfiles;
 	}
 	
-
 	public static void updateAllAdoptedDogs(ArrayList<Dog> doglist) {
 		for(Dog d : doglist) {
 			if(d.getAdopted() == true) {
@@ -117,7 +103,7 @@ public class Database {
 			
 	        try {
 	        	 connection = databaseConnector.connect();
-	        	 String sql = "INSERT INTO dog_user_relationship (dogID, userID) VALUES (?, ?)";
+	        	 String sql = "INSERT INTO userdogs (dogid, userid) VALUES (?, ?)";
 	        	 preparedStatement = connection.prepareStatement(sql);
 	        	 preparedStatement.setInt(1, dogID);
 	        	 preparedStatement.setInt(2, userID);
@@ -154,8 +140,7 @@ public class Database {
 		
 	    try {
 	    	 connection = databaseConnector.connect();
-	    	 String sql = "DELETE FROM userdogs WHERE dogid = " + dogID + "AND tagid  =" + userID + ";";
-	    	 preparedStatement = connection.prepareStatement(sql);
+	    	 preparedStatement = connection.prepareStatement("DELETE FROM userdogs WHERE dogid = " + dogID + "AND userid  =" + userID + ";");
 	    	 preparedStatement.setInt(1, dogID);
 	    	 preparedStatement.setInt(2, userID);
 	    	 int rowsAffected = preparedStatement.executeUpdate();
@@ -184,8 +169,6 @@ public class Database {
 	    }
 	}
 
-
-
 	public static ArrayList<Dog> getLikedDog(int userID){
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
@@ -207,43 +190,24 @@ public class Database {
 	    }	    
 	    return list;	
 	}
-		
-		
-	public static void setDogAdopted() {
-	
-		
-	
-
-
-        String sql = "INSERT INTO tags (preference, tagname) VALUES (?, ?)";
-
-        // userid | username | userpassword |      email      | likeddogs
-
-        try{
-        	Connection connection = databaseConnector.connect();
-        	PreparedStatement pstmt = connection.prepareStatement(sql);
-            pstmt.setInt(1, 0);
-            pstmt.setString(2, "hey");
-           // pstmt.setString(3, "1234");
-            //pstmt.setString(4, "ajisjd");
-           // pstmt.setString(4, null);
-
-           // pstmt.setInt(2, user.getAge());
-            //pstmt.setString(3, user.getBreed());
-
-            pstmt.executeUpdate();
-            System.out.println("Dog uploaded successfully.");
-
-        } 
-        catch (SQLException e) {
-            e.printStackTrace();
-        }
+			
+	public static void setDogAdopted(Dog d) {		
+		if(d.getAdopted() == true) {
+			try {
+				Connection connection = databaseConnector.connect();
+				Statement statement = connection.createStatement () ;
+				ResultSet resultSet = statement.executeQuery ("UPDATE dogs SET adopted = TRUE WHERE dogid = " + d.getId());
+				connection.close();
+			}
+			
+			catch (SQLException e) {
+	 			System.out.println ("Connection failure.") ;
+	 			e.printStackTrace () ;
+	       }
+			
+		}
 }
-	
-/*
- * Method to get a dog's tags
- */
-	
+
 	public static ArrayList<Tag> getDogTags(int dogId){
 		ArrayList<Tag> tags = new ArrayList<Tag>();
 		
@@ -275,41 +239,190 @@ public class Database {
 		return tags;
 	}
 
-/*
- * Method to get user's liked dogs
- */
+	public static void addDogTags(int dogid, int tagid) {
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		
+        try {
+        	 connection = databaseConnector.connect();
+        	 String sql = "INSERT INTO dogtag (dogid, tagid) VALUES (?, ?)";
+        	 preparedStatement = connection.prepareStatement(sql);
+        	 preparedStatement.setInt(1, dogid);
+        	 preparedStatement.setInt(2, tagid);
+        	 int rowsAffected = preparedStatement.executeUpdate();
+        	 if (rowsAffected > 0) {
+                System.out.println("DogTag relationship added successfully!");
+            } else {
+                System.out.println("Failed to add DogTag relationship.");
+            }
+        } 
+        catch (SQLException e) {
+            e.printStackTrace();
+          
+        } 
+        finally {
+            try {
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+                if (connection != null) {
+                    connection.close();
+                }
+            } 
+            catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+	}
 	
-/*
+	public static int getTagID(String tagname) {
+		int tagid = 0;
+		try{
+	        Connection connection = databaseConnector.connect();
+	        Statement statement = connection.createStatement () ;
+	        ResultSet resultSet = statement.executeQuery ("SELECT tagid FROM tags WHERE tagname =" + tagname) ;
+	        while (resultSet.next()) {
+	        	tagid = resultSet.getInt("tagid");         
+	         }
+	             connection.close () ;
 
-Method to get a dog's tags*/
-
-/*
- 
-Method to get user's liked dogs*/
+	           }
+	         catch (SQLException e) {
+	        	 	System.out.println ("Connection failure.") ;
+	        	 	e.printStackTrace () ;
+	          }
+	         
+		return tagid;
+		
+		
+	}
 	
+
+	public static void removeDogTags(int dogid,int tagid) {
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		
+	    try {
+	    	 connection = databaseConnector.connect();
+	    	 preparedStatement = connection.prepareStatement("DELETE FROM dogtag WHERE dogid = " + dogid + "AND tagid  =" + tagid + ";");
+	    	 preparedStatement.setInt(1, dogid);
+	    	 preparedStatement.setInt(2, tagid);
+	    	 int rowsAffected = preparedStatement.executeUpdate();
+	    	 if (rowsAffected > 0) {
+	            System.out.println("Dogtag added successfully!");
+	        } else {
+	            System.out.println("Failed to add Dogtag relationship.");
+	        }
+	    } 
+	    catch (SQLException e) {
+	        e.printStackTrace();
+	      
+	    } 
+		
+	}
+
+	
+	public static User getUser(String username, String password) {
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		User user = null;
+	    try {
+	    	connection = databaseConnector.connect();
+	        Statement statement = connection.createStatement () ;
+	        ResultSet resultSet = statement.executeQuery ("SELECT * FROM user WHERE username = " + username + "AND userpassword  =" + password + ";") ;
+	        user = new User(resultSet.getString("username"),resultSet.getString("userpassword"));
+	        user.setUserID(resultSet.getInt("userid"));
+	        user.setEmail(resultSet.getString("email"));
+	       
+	    } 
+	    catch (SQLException e) {
+	        e.printStackTrace();
+	      
+	    }
+	    // we got the user from db but no doggy 
+	    for (Dog d : Database.getLikedDog(user.getUserID())) {
+	    	user.addLikedDogs(d);
+	    }
+		return user; 	
+	}
+
+	public static boolean addUser(String username, String password) {
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		
+        try {
+        	 connection = databaseConnector.connect();
+        	 String sql = "INSERT INTO users (username, userpassword) VALUES (?, ?)";
+        	 preparedStatement = connection.prepareStatement(sql);
+        	 preparedStatement.setString(1, username);
+        	 preparedStatement.setString(2, password);
+        	 int rowsAffected = preparedStatement.executeUpdate();
+        	 if (rowsAffected > 0) {
+                System.out.println("User added successfully!");
+                return true;
+            } else {
+                System.out.println("Failed to add User.");
+                return false;
+            }
+        } 
+        catch (SQLException e) {
+            e.printStackTrace();
+          
+        } 
+        finally {
+            try {
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+                if (connection != null) {
+                    connection.close();
+                }
+            } 
+            catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return false;
+	}
+	
+	public static void onApplicationClose(User user, ArrayList<Dog> doglist){
+		Database.updateAllAdoptedDogs(doglist);
+		for (Dog d : user.getLikedDogs()) {
+			Database.addLikedDog(d.getId(), user.getUserID());
+		} 
+		for(Tag t : user.getDog().getTags()) {
+			Database.addDogTags(user.getDog().getId(), Database.getTagID(t.getTagName()));
+		}
+	}
+
 }
 
-	class DatabaseConnector {
-	    public Connection connect() {
-	        // Code to establish a database connection
-	        try{
-	        	
-	        	Class.forName("org.postgresql.Driver"); // Replace with your database driver
-	        	
-	        	Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/paw", "postgres", "doglover123");
-	//        	System.out.println( "Connected to the PostgreSQL server successfully.");
-	        	
-	        	return connection; 
+class DatabaseConnector {
+    public Connection connect() {
+        // Code to establish a database connection
+        try{
+        	System.out.println("Trying to connect....");
+        	
+        	Class.forName("org.postgresql.Driver"); // Replace with your database driver
+        	
+        	Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/paw", "postgres", "doglover123");
+//        	System.out.println( "Connected to the PostgreSQL server successfully.");
+        	
+        	return connection; 
 
-	
-	        } catch (ClassNotFoundException | SQLException e) {
-	        	
-	        	System.out.println("Connection failed");
-	            e.printStackTrace();
-	            
-	        } 
-			return null;
-			
-	    }
-	        
-	}
+
+        } catch (ClassNotFoundException | SQLException e) {
+        	
+        	System.out.println("Connection failed");
+            e.printStackTrace();
+            
+        } 
+		return null;
+		
+    }
+        
+}
+
+
+
+

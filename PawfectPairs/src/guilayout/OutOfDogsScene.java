@@ -1,6 +1,12 @@
 package guilayout;
 
 
+import java.util.ArrayList;
+
+import backend.database.Database;
+import backend.dog.Dog;
+import backend.user.User;
+import guicontrol.AppData;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -12,7 +18,8 @@ import javafx.stage.Stage;
 
 public class OutOfDogsScene extends Application{
 
-	
+	ArrayList<Dog> posterDogs = AppData.getInstance().getDogProfiles();//TEMP
+	User user = AppData.getInstance().getUser();
 	private static OutOfDogsScene instance;
 	
 	public static OutOfDogsScene getInstance() {
@@ -44,6 +51,11 @@ public class OutOfDogsScene extends Application{
 		Scene scene = new Scene(stackPane, Components.screenWidth, Components.screenHeight);		 
 		stage.setScene(scene);
 		stage.show();
+//		stage.setOnCloseRequest(event -> {
+//    	    System.out.println("Window is closing. Perform cleanup if needed.");
+//    	    
+//    	    Database.onApplicationClose(user, posterDogs);
+//    	});
 		
 	}
 

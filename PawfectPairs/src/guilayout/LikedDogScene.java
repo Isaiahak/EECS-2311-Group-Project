@@ -1,6 +1,7 @@
 package guilayout;
 
 import backend.user.User;
+import guicontrol.AppData;
 import javafx.application.Application;
 import javafx.collections.*;
 import javafx.geometry.*;
@@ -9,13 +10,16 @@ import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import java.util.ArrayList;
+
+import backend.database.Database;
 import backend.dog.Dog;
 
 
 public class LikedDogScene extends Application{
 
 	private static LikedDogScene instance;
-	
+	ArrayList<Dog> posterDogs = AppData.getInstance().getDogProfiles();//TEMP
+	User user = AppData.getInstance().getUser();
 	public static LikedDogScene getInstance() {
 		if (instance == null) {
 			instance = new LikedDogScene();		
@@ -28,9 +32,7 @@ public class LikedDogScene extends Application{
 	
 	@Override
 	public void start(Stage stage){
-		LoginScene loginScene  = LoginScene.getInstance();
 		DogProfileScene dogProfileScene = DogProfileScene.getInstance();  
-		User user = loginScene.sendUserInfo();
 		ArrayList<Dog> likedDogs = user.getLikedDogs();
 		UserProfile userProfile = UserProfile.getInstance();
 		
@@ -85,6 +87,11 @@ public class LikedDogScene extends Application{
 		stage.setTitle("Pawfect Pairs");
 //		stage.setMaximized(true);
 		stage.show();
+//		stage.setOnCloseRequest(event -> {
+//    	    System.out.println("Window is closing. Perform cleanup if needed.");
+//    	    
+//    	    Database.onApplicationClose(user, posterDogs);
+//    	});
 		
 	}	
 	
