@@ -78,52 +78,62 @@ public class Database {
 //		
 
 
-private static Poster getPosterById(int posterId) throws SQLException {
-    String posterSql = "SELECT * FROM poster";
-    
-    
-//    try {
-//    	PreparedStatement posterStatement = connection.prepareStatement();
-//        posterStatement.setInt(1, posterId);
-//
-//        try {
-//        	ResultSet posterResultSet = posterStatement.executeQuery();
-//            if (posterResultSet.next()) {
-//                int id = posterResultSet.getInt("poster_id");
-//                String displayName = posterResultSet.getString("displayname");
-//                int score = posterResultSet.getInt("score");
-//
-//                return new Poster(id, displayName, score);
-//            }
-//        }
-//    }
-    return null; // Return null if no poster is found with the given posterId
-}
+	 public static Poster getPosterById(int posterId){
+		 Poster poster = null; 
+		 try {
+			 	Connection connection = databaseConnector.connect();
+			 	
+			 	
+			 	
+			 	
+			    String sql = "SELECT displayName FROM poster WHERE poster_id = ?";
+			    
+			    try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+			        preparedStatement.setInt(1, posterId);
+
+			        try (ResultSet resultSet = preparedStatement.executeQuery()) {
+			            if (resultSet.next()) {
+			            	
+			                String displayName = resultSet.getString("displayName");
+			                System.out.println(displayName);
+//			                int score = resultSet.getInt("score");
+			                
+			                poster = new Poster(posterId, displayName, 5); // SCORE IS HARDCODeD BCUZ ERROR WTF????
+			                // Use the displayName as needed
+			            } else {
+			                // Handle the case where no poster is found with the given posterId
+			            }
+			        }
+			    }
+			} catch (SQLException e) {
+			    e.printStackTrace(); // Handle exceptions properly in a real application
+			}
+		return poster;
+		 }
 
 
 /*
  * Method to return all dogs
  */
 
-	private ArrayList<Dog> getAllDogs (){
+	public static ArrayList<Dog> getAllDogs (){
 		
 		 		ArrayList<Dog> dogProfiles = new ArrayList<>();
 		 	
+		 		try{
 		 		Connection connection = databaseConnector.connect();
 				
 				Statement statement = connection.createStatement () ;
 				ResultSet resultSet = statement.executeQuery ("SELECT * FROM dog") ;
 					
 				//ResultSet resultSetPoster = statement.executeQuery("SELECT * FROM poster");
-				 while (resultSet.next ()) {
-						 
-				
-						 
-						 	Dog dog = new Dog(resultSet.getString ("dogname"), resultSet.getInt("dogid"), resultSet.getInt("ageid"),  resultSet.getInt("energyid"), resultSet.getInt("sizeid"), resultSet.getInt("sexid"), poster, resultSet.getBoolean("adopted"), 
-					 			resultSet.getString("imagePath"), resultSet.getString("biography"));
-					 	 dogProfiles.add(dog);
-					 	 //   int sex, Poster poster, boolean adopted, String imagePath, String biography)
-					 	//dogid | dogname | adopted | biography | imagepath | posterid | ageid | energyid | sizeid | sexid
+				 while (resultSet.next()) {	 
+//					 	Poster poster = getPosterById(resultSet.getInt("posterId"));
+						  
+						Dog dog = new Dog(resultSet.getString ("dogname"), resultSet.getInt("dogid"), resultSet.getInt("ageid"),  resultSet.getInt("energyid"), resultSet.getInt("sizeid"), resultSet.getInt("sexid"), resultSet.getInt("posterid"), resultSet.getBoolean("adopted"), 
+					 	resultSet.getString("imagePath"), resultSet.getString("biography"));
+						
+					 	dogProfiles.add(dog);
 					 	
 				 }
 					 connection.close () ;
@@ -132,8 +142,7 @@ private static Poster getPosterById(int posterId) throws SQLException {
 			 			System.out.println ("Connection failure.") ;
 			 			e.printStackTrace () ;
 			       }	
-			  
-			    
+				  
 			    
 		return dogProfiles;
 		

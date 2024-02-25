@@ -139,7 +139,7 @@ public class DogProfileScene extends Application {
         root.getChildren().addAll(navTab, petImageView, primaryInfoLabel, posterLink, secondaryInfo, biographyText, bottomTab);
         
         
-        ArrayList<Dog> dogProfiles = Database.getDogsFromDB();
+        ArrayList<Dog> dogProfiles = Database.getAllDogs();
         
 		profileController = new DogProfileController(primaryInfoLabel, sizeLabel, energyLabel, petImageView, biographyText, posterLink, dogProfiles);
 		

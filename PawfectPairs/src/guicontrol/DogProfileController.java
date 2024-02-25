@@ -3,6 +3,7 @@ package guicontrol;
 import java.util.ArrayList;
 import java.util.List;
 
+import backend.database.Database;
 import backend.dog.Dog;
 import backend.poster.Poster;
 import guilayout.Components;
@@ -70,7 +71,7 @@ public class DogProfileController {
         energyLabel.setText("Energy Level: " + currentProfile.getEnergyLevel());
         biographyText.setText(currentProfile.getBiography());
         
-        posterLink.setText(currentProfile.getPoster().getDisplayName());
+        posterLink.setText(Database.getPosterById(currentProfile.getPosterId()).getDisplayName());
 //        posterLink.setOnAction(event -> {
 //        	userScene.start(stage);
 //        }); // change this when database is implemented
