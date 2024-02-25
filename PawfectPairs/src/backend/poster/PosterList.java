@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Set;
 import java.util.TreeMap;
 
+import backend.database.Database;
 import backend.dog.Dog;
 
 public class PosterList {
@@ -26,7 +27,7 @@ public class PosterList {
     	TreeMap<String, Dog> PosterDogsMap = new TreeMap<>();
     
     	for (Dog dog : dogMap.values()) {
-            if (dog.getPoster().equals(poster)) { //implement Comparable Interface: ->finished comparable interface for poster
+            if (Database.getPosterById(dog.getPosterId()).equals(poster)) { //implement Comparable Interface: ->finished comparable interface for poster
                 PosterDogsMap.put(dog.getName(), dog);
             }
     	}

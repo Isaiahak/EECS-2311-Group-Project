@@ -1,5 +1,6 @@
 package backend.dog;
 import java.util.ArrayList;
+import java.sql.*;
 
 import backend.dog.trait.Age;
 import backend.dog.trait.EnergyLevel;
@@ -7,6 +8,8 @@ import backend.dog.trait.Sex;
 import backend.dog.trait.Size;
 import backend.poster.Poster;
 import backend.tag.Tag;
+
+// download this: import javax.Persistence.api;
 public class Dog {
 	 	private String name;
 	    private int id;
@@ -14,7 +17,8 @@ public class Dog {
 	    private EnergyLevel energyLevel ; // possibly do a class + implement a comparable interface ?
 	    private Size size; // class + implement comparable?
 	    private Sex sex; // M or F // maybe do 0 or 1?
-	    private Poster poster;
+//	    private Poster poster;
+	    private int posterId;
 	    private boolean adopted;
 	    private String imagePath; 
 	    private String biography;
@@ -26,7 +30,7 @@ public class Dog {
 	        setEnergyLevel(new EnergyLevel(dogEnergyLevel));
 	    }
 	   
-	    public Dog(String name, int id, int age, int energyLevel, int size, int sex, Poster poster, boolean adopted, String imagePath, String biography) {
+	    public Dog(String name, int id, int age, int energyLevel, int size, int sex, int posterId, boolean adopted, String imagePath, String biography) {
 	        this.name = name;
 	        this.imagePath = imagePath; 
 	        this.id = id;
@@ -38,12 +42,13 @@ public class Dog {
 	        //this.energyLevel = energyLevel;
 	        //this.size = size;
 	        //this.sex = sex;
-	        this.poster = poster;
+//	        this.poster = poster;
+	        this.posterId = posterId; 
 	        this.adopted = adopted;
 	        this.biography = biography;
 	    }
 	    
-	    public Dog(String name, int id, int age, int energyLevel, int size, int sex, Poster poster, boolean adopted) {
+	    public Dog(String name, int id, int age, int energyLevel, int size, int sex, int posterId, boolean adopted) {
 	        this.name = name;
 	        this.id = id;
 	       
@@ -55,7 +60,8 @@ public class Dog {
 	        // this.age = age;
 	        //this.size = size;
 	        //this.sex = sex;
-	        this.poster = poster;
+//	        this.poster = poster;
+	        this.posterId = posterId;
 	        this.adopted = adopted;
 	    }
 	    
@@ -111,9 +117,9 @@ public class Dog {
 	        this.sex = sex;
 	    }
 	   
-	    public Poster getPoster() {
+	    public int getPosterId() {
 			// TODO Auto-generated method stub
-			return this.poster;
+			return this.posterId;
 		}
 	   
 	    public boolean getAdopted() {
@@ -122,8 +128,8 @@ public class Dog {
 		public void setAdopted(boolean adopted) {
 			this.adopted = adopted;
 		}
-		public void setPoster(Poster poster) {
-			this.poster = poster;
+		public void setPosterId(int posterId) {
+			this.posterId = posterId;
 		}
 		public String getBiography() {
 			return this.biography;

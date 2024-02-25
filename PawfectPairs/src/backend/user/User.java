@@ -9,7 +9,7 @@ import backend.poster.Poster;
 
 public class User {
 	
-	private Dog preferredDog = new Dog("", 0, 0, 0, 0, 0, new Poster(0, "DawgOwner", 0), false,"", "");
+	private Dog preferredDog = new Dog("", 0, 0, 0, 0, 0, -1, false,"", "");
 	
 	private String username;
 	

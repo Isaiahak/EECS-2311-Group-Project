@@ -3,6 +3,7 @@ package guilayout;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import backend.database.Database;
 import backend.dog.Dog;
 import backend.dog.trait.Age;
 import backend.dog.trait.Attribute;
@@ -399,7 +400,7 @@ public class Components{
 		Label primaryInfoLabel = Components.mediumLabel(dog.getName() + ", " + dog.getAge() + " years, " + dog.getSex(),Pos.CENTER); 
 		Hyperlink posterLink = Components.hyperlink();
 		
-		posterLink.setText(dog.getPoster().getDisplayName());
+		posterLink.setText(Database.getPosterById(dog.getPosterId()).getDisplayName());
 		
 		VBox info = new VBox(
 				primaryInfoLabel,
