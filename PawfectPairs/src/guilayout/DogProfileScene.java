@@ -1,4 +1,7 @@
 package guilayout;
+import java.util.ArrayList;
+
+import backend.database.Database;
 import backend.dog.Dog;
 
 import backend.poster.Poster;
@@ -8,16 +11,10 @@ import guicontrol.DogProfileController;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Hyperlink;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
+import javafx.scene.control.*;
+import javafx.scene.image.*;
 import javafx.scene.layout.*;
-import javafx.scene.text.Text;
-import javafx.scene.text.TextFlow;
+import javafx.scene.text.*;
 import javafx.stage.Stage;
 
 public class DogProfileScene extends Application {
@@ -141,7 +138,10 @@ public class DogProfileScene extends Application {
          // add to root vbox
         root.getChildren().addAll(navTab, petImageView, primaryInfoLabel, posterLink, secondaryInfo, biographyText, bottomTab);
         
-		profileController = new DogProfileController(primaryInfoLabel, sizeLabel, energyLabel, petImageView, biographyText, posterLink);
+        
+        ArrayList<Dog> dogProfiles = Database.getDogsFromDB();
+        
+		profileController = new DogProfileController(primaryInfoLabel, sizeLabel, energyLabel, petImageView, biographyText, posterLink, dogProfiles);
 		
 
       // Display the initial pet profile
