@@ -58,7 +58,7 @@ public class DogProfileScene extends Application {
     	
     	//root is v box
 		VBox root = new VBox();
-		root.setSpacing(15);
+		root.setSpacing(10);
 		root.setAlignment(Pos.CENTER);
 		
 

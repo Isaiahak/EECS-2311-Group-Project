@@ -92,7 +92,9 @@ public class DogProfileController {
 			}
         });
         
-        tagsPane.getChildren().add(Components.createTags(Components.allTags)); 
+        tagsPane.getChildren().clear();
+        
+        tagsPane.getChildren().add(Components.createTags(Database.getDogTags(dogProfiles.get(currentIndex).getId()))); 
 //        posterLink.setOnAction(event -> {
 //        	userScene.start(stage);
 //        }); // change this when database is implemented
