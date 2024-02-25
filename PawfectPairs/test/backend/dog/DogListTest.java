@@ -7,14 +7,21 @@ import java.util.TreeMap;
 import backend.dog.*;
 import backend.poster.*;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class DogListTest {
+	Poster pi = new Poster(0, "John", 1);
+
+	@BeforeEach
+    void setUp() {
+ }
 
 	@Test
     public void testAddDog() {
+
         DogList dogList = new DogList();
-        Dog dog = new Dog("Max", 1, 3, 0, 1, "M", new Poster(0, "John", 1), false);
+        Dog dog = new Dog("Max", 1, 3, 0, 1, 0, pi.getUniqueId(), false);
         dogList.addDog(dog.getName(), dog);
         dogList.addDog("Max", dog);
         assertEquals(1, dogList.getNumDogs());
@@ -24,7 +31,7 @@ class DogListTest {
     @Test
     public void testRemoveDog() {
         DogList dogList = new DogList();
-        Dog dog = new Dog("Max", 1, 3, 0, 1, "M", new Poster(0, "John", 1), false);
+        Dog dog = new Dog("Max", 1, 3, 0, 1, 0,pi.getUniqueId(), false);
         dogList.addDog("Max", dog);
         assertEquals(1, dogList.getNumDogs());
         dogList.removeDog("Max", dog);
@@ -36,8 +43,8 @@ class DogListTest {
     public void testGetNumDogs() {
         DogList dogList = new DogList();
         assertEquals(0, dogList.getNumDogs());
-        Dog dog1 = new Dog("Max", 1, 3, 0, 1, "M", new Poster(0, "John", 1), false);
-        Dog dog2 = new Dog("Buddy", 2, 4, 1, 2, "M", new Poster(0, "John", 1), false);
+        Dog dog1 = new Dog("Max", 1, 3, 0, 1, 0, pi.getUniqueId(), false);
+        Dog dog2 = new Dog("Buddy", 2, 4, 1, 2, 0, pi.getUniqueId(), false);
         dogList.addDog("Max", dog1);
         dogList.addDog("Buddy", dog2);
         assertEquals(2, dogList.getNumDogs());
@@ -48,8 +55,8 @@ class DogListTest {
         DogList dogList = new DogList();
         TreeMap<String, Dog> expectedMap = new TreeMap<>();
         assertEquals(expectedMap, dogList.getDogMap());
-        Dog dog1 = new Dog("Max", 1, 3, 0, 1, "M", new Poster(0, "John", 1), false);
-        Dog dog2 = new Dog("Buddy", 2, 4, 1, 2, "M", new Poster(0, "John", 1), false);
+        Dog dog1 = new Dog("Max", 1, 3, 0, 1, 0, pi.getUniqueId(), false);
+        Dog dog2 = new Dog("Buddy", 2, 4, 1, 2, 0,pi.getUniqueId(), false);
         dogList.addDog("Max", dog1);
         dogList.addDog("Buddy", dog2);
         expectedMap.put("Max", dog1);
@@ -61,8 +68,8 @@ class DogListTest {
     public void testToString() {
         DogList dogList = new DogList();
         assertEquals("DogList []", dogList.toString());
-        Dog dog1 = new Dog("Max", 1, 3, 0, 1, "M", new Poster(0, "John", 1), false);
-        Dog dog2 = new Dog("Buddy", 2, 4, 1, 2, "M", new Poster(0, "John", 1), false);
+        Dog dog1 = new Dog("Max", 1, 3, 0, 1, 0, pi.getUniqueId(), false);
+        Dog dog2 = new Dog("Buddy", 2, 4, 1, 2, 0, pi.getUniqueId(), false);
         dogList.addDog("Max", dog1);
         dogList.addDog("Buddy", dog2);
         assertEquals("DogList [Buddy, Max]", dogList.toString());
