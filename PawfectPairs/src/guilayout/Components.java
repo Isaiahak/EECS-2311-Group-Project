@@ -10,6 +10,7 @@ import backend.dog.trait.Attribute;
 import backend.dog.trait.EnergyLevel;
 import backend.dog.trait.Sex;
 import backend.dog.trait.Size;
+import backend.poster.Poster;
 import backend.tag.Tag;
 import javafx.application.Application;
 import javafx.collections.ObservableList;
@@ -275,7 +276,7 @@ public class Components{
 		return label;
 	}
 	
-	public static GridPane createTags(ArrayList<Tag> tags,ArrayList<Tag> dogTags) {
+	public static GridPane createTags(ArrayList<Tag> tags, ArrayList<Tag> dogTags) {
 		GridPane gridPane = new GridPane();
 		int row = 0;
         int col = 0;
@@ -299,6 +300,64 @@ public class Components{
             }
 			i++;
 		}
+		
+		return gridPane;
+		
+	}
+	
+	
+	public static Label dogTagLabel(String tag) {
+		Label label = new Label(tag);
+		label.setFont(Font.font(font, fontSm));
+		label.setWrapText(true);
+		
+		label.maxWidth(100);
+			
+		String defaultStyle = 
+				"-fx-background-color: #03adfc;" + // Background color
+		        "-fx-padding: 10px;" + // Padding
+		        "-fx-border-radius: 10px;" + // Border radius
+		        "-fx-border-color: #03adfc;" + // Border color
+		        "-fx-border-width: 4px;"   +
+		        "-fx-text-fill: #ffffff;" + 
+		        "-fx-alignment: center;"; // Text alignment;
+		
+		
+        label.setStyle(defaultStyle); /// this is for showing the tags on the dog's profile :D
+		label.setAlignment(Pos.CENTER);
+		
+		return label;
+	}
+	
+	public static GridPane createTags(ArrayList<Tag> tags) { // non highlightable tags
+		GridPane gridPane = new GridPane();
+		gridPane.setHgap(10); // Set horizontal gap
+        gridPane.setVgap(10); // Set vertical gap
+		int row = 0;
+        int col = 0;
+        
+        int maxRows = 6;
+        
+        int i = 0; // current index
+        
+		for(Tag t : tags) {
+			
+			Label label = dogTagLabel(t.getTagName());
+			
+            // Add the label to the grid
+            gridPane.add(label, row, col);
+            GridPane.setHalignment(label, javafx.geometry.HPos.CENTER);
+
+            // Increment column and row counters
+            row++;
+            if (row >= maxRows) {
+                row = 0; // Reset column counter
+                col++;   // Move to the next col
+            }
+			i++;
+		}
+		
+		gridPane.setAlignment(Pos.CENTER);
 		
 		return gridPane;
 		
@@ -392,15 +451,15 @@ public class Components{
 		return gridPane;
 	}
 	
-	public static HBox likedDogView(Dog dog) {
+	public static HBox likedDogView(Dog dog, Stage primaryStage) {
 
 		ImageView img = Components.imageView(200, 200);
 		img.setImage(new Image(dog.getImagePath()));
 		
 		Label primaryInfoLabel = Components.mediumLabel(dog.getName() + ", " + dog.getAge() + " years, " + dog.getSex(),Pos.CENTER); 
-		Hyperlink posterLink = Components.hyperlink();
 		
-		posterLink.setText(Database.getPosterById(dog.getPosterId()).getDisplayName());
+		Hyperlink posterLink = hyperlinkToPosterProfile(dog, primaryStage);
+		
 		
 		VBox info = new VBox(
 				primaryInfoLabel,
@@ -410,16 +469,30 @@ public class Components{
 		HBox HBox = new HBox(img, info);
 		HBox.setAlignment(Pos.CENTER);
 		HBox.setSpacing(50);
-		return HBox;
-//		posterLink.setOnAction(event -> { // implement later
-//        	try {
-//				posterProfile.start(primaryStage);
-//			} catch (Exception e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-//        });
 		
+		
+		return HBox;
+		
+		
+	}
+	
+	public static Hyperlink hyperlinkToPosterProfile(Dog dog, Stage primaryStage) {
+		Hyperlink posterLink = Components.hyperlink();
+		posterLink.setText(Database.getPosterById(dog.getPosterId()).getDisplayName());
+		
+		Poster poster = Database.getPosterById(dog.getPosterId());
+		PosterProfileScene posterProfile = PosterProfileScene.getInstance();
+		posterProfile.setCurrentPoster(poster);
+		
+		posterLink.setOnAction(event -> {
+        	try {
+				posterProfile.start(primaryStage);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+        });
+		
+		return posterLink;
 	}
 	
 	public static HBox posterDogView(Dog dog) {
@@ -431,6 +504,7 @@ public class Components{
 //		Hyperlink posterLink = Components.hyperlink();
 		
 //		posterLink.setText(dog.getPoster().getDisplayName());
+		
 		
 		VBox info = new VBox(
 				primaryInfoLabel

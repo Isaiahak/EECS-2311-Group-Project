@@ -38,7 +38,7 @@ public class Database {
 //			                System.out.println(displayName);
 			                int score = resultSet.getInt("score");
 			                
-			                poster = new Poster(posterId, displayName, score); // SCORE IS HARDCODeD BCUZ ERROR WTF????
+			                poster = new Poster(score, displayName, posterId); // SCORE IS HARDCODeD BCUZ ERROR WTF????
 			                // Use the displayName as needed
 			            } else {
 			                // Handle the case where no poster is found with the given posterId
@@ -95,6 +95,27 @@ public class Database {
 /*
  * Method to get user's liked dogs
  */
+	
+	public static ArrayList<Dog> getLikedDogs(int userId) {
+		ArrayList<Dog> likedDogs = new ArrayList<Dog>();
+		
+//		// get liked tags here 
+//		
+//		
+//		int[] likedDogsIds = query.split(",");
+//		// iterate through dogs by tags
+//		
+//		Object likedDogIds;
+//		for(int i = 0; i < likedDogIds.length; i++) {
+//			
+//		}
+//		
+		
+		
+		return likedDogs;
+	}
+	
+	
 	
 }
 
