@@ -18,66 +18,6 @@ public class Database {
 	private static DatabaseConnector databaseConnector = new DatabaseConnector();
 //	private static Connection connection = databaseConnector.connect();
 	
-	
-//	public static void main(String[] args) {
-//		
-//		connection =  databaseConnector.connect();
-//		
-////		System.out.println("testing");
-//       
-//
-//	}
-////	
-	
-	
-//	public static ArrayList<Dog> getDogsFromDB(){ // default method, just get all dogs
-//		
-//		System.out.println("Bruhhh");
-//		
-//		ArrayList<Dog> dogs = new ArrayList<>();
-//		
-//		
-//		
-//            String sql = "SELECT * FROM dog";
-//            
-//            try (PreparedStatement preparedStatement = connection.prepareStatement(sql);
-//                 ResultSet resultSet = preparedStatement.executeQuery()) {
-//
-//                while (resultSet.next()) {
-//                    int id = resultSet.getInt("id");
-//                    String dogName = resultSet.getString("dogname");
-//                    boolean adopted = resultSet.getBoolean("adopted");
-//                    String biography = resultSet.getString("biography");
-//                    String imagePath = resultSet.getString("imagepath");
-//                    int posterId = resultSet.getInt("posterid");
-//                    int ageId = resultSet.getInt("ageid");
-//                    int energyId = resultSet.getInt("energyid");
-//                    int sizeId = resultSet.getInt("sizeid");
-//                    int sexId = resultSet.getInt("sexid");
-//                    
-//                    Poster poster = null;
-//					try {
-//						poster = getPosterById(posterId);
-//					} catch (Exception e) {
-//						// TODO Auto-generated catch block
-//						e.printStackTrace();
-//					} 
-//
-//                    
-//                    // public Dog(String name, int id, int age, int energyLevel, int size, int sex, Poster poster, boolean adopted, String imagePath, String biography) {
-//                    Dog dog = new Dog(dogName, id, ageId, energyId, sizeId, sexId, poster, adopted, imagePath, biography); 
-//                    dogs.add(dog);
-//                }
-//            
-//        } catch (SQLException e) {
-//            e.printStackTrace(); // Handle exceptions properly in a real application
-//        }
-//	
-//	    return dogs;
-//	}
-//		
-
-
 	 public static Poster getPosterById(int posterId){
 		 Poster poster = null; 
 		 try {
@@ -86,7 +26,7 @@ public class Database {
 			 	
 			 	
 			 	
-			    String sql = "SELECT displayName FROM poster WHERE poster_id = ?";
+			    String sql = "SELECT * FROM poster WHERE poster_id = ?";
 			    
 			    try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 			        preparedStatement.setInt(1, posterId);
@@ -95,10 +35,10 @@ public class Database {
 			            if (resultSet.next()) {
 			            	
 			                String displayName = resultSet.getString("displayName");
-			                System.out.println(displayName);
-//			                int score = resultSet.getInt("score");
+//			                System.out.println(displayName);
+			                int score = resultSet.getInt("score");
 			                
-			                poster = new Poster(posterId, displayName, 5); // SCORE IS HARDCODeD BCUZ ERROR WTF????
+			                poster = new Poster(posterId, displayName, score); // SCORE IS HARDCODeD BCUZ ERROR WTF????
 			                // Use the displayName as needed
 			            } else {
 			                // Handle the case where no poster is found with the given posterId
@@ -157,26 +97,7 @@ public class Database {
  */
 	
 }
-//Sidney
-//try {
-//    // Load the JDBC driver for your database
-//    Class.forName("org.postgresql.Driver"); // Replace with your database driver
-//
-//    // Create a connection URL
-//    String url = "jdbc:postgresql://localhost:5432/pawdb"; //change it to newestpawdb after the clone of that db is done
-//    // Replace with the appropriate JDBC URL for your database
-//
-//    // Provide your database username and password
-//    String username = "postgres";
-//    String password = "12345";
-//
-//    // Establish the connection
-//    Connection connection = DriverManager.getConnection(url, username, password);
-//    return connection;
-//} catch (ClassNotFoundException | SQLException e) {
-//    e.printStackTrace(); // Handle or log the exception appropriately
-//    return null;
-//}
+
 
 class DatabaseConnector {
     public Connection connect() {
@@ -186,7 +107,7 @@ class DatabaseConnector {
         	
         	Class.forName("org.postgresql.Driver"); // Replace with your database driver
         	
-        	Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/paw", "postgres", "doglover123");
+        	Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/paw2", "postgres", "doglover123");
 //        	System.out.println( "Connected to the PostgreSQL server successfully.");
         	
         	return connection; 
