@@ -74,7 +74,7 @@ public class UserProfile extends Application{
     	
     	//display all tags
     	
-    	GridPane tagsGrid =  Components.createTags(Database.getAllTags(),dog.getTags());
+    	GridPane tagsGrid =  Components.createTags(Database.getAllTags(),dog);
     	tagsGrid.setAlignment(javafx.geometry.Pos.CENTER);
     	
     	VBox attributes = new VBox();
@@ -84,19 +84,19 @@ public class UserProfile extends Application{
     	Label attributesTitle = Components.mediumLabel("Attributes", Pos.CENTER);
     	
     	Label sexAttributesTitle = Components.smallLabel("Sex", Pos.BASELINE_LEFT);
-    	GridPane sexAttributeGrid = Components.createAttribute(dog.getSex());
+    	GridPane sexAttributeGrid = Components.createAttribute(dog.getSex(), dog);
     	sexAttributeGrid.setAlignment(javafx.geometry.Pos.CENTER);   	
     	
     	Label sizeAttributesTitle = Components.smallLabel("Size",  Pos.BASELINE_LEFT);
-    	GridPane sizeAttributeGrid = Components.createAttribute(dog.getSize());
+    	GridPane sizeAttributeGrid = Components.createAttribute(dog.getSize(), dog);
     	sizeAttributeGrid.setAlignment(javafx.geometry.Pos.CENTER);   	
     	  	
     	Label energyLevelAttributesTitle = Components.smallLabel("EnergyLevel",  Pos.BASELINE_LEFT);
-    	GridPane energyLevelAttributeGrid = Components.createAttribute(dog.getEnergyLevel());
+    	GridPane energyLevelAttributeGrid = Components.createAttribute(dog.getEnergyLevel(), dog);
     	energyLevelAttributeGrid.setAlignment(javafx.geometry.Pos.CENTER);   	 	
     	
     	Label ageAttributesTitle = Components.smallLabel("Age",  Pos.BASELINE_LEFT);
-    	GridPane ageAttributeGrid = Components.createAttribute(dog.getAge());
+    	GridPane ageAttributeGrid = Components.createAttribute(dog.getAge(), dog);
     	ageAttributeGrid.setAlignment(javafx.geometry.Pos.CENTER);   	
     	
     	

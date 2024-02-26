@@ -5,6 +5,7 @@ import java.sql.Connection.*;
 import java.util.ArrayList;
 
 import backend.dog.Dog;
+import backend.dog.trait.Attribute;
 import backend.poster.Poster;
 import backend.tag.Tag;
 import backend.user.User;
@@ -54,7 +55,7 @@ public class Database {
 	 * DOG METHODS
 	 */
 	
-	 public static ArrayList<Dog> getAllDogs (){
+	public static ArrayList<Dog> getAllDogs(){
 
 	        ArrayList<Dog> dogProfiles = new ArrayList<>();
 
@@ -79,6 +80,28 @@ public class Database {
 	          }
 	         return dogProfiles;
 		}
+	public static Dog getADogs(int userid){
+
+        Dog dog = null;
+
+        try{
+        Connection connection = databaseConnector.connect();
+        Statement statement = connection.createStatement () ;
+        ResultSet resultSet = statement.executeQuery ("SELECT * FROM dog JOIN user ON users.dogid = dog.dogid WHERE users.userid = " + userid+ ";") ;
+        while (resultSet.next()) {
+        	// only add a dog if adoption = false and its id is not negative (if negative, its a dummy dog)
+		    dog = new Dog(resultSet.getString ("dogname"), resultSet.getInt("dogid"), resultSet.getInt("ageid"),  resultSet.getInt("energyid"), resultSet.getInt("sizeid"), resultSet.getInt("sexid"), resultSet.getInt("posterid"), resultSet.getBoolean("adopted"), 
+		    resultSet.getString("imagePath"), resultSet.getString("biography"));            
+         }
+             connection.close () ;
+
+           }
+         catch (SQLException e) {
+        	 	System.out.println ("Connection failure.") ;
+        	 	e.printStackTrace () ;
+          }
+         return dog;
+	}
 	
 	public static void updateAllAdoptedDogs(ArrayList<Dog> doglist) {
 		for(Dog d : doglist) {
@@ -309,6 +332,13 @@ public class Database {
         }
 	}
 	
+	
+	public static void setDogTags(ArrayList<Tag> tags, int dogid) {
+		for (Tag t : tags) {
+			Database.addDogTags(dogid,Database.getTagID(t.getTagName()));
+		}
+	}
+	
 	public static int getTagID(String tagname) {
 		int tagid = 0;
 		try{
@@ -343,9 +373,9 @@ public class Database {
 	    	 preparedStatement.setInt(2, tagid);
 	    	 int rowsAffected = preparedStatement.executeUpdate();
 	    	 if (rowsAffected > 0) {
-	            System.out.println("Dogtag added successfully!");
+	            System.out.println("Dogtag remove successfully!");
 	        } else {
-	            System.out.println("Failed to add Dogtag relationship.");
+	            System.out.println("Failed to remove Dogtag ");
 	        }
 	    } 
 	    catch (SQLException e) {
@@ -381,12 +411,11 @@ public class Database {
 	        user = new User(resultSet.getString("username"),resultSet.getString("userpassword"));
 	        user.setUserID(resultSet.getInt("userid"));
 	        user.setEmail(resultSet.getString("email"));
-	        
-	       // we got the user from db but no doggy 
-		    for (Dog d : Database.getLikedDogs(user.getUserID())) {
-		    	user.addLikedDogs(d);
-		    }
+			    for (Dog d : Database.getLikedDogs(user.getUserID())) {
+			    	user.addLikedDogs(d);
+			    }
 	        }
+	        user.setDog(user.getUserID());
 	    } 
 	    catch (SQLException e) {
 	        e.printStackTrace();
@@ -435,6 +464,23 @@ public class Database {
         return false;
 	}
 	
+	public static void changeAttribute(Attribute attribute, int dogid) {
+
+		try {
+			Connection connection = databaseConnector.connect();
+			Statement statement = connection.createStatement () ;
+			statement.executeQuery ("UPDATE dogs SET " + attribute.getClass().getCanonicalName().toLowerCase() + "id = " + attribute.getWeight() + "E WHERE dogid = " + dogid + ";");
+			connection.close();
+		}
+		
+		catch (SQLException e) {
+ 			System.out.println ("Connection failure.") ;
+ 			e.printStackTrace () ;
+       }
+		
+}
+	
+
 	public static void onApplicationClose(User user, ArrayList<Dog> doglist){
 		Database.updateAllAdoptedDogs(doglist);
 		for (Dog d : user.getLikedDogs()) {
@@ -445,6 +491,7 @@ public class Database {
 		}
 	}
 
+	
 }
 
 
@@ -460,7 +507,7 @@ class DatabaseConnector {
         	
         	Class.forName("org.postgresql.Driver"); // Replace with your database driver
         	
-        	Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/paw3", "postgres", "doglover123");
+        	Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/paw", "postgres", "doglover123");
 //        	System.out.println( "Connected to the PostgreSQL server successfully.");
         	
         	return connection; 

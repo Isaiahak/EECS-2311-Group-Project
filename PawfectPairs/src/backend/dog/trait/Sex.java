@@ -15,6 +15,13 @@ public class Sex extends Attribute {
 		// TODO Auto-generated method stub
 		return names;
 	}
+	
+	@Override
+	public void setWeight(int weight) {	
+        this.weight = weight;
+        this.setName(names[weight]);    
+    }
+	
 }
 
 

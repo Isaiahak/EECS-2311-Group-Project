@@ -2,7 +2,7 @@ package backend.dog.trait;
 
 public abstract class Attribute implements Comparable<Attribute>{
     // attributes abstract class to implement comparable, order-able attributes, such as size, energy level, etc
-    private int weight;
+    protected int weight;
     private String name;
 
     public abstract String[] getNames();

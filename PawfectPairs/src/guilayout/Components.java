@@ -12,6 +12,8 @@ import backend.dog.trait.Sex;
 import backend.dog.trait.Size;
 import backend.poster.Poster;
 import backend.tag.Tag;
+import backend.user.User;
+import guicontrol.AppData;
 import javafx.application.Application;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
@@ -222,7 +224,8 @@ public class Components{
 		
 	}
 	
-	public static Label tagLabel(String tag,Tag labelTag, ArrayList<Tag> dogTags) {
+	public static Label tagLabel(String tag,Tag labelTag, Dog dog) {
+		
 		Label label = new Label(tag);
 		label.setFont(Font.font(font, fontSm));
 		label.setWrapText(true);
@@ -245,7 +248,7 @@ public class Components{
 //		        "-fx-border-width: 4px;"   +
 		        "-fx-alignment: center;"; // Text alignment;
 		//function to be able to turn the label highlighted when loading them if in the dog tags list.
-		if(dogTags.contains(labelTag) == true) {
+		if(dog.getTags().contains(labelTag) == true) {
 			label.setStyle(highLightedStyle);
 		}
 		else {
@@ -256,16 +259,18 @@ public class Components{
             // Toggle background color on click
             if (label.getStyle().equals(defaultStyle)) {
             	label.setStyle(highLightedStyle); // highlight if not highlighted
-            	if(dogTags.contains(labelTag) == false) {
-            		dogTags.add(labelTag);
+            	if(dog.getTags().contains(labelTag) == false) {
+            		dog.getTags().add(labelTag);
+            		Database.setDogTags(dog.getTags(), dog.getId());
             	}
             	
             	
             } else {
-            	if(dogTags.contains(labelTag) == true) {
-            		dogTags.remove(labelTag);
+            	if(dog.getTags().contains(labelTag) == true) {
+            		dog.getTags().remove(labelTag);
             	}
             	label.setStyle(defaultStyle);
+            	Database.removeDogTags(dog.getId(), Database.getTagID(labelTag.getTagName()));
             	
             	
             }
@@ -275,7 +280,7 @@ public class Components{
 		return label;
 	}
 	
-	public static GridPane createTags(ArrayList<Tag> tags, ArrayList<Tag> dogTags) {
+	public static GridPane createTags(ArrayList<Tag> tags, Dog dog) {
 		GridPane gridPane = new GridPane();
 		int row = 0;
         int col = 0;
@@ -286,7 +291,7 @@ public class Components{
         
 		for(Tag t : tags) {
 			
-			Label label = tagLabel(t.getTagName(),t, dogTags);
+			Label label = tagLabel(t.getTagName(),t, dog);
 			
             // Add the label to the grid
             gridPane.add(label, row, col);
@@ -303,7 +308,6 @@ public class Components{
 		return gridPane;
 		
 	}
-	
 	
 	public static Label dogTagLabel(String tag) {
 		Label label = new Label(tag);
@@ -392,7 +396,7 @@ public class Components{
 		return stars; 
 	}
 	
-	public static Label attributeLabel(String name, GridPane gridPane,Attribute dogAttribute) {
+	public static Label attributeLabel(String name, GridPane gridPane,Attribute dogAttribute, Dog dog) {
 		Label label = new Label(name);
 		label.setFont(Font.font(font, fontSm));
 		label.setWrapText(true);
@@ -432,18 +436,20 @@ public class Components{
             	}
             	label.setStyle(highLightedStyle); 
             	dogAttribute.setName(label.getText());
+            	Database.changeAttribute(dogAttribute, dog.getId());
             } 
         });
 		
 		
 		return label;
 	}
-	public static GridPane createAttribute(Attribute dogAttribute) {
+	
+	public static GridPane createAttribute(Attribute dogAttribute, Dog dog) {
 		GridPane gridPane = new GridPane();
 		String[] names = dogAttribute.getNames();
 		for(int j = 0; j < names.length; j++) {
 			// Add the label to the grid
-			Label label = attributeLabel(names[j], gridPane, dogAttribute);
+			Label label = attributeLabel(names[j], gridPane, dogAttribute, dog);
             gridPane.add(label, j,0);
             
 		} 
