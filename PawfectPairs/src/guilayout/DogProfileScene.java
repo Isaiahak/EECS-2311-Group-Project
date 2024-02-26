@@ -139,6 +139,7 @@ public class DogProfileScene extends Application {
       
             user.addLikedDogs(dog);
             Database.addLikedDog(dog.getId(), user.getUserID());
+            profileController.changeProfile(1);
            
          		   
          });

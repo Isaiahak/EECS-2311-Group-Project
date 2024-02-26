@@ -46,7 +46,7 @@ public class User {
 	}
 	
 	public void setDog(int userid) {
-		Database.getADogs(userid);
+		Database.getADog(userid);
 		
 	}
 	public int getUserID() {
