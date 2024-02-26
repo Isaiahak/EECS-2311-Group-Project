@@ -65,6 +65,21 @@ public class Dog {
 	        this.adopted = adopted;
 	    }
 	    
+	    public Dog(String name, int id, int age, int energyLevel, int size, int sex) {
+	        this.name = name;
+	        this.id = id;
+	       
+	        setAge(new Age(age));
+	        setSex(new Sex(sex));
+	        setSize(new Size(size));
+	        setEnergyLevel(new EnergyLevel(energyLevel));
+	        //this.energyLevel = energyLevel;
+	        // this.age = age;
+	        //this.size = size;
+	        //this.sex = sex;
+	        //this.poster = poster;
+	    }
+	    
 	    public String getImagePath() {
 	    	return this.imagePath;
 	    }

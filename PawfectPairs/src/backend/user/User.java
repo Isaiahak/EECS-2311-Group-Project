@@ -2,6 +2,7 @@ package backend.user;
 
 import java.util.ArrayList;
 
+import backend.database.Database;
 import backend.dog.Dog;
 import backend.poster.Poster;
 
@@ -9,7 +10,7 @@ import backend.poster.Poster;
 
 public class User {
 	
-	private Dog preferredDog = new Dog("", 0, 0, 0, 0, 0, -1, false,"", "");
+	private Dog preferredDog;
 	
 	private String username;
 	
@@ -44,6 +45,10 @@ public class User {
 		return preferredDog;
 	}
 	
+	public void setDog(int userid) {
+		Database.getADog(userid);
+		
+	}
 	public int getUserID() {
 		return userID;
 	}

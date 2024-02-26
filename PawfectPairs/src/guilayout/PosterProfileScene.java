@@ -47,11 +47,13 @@ public class PosterProfileScene extends Application {
 	 @Override  
 	    public void start(Stage primaryStage) throws Exception {  
 		 
-			posterDogs = AppData.getInstance().getDogProfiles();//TEMP
+			posterDogs = AppData.getInstance().getDogProfiles();
 			user = AppData.getInstance().getUser();
 	    	DogProfileScene dogProfileScene = DogProfileScene.getInstance();
 	    	LoginScene login = LoginScene.getInstance();
 	    	UserProfile userProfile = UserProfile.getInstance();
+	    	
+	    	ArrayList<Dog> posterDogsList = posterDogs = Database.getPosterDogs(currentPoster.getUniqueId()); // too lazy to fix other method names, so this is what its gonna be called lol
 	    	
 	    	
 

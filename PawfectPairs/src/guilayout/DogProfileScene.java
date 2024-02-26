@@ -131,13 +131,16 @@ public class DogProfileScene extends Application {
         
         Button likeButton = Components.button("♥");
         likeButton.setOnAction(e -> {
-        	
-        	System.out.println("username: " + this.user.getUsername() + ", password: " + this.user.getPassword());
+        
         	
             Dog dog = profileController.getCurrentDog();
             dog.setAdopted(true);
+            Database.setDogAdopted(dog);
       
             user.addLikedDogs(dog);
+            Database.addLikedDog(dog.getId(), user.getUserID());
+            
+            profileController.changeProfile(1);
            
          		   
          });

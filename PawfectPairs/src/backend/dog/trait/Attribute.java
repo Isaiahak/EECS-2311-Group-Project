@@ -2,16 +2,9 @@ package backend.dog.trait;
 
 public abstract class Attribute implements Comparable<Attribute>{
     // attributes abstract class to implement comparable, order-able attributes, such as size, energy level, etc
-    private int weight;
+    protected int weight;
     private String name;
-
-    public abstract String[] getNames();
-
-	
-
-	public Attribute(int weight) {
-        setWeight(weight);
-    }
+    
 
     public int compareTo(Attribute o) {
         // if 'weight' is the same, return 0,
@@ -28,12 +21,15 @@ public abstract class Attribute implements Comparable<Attribute>{
     public int getWeight() {
         return weight;
     }
+    
+    public abstract String[] getNames();
 
     public void setWeight(int weight) {
         this.weight = weight;
     }
 
     public String getName() {
+    	
         return name;
     }
 
@@ -42,10 +38,7 @@ public abstract class Attribute implements Comparable<Attribute>{
     }
 }
 
- 
 
-
-	
 
 	
 

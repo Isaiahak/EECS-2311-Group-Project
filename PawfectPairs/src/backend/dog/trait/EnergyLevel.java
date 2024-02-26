@@ -1,10 +1,10 @@
 package backend.dog.trait;
 
 public class EnergyLevel extends Attribute {
-	private String[] names = {"Lazy","Moderate","Energetic"};
+	private static final String[] names = {"Lazy","Moderate","Energetic"};
     public EnergyLevel(int weight){
-        super(weight);
-        this.setName(names[weight]);       	
+    	setName(names[weight]);       	
+    	this.weight = weight;
     }
 
 	@Override
@@ -17,6 +17,7 @@ public class EnergyLevel extends Attribute {
 		// TODO Auto-generated method stub
 		return names;
 	}
+	
 }
 
 
