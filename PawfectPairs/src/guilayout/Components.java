@@ -49,67 +49,6 @@ public class Components{
 	 */
 	
 	public static ArrayList<Attribute> allAttributes = new ArrayList<Attribute>();
-//	public static ArrayList<Tag> allTags = new ArrayList<Tag>(Arrays.asList(
-//			new Tag("Friendly"),
-//			new Tag("Adventerous"),
-//			new Tag("Skittish"),
-//			new Tag("Good with Kids"),
-//			new Tag("Loyal"),
-//			new Tag("Intelligent"),
-//			new Tag("Aggressive"),
-//			new Tag("Special Needs"),
-//			new Tag("Couch Potato"),
-//			new Tag("Athletic"),
-//			new Tag("Hypoallergenic"),
-//			new Tag("Vocal"),
-//			new Tag("Calm"),
-//			new Tag("Playful"),
-//			new Tag("Protective"),
-//			new Tag("Shy"),
-//			new Tag("Smart"),
-//			new Tag("Independent"),
-//			new Tag("Affectionate"),
-//			new Tag("Aggressive"),
-//			new Tag("Trainable"),
-//			new Tag("Sociable"),
-//			new Tag("Quiet"),
-//			new Tag("Noisy"),
-//			new Tag("Easygoing"),
-//			new Tag("Anxious"),
-//			new Tag("Curious"),
-//			new Tag("Gentle"),
-//			new Tag("Stubborn"),
-//			new Tag("Well-behaved"),
-//			new Tag("High-maintenance"),
-//			new Tag("Low-maintenance"),
-//			new Tag("Good with other pets"),
-//			new Tag("Allergic"),
-//			new Tag("Lap dog"),
-//			new Tag("Water lover"),
-//			new Tag("Hypoallergenic"),
-//			new Tag("Therapy dog"),
-//			new Tag("Service dog"),
-//			new Tag("Good on a leash"),
-//			new Tag("Escape artist"),
-//			new Tag("House trained"),
-//			new Tag("Mellow"),
-//			new Tag("Frisbee enthusiast"),
-//			new Tag("High prey drive"),
-//			new Tag("Treat motivated"),
-//			new Tag("Vocal"),
-//			new Tag("Loves car rides")
-//			));
-	
-	public static String[] tagColours = {
-			"#d9ed92",
-			"#b5e48c",
-			"#99d98c",
-			"#76c893",
-			"#52b69a",
-			"#34a0a4",
-			"#168aad"
-		
-	};
 	
 	public static Button button(String text) {
 		Button button = new Button(text);
@@ -224,7 +163,7 @@ public class Components{
 		
 	}
 	
-	public static Label tagLabel(String tag,Tag labelTag, Dog dog) {
+	public static Label tagLabel(String tag,Tag labelTag, Dog dog, ArrayList<Tag> dogTags) {
 		
 		Label label = new Label(tag);
 		label.setFont(Font.font(font, fontSm));
@@ -247,8 +186,13 @@ public class Components{
 		        "-fx-border-color: #98f5e1;" + // Border color
 //		        "-fx-border-width: 4px;"   +
 		        "-fx-alignment: center;"; // Text alignment;
+		
+		
 		//function to be able to turn the label highlighted when loading them if in the dog tags list.
-		if(dog.getTags().contains(labelTag) == true) {
+		
+		
+		if(dogTags.contains(labelTag) == true) {
+			
 			label.setStyle(highLightedStyle);
 		}
 		else {
@@ -270,7 +214,7 @@ public class Components{
             		dog.getTags().remove(labelTag);
             	}
             	label.setStyle(defaultStyle);
-            	Database.removeDogTags(dog.getId(), Database.getTagID(labelTag.getTagName()));
+            	Database.removeDogTags(dog.getId(), Database.getTagID(labelTag.getTagName()), "idealdogtag");
             	
             	
             }
@@ -289,9 +233,16 @@ public class Components{
         
         int i = 0; // current index
         
+        ArrayList<Tag> dogTags = Database.getDogTags(dog.getId());
+        
+        for(Tag t : dogTags) {
+        	System.out.println(t.getTagName());
+        }
+//        System.out.println(dogTags.toString());
+        
 		for(Tag t : tags) {
 			
-			Label label = tagLabel(t.getTagName(),t, dog);
+			Label label = tagLabel(t.getTagName(),t, dog, dogTags);
 			
             // Add the label to the grid
             gridPane.add(label, row, col);
@@ -487,10 +438,14 @@ public class Components{
 		
 		Poster poster = Database.getPosterById(dog.getPosterId());
 		PosterProfileScene posterProfile = PosterProfileScene.getInstance();
-		posterProfile.setCurrentPoster(poster);
+		
+		System.out.println(poster.getDisplayName());
+		
+		
 		
 		posterLink.setOnAction(event -> {
         	try {
+        		posterProfile.setCurrentPoster(poster);
 				posterProfile.start(primaryStage);
 			} catch (Exception e) {
 				e.printStackTrace();

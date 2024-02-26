@@ -42,7 +42,11 @@ public class UserProfile extends Application{
     	
     	LoginScene loginScene  = LoginScene.getInstance();
 		DogProfileScene dogProfileScene = DogProfileScene.getInstance();  
-    	Dog dog = user.getDog();    	  	
+		
+//    	Dog dog = user.getDog();   
+		Dog dog = Database.getADog(user.getUserID());
+    	System.out.println(dog.getName());
+    	
     	VBox root = new VBox();
     	
     	

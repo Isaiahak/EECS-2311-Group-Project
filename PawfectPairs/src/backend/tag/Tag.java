@@ -1,6 +1,6 @@
 package backend.tag;
 
-public class Tag {
+public class Tag{
     private int preference;
     private String tagName;
 
@@ -34,5 +34,14 @@ public class Tag {
     // Setter for tagName
     public void setTagName(String tagName) {
         this.tagName = tagName;
+    }
+    
+    @Override 
+    public boolean equals(Object o) {
+    	
+    	if(this.getTagName().equals(((Tag) o).getTagName())) return true;
+    	
+    	return false;
+    	
     }
 }

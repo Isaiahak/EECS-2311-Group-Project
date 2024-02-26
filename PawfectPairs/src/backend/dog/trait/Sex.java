@@ -1,10 +1,11 @@
 package backend.dog.trait;
 
 public class Sex extends Attribute {
-	private String[] names = {"Male","Female"};
+	private static final String[] names = {"Male","Female"};
+	
 	public Sex(int weight) {
-		super(weight);
-		this.setName(names[weight]);      
+		setName(names[weight]);      
+		this.weight = weight;
 	}
 	@Override
 	public String toString() {
@@ -16,11 +17,6 @@ public class Sex extends Attribute {
 		return names;
 	}
 	
-	@Override
-	public void setWeight(int weight) {	
-        this.weight = weight;
-        this.setName(names[weight]);    
-    }
 	
 }
 
