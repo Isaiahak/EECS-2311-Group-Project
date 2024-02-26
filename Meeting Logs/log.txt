@@ -177,3 +177,5 @@ Feb 24, 2024
 Feb 25, 2024
 - Yuqian, Zainab, Edson and Connor finalized the documentations
 -Isaiah and Ekaterina finalized the integration of the DB with the UI
+- Isaiah created the final database methods
+- Ekaterina debugged Isaiah's database methods 
