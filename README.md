@@ -53,3 +53,8 @@ If you find that this is the case, please download and use "pawfectpairs.zip" in
 Create a blank database in terminal and run the following command in the directory that contains the sql file.
 pg_restore -U username -d dbname -1 newpawdb.sql
 Replace username with the username that you used to create the database you created, replace dbname with the name of the database you created. 
+
+![image](https://github.com/Isaiahak/EECS-2311-Group-Project/assets/97921328/4d0a26a9-8637-4c68-9cd5-6e03cd3bf756)
+
+In the database connection method,  (src>backend.database.Database.java) replace "password" with your postgresql password, "postgres" with your username, and "pawdb" with the dbname defined in the above command.
+
