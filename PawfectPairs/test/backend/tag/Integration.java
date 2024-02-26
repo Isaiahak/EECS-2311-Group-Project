@@ -38,12 +38,12 @@ class Integration {
     @Test
     void testGetPosterById() {
         // Test getting a poster by ID
-        Poster poster = Database.getPosterById(0);
+        Poster poster = Database.getPosterById(1);
 
         assertNotNull(poster);
         assertEquals("doglover123", poster.getDisplayName()); // Replace with expected display name
         assertEquals(5, poster.getScore()); // Replace with expected score
-        assertEquals(0, poster.getUniqueId()); // Replace with expected poster ID
+        assertEquals(1, poster.getUniqueId()); // Replace with expected poster ID
     }
 
 

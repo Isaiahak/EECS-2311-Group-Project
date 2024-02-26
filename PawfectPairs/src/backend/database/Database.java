@@ -252,7 +252,7 @@ public class Database {
 			try {
 				Connection connection = databaseConnector.connect();
 				Statement statement = connection.createStatement () ;
-				ResultSet resultSet = statement.executeQuery ("UPDATE dog SET adopted = TRUE WHERE dogid = " + d.getId());
+				statement.executeUpdate("UPDATE dog SET adopted = TRUE WHERE dogid = " + d.getId());
 				connection.close();
 			}
 			
@@ -564,22 +564,16 @@ public class Database {
         return false;
 	}
 	
-	public static void changeAttribute(Attribute attribute, int dogid) {
+	public static void changeAttribute(Attribute attribute, int dogid, int weight) {
 
 		try {
 			Connection connection = databaseConnector.connect();
 			Statement statement = connection.createStatement ();
 			
-			PreparedStatement preppedStatement = connection.prepareStatement("UPDATE idealdogs SET " + attribute.getClass().getSimpleName().toLowerCase() + "id = " + attribute.getWeight() + " WHERE dogid = " + dogid + ";");
+			PreparedStatement preppedStatement = connection.prepareStatement("UPDATE idealdogs SET " + attribute.getClass().getSimpleName().toLowerCase() + "id = " + weight + " WHERE dogid = " + dogid + ";");
 			
-			int rowsAffected = preppedStatement.executeUpdate();
-	    	 if (rowsAffected > 0) {
-	            System.out.println("Attribute updated successfully!");
-	        } else {
-	            System.out.println("Failed to update attribute ");
-	        }
-//			System.out.println("dogid: " + dogid);
-//			statement.executeQuery("UPDATE idealdogs SET " + attribute.getClass().getSimpleName().toLowerCase() + "id = " + attribute.getWeight() + " WHERE dogid = " + dogid + ";");
+			preppedStatement.executeUpdate();
+	    	
 			connection.close();
 		}
 		
@@ -633,7 +627,7 @@ class DatabaseConnector {
         	
         	Class.forName("org.postgresql.Driver"); // Replace with your database driver
         	
-        	Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/paw3", "postgres", "doglover123");
+        	Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/paw4", "postgres", "doglover123");
 //        	System.out.println( "Connected to the PostgreSQL server successfully.");
         	
         	return connection; 
