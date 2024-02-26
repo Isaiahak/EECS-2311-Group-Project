@@ -55,7 +55,14 @@ public class DogProfileScene extends Application {
     @Override
     public void start(Stage primaryStage) {
     	
-    	posterDogs = AppData.getInstance().getDogProfiles();//TEMP
+//    	posterDogs = AppData.getInstance().getDogProfiles();//TEMP
+//    	
+//    	user = AppData.getInstance().getUser();
+    	
+    	
+    	AppData appData = AppData.getInstance();   
+    	
+    	posterDogs = appData.getDogProfiles();
     	
     	user = AppData.getInstance().getUser();
     	
@@ -84,6 +91,10 @@ public class DogProfileScene extends Application {
 		energyLabel = Components.mediumLabel();
 		
 		
+		if(posterDogs.size() <= 0 ) {
+			outOfDogs.start(primaryStage);
+		}else {
+		
 		//		  Initialize layout
         // attributes hBox
         HBox secondaryInfo = new HBox(); 
@@ -107,11 +118,12 @@ public class DogProfileScene extends Application {
         leftArrowButton.setOnAction(event -> {
         	if(profileController.getDogListSize() == 0) {
         		outOfDogs.start(primaryStage);
-	            profileController.changeProfile(-1);
-	            profileController.displayCurrentPetProfile();
+	          
         	}
         	else {
         		profileController.changeProfile(-1);
+        		
+        		
  	            profileController.displayCurrentPetProfile();
         	}
         });
@@ -124,7 +136,10 @@ public class DogProfileScene extends Application {
         	}
         	else {
         		profileController.changeProfile(1);
+        		
+        		
 	            profileController.displayCurrentPetProfile();
+	            
         	}
         });
         rightArrowButton.setStyle("-fx-background-color: #0a0f40; -fx-text-fill: white;");
@@ -199,7 +214,7 @@ public class DogProfileScene extends Application {
 //    	    
 //    	    Database.onApplicationClose(user, posterDogs);
 //    	});
-		
+		}
 		
     }
     }

@@ -235,11 +235,6 @@ public class Components{
         
         ArrayList<Tag> dogTags = Database.getDogTags(dog.getId());
         
-        for(Tag t : dogTags) {
-        	System.out.println(t.getTagName());
-        }
-//        System.out.println(dogTags.toString());
-        
 		for(Tag t : tags) {
 			
 			Label label = tagLabel(t.getTagName(),t, dog, dogTags);
@@ -347,7 +342,7 @@ public class Components{
 		return stars; 
 	}
 	
-	public static Label attributeLabel(String name, GridPane gridPane,Attribute dogAttribute, Dog dog) {
+	public static Label attributeLabel(String name, GridPane gridPane,Attribute dogAttribute, Dog dog, int weight) {
 		Label label = new Label(name);
 		label.setFont(Font.font(font, fontSm));
 		label.setWrapText(true);
@@ -371,7 +366,7 @@ public class Components{
 		        "-fx-alignment: center;"; // Text alignment;
 		
 		//function to be able to turn the label highlighted when loading them if dog attribute matches.
-		if(dogAttribute.getName().equals(label.toString()) == true) {
+		if(dogAttribute.getWeight() == weight) {
 			label.setStyle(highLightedStyle);
 		}
 		else {
@@ -387,7 +382,7 @@ public class Components{
             	}
             	label.setStyle(highLightedStyle); 
             	dogAttribute.setName(label.getText());
-            	Database.changeAttribute(dogAttribute, dog.getId());
+            	Database.changeAttribute(dogAttribute, dog.getId(), weight);
             } 
         });
 		
@@ -400,7 +395,7 @@ public class Components{
 		String[] names = dogAttribute.getNames();
 		for(int j = 0; j < names.length; j++) {
 			// Add the label to the grid
-			Label label = attributeLabel(names[j], gridPane, dogAttribute, dog);
+			Label label = attributeLabel(names[j], gridPane, dogAttribute, dog, j );
             gridPane.add(label, j,0);
             
 		} 
@@ -439,10 +434,7 @@ public class Components{
 		Poster poster = Database.getPosterById(dog.getPosterId());
 		PosterProfileScene posterProfile = PosterProfileScene.getInstance();
 		
-		System.out.println(poster.getDisplayName());
-		
-		
-		
+	
 		posterLink.setOnAction(event -> {
         	try {
         		posterProfile.setCurrentPoster(poster);
