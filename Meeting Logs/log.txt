@@ -156,7 +156,7 @@ Feb 23, 2024
 
 Feb 24, 2024
 
-- Yuqian, Zainab and Edson continually worked on the DB.
+- Yuqian, Zainab and Edson continually worked on the DB
   - modified the DB and shared the sql file with the rest of the group
   - successfully made a copy of the DB
   - attempted to connect it to eclipse
@@ -169,3 +169,5 @@ Feb 24, 2024
 - Ekaterina updated the hyperlinks/data on the GUI to display from the database
 - Isaiah worked on the database (we ended up not using his database)
 - Isaiah created the bulk of the database methods to gte and update the database 
+- Yuqian and Zainab updated miro board for ITR2
+- Yuqian updated stroies for ITR2
