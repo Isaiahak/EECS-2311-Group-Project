@@ -165,7 +165,7 @@ Feb 24, 2024
   - fixed some of the test cases to reflect the changes from the dog class
   - updated the UML diagram
 - Ekaterina implemented the database/several database methods into the program
-- Ekaterina created more components for the Ui
+- Ekaterina created more components for the UI
 - Ekaterina updated the hyperlinks/data on the GUI to display from the database
 - Isaiah worked on the database (we ended up not using his database)
 - Isaiah created the bulk of the database methods to gte and update the database 
