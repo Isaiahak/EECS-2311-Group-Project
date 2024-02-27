@@ -44,16 +44,13 @@ public class DogProfileController {
         
         this.primaryStage = primaryStage;
     }
+    
     public void changeProfile(int direction) {
         currentIndex = (currentIndex + direction + dogProfiles.size()) % dogProfiles.size();
         if (dogProfiles.get(currentIndex).getAdopted() == true) {
         	dogProfiles.remove(currentIndex);        	
         }
-        if (dogProfiles.size() == 0) {
-        	
-        	
-        	
-        	
+        if (dogProfiles.size() == 0) {	
         }
     
     }

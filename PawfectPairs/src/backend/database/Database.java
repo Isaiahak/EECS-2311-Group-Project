@@ -55,14 +55,14 @@ public class Database {
 	 * DOG METHODS
 	 */
 	
-	public static ArrayList<Dog> getAllDogs(){
+	public static ArrayList<Dog> getAllDogs(int userid){
 
 	        ArrayList<Dog> dogProfiles = new ArrayList<>();
 
 	        try{
 	        Connection connection = databaseConnector.connect();
 	        Statement statement = connection.createStatement () ;
-	        ResultSet resultSet = statement.executeQuery ("SELECT * FROM dog WHERE adopted = FALSE;");
+	        ResultSet resultSet = statement.executeQuery ("SELECT * FROM dog WHERE dog.dogid NOT IN (SELECT userdogs.dogid FROM userdogs WHERE userdogs.userid = "+ userid + " ) AND adopted = false;");
 	        while (resultSet.next()) {
 	        	// only add a dog if adoption = false and its id is not negative (if negative, its a dummy dog)	
 			    Dog dog = new Dog(resultSet.getString ("dogname"), resultSet.getInt("dogid"), resultSet.getInt("ageid"),  resultSet.getInt("energylevelid"), resultSet.getInt("sizeid"), resultSet.getInt("sexid"), resultSet.getInt("posterid"), resultSet.getBoolean("adopted"), 
@@ -80,7 +80,7 @@ public class Database {
 	         return dogProfiles;
 		}
 	
-	//gets the users ideal dog
+	//gets the users ideal dog including its tags
 	public static Dog getADog(int userid){
 
         Dog dog = null;
@@ -89,10 +89,11 @@ public class Database {
         try{
         Connection connection = databaseConnector.connect();
         Statement statement = connection.createStatement () ;
-        ResultSet resultSet = statement.executeQuery ("SELECT * FROM idealdogs WHERE idealdogs.dogid = " + userid+ ";") ;
+        ResultSet resultSet = statement.executeQuery ("SELECT * FROM idealdogs WHERE idealdogs.dogid = " + userid + ";") ;
         while (resultSet.next()) {
         	// only add a dog if adoption = false and its id is not negative (if negative, its a dummy dog)
-		    dog = new Dog(resultSet.getString("dogname"), resultSet.getInt("dogid"), resultSet.getInt("ageid"),  resultSet.getInt("energylevelid"), resultSet.getInt("sizeid"), resultSet.getInt("sexid"));            
+		    dog = new Dog(resultSet.getString("dogname"), resultSet.getInt("dogid"), resultSet.getInt("ageid"),  resultSet.getInt("energylevelid"), resultSet.getInt("sizeid"), resultSet.getInt("sexid"));  
+		    dog.setTags(Database.getDogTags(dog.getId()));
          }
              connection.close () ;
 
@@ -150,7 +151,6 @@ public class Database {
          return dogProfiles;
 	}
 
-		
 	public static void addLikedDog(int dogID,int userID){
 	
 			Connection connection = null;
@@ -264,7 +264,6 @@ public class Database {
 		}
 }
 
-	
 	// method for adding the ideal user dog to the db
 	public static void addDog(int userID) {
 		
@@ -370,7 +369,7 @@ public class Database {
 		
         try {
         	 connection = databaseConnector.connect();
-        	 String sql = "INSERT INTO "+ tablename + " (idealdogid, tagid) VALUES (?, ?)";
+        	 String sql = "INSERT INTO "+ tablename + " (dogid, tagid) VALUES (?, ?)";
         	 preparedStatement = connection.prepareStatement(sql);
         	 preparedStatement.setInt(1, dogid);
         	 preparedStatement.setInt(2, tagid);
@@ -400,7 +399,43 @@ public class Database {
         }
 	}
 	
-	
+	public static void addIdealDogTags(int dogid, ArrayList<Tag> tags){
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		
+        try {
+        	 connection = databaseConnector.connect();
+        	 for(Tag t : tags) {
+		    	 String sql = "INSERT INTO idealdogtag (idealdogid, tagid) VALUES (?, ?)";
+		    	 preparedStatement = connection.prepareStatement(sql);
+		    	 preparedStatement.setInt(1, dogid);
+		    	 preparedStatement.setInt(2, Database.getTagID(t.getTagName()));
+		    	 int rowsAffected = preparedStatement.executeUpdate();
+		    	 if (rowsAffected > 0) {
+		            System.out.println("IdealDogTag relationship added successfully!");
+		        } else {
+		            System.out.println("Failed to add IdealDogTag relationship.");
+		        }
+		    } 
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+          
+        } 
+        finally {
+            try {
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+                if (connection != null) {
+                    connection.close();
+                }
+            } 
+            catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+	}
 	//method for adding the tags to the ideal dog
 	public static void setDogTags(ArrayList<Tag> tags, int dogid) {
 		for (Tag t : tags) {
@@ -479,7 +514,7 @@ public class Database {
 			    	user.addLikedDogs(d);
 			    }
 	        }
-	        user.setDog(user.getUserID());
+	        user.setDog(Database.getADog(user.getUserID()));
 	    } 
 	    catch (SQLException e) {
 	        e.printStackTrace();
@@ -601,22 +636,44 @@ public class Database {
 		
 }
 	
-//	public static void onApplicationClose(User user, ArrayList<Dog> doglist){
-//		Database.updateAllAdoptedDogs(doglist);
-//		for (Dog d : user.getLikedDogs()) {
-//			Database.addLikedDog(d.getId(), user.getUserID());
-//		} 
-//		for(Tag t : user.getDog().getTags()) {
-//			Database.addDogTags(user.getDog().getId(), Database.getTagID(t.getTagName()));
-//		}
-//	}
-
+	public static void deleteOldTags(int dogid) {
+		try {
+			Connection connection = databaseConnector.connect();
+			Statement statement = connection.createStatement ();
+			
+			PreparedStatement preppedStatement = connection.prepareStatement("DELETE FROM idealdogtag WHERE idealdogid = " + dogid + ";");
+			
+			preppedStatement.execute();
+	    	
+			connection.close();
+		}
+		
+		catch (SQLException e) {
+ 			System.out.println ("Connection failure.") ;
+ 			e.printStackTrace () ;
+       }
+	}
+	
+	public static void onApplicationClose(User user, ArrayList<Dog> doglist){
+		Database.updateAllAdoptedDogs(doglist);
+		ArrayList<Dog> likedDogs = Database.getLikedDogs(user.getUserID());
+		for (Dog d : user.getLikedDogs()) {
+			if(likedDogs.contains(d) == false) 
+				Database.addLikedDog(d.getId(), user.getUserID());	
+		}
+		Dog dog = user.getDog();
+		
+		Database.deleteOldTags(dog.getId());
+		Database.addIdealDogTags(dog.getId(),dog.getTags());
+		
+		
+		Database.changeAttribute(dog.getSex(),dog.getId(),dog.getSex().getWeight());
+		Database.changeAttribute(dog.getSize(),dog.getId(),dog.getSize().getWeight());
+		Database.changeAttribute(dog.getAge(),dog.getId(),dog.getAge().getWeight());
+		Database.changeAttribute(dog.getEnergyLevel(),dog.getId(),dog.getEnergyLevel().getWeight());	
+	}
 	
 }
-
-
-
-
 
 
 class DatabaseConnector {
@@ -627,7 +684,7 @@ class DatabaseConnector {
         	
         	Class.forName("org.postgresql.Driver"); // Replace with your database driver
         	
-        	Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/paw4", "postgres", "doglover123");
+        	Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/paw", "postgres", "doglover123");
 //        	System.out.println( "Connected to the PostgreSQL server successfully.");
         	
         	return connection; 

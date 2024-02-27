@@ -18,8 +18,7 @@ import backend.dog.Dog;
 public class LikedDogScene extends Application{
 	
 	
-	ArrayList<Dog> posterDogs;
-	User user;
+	AppData appData;
 
 	private static LikedDogScene instance;
 
@@ -35,8 +34,9 @@ public class LikedDogScene extends Application{
 	
 	@Override
 	public void start(Stage stage){
-		posterDogs = AppData.getInstance().getDogProfiles();//TEMP
-		user = AppData.getInstance().getUser();
+		appData = AppData.getInstance();
+		ArrayList<Dog> posterDogs = appData.getDogProfiles();//TEMP
+		User user = appData.getUser();
 		
 		DogProfileScene dogProfileScene = DogProfileScene.getInstance();  
 		ArrayList<Dog> likedDogs = user.getLikedDogs();
@@ -47,14 +47,7 @@ public class LikedDogScene extends Application{
     	root.setSpacing(20);
     	
     	HBox navTab = Components.navTab(userProfile, LikedDogScene.getInstance(), dogProfileScene, stage);
-    	
-//		Button backButton = Components.button("Back");
-//		backButton.setAlignment(Pos.TOP_LEFT);
-		
-//		 backButton.setOnAction(e -> {
-//			 dogProfileScene.start(stage);
-//	     });
-		 
+ 
 		VBox likedDogsDisplay = new VBox();
 	    	
     	for(Dog d : likedDogs) {
@@ -93,11 +86,11 @@ public class LikedDogScene extends Application{
 		stage.setTitle("Pawfect Pairs");
 //		stage.setMaximized(true);
 		stage.show();
-//		stage.setOnCloseRequest(event -> {
-//    	    System.out.println("Window is closing. Perform cleanup if needed.");
-//    	    
-//    	    Database.onApplicationClose(user, posterDogs);
-//    	});
+		stage.setOnCloseRequest(event -> {
+    	    System.out.println("Window is closing. Perform cleanup if needed.");
+    	    
+    	    Database.onApplicationClose(user, posterDogs);
+    	});
 		
 	}	
 	

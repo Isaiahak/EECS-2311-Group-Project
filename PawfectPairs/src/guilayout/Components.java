@@ -205,7 +205,6 @@ public class Components{
             	label.setStyle(highLightedStyle); // highlight if not highlighted
             	if(dog.getTags().contains(labelTag) == false) {
             		dog.getTags().add(labelTag);
-            		Database.setDogTags(dog.getTags(), dog.getId());
             	}
             	
             	
@@ -213,10 +212,7 @@ public class Components{
             	if(dog.getTags().contains(labelTag) == true) {
             		dog.getTags().remove(labelTag);
             	}
-            	label.setStyle(defaultStyle);
-            	Database.removeDogTags(dog.getId(), Database.getTagID(labelTag.getTagName()), "idealdogtag");
-            	
-            	
+            	label.setStyle(defaultStyle);         	
             }
         });
 		
@@ -233,11 +229,9 @@ public class Components{
         
         int i = 0; // current index
         
-        ArrayList<Tag> dogTags = Database.getDogTags(dog.getId());
-        
 		for(Tag t : tags) {
 			
-			Label label = tagLabel(t.getTagName(),t, dog, dogTags);
+			Label label = tagLabel(t.getTagName(),t, dog, dog.getTags());
 			
             // Add the label to the grid
             gridPane.add(label, row, col);
@@ -382,7 +376,8 @@ public class Components{
             	}
             	label.setStyle(highLightedStyle); 
             	dogAttribute.setName(label.getText());
-            	Database.changeAttribute(dogAttribute, dog.getId(), weight);
+            	dogAttribute.setWeight(weight);
+            	
             } 
         });
 		

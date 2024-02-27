@@ -165,6 +165,15 @@ public class Dog {
 	        }
 	        return stringBuilder.toString();
 	    }
+		
+		 @Override 
+		    public boolean equals(Object o) {
+		    	
+		    	if(this.getId() == ((Dog) o).getId()) return true;
+		    	
+		    	return false;
+		    	
+		    }
 }
 
 

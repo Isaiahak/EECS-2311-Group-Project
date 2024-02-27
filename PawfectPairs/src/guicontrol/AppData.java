@@ -4,12 +4,14 @@ import java.util.ArrayList;
 
 import backend.database.Database;
 import backend.dog.Dog;
+import backend.tag.Tag;
 import backend.user.User;
 
 public class AppData {
 	
 	private User user;
 	private ArrayList<Dog> dogProfiles;
+	private ArrayList<Tag> allTags;
 	private static AppData instance;
 	
 	public static AppData getInstance() {
@@ -18,24 +20,30 @@ public class AppData {
 	return instance;
 	}
 	
-
-	public User getUser() {
-		return user;
-	}
-
 	public void setUser(String user, String password) {
 		this.user = Database.getUser(user, password);
-		
-//		System.out.println("username: " + this.user.getUsername() + ", password: " + this.user.getPassword());
+	}
+	
+	public User getUser() {
+		return this.user;
 	}
 
 	public ArrayList<Dog> getDogProfiles() {
-		return dogProfiles;
+		return this.dogProfiles;
 	}
 
 	public void setDogProfiles() {
-		this.dogProfiles = Database.getAllDogs();
+		this.dogProfiles = Database.getAllDogs(user.getUserID());
 	}
 	
-
+	public ArrayList<Tag> getallTags(){
+		return this.allTags;
+	}
+	
+	public void setAllTags(){
+		this.allTags = Database.getAllTags();
+		}
+	
+	
+	
 }

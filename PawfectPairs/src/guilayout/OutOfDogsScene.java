@@ -17,8 +17,8 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class OutOfDogsScene extends Application{
-	ArrayList<Dog> posterDogs;
-	User user;
+	
+	AppData appData;
 
 	
 	private static OutOfDogsScene instance;
@@ -38,9 +38,9 @@ public class OutOfDogsScene extends Application{
 
 	@Override
 	public void start(Stage stage) {
-		
-		posterDogs = AppData.getInstance().getDogProfiles();//TEMP
-		user = AppData.getInstance().getUser();
+		appData = AppData.getInstance();
+		ArrayList<Dog> posterDogs =  appData.getDogProfiles();//TEMP
+		User user = appData.getUser();
 		
 		VBox root = new VBox();
 		root.setSpacing(15);
@@ -56,11 +56,11 @@ public class OutOfDogsScene extends Application{
 		Scene scene = new Scene(stackPane, Components.screenWidth, Components.screenHeight);		 
 		stage.setScene(scene);
 		stage.show();
-//		stage.setOnCloseRequest(event -> {
-//    	    System.out.println("Window is closing. Perform cleanup if needed.");
-//    	    
-//    	    Database.onApplicationClose(user, posterDogs);
-//    	});
+		stage.setOnCloseRequest(event -> {
+    	    System.out.println("Window is closing. Perform cleanup if needed.");
+    	    
+    	    Database.onApplicationClose(user, posterDogs);
+    	});
 		
 	}
 

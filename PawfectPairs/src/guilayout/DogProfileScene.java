@@ -39,8 +39,7 @@ public class DogProfileScene extends Application {
     private TextFlow biographyText;
     private Hyperlink posterLink;
     
-    User user;
-    ArrayList<Dog> posterDogs;
+    AppData appData;
     
 //    private int l = 1080; 
 //    private int w = 1920; 
@@ -54,17 +53,10 @@ public class DogProfileScene extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-    	
-//    	posterDogs = AppData.getInstance().getDogProfiles();//TEMP
-//    	
-//    	user = AppData.getInstance().getUser();
-    	
-    	
-    	AppData appData = AppData.getInstance();   
-    	
-    	posterDogs = appData.getDogProfiles();
-    	
-    	user = AppData.getInstance().getUser();
+
+    	appData = AppData.getInstance();     	
+    	ArrayList<Dog> posterDogs = appData.getDogProfiles();
+    	User user = appData.getUser();
     	
     	//root is v box
 		VBox root = new VBox();
@@ -150,10 +142,8 @@ public class DogProfileScene extends Application {
         	
             Dog dog = profileController.getCurrentDog();
             dog.setAdopted(true);
-            Database.setDogAdopted(dog);
-      
             user.addLikedDogs(dog);
-            Database.addLikedDog(dog.getId(), user.getUserID());
+         
             
             profileController.changeProfile(1);
            
@@ -185,12 +175,8 @@ public class DogProfileScene extends Application {
         
         
          // add to root vbox
-        root.getChildren().addAll(navTab, petImageView, primaryInfoLabel, posterLink, secondaryInfo, biographyText, tagsPane, bottomTab);
-        
-        
-        ArrayList<Dog> dogProfiles = Database.getAllDogs();
-        
-		profileController = new DogProfileController(primaryInfoLabel, sizeLabel, energyLabel, petImageView, biographyText, posterLink, dogProfiles, tagsPane, primaryStage);
+        root.getChildren().addAll(navTab, petImageView, primaryInfoLabel, posterLink, secondaryInfo, biographyText, tagsPane, bottomTab); 
+		profileController = new DogProfileController(primaryInfoLabel, sizeLabel, energyLabel, petImageView, biographyText, posterLink, posterDogs, tagsPane, primaryStage);
 		
 
       // Display the initial pet profile
@@ -209,11 +195,11 @@ public class DogProfileScene extends Application {
 //      primaryStage.setMaximized(true);
       primaryStage.show();
       
-//      primaryStage.setOnCloseRequest(event -> {
-//    	    System.out.println("Window is closing. Perform cleanup if needed.");
-//    	    
-//    	    Database.onApplicationClose(user, posterDogs);
-//    	});
+      primaryStage.setOnCloseRequest(event -> {
+    	    System.out.println("Window is closing. Perform cleanup if needed.");
+    	    
+    	    Database.onApplicationClose(user, posterDogs);
+    	});
 		}
 		
     }

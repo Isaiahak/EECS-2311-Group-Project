@@ -5,11 +5,11 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
-
 import java.util.ArrayList;
 
 import backend.database.Database;
 import backend.dog.Dog;
+import backend.tag.Tag;
 import backend.user.User;
 import guicontrol.AppData;
 
@@ -17,8 +17,7 @@ public class UserProfile extends Application{
 	
 	private static UserProfile instance;
 	
-    User user;
-    ArrayList<Dog> posterDogs;
+    AppData appData;
 	
 	public static UserProfile getInstance() {
 		if (instance == null) {
@@ -26,27 +25,24 @@ public class UserProfile extends Application{
 		}
 		return instance;
 	}
+	
 	private UserProfile() {
 		
 	}
 
-  public static void main(String[] args) {
+	public static void main(String[] args) {
         launch(args);
     }
 
     @Override
     public void start(Stage primaryStage) {
-    	
-    	posterDogs = AppData.getInstance().getDogProfiles();//TEMP
-    	user = AppData.getInstance().getUser();
-    	
-    	LoginScene loginScene  = LoginScene.getInstance();
-		DogProfileScene dogProfileScene = DogProfileScene.getInstance();  
-		
-//    	Dog dog = user.getDog();   
-		Dog dog = Database.getADog(user.getUserID());
-    	System.out.println(dog.getName());
-    	
+    	appData = AppData.getInstance();
+    	ArrayList<Dog> posterDogs = appData.getDogProfiles();//TEMP
+    	User user = appData.getUser();
+    	ArrayList<Tag> tags = appData.getallTags();		
+    	DogProfileScene dogProfileScene = DogProfileScene.getInstance();  
+		Dog dog = user.getDog();   
+    	System.out.println(dog.getName());	
     	VBox root = new VBox();
     	
     	
@@ -78,7 +74,7 @@ public class UserProfile extends Application{
     	
     	//display all tags
     	
-    	GridPane tagsGrid =  Components.createTags(Database.getAllTags(),dog);
+    	GridPane tagsGrid =  Components.createTags(tags,dog);
     	tagsGrid.setAlignment(javafx.geometry.Pos.CENTER);
     	
     	VBox attributes = new VBox();
@@ -146,10 +142,10 @@ public class UserProfile extends Application{
 //		primaryStage.setMaximized(true);
 		primaryStage.show();
 		
-//		primaryStage.setOnCloseRequest(event -> {
-//    	    System.out.println("Window is closing. Perform cleanup if needed.");
-//    	    Database.onApplicationClose(user, posterDogs);
-//    	});
+		primaryStage.setOnCloseRequest(event -> {
+    	    System.out.println("Window is closing. Perform cleanup if needed.");
+    	    Database.onApplicationClose(user, posterDogs);
+    	});
 		
 		
 

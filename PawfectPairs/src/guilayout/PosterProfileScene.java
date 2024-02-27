@@ -29,8 +29,7 @@ import javafx.stage.Stage;
 
 public class PosterProfileScene extends Application {
 	
-	ArrayList<Dog> posterDogs;
-	User user;
+	AppData appData;
 	private static PosterProfileScene instance; 
 	
 
@@ -46,70 +45,70 @@ public class PosterProfileScene extends Application {
 
 	 @Override  
 	    public void start(Stage primaryStage) throws Exception {  
-		 
-			posterDogs = AppData.getInstance().getDogProfiles();
-			user = AppData.getInstance().getUser();
-	    	DogProfileScene dogProfileScene = DogProfileScene.getInstance();
-	    	LoginScene login = LoginScene.getInstance();
-	    	UserProfile userProfile = UserProfile.getInstance();
-	    	
-	    	ArrayList<Dog> posterDogsList = posterDogs = Database.getPosterDogs(currentPoster.getUniqueId()); // too lazy to fix other method names, so this is what its gonna be called lol
-	    	
+		 appData = AppData.getInstance();
+		 ArrayList<Dog> posterDogs = appData.getDogProfiles();
+		 User user = appData.getUser();
+    	 DogProfileScene dogProfileScene = DogProfileScene.getInstance();
+    	 UserProfile userProfile = UserProfile.getInstance();
+    	
+    	 // find a way to set the posters dogs so we dont have to do a db call, this is because we would then be required to update the db and then pull which is just not necessary
+    	 ArrayList<Dog> posterDogsList = Database.getPosterDogs(currentPoster.getUniqueId()); // too lazy to fix other method names, so this is what its gonna be called lol
+    	
+    	
+
+    	
+    	 HBox navTab = Components.navTab(userProfile, LikedDogScene.getInstance(), dogProfileScene, primaryStage);
+    	 navTab.setAlignment(Pos.CENTER);
+    	
+    	
+    	 VBox root = new VBox();
 	    	
 
-	    	
-	    	HBox navTab = Components.navTab(userProfile, LikedDogScene.getInstance(), dogProfileScene, primaryStage);
-	    	navTab.setAlignment(Pos.CENTER);
-	    	
-	    	
-	    	VBox root = new VBox();
-	    	
 
-
-	      Label name = Components.largeLabel(currentPoster.getDisplayName(), Pos.CENTER); 
-	      name.setAlignment(Pos.CENTER);
-	      VBox PosterInfo = new VBox();
-	      PosterInfo.setAlignment(Pos.CENTER);
+	     Label name = Components.largeLabel(currentPoster.getDisplayName(), Pos.CENTER); 
+	     name.setAlignment(Pos.CENTER);
+	     VBox PosterInfo = new VBox();
+	     PosterInfo.setAlignment(Pos.CENTER);
 	      
-	      HBox stars = Components.generateStars(currentPoster.getScore());
+	     HBox stars = Components.generateStars(currentPoster.getScore());
 	      
 	      // generate stars and display name 
-	      PosterInfo.getChildren().addAll(
+	     PosterInfo.getChildren().addAll(
 	    		  name, 
 	    		  stars);
 
 	      
-	      VBox posterProfileDogsDisplay = new VBox();
-	      posterProfileDogsDisplay.setSpacing(50);
-	      
+	     VBox posterProfileDogsDisplay = new VBox();
+	     posterProfileDogsDisplay.setSpacing(50);
+	     
 	      // poster's dogs display
-	      for(Dog d : posterDogs) {
-	    		posterProfileDogsDisplay.getChildren().add(Components.posterDogView(d));
-	    	}
+	     for(Dog d : posterDogsList) {
+	    	posterProfileDogsDisplay.getChildren().add(Components.posterDogView(d));
+	    }
 	      
-	     root.getChildren().addAll(
-	    		 navTab,
-	    		  PosterInfo,
-	    		  posterProfileDogsDisplay
-	    		  );
-	     root.setAlignment(Pos.CENTER);
-	      
-	     StackPane base = new StackPane(root);  
-		 base.setAlignment(Pos.CENTER);
+		root.getChildren().addAll(
+				 navTab,
+				 PosterInfo,
+				 posterProfileDogsDisplay
+				 );
+		root.setAlignment(Pos.CENTER);
+		  
+		StackPane base = new StackPane(root);  
+		base.setAlignment(Pos.CENTER);
 		 
-	     ScrollPane scrollPane = new ScrollPane(base);
-	     scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-	     scrollPane.setFitToWidth(true);
+		ScrollPane scrollPane = new ScrollPane(base);
+		scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+		scrollPane.setFitToWidth(true);
 
-	    Scene scene = new Scene(scrollPane, Components.screenWidth, Components.screenHeight);
+		Scene scene = new Scene(scrollPane, Components.screenWidth, Components.screenHeight);
 		primaryStage.setScene(scene);
 		primaryStage.show();
 		
-//		primaryStage.setOnCloseRequest(event -> {
-//    	    System.out.println("Window is closing. Perform cleanup if needed.");
-//    	    
-//    	    Database.onApplicationClose(user, posterDogs);
-//    	});
+		primaryStage.setOnCloseRequest(event -> {
+		    System.out.println("Window is closing. Perform cleanup if needed.");
+		    
+		    Database.onApplicationClose(user, posterDogs);
+		});
 	        
 //	  System.out.println(currentPoster.getScore());
 	        

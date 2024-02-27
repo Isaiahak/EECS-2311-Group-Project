@@ -45,8 +45,8 @@ public class User {
 		return preferredDog;
 	}
 	
-	public void setDog(int userid) {
-		Database.getADog(userid);
+	public void setDog(Dog dog) {
+		this.preferredDog = dog;
 		
 	}
 	public int getUserID() {
