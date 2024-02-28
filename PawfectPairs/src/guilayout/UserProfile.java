@@ -144,10 +144,10 @@ public class UserProfile extends Application{
 //		primaryStage.setMaximized(true);
 		primaryStage.show();
 		
-//		primaryStage.setOnCloseRequest(event -> {
-//    	    System.out.println("Window is closing. Perform cleanup if needed.");
-//    	    Database.onApplicationClose(user, posterDogs);
-//    	});
+		primaryStage.setOnCloseRequest(event -> {
+    	    System.out.println("Window is closing. Perform cleanup if needed.");
+    	    Database.onApplicationClose(user);
+    	});
 		
 		
 

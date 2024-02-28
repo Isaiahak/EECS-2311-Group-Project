@@ -57,12 +57,12 @@ public class OutOfDogsScene extends Application{
 		Scene scene = new Scene(stackPane, Components.screenWidth, Components.screenHeight);		 
 		stage.setScene(scene);
 		stage.show();
-//		stage.setOnCloseRequest(event -> {
-//    	    System.out.println("Window is closing. Perform cleanup if needed.");
-//    	    
-//    	    Database.onApplicationClose(user, posterDogs);
-//    	});
-//		
+		stage.setOnCloseRequest(event -> {
+    	    System.out.println("Window is closing. Perform cleanup if needed.");
+    	    
+    	    Database.onApplicationClose(user);
+    	});
+		
 	}
 
 }

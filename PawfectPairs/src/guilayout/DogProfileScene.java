@@ -88,12 +88,11 @@ public class DogProfileScene extends Application {
         passButton.setOnAction(event -> {
             Dog dog = posterDogs.peek();
             user.addPassedDogs(dog);
-
+            profileController.changeProfile();
             if(profileController.getDogListSize() == 0) {
                 outOfDogs.start(primaryStage);
             }
             else {
-                profileController.changeProfile();
                 profileController.displayCurrentPetProfile();
 
             }
@@ -105,12 +104,11 @@ public class DogProfileScene extends Application {
             Dog dog = posterDogs.peek();
 //                    dog.setAdopted(true);
             user.addLikedDogs(dog);
-
+            profileController.changeProfile();
             if(profileController.getDogListSize() == 0) {
                 outOfDogs.start(primaryStage);
             }
             else {
-                profileController.changeProfile();
                 profileController.displayCurrentPetProfile();
 
             }
@@ -196,15 +194,15 @@ public class DogProfileScene extends Application {
 	//      primaryStage.setMaximized(true);
 	      primaryStage.show();
       
-//      primaryStage.setOnCloseRequest(event -> {
-//    	    System.out.println("Window is closing. Perform cleanup if needed.");
-//    	    
-//    	    Database.onApplicationClose(user, posterDogs);
-//    	});
-//		}
-		
-			}
+      primaryStage.setOnCloseRequest(event -> {
+    	    System.out.println("Window is closing. Perform cleanup if needed.");
+    	    
+    	    Database.onApplicationClose(user);
+    	});
 		}
+		
+}
+		
 
     
 

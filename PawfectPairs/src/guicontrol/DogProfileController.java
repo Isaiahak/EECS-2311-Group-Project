@@ -78,9 +78,6 @@ public class DogProfileController {
         
         tagsPane.getChildren().add(Components.createTags(currentProfile.getTags()));
         
-        for(Tag t : currentProfile.getTags().values()) {
-        	System.out.println("Tag: " + t.getTagName());
-        }
 
         
     }
