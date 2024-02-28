@@ -61,7 +61,7 @@ public class DogProfileScene extends Application {
     	PriorityQueue<Dog> posterDogs = appData.getSortedDogProfiles();
     	Hashtable<Integer,Poster> posterList = appData.getPosters();
     	User user = appData.getUser();
-    	System.out.println(posterList.keySet().toString());
+    	
     	//root is v box
 		VBox root = new VBox();
 		root.setSpacing(10);
@@ -170,7 +170,7 @@ public class DogProfileScene extends Application {
         
          // add to root vbox
 
-        root.getChildren().addAll(navTab, petImageView, primaryInfoLabel, posterLink, secondaryInfo, biographyText, tagsPane); 
+        root.getChildren().addAll(navTab, primaryControlTab, petImageView, primaryInfoLabel, posterLink, secondaryInfo, biographyText, tagsPane); 
 		profileController = new DogProfileController(primaryInfoLabel, sizeLabel, energyLabel, petImageView, biographyText, posterLink, posterDogs, tagsPane, primaryStage, posterList);
 
 		
