@@ -71,7 +71,7 @@ public class Database {
 				 
 				 PriorityQueue<Dog> queue= new PriorityQueue<Dog>();
 				 dogProfiles.put(id, queue);// populate the outer hashtable with poster id's
-		         Statement statement = connection.createStatement () ;
+		         Statement statement = connection.createStatement();
 		         Statement statement2 = connection.createStatement();
 		         ResultSet resultSet = statement.executeQuery ("SELECT * FROM dog WHERE dog.dogid NOT IN (SELECT userdogs.dogid FROM userdogs WHERE userdogs.userid = "+ user.getUserID() + " ) AND adopted = false;");
 		         while (resultSet.next()) {
@@ -99,9 +99,12 @@ public class Database {
 				    		imagePath,
 				    		biography
 						    );
-				    
-				    
-				    dog.setTags(getDogTags(dogId, statement2));
+				    ResultSet resultSet2 = statement2.executeQuery("SELECT tags.tagname, tags.tagid FROM tags JOIN dogtag ON tags.tagid = dogtag.tagid WHERE dogtag.dogid = " + dogId + ";");
+				    Hashtable<Integer,Tag> dogTags = new Hashtable<Integer,Tag>();
+				    while (resultSet.next()) {
+				    	dogTags.put(resultSet2.getInt("tagid"),new Tag(resultSet2.getString("tagname")));
+				    }
+				    dog.setTags(dogTags);
 				    
 				    dog.calculateScore(user.getDog().getTags()); // initialise dog score
 //				    System.out.println("key set =" + dogProfiles.keySet().toString());
