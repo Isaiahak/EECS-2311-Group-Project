@@ -77,8 +77,42 @@ public class DogProfileScene extends Application {
         OutOfDogsScene outOfDogs = OutOfDogsScene.getInstance();
        
         
+        HBox primaryControlTab = new HBox();
+        
         petImageView = Components.imageView(500,500);
+        
+        
+        Button passButton = Components.button("╳");
+        passButton.setOnAction(event -> {
+        	if(profileController.getDogListSize() == 0) {
+        		outOfDogs.start(primaryStage);
+        	}
+        	else {
+        		profileController.changeProfile();
+	            profileController.displayCurrentPetProfile();
+	            
+        	}
+        });
+        passButton.setStyle("-fx-background-color: #0a0f40; -fx-text-fill: white; -fx-font-size: 60;");
+        
+        Button likeButton = Components.button("♥");
+        likeButton.setOnAction(e -> {
+        
+        	
+            Dog dog = posterDogs.peek();
+            dog.setAdopted(true);
+            user.addLikedDogs(dog);
+            profileController.changeProfile();
+            profileController.displayCurrentPetProfile();
+           
+         		   
+         });
+        likeButton.setStyle("-fx-background-color: #db2a4d; -fx-text-fill: white; -fx-font-size: 60;");
      
+        
+        primaryControlTab.getChildren().addAll(likeButton,petImageView,passButton);
+        primaryControlTab.setSpacing(20);
+        primaryControlTab.setAlignment(Pos.CENTER);
         
         primaryInfoLabel = Components.largeLabel(); // Name, Age, Sex
 		
@@ -107,39 +141,14 @@ public class DogProfileScene extends Application {
         HBox navTab = Components.navTab(userProfile, likedDog, DogProfileScene.getInstance(), primaryStage);
       
        // bottom likes tab
-        HBox bottomTab = new HBox(); 
+//        HBox bottomTab = new HBox(); 
      
-        Button rightArrowButton = Components.button("╳");
-        rightArrowButton.setOnAction(event -> {
-        	if(profileController.getDogListSize() == 0) {
-        		outOfDogs.start(primaryStage);
-        	}
-        	else {
-        		profileController.changeProfile();
-	            profileController.displayCurrentPetProfile();
-	            
-        	}
-        });
-        rightArrowButton.setStyle("-fx-background-color: #0a0f40; -fx-text-fill: white;");
         
-        Button likeButton = Components.button("♥");
-        likeButton.setOnAction(e -> {
         
-        	
-            Dog dog = posterDogs.peek();
-            dog.setAdopted(true);
-            user.addLikedDogs(dog);
-            profileController.changeProfile();
-            profileController.displayCurrentPetProfile();
-           
-         		   
-         });
-        likeButton.setStyle("-fx-background-color: #db2a4d; -fx-text-fill: white; -fx-font-size: 60;");
-        
-        bottomTab.getChildren().addAll( likeButton, rightArrowButton); 
-        bottomTab.setSpacing(20);
-        bottomTab.setAlignment(Pos.CENTER);
-        
+////        bottomTab.getChildren().addAll( likeButton, passButton); 
+//        bottomTab.setSpacing(20);
+//        bottomTab.setAlignment(Pos.CENTER);
+//        
        
         
         // poster link
@@ -148,7 +157,6 @@ public class DogProfileScene extends Application {
         	try {
 				posterProfile.start(primaryStage);
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
         });
@@ -160,7 +168,7 @@ public class DogProfileScene extends Application {
         
         
          // add to root vbox
-        root.getChildren().addAll(navTab, petImageView, primaryInfoLabel, posterLink, secondaryInfo, biographyText, tagsPane, bottomTab); 
+        root.getChildren().addAll(navTab, primaryControlTab, primaryInfoLabel, posterLink, secondaryInfo, biographyText, tagsPane); 
 		profileController = new DogProfileController(primaryInfoLabel, sizeLabel, energyLabel, petImageView, biographyText, posterLink, posterDogs, tagsPane, primaryStage, appData.getPosters());
 		
 
