@@ -233,7 +233,7 @@ public class Components{
              
 		for(Tag t : tags.values()) {
 			
-			Label label = tagLabel(t.getTagName(),t, dog, dog.getTags());
+			Label label = tagLabel(t.getTagName(), t, dog, dog.getTags());
 			
             // Add the label to the grid
             gridPane.add(label, row, col);
