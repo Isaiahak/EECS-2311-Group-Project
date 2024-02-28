@@ -71,7 +71,7 @@ public class Database {
 				 
 				 PriorityQueue<Dog> queue= new PriorityQueue<Dog>();
 				 dogProfiles.put(id, queue);// populate the outer hashtable with poster id's
-		         Statement statement = connection.createStatement () ;
+		         Statement statement = connection.createStatement ();
 		         Statement statement2 = connection.createStatement();
 //		         ResultSet resultSet = statement.executeQuery ("SELECT * FROM dog WHERE dog.dogid NOT IN (SELECT userdogs.dogid FROM userdogs WHERE userdogs.userid = "+ user.getUserID() + " ) AND adopted = false;");
 		         ResultSet resultSet = statement.executeQuery 

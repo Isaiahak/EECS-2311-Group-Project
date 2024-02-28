@@ -26,8 +26,7 @@ public class AppData {
 	}
 
 	public void setSortedDogProfiles(PriorityQueue<Dog> sortedDogProfiles) {
-		System.out.println("bruh");
-		sortedDogProfiles = sortedDogProfiles;
+		this.sortedDogProfiles = sortedDogProfiles;
 	}
 
 	public static AppData getInstance() {

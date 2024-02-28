@@ -83,31 +83,39 @@ public class DogProfileScene extends Application {
         petImageView = Components.imageView(500,500);
         
         
+     
         Button passButton = Components.button("╳");
         passButton.setOnAction(event -> {
-        	if(profileController.getDogListSize() == 0) {
-        		outOfDogs.start(primaryStage);
-        	}
-        	else {
-        		profileController.changeProfile();
-	            profileController.displayCurrentPetProfile();
-	            
-        	}
+            Dog dog = posterDogs.peek();
+            user.addPassedDogs(dog);
+
+            if(profileController.getDogListSize() == 0) {
+                outOfDogs.start(primaryStage);
+            }
+            else {
+                profileController.changeProfile();
+                profileController.displayCurrentPetProfile();
+
+            }
         });
         passButton.setStyle("-fx-background-color: #0a0f40; -fx-text-fill: white; -fx-font-size: 60;");
-        
+
         Button likeButton = Components.button("♥");
         likeButton.setOnAction(e -> {
-        
-        	
             Dog dog = posterDogs.peek();
-            dog.setAdopted(true);
+//                    dog.setAdopted(true);
             user.addLikedDogs(dog);
-            profileController.changeProfile();
-            profileController.displayCurrentPetProfile();
-           
-         		   
+
+            if(profileController.getDogListSize() == 0) {
+                outOfDogs.start(primaryStage);
+            }
+            else {
+                profileController.changeProfile();
+                profileController.displayCurrentPetProfile();
+
+            }
          });
+        
         likeButton.setStyle("-fx-background-color: #db2a4d; -fx-text-fill: white; -fx-font-size: 60;");
      
         
@@ -120,10 +128,7 @@ public class DogProfileScene extends Application {
 		sizeLabel =  Components.mediumLabel(); // Attributes 
 		energyLabel = Components.mediumLabel();
 		
-		
-		if(posterDogs.size() <= 0 ) {
-			outOfDogs.start(primaryStage);
-		}else {
+	
 		
 		//		  Initialize layout
         // attributes hBox
@@ -200,7 +205,7 @@ public class DogProfileScene extends Application {
 		
 			}
 		}
-}
+
     
 
 
