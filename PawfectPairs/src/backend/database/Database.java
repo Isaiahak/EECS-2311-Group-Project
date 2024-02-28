@@ -72,30 +72,42 @@ public class Database {
 				 PriorityQueue<Dog> queue= new PriorityQueue<Dog>();
 				 dogProfiles.put(id, queue);// populate the outer hashtable with poster id's
 		         Statement statement = connection.createStatement () ;
+		         Statement statement2 = connection.createStatement();
 		         ResultSet resultSet = statement.executeQuery ("SELECT * FROM dog WHERE dog.dogid NOT IN (SELECT userdogs.dogid FROM userdogs WHERE userdogs.userid = "+ user.getUserID() + " ) AND adopted = false;");
 		         while (resultSet.next()) {
 		        	// only add a dog if adoption = false and its id is not negative (if negative, its a dummy dog)	
+		        	 
+		        	 	String dogName = resultSet.getString ("dogname");
+			    		int dogId = resultSet.getInt("dogid"); 
+			    		int ageId = resultSet.getInt("ageid");  
+			    		int energyId = resultSet.getInt("energylevelid"); 
+			    		int sizeId = resultSet.getInt("sizeid"); 
+			    		int sexId = resultSet.getInt("sexid"); 
+			    		int posterId = resultSet.getInt("posterid"); 
+			    		boolean adoptedBool = resultSet.getBoolean("adopted"); 
+					    String imagePath = resultSet.getString("imagePath");
+					    String biography = resultSet.getString("biography");
 				    Dog dog = new Dog(
-				    		resultSet.getString ("dogname"), 
-				    		resultSet.getInt("dogid"), 
-				    		resultSet.getInt("ageid"),  
-				    		resultSet.getInt("energylevelid"), 
-				    		resultSet.getInt("sizeid"), 
-				    		resultSet.getInt("sexid"), 
-				    		resultSet.getInt("posterid"), 
-				    		resultSet.getBoolean("adopted"), 
-						    resultSet.getString("imagePath"),
-						    resultSet.getString("biography")
+				    		dogName, 
+				    		dogId,
+				    		ageId,
+				    		energyId,
+				    		sizeId,
+				    		sexId,
+				    		posterId,
+				    		adoptedBool,
+				    		imagePath,
+				    		biography
 						    );
 				    
 				    
+				    dog.setTags(getDogTags(dogId, statement2));
+				    
 				    dog.calculateScore(user.getDog().getTags()); // initialise dog score
-				    System.out.println("key set =" + dogProfiles.keySet().toString());
+//				    System.out.println("key set =" + dogProfiles.keySet().toString());
 				    
 				    queue.add(dog);
-				   
-				    
-		           // dogProfiles.get(resultSet.getInt("posterid")).add(dog); // insert dog into inner hashmap :D
+
 		         	}    
          	 }
             connection.close () ;
@@ -121,7 +133,7 @@ public class Database {
         while (resultSet.next()) {
         	// only add a dog if adoption = false and its id is not negative (if negative, its a dummy dog)
 		    dog = new Dog(resultSet.getString("dogname"), resultSet.getInt("dogid"), resultSet.getInt("ageid"),  resultSet.getInt("energylevelid"), resultSet.getInt("sizeid"), resultSet.getInt("sexid"));  
-		    dog.setTags(Database.getDogTags(dog.getId()));
+		    dog.setTags(Database.getIdealDogTags(dog.getId(),connection));
          }
              connection.close () ;
 
@@ -214,6 +226,26 @@ public class Database {
 	                e.printStackTrace();
 	            }
 	        }
+	}
+	
+	public static Hashtable<Integer, Tag> getDogTags(int dogId, Statement statement){
+		Hashtable <Integer, Tag> tags = new Hashtable<Integer, Tag>();
+		
+		// get all tags in dogtag data table associated with the dog id
+//		
+		try {
+//			Statement statement = connection.createStatement() ;
+			ResultSet resultSet = statement.executeQuery("SELECT tags.tagname, tags.tagid FROM tags JOIN dogtag ON tags.tagid = dogtag.tagid WHERE dogtag.dogid = " + dogId + ";");
+			
+			while (resultSet.next()) {	 
+				tags.put(resultSet.getInt("tagid"),new Tag(resultSet.getString("tagname")));
+			}
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return tags;
 	}
 
 	public static void removeLikedDog(int dogID,int userID){
@@ -361,13 +393,12 @@ public class Database {
 	         return tags;
 		}
 	  
-	public static Hashtable<Integer, Tag> getDogTags(int dogId){
+	public static Hashtable<Integer, Tag> getIdealDogTags(int dogId, Connection connection){
 		Hashtable <Integer, Tag> tags = new Hashtable<Integer, Tag>();
 		
 		// get all tags in dogtag data table associated with the dog id
 //		
 		try {
-			Connection connection = databaseConnector.connect();
 			Statement statement = connection.createStatement () ;
 			ResultSet resultSet = statement.executeQuery ("SELECT tags.tagname, tags.tagid FROM tags JOIN idealdogtag ON tags.tagid = idealdogtag.tagid WHERE idealdogtag.idealdogid = " + dogId + ";");
 			
@@ -383,41 +414,41 @@ public class Database {
 		return tags;
 	}
 
-	public static void addDogTags(int dogid, int tagid, String tablename){
-		Connection connection = null;
-		PreparedStatement preparedStatement = null;
-		
-        try {
-        	 connection = databaseConnector.connect();
-        	 String sql = "INSERT INTO "+ tablename + " (dogid, tagid) VALUES (?, ?)";
-        	 preparedStatement = connection.prepareStatement(sql);
-        	 preparedStatement.setInt(1, dogid);
-        	 preparedStatement.setInt(2, tagid);
-        	 int rowsAffected = preparedStatement.executeUpdate();
-        	 if (rowsAffected > 0) {
-                System.out.println("DogTag relationship added successfully!");
-            } else {
-                System.out.println("Failed to add DogTag relationship.");
-            }
-        } 
-        catch (SQLException e) {
-            e.printStackTrace();
-          
-        } 
-        finally {
-            try {
-                if (preparedStatement != null) {
-                    preparedStatement.close();
-                }
-                if (connection != null) {
-                    connection.close();
-                }
-            } 
-            catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-	}
+//	public static void addDogTags(int dogid, int tagid, String tablename){
+//		Connection connection = null;
+//		PreparedStatement preparedStatement = null;
+//		
+//        try {
+//        	 connection = databaseConnector.connect();
+//        	 String sql = "INSERT INTO "+ tablename + " (dogid, tagid) VALUES (?, ?)";
+//        	 preparedStatement = connection.prepareStatement(sql);
+//        	 preparedStatement.setInt(1, dogid);
+//        	 preparedStatement.setInt(2, tagid);
+//        	 int rowsAffected = preparedStatement.executeUpdate();
+//        	 if (rowsAffected > 0) {
+//                System.out.println("DogTag relationship added successfully!");
+//            } else {
+//                System.out.println("Failed to add DogTag relationship.");
+//            }
+//        } 
+//        catch (SQLException e) {
+//            e.printStackTrace();
+//          
+//        } 
+//        finally {
+//            try {
+//                if (preparedStatement != null) {
+//                    preparedStatement.close();
+//                }
+//                if (connection != null) {
+//                    connection.close();
+//                }
+//            } 
+//            catch (SQLException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//	}
 	
 	public static void addIdealDogTags(int dogid, Hashtable<Integer,Tag> tags){
 		/*
@@ -462,11 +493,11 @@ public class Database {
         }
 	}
 	//method for adding the tags to the ideal dog
-	public static void setDogTags(ArrayList<Tag> tags, int dogid) {
-		for (Tag t : tags) {
-			Database.addDogTags(dogid,Database.getTagID(t.getTagName()),"idealdogtag");
-		}
-	}
+//	public static void setDogTags(ArrayList<Tag> tags, int dogid) {
+//		for (Tag t : tags) {
+//			Database.addDogTags(dogid,Database.getTagID(t.getTagName()),"idealdogtag");
+//		}
+//	}
 	
 	public static int getTagID(String tagname) {
 		int tagid = 0;
@@ -682,8 +713,6 @@ public class Database {
 	}
 	
 	public static void onApplicationClose(User user, ArrayList<Dog> doglist){
-		
-		
 		Database.updateAllAdoptedDogs(doglist); // sets dogs to be adopted 
 		
 		ArrayList<Dog> likedDogs = Database.getLikedDogs(user.getUserID());

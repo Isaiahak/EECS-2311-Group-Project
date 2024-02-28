@@ -9,6 +9,7 @@ import java.util.PriorityQueue;
 import backend.database.Database;
 import backend.dog.Dog;
 import backend.poster.Poster;
+import backend.tag.Tag;
 import guilayout.Components;
 import guilayout.PosterProfileScene;
 import javafx.scene.control.*;
@@ -78,7 +79,12 @@ public class DogProfileController {
         
         tagsPane.getChildren().clear();
         
-        tagsPane.getChildren().add(Components.createTags(currentProfile.getTags())); 
+        tagsPane.getChildren().add(Components.createTags(currentProfile.getTags()));
+        
+        for(Tag t : currentProfile.getTags().values()) {
+        	System.out.println("Tag: " + t.getTagName());
+        }
+
         
     }
     

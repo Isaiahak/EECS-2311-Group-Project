@@ -44,7 +44,7 @@ public class UserProfile extends Application{
     	HashMap<Integer, Tag> tags = appData.getallTags();		
     	DogProfileScene dogProfileScene = DogProfileScene.getInstance();  
 		Dog dog = user.getDog();   
-    	System.out.println(dog.getName());	
+//    	System.out.println(dog.getName());	
     	VBox root = new VBox();
     	
     	
