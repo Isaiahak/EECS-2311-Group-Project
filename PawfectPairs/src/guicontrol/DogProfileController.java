@@ -1,6 +1,8 @@
 package guicontrol;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.List;
 
 import backend.database.Database;
@@ -19,7 +21,7 @@ import javafx.stage.*;
 public class DogProfileController {
     private int currentIndex = 0;
 
-    private ArrayList<Dog> dogProfiles;
+    private Hashtable<Integer, HashMap<Integer, Dog>> dogProfiles;
     private Label primaryInfoLabel;
     private Label sizeLabel;
     private Label energyLabel;
@@ -31,7 +33,7 @@ public class DogProfileController {
 //    private Label bioLabel;
 //    private Label tagsLabel;
 
-    public DogProfileController(Label primaryInfoLabel, Label sizeLabel, Label energyLabel, ImageView petImageView, Label biographyText, Hyperlink posterLink, ArrayList<Dog> dogProfiles, StackPane tagsPane, Stage primaryStage) {
+    public DogProfileController(Label primaryInfoLabel, Label sizeLabel, Label energyLabel, ImageView petImageView, Label biographyText, Hyperlink posterLink, Hashtable<Integer, HashMap<Integer, Dog>> dogProfiles, StackPane tagsPane, Stage primaryStage) {
         this.primaryInfoLabel = primaryInfoLabel;
         this.sizeLabel = sizeLabel;
         this.energyLabel = energyLabel;
@@ -47,7 +49,7 @@ public class DogProfileController {
     
     public void changeProfile(int direction) {
         currentIndex = (currentIndex + direction + dogProfiles.size()) % dogProfiles.size();
-        if (dogProfiles.get(currentIndex).getAdopted() == true) {
+        if (dogProfiles.get(currentIndex).get(currentIndex).getAdopted() == true) {
         	dogProfiles.remove(currentIndex);        	
         }
         if (dogProfiles.size() == 0) {	

@@ -1,5 +1,7 @@
 package guilayout;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Hashtable;
 
 import backend.database.Database;
 import backend.dog.Dog;
@@ -55,7 +57,7 @@ public class DogProfileScene extends Application {
     public void start(Stage primaryStage) {
 
     	appData = AppData.getInstance();     	
-    	ArrayList<Dog> posterDogs = appData.getDogProfiles();
+    	Hashtable<Integer, HashMap<Integer, Dog>> posterDogs = appData.getDogProfiles();
     	User user = appData.getUser();
     	
     	//root is v box

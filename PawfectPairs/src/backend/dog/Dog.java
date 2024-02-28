@@ -1,5 +1,9 @@
 package backend.dog;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Hashtable;
+import java.util.Set;
 import java.sql.*;
 
 import backend.dog.trait.Age;
@@ -10,7 +14,7 @@ import backend.poster.Poster;
 import backend.tag.Tag;
 
 // download this: import javax.Persistence.api;
-public class Dog {
+public class Dog  implements Comparable<Dog>{
 	 	private String name;
 	    private int id;
 	    private Age age;
@@ -21,8 +25,10 @@ public class Dog {
 	    private int posterId;
 	    private boolean adopted;
 	    private String imagePath; 
+	    private int oldScore; // used to help optimise sorting algorithms, and identify which elemnets have been changed
+	    private int score; //score calculated based on intersection of this dog's tags with ideal dog's tags
 	    private String biography;
-	    private ArrayList<Tag> tags = new ArrayList<Tag>();
+	    private Hashtable<Integer, Tag> tags = new Hashtable<Integer, Tag>();
 	   
 		
 	    public Dog(int dogSize, int dogEnergyLevel){ //why do we have this here? //its a constructor that does not set the other attributes
@@ -38,11 +44,7 @@ public class Dog {
 	        setSex(new Sex(sex));
 	        setSize(new Size(size));
 	        setEnergyLevel(new EnergyLevel(energyLevel));
-	        //this.age = age;
-	        //this.energyLevel = energyLevel;
-	        //this.size = size;
-	        //this.sex = sex;
-//	        this.poster = poster;
+
 	        this.posterId = posterId; 
 	        this.adopted = adopted;
 	        this.biography = biography;
@@ -56,11 +58,7 @@ public class Dog {
 	        setSex(new Sex(sex));
 	        setSize(new Size(size));
 	        setEnergyLevel(new EnergyLevel(energyLevel));
-	        //this.energyLevel = energyLevel;
-	        // this.age = age;
-	        //this.size = size;
-	        //this.sex = sex;
-//	        this.poster = poster;
+
 	        this.posterId = posterId;
 	        this.adopted = adopted;
 	    }
@@ -73,22 +71,47 @@ public class Dog {
 	        setSex(new Sex(sex));
 	        setSize(new Size(size));
 	        setEnergyLevel(new EnergyLevel(energyLevel));
-	        //this.energyLevel = energyLevel;
-	        // this.age = age;
-	        //this.size = size;
-	        //this.sex = sex;
-	        //this.poster = poster;
+
 	    }
+	    
+	    public int calculateScore(Hashtable<Integer, Tag> tags) {
+	    	/*
+	    	 * score calculates the sum of intersecting tag elements between user's preferences and dog instance
+	    	 */
+	    	
+	    	int scoreCalc = 0 ;
+	    	Set<Integer> currDogTags = this.getTags().keySet(); 
+	    	
+	    	for(int key : currDogTags) {
+	    		if(tags.containsKey(key)) {
+	    			scoreCalc++;
+	    		}
+	    	}
+	    	
+	    	this.score = scoreCalc;
+	    	
+	    	return scoreCalc;
+	    }
+	    
+	    public void setOldScore(int score) {
+	    	this.oldScore = score; 
+	    }
+	    
+	    public int getOldScore() {
+	    	return this.getOldScore();
+	    }
+	    
+	    public int getScore() {return this.score;}
 	    
 	    public String getImagePath() {
 	    	return this.imagePath;
 	    }
 	   
-	    public ArrayList<Tag> getTags() {
+	    public Hashtable<Integer, Tag> getTags() {
 	        return tags;
 	    }
 	   
-	    public void setTags(ArrayList<Tag> tags) {
+	    public void setTags(Hashtable<Integer, Tag> tags) {
 	        this.tags = tags;
 	    }
 	    public String getName() {
@@ -160,9 +183,10 @@ public class Dog {
 	        stringBuilder.append("Sex: ").append(this.getSex()).append("\n");
 	        stringBuilder.append("Adopted: ").append(this.getAdopted()).append("\n");
 	        stringBuilder.append("Tags:\n");
-	        for (Tag tag : this.getTags()) {
-	            stringBuilder.append("- ").append(tag.getTagName()).append(": ").append(tag.getWeight()).append("\n");
-	        }
+	        
+//	        for (Tag tag : this.getTags()) {
+//	            stringBuilder.append("- ").append(tag.getTagName()).append(": ").append(tag.getWeight()).append("\n");
+//	        }
 	        return stringBuilder.toString();
 	    }
 		
@@ -174,6 +198,13 @@ public class Dog {
 		    	return false;
 		    	
 		    }
+
+		@Override
+		public int compareTo(Dog o) {
+
+		        return Integer.compare(this.score, o.score);
+
+		}
 }
 
 

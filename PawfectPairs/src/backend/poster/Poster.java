@@ -2,22 +2,30 @@ package backend.poster;
 
 import java.util.*;
 
+import backend.dog.Dog;
+
 public class Poster implements Comparable<Poster> {
 private int score; 
 private String displayName;
 private int uniqueId;
-
+private PriorityQueue<Dog> dogList = new PriorityQueue<Dog>(); 
 
 
 public int getScore() {
 	return score;
 }
 public  Poster(int score, String displayName, int uniqueId) {
-	//super(); //why did we add super here?
 	this.score = score;
 	this.displayName = displayName;
-	this.uniqueId = uniqueId;
+	this.uniqueId = uniqueId;	
 }
+
+public void setDogList(PriorityQueue<Dog> dogList) {
+	//add a dog to the poster's dog list
+	this.dogList = dogList;
+	
+}
+
 public void setScore(int score) {
 	this.score = score;
 }
