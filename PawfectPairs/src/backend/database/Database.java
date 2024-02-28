@@ -36,7 +36,7 @@ public class Database {
 			        try {
 			            Statement preparedStatement = connection.createStatement();
 			            ResultSet resultSet = preparedStatement.executeQuery(sql);
-			            	if (resultSet.next()) {
+			            	while (resultSet.next()) {
 				                String displayName = resultSet.getString("displayName");
 				                int posterId = resultSet.getInt("poster_id");
 				                int score = resultSet.getInt("score");

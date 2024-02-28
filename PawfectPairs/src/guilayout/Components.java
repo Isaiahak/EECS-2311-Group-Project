@@ -399,7 +399,7 @@ public class Components{
 		return gridPane;
 	}
 	
-	public static HBox likedDogView(Dog dog, Stage primaryStage, Poster poster) {
+	public static HBox likedDogView(Dog dog, Stage primaryStage, Hashtable<Integer,Poster> poster) {
 
 		ImageView img = Components.imageView(200, 200);
 		img.setImage(new Image(dog.getImagePath()));
@@ -424,13 +424,13 @@ public class Components{
 		
 	}
 	
-	public static Hyperlink hyperlinkToPosterProfile(Dog dog, Stage primaryStage,Poster poster) {
+	public static Hyperlink hyperlinkToPosterProfile(Dog dog, Stage primaryStage, Hashtable<Integer,Poster> poster) {
 		Hyperlink posterLink = Components.hyperlink();
-		posterLink.setText(poster.getDisplayName());
+		posterLink.setText(poster.get(dog.getPosterId()).getDisplayName());
 		PosterProfileScene posterProfile = PosterProfileScene.getInstance();
 		posterLink.setOnAction(event -> {
         	try {
-        		posterProfile.setCurrentPoster(poster);
+        		posterProfile.setCurrentPoster(poster.get(dog.getPosterId()));
 				posterProfile.start(primaryStage);
 			} catch (Exception e) {
 				e.printStackTrace();

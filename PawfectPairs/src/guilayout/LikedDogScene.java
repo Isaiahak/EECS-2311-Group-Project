@@ -52,7 +52,7 @@ public class LikedDogScene extends Application{
 		VBox likedDogsDisplay = new VBox();
 	    	
     	for(Dog d : likedDogs) {
-    		likedDogsDisplay.getChildren().add(Components.likedDogView(d, stage, appData.getPosters().get(d.getPosterId())));
+    		likedDogsDisplay.getChildren().add(Components.likedDogView(d, stage, appData.getPosters()));
     	}
     	likedDogsDisplay.setAlignment(javafx.geometry.Pos.CENTER);
     	

@@ -51,9 +51,6 @@ public class DogProfileController {
     
     public void changeProfile() {
     	dogProfiles.remove();
-        if (dogProfiles.peek().getAdopted() == true) {
-        	dogProfiles.remove();        	
-        }
     }
 
     public void displayCurrentPetProfile() {
