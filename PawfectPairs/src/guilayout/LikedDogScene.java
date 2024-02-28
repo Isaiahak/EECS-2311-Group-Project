@@ -10,6 +10,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import java.util.ArrayList;
+import java.util.PriorityQueue;
 
 import backend.database.Database;
 import backend.dog.Dog;
@@ -35,7 +36,7 @@ public class LikedDogScene extends Application{
 	@Override
 	public void start(Stage stage){
 		appData = AppData.getInstance();
-		ArrayList<Dog> posterDogs = appData.getDogProfiles();//TEMP
+		PriorityQueue<Dog> posterDogs = appData.getSortedDogProfiles();
 		User user = appData.getUser();
 		
 		DogProfileScene dogProfileScene = DogProfileScene.getInstance();  
@@ -51,7 +52,7 @@ public class LikedDogScene extends Application{
 		VBox likedDogsDisplay = new VBox();
 	    	
     	for(Dog d : likedDogs) {
-    		likedDogsDisplay.getChildren().add(Components.likedDogView(d, stage));
+    		likedDogsDisplay.getChildren().add(Components.likedDogView(d, stage, appData.getPosters().get(d.getPosterId())));
     	}
     	likedDogsDisplay.setAlignment(javafx.geometry.Pos.CENTER);
     	
@@ -86,13 +87,13 @@ public class LikedDogScene extends Application{
 		stage.setTitle("Pawfect Pairs");
 //		stage.setMaximized(true);
 		stage.show();
-		stage.setOnCloseRequest(event -> {
-    	    System.out.println("Window is closing. Perform cleanup if needed.");
-    	    
-    	    Database.onApplicationClose(user, posterDogs);
-    	});
+
+//		stage.setOnCloseRequest(event -> {
+//    	    System.out.println("Window is closing. Perform cleanup if needed.");
+//    	    
+//    	    Database.onApplicationClose(user, posterDogs);
+//    	});
 		
 	}	
 	
-
 }

@@ -6,6 +6,8 @@ import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.PriorityQueue;
 
 import backend.database.Database;
 import backend.dog.Dog;
@@ -37,9 +39,9 @@ public class UserProfile extends Application{
     @Override
     public void start(Stage primaryStage) {
     	appData = AppData.getInstance();
-    	ArrayList<Dog> posterDogs = appData.getDogProfiles();//TEMP
+    	PriorityQueue<Dog> posterDogs = appData.getSortedDogProfiles();
     	User user = appData.getUser();
-    	ArrayList<Tag> tags = appData.getallTags();		
+    	HashMap<Integer, Tag> tags = appData.getallTags();		
     	DogProfileScene dogProfileScene = DogProfileScene.getInstance();  
 		Dog dog = user.getDog();   
     	System.out.println(dog.getName());	
@@ -142,10 +144,10 @@ public class UserProfile extends Application{
 //		primaryStage.setMaximized(true);
 		primaryStage.show();
 		
-		primaryStage.setOnCloseRequest(event -> {
-    	    System.out.println("Window is closing. Perform cleanup if needed.");
-    	    Database.onApplicationClose(user, posterDogs);
-    	});
+//		primaryStage.setOnCloseRequest(event -> {
+//    	    System.out.println("Window is closing. Perform cleanup if needed.");
+//    	    Database.onApplicationClose(user, posterDogs);
+//    	});
 		
 		
 

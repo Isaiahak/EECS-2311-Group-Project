@@ -65,44 +65,48 @@ public class Database {
 
 		 Hashtable<Integer, PriorityQueue<Dog>> dogProfiles = new Hashtable<Integer, PriorityQueue<Dog>>();
 
+		 Connection connection = databaseConnector.connect();
+		 try {
+			 for (Integer id : posterIds){
+				 
+				 PriorityQueue<Dog> queue= new PriorityQueue<Dog>();
+				 dogProfiles.put(id, queue);// populate the outer hashtable with poster id's
+		         Statement statement = connection.createStatement () ;
+		         ResultSet resultSet = statement.executeQuery ("SELECT * FROM dog WHERE dog.dogid NOT IN (SELECT userdogs.dogid FROM userdogs WHERE userdogs.userid = "+ user.getUserID() + " ) AND adopted = false;");
+		         while (resultSet.next()) {
+		        	// only add a dog if adoption = false and its id is not negative (if negative, its a dummy dog)	
+				    Dog dog = new Dog(
+				    		resultSet.getString ("dogname"), 
+				    		resultSet.getInt("dogid"), 
+				    		resultSet.getInt("ageid"),  
+				    		resultSet.getInt("energylevelid"), 
+				    		resultSet.getInt("sizeid"), 
+				    		resultSet.getInt("sexid"), 
+				    		resultSet.getInt("posterid"), 
+				    		resultSet.getBoolean("adopted"), 
+						    resultSet.getString("imagePath"),
+						    resultSet.getString("biography")
+						    );
+				    
+				    
+				    dog.calculateScore(user.getDog().getTags()); // initialise dog score
+				    System.out.println("key set =" + dogProfiles.keySet().toString());
+				    
+				    queue.add(dog);
+				   
+				    
+		           // dogProfiles.get(resultSet.getInt("posterid")).add(dog); // insert dog into inner hashmap :D
+		         	}    
+         	 }
+            connection.close () ;
 
-		for (Integer id : posterIds){
-			dogProfiles.put(id, new PriorityQueue<Dog>());// populate the outer hashtable with poster id's
-		}
-	        try{
-	        Connection connection = databaseConnector.connect();
-	        Statement statement = connection.createStatement () ;
-	        ResultSet resultSet = statement.executeQuery ("SELECT * FROM dog WHERE dog.dogid NOT IN (SELECT userdogs.dogid FROM userdogs WHERE userdogs.userid = "+ user.getUserID() + " ) AND adopted = false;");
-	        while (resultSet.next()) {
-	        	// only add a dog if adoption = false and its id is not negative (if negative, its a dummy dog)	
-			    Dog dog = new Dog(
-			    		resultSet.getString ("dogname"), 
-			    		resultSet.getInt("dogid"), 
-			    		resultSet.getInt("ageid"),  
-			    		resultSet.getInt("energylevelid"), 
-			    		resultSet.getInt("sizeid"), 
-			    		resultSet.getInt("sexid"), 
-			    		resultSet.getInt("posterid"), 
-			    		resultSet.getBoolean("adopted"), 
-					    resultSet.getString("imagePath"),
-					    resultSet.getString("biography")
-					    );
-			    
-			    
-			    dog.calculateScore(user.getDog().getTags()); // initialise dog score
-			    
-                dogProfiles.get(resultSet.getInt("posterid")).add(dog); // insert dog into inner hashmap :D
-	                
-	         }
-	             connection.close () ;
-
-	           }
-	         catch (SQLException e) {
-	        	 	System.out.println ("Connection failure.") ;
-	        	 	e.printStackTrace () ;
-	          }
-	         return dogProfiles;
-		}
+           }
+         	catch (SQLException e) {
+        	 	System.out.println ("Connection failure.") ;
+        	 	e.printStackTrace () ;
+           }
+         	return dogProfiles;
+	}
 	
 
 	public static Dog getADog(int userid){
@@ -365,10 +369,9 @@ public class Database {
 		try {
 			Connection connection = databaseConnector.connect();
 			Statement statement = connection.createStatement () ;
-			ResultSet resultSet = statement.executeQuery ("SELECT tagname FROM tags JOIN idealdogtag ON tags.tagid = idealdogtag.tagid WHERE idealdogtag.idealdogid = " + dogId + ";");
+			ResultSet resultSet = statement.executeQuery ("SELECT tags.tagname, tags.tagid FROM tags JOIN idealdogtag ON tags.tagid = idealdogtag.tagid WHERE idealdogtag.idealdogid = " + dogId + ";");
 			
 			while (resultSet.next()) {	 
-//				System.out.println(resultSet.getString("tagname"));
 				tags.put(resultSet.getInt("tagid"),new Tag(resultSet.getString("tagname")));
 			}
 		}

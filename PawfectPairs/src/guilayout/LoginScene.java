@@ -80,9 +80,7 @@ public class LoginScene extends Application{
             
             if (Database.getUser(username, password) != null /*userlist.contains(userInfo)*/ ||  username != "" && password != "" ) {
                 appData = AppData.getInstance();    
-                appData.setUser(username, password);             
-                appData.setDogProfiles(); 
-                appData.setAllTags();
+                appData.onStart(username, password);
                 System.out.println("Logging the user in!");
                 dogProfileScene.start(primaryStage);
             } else {

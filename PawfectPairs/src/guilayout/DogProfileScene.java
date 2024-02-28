@@ -2,6 +2,7 @@ package guilayout;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Hashtable;
+import java.util.PriorityQueue;
 
 import backend.database.Database;
 import backend.dog.Dog;
@@ -57,7 +58,7 @@ public class DogProfileScene extends Application {
     public void start(Stage primaryStage) {
 
     	appData = AppData.getInstance();     	
-    	Hashtable<Integer, HashMap<Integer, Dog>> posterDogs = appData.getDogProfiles();
+    	PriorityQueue<Dog> posterDogs = appData.getSortedDogProfiles();
     	User user = appData.getUser();
     	
     	//root is v box
@@ -108,30 +109,13 @@ public class DogProfileScene extends Application {
        // bottom likes tab
         HBox bottomTab = new HBox(); 
      
-        Button leftArrowButton = Components.button("←");
-        leftArrowButton.setOnAction(event -> {
-        	if(profileController.getDogListSize() == 0) {
-        		outOfDogs.start(primaryStage);
-	          
-        	}
-        	else {
-        		profileController.changeProfile(-1);
-        		
-        		
- 	            profileController.displayCurrentPetProfile();
-        	}
-        });
-        leftArrowButton.setStyle("-fx-background-color: #0a0f40; -fx-text-fill: white;");
-        
-        Button rightArrowButton = Components.button("→");
+        Button rightArrowButton = Components.button("╳");
         rightArrowButton.setOnAction(event -> {
         	if(profileController.getDogListSize() == 0) {
         		outOfDogs.start(primaryStage);
         	}
         	else {
-        		profileController.changeProfile(1);
-        		
-        		
+        		profileController.changeProfile();
 	            profileController.displayCurrentPetProfile();
 	            
         	}
@@ -142,18 +126,17 @@ public class DogProfileScene extends Application {
         likeButton.setOnAction(e -> {
         
         	
-            Dog dog = profileController.getCurrentDog();
+            Dog dog = posterDogs.peek();
             dog.setAdopted(true);
             user.addLikedDogs(dog);
-         
-            
-            profileController.changeProfile(1);
+            profileController.changeProfile();
+            profileController.displayCurrentPetProfile();
            
          		   
          });
         likeButton.setStyle("-fx-background-color: #db2a4d; -fx-text-fill: white; -fx-font-size: 60;");
         
-        bottomTab.getChildren().addAll(leftArrowButton, likeButton, rightArrowButton); 
+        bottomTab.getChildren().addAll( likeButton, rightArrowButton); 
         bottomTab.setSpacing(20);
         bottomTab.setAlignment(Pos.CENTER);
         
@@ -178,34 +161,36 @@ public class DogProfileScene extends Application {
         
          // add to root vbox
         root.getChildren().addAll(navTab, petImageView, primaryInfoLabel, posterLink, secondaryInfo, biographyText, tagsPane, bottomTab); 
-		profileController = new DogProfileController(primaryInfoLabel, sizeLabel, energyLabel, petImageView, biographyText, posterLink, posterDogs, tagsPane, primaryStage);
+		profileController = new DogProfileController(primaryInfoLabel, sizeLabel, energyLabel, petImageView, biographyText, posterLink, posterDogs, tagsPane, primaryStage, appData.getPosters());
 		
 
-      // Display the initial pet profile
-      profileController.displayCurrentPetProfile();
-      StackPane stackPane = new StackPane(root);
-      stackPane.setAlignment(javafx.geometry.Pos.CENTER);
+	      // Display the initial pet profile
+	      profileController.displayCurrentPetProfile();
+	      StackPane stackPane = new StackPane(root);
+	      stackPane.setAlignment(javafx.geometry.Pos.CENTER);
+	      
+	      ScrollPane scrollPane = new ScrollPane(stackPane);
+	      scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+	      scrollPane.setFitToWidth(true);
+	      
+	      Scene scene = new Scene(scrollPane, Components.screenWidth, Components.screenHeight);
+	
+	      primaryStage.setScene(scene);
+	      
+	//      primaryStage.setMaximized(true);
+	      primaryStage.show();
       
-      ScrollPane scrollPane = new ScrollPane(stackPane);
-      scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-      scrollPane.setFitToWidth(true);
-      
-      Scene scene = new Scene(scrollPane, Components.screenWidth, Components.screenHeight);
-
-      primaryStage.setScene(scene);
-      
-//      primaryStage.setMaximized(true);
-      primaryStage.show();
-      
-      primaryStage.setOnCloseRequest(event -> {
-    	    System.out.println("Window is closing. Perform cleanup if needed.");
-    	    
-    	    Database.onApplicationClose(user, posterDogs);
-    	});
+//      primaryStage.setOnCloseRequest(event -> {
+//    	    System.out.println("Window is closing. Perform cleanup if needed.");
+//    	    
+//    	    Database.onApplicationClose(user, posterDogs);
+//    	});
+//		}
+		
+			}
 		}
-		
-    }
-    }
+}
+    
 
 
 

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.PriorityQueue;
 
 import backend.database.Database;
 import backend.dog.Dog;
@@ -21,7 +22,7 @@ import javafx.stage.*;
 public class DogProfileController {
     private int currentIndex = 0;
 
-    private Hashtable<Integer, HashMap<Integer, Dog>> dogProfiles;
+    private PriorityQueue<Dog> dogProfiles;
     private Label primaryInfoLabel;
     private Label sizeLabel;
     private Label energyLabel;
@@ -30,10 +31,11 @@ public class DogProfileController {
     private Hyperlink posterLink;
     private Stage primaryStage; 
     private StackPane tagsPane; 
+    private Hashtable<Integer,Poster> posterProfiles;
 //    private Label bioLabel;
 //    private Label tagsLabel;
 
-    public DogProfileController(Label primaryInfoLabel, Label sizeLabel, Label energyLabel, ImageView petImageView, Label biographyText, Hyperlink posterLink, Hashtable<Integer, HashMap<Integer, Dog>> dogProfiles, StackPane tagsPane, Stage primaryStage) {
+    public DogProfileController(Label primaryInfoLabel, Label sizeLabel, Label energyLabel, ImageView petImageView, Label biographyText, Hyperlink posterLink, PriorityQueue<Dog> dogProfiles, StackPane tagsPane, Stage primaryStage,Hashtable<Integer,Poster> posterProfiles) {
         this.primaryInfoLabel = primaryInfoLabel;
         this.sizeLabel = sizeLabel;
         this.energyLabel = energyLabel;
@@ -41,36 +43,30 @@ public class DogProfileController {
         this.biographyText = biographyText;
         this.posterLink = posterLink;
         this.dogProfiles = dogProfiles;
-        
+        this.posterProfiles = posterProfiles;
         this.tagsPane = tagsPane;
         
         this.primaryStage = primaryStage;
     }
     
-    public void changeProfile(int direction) {
-        currentIndex = (currentIndex + direction + dogProfiles.size()) % dogProfiles.size();
-        if (dogProfiles.get(currentIndex).get(currentIndex).getAdopted() == true) {
-        	dogProfiles.remove(currentIndex);        	
+    public void changeProfile() {
+    	dogProfiles.remove();
+        if (dogProfiles.peek().getAdopted() == true) {
+        	dogProfiles.remove();        	
         }
-        if (dogProfiles.size() == 0) {	
-        }
-    
     }
 
     public void displayCurrentPetProfile() {
-    	Dog currentProfile = dogProfiles.get(currentIndex);
+    	Dog currentProfile = dogProfiles.peek();
     	petImageView.setImage(new Image(currentProfile.getImagePath()));
     	primaryInfoLabel.setText(currentProfile.getName() +", " + currentProfile.getAge() + " years, " + currentProfile.getSex());
         sizeLabel.setText("Size: " + currentProfile.getSize());
         energyLabel.setText("Energy Level: " + currentProfile.getEnergyLevel());
         biographyText.setText(currentProfile.getBiography());
         
-        posterLink.setText(Database.getPosterById(currentProfile.getPosterId()).getDisplayName());
-        
-        
-        Poster poster = Database.getPosterById(dogProfiles.get(currentIndex).getPosterId());
+        posterLink.setText(posterProfiles.get(currentProfile.getPosterId()).getDisplayName());
 		PosterProfileScene posterProfile = PosterProfileScene.getInstance();
-		posterProfile.setCurrentPoster(poster);
+		posterProfile.setCurrentPoster(posterProfiles.get(currentProfile.getPosterId()));
         
         posterLink.setOnAction(event -> {
         	try {
@@ -82,13 +78,11 @@ public class DogProfileController {
         
         tagsPane.getChildren().clear();
         
-        tagsPane.getChildren().add(Components.createTags(Database.getDogTags(dogProfiles.get(currentIndex).getId()))); 
+        tagsPane.getChildren().add(Components.createTags(currentProfile.getTags())); 
         
     }
     
-    public Dog getCurrentDog() {
-    	return this.dogProfiles.get(currentIndex);
-    }
+    
     
     public int getDogListSize() {
     	return dogProfiles.size();

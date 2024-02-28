@@ -14,12 +14,21 @@ import backend.user.User;
 public class AppData {
 	
 	private User user;
-	private Hashtable<Integer, PriorityQueue<Dog>> dogProfiles;
+	private Hashtable<Integer, PriorityQueue<Dog>> dogProfileHashtable;
 	private HashMap<Integer, Tag> allTags;
 	private Hashtable<Integer,Poster> posterProfiles; // poster profiles by id 
+	private PriorityQueue<Dog> SortedDogProfiles;
 	
 	private static AppData instance;
 	
+	public PriorityQueue<Dog> getSortedDogProfiles() {
+		return SortedDogProfiles;
+	}
+
+	public void setSortedDogProfiles(PriorityQueue<Dog> sortedDogProfiles) {
+		SortedDogProfiles = sortedDogProfiles;
+	}
+
 	public static AppData getInstance() {
 	if (instance == null)
 		instance = new AppData();
@@ -35,12 +44,12 @@ public class AppData {
 	}
 
 	public  Hashtable<Integer, PriorityQueue<Dog>> getDogProfiles() {
-		return this.dogProfiles;
+		return this.dogProfileHashtable;
 	}
 
 	public void setDogProfiles() {
 		
-		this.dogProfiles = Database.getAllDogs(user, this.posterProfiles.keySet());
+		this.dogProfileHashtable = Database.getAllDogs(user, this.posterProfiles.keySet());
 	}
 	
 	public HashMap<Integer,Tag> getallTags(){
@@ -54,12 +63,11 @@ public class AppData {
 	public void setPosters() {
 		// create all local poster objects, set their dogs in their dog list using na aggregate relationship	
 		this.posterProfiles = Database.getAllPosters();
-		
-		
-		// loop through dogProfiles and add to posters
-		for(Poster p : this.posterProfiles.values()) {
-			p.setDogList(this.dogProfiles.get(p.getUniqueId()));
-		}
+
+	}
+	
+	public Hashtable<Integer, Poster> getPosters(){
+		return posterProfiles;
 	}
 	
 	public void updateDogPriority() {
@@ -70,29 +78,31 @@ public class AppData {
 		
 	}
 	
-	public PriorityQueue<Dog> initializeDogProfilesSorted() {  // to be optimized
-		
+	public void initializeDogProfilesSorted() {  // to be optimized
 		PriorityQueue<Dog> dogList = new PriorityQueue<Dog>();
-		
-		dogList.mergeAll(dogProfiles); 
+		for (PriorityQueue<Dog> queue : dogProfileHashtable.values())
+			dogList.addAll(queue);
+		setSortedDogProfiles(dogList);
 		
 	}
-	
-	
+
+	public void setPosterDogLists() {
+		// loop through dogProfiles and add to posters
+		for(Poster p : this.posterProfiles.values()) {
+			p.setDogList(this.dogProfileHashtable.get(p.getUniqueId()));
+		}
+	}
 	
 	public void onStart(String user, String pass) {
-		
-		getInstance(); 
-		
+		getInstance(); 	
 		setUser(user, pass); // sets user, dog liked list, ideal dog attribtues
-		
+		setAllTags();
 		setPosters();
-		
 		setDogProfiles(); 
+		setPosterDogLists();
+		initializeDogProfilesSorted();
 		
-		setAllTags(); 
-		
-	
+
 	}
 	
 }

@@ -2,6 +2,7 @@ package guilayout;
 
 
 import java.util.ArrayList;
+import java.util.PriorityQueue;
 
 import backend.database.Database;
 import backend.dog.Dog;
@@ -39,7 +40,7 @@ public class OutOfDogsScene extends Application{
 	@Override
 	public void start(Stage stage) {
 		appData = AppData.getInstance();
-		ArrayList<Dog> posterDogs =  appData.getDogProfiles();//TEMP
+		PriorityQueue<Dog> posterDogs = appData.getSortedDogProfiles();
 		User user = appData.getUser();
 		
 		VBox root = new VBox();
@@ -56,12 +57,12 @@ public class OutOfDogsScene extends Application{
 		Scene scene = new Scene(stackPane, Components.screenWidth, Components.screenHeight);		 
 		stage.setScene(scene);
 		stage.show();
-		stage.setOnCloseRequest(event -> {
-    	    System.out.println("Window is closing. Perform cleanup if needed.");
-    	    
-    	    Database.onApplicationClose(user, posterDogs);
-    	});
-		
+//		stage.setOnCloseRequest(event -> {
+//    	    System.out.println("Window is closing. Perform cleanup if needed.");
+//    	    
+//    	    Database.onApplicationClose(user, posterDogs);
+//    	});
+//		
 	}
 
 }

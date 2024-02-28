@@ -2,6 +2,8 @@ package guilayout;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Hashtable;
 
 import backend.database.Database;
 import backend.dog.Dog;
@@ -163,7 +165,7 @@ public class Components{
 		
 	}
 	
-	public static Label tagLabel(String tag,Tag labelTag, Dog dog, ArrayList<Tag> dogTags) {
+	public static Label tagLabel(String tag,Tag labelTag, Dog dog, Hashtable<Integer, Tag> hashtable) {
 		
 		Label label = new Label(tag);
 		label.setFont(Font.font(font, fontSm));
@@ -191,7 +193,7 @@ public class Components{
 		//function to be able to turn the label highlighted when loading them if in the dog tags list.
 		
 		
-		if(dogTags.contains(labelTag) == true) {
+		if(hashtable.contains(labelTag) == true) {
 			
 			label.setStyle(highLightedStyle);
 		}
@@ -204,13 +206,13 @@ public class Components{
             if (label.getStyle().equals(defaultStyle)) {
             	label.setStyle(highLightedStyle); // highlight if not highlighted
             	if(dog.getTags().contains(labelTag) == false) {
-            		dog.getTags().add(labelTag);
+            		dog.getTags().put(labelTag.getTagId(),labelTag);
             	}
             	
             	
             } else {
             	if(dog.getTags().contains(labelTag) == true) {
-            		dog.getTags().remove(labelTag);
+            		dog.getTags().remove(labelTag.getTagId());
             	}
             	label.setStyle(defaultStyle);         	
             }
@@ -220,7 +222,7 @@ public class Components{
 		return label;
 	}
 	
-	public static GridPane createTags(ArrayList<Tag> tags, Dog dog) {
+	public static GridPane createTags(HashMap<Integer, Tag> tags, Dog dog) {
 		GridPane gridPane = new GridPane();
 		int row = 0;
         int col = 0;
@@ -228,8 +230,8 @@ public class Components{
         int maxRows = 5;
         
         int i = 0; // current index
-        
-		for(Tag t : tags) {
+             
+		for(Tag t : tags.values()) {
 			
 			Label label = tagLabel(t.getTagName(),t, dog, dog.getTags());
 			
@@ -272,7 +274,7 @@ public class Components{
 		return label;
 	}
 	
-	public static GridPane createTags(ArrayList<Tag> tags) { // non highlightable tags
+	public static GridPane createTags(Hashtable<Integer, Tag> hashtable) { // non highlightable tags
 		GridPane gridPane = new GridPane();
 		gridPane.setHgap(10); // Set horizontal gap
         gridPane.setVgap(10); // Set vertical gap
@@ -283,7 +285,7 @@ public class Components{
         
         int i = 0; // current index
         
-		for(Tag t : tags) {
+		for(Tag t : hashtable.values()) {
 			
 			Label label = dogTagLabel(t.getTagName());
 			
@@ -397,14 +399,14 @@ public class Components{
 		return gridPane;
 	}
 	
-	public static HBox likedDogView(Dog dog, Stage primaryStage) {
+	public static HBox likedDogView(Dog dog, Stage primaryStage, Poster poster) {
 
 		ImageView img = Components.imageView(200, 200);
 		img.setImage(new Image(dog.getImagePath()));
 		
 		Label primaryInfoLabel = Components.mediumLabel(dog.getName() + ", " + dog.getAge() + " years, " + dog.getSex(),Pos.CENTER); 
 		
-		Hyperlink posterLink = hyperlinkToPosterProfile(dog, primaryStage);
+		Hyperlink posterLink = hyperlinkToPosterProfile(dog, primaryStage, poster);
 		
 		
 		VBox info = new VBox(
@@ -422,14 +424,10 @@ public class Components{
 		
 	}
 	
-	public static Hyperlink hyperlinkToPosterProfile(Dog dog, Stage primaryStage) {
+	public static Hyperlink hyperlinkToPosterProfile(Dog dog, Stage primaryStage,Poster poster) {
 		Hyperlink posterLink = Components.hyperlink();
-		posterLink.setText(Database.getPosterById(dog.getPosterId()).getDisplayName());
-		
-		Poster poster = Database.getPosterById(dog.getPosterId());
+		posterLink.setText(poster.getDisplayName());
 		PosterProfileScene posterProfile = PosterProfileScene.getInstance();
-		
-	
 		posterLink.setOnAction(event -> {
         	try {
         		posterProfile.setCurrentPoster(poster);
