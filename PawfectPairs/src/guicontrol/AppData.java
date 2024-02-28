@@ -17,16 +17,17 @@ public class AppData {
 	private Hashtable<Integer, PriorityQueue<Dog>> dogProfileHashtable;
 	private HashMap<Integer, Tag> allTags;
 	private Hashtable<Integer,Poster> posterProfiles; // poster profiles by id 
-	private PriorityQueue<Dog> SortedDogProfiles;
+	private PriorityQueue<Dog> sortedDogProfiles;
 	
 	private static AppData instance;
 	
 	public PriorityQueue<Dog> getSortedDogProfiles() {
-		return SortedDogProfiles;
+		return sortedDogProfiles;
 	}
 
 	public void setSortedDogProfiles(PriorityQueue<Dog> sortedDogProfiles) {
-		SortedDogProfiles = sortedDogProfiles;
+		System.out.println("bruh");
+		sortedDogProfiles = sortedDogProfiles;
 	}
 
 	public static AppData getInstance() {
@@ -72,10 +73,6 @@ public class AppData {
 	
 	public void updateDogPriority() {
 		// update dog list to factor in score changes
-		
-		
-		
-		
 	}
 	
 	public void initializeDogProfilesSorted() {  // to be optimized

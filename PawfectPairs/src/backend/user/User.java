@@ -24,6 +24,8 @@ public class User {
 	
 	private ArrayList<Dog> likedDogs = new ArrayList<Dog>();
 	
+	private ArrayList<Dog> passedDogs = new ArrayList<Dog>();
+	
 
 	
 	public User(String username, String password) {
@@ -95,6 +97,14 @@ public class User {
 
 	public void addLikedDogs(Dog likedDog) {
 		likedDogs.add(likedDog);
+	}
+	
+	public ArrayList<Dog> getPassedDogs() {
+		return passedDogs;
+	}
+
+	public void addPassedDogs(Dog likedDog) {
+		passedDogs.add(likedDog);
 	}
 	
 	@Override

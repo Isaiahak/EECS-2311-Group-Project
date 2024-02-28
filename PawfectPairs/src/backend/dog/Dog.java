@@ -28,8 +28,7 @@ public class Dog  implements Comparable<Dog>{
 	    private int oldScore; // used to help optimise sorting algorithms, and identify which elemnets have been changed
 	    private int score; //score calculated based on intersection of this dog's tags with ideal dog's tags
 	    private String biography;
-	    private Hashtable<Integer, Tag> tags = new Hashtable<Integer, Tag>();
-	   
+	    private Hashtable<Integer, Tag> tags = new Hashtable<Integer, Tag>();   
 		
 	    public Dog(int dogSize, int dogEnergyLevel){ //why do we have this here? //its a constructor that does not set the other attributes
 	        setSize(new Size(dogSize));
@@ -48,6 +47,7 @@ public class Dog  implements Comparable<Dog>{
 	        this.posterId = posterId; 
 	        this.adopted = adopted;
 	        this.biography = biography;
+
 	    }
 	    
 	    public Dog(String name, int id, int age, int energyLevel, int size, int sex, int posterId, boolean adopted) {
@@ -206,6 +206,5 @@ public class Dog  implements Comparable<Dog>{
 
 		}
 }
-
 
 

@@ -73,33 +73,37 @@ public class Database {
 				 dogProfiles.put(id, queue);// populate the outer hashtable with poster id's
 		         Statement statement = connection.createStatement () ;
 		         Statement statement2 = connection.createStatement();
-		         ResultSet resultSet = statement.executeQuery ("SELECT * FROM dog WHERE dog.dogid NOT IN (SELECT userdogs.dogid FROM userdogs WHERE userdogs.userid = "+ user.getUserID() + " ) AND adopted = false;");
+//		         ResultSet resultSet = statement.executeQuery ("SELECT * FROM dog WHERE dog.dogid NOT IN (SELECT userdogs.dogid FROM userdogs WHERE userdogs.userid = "+ user.getUserID() + " ) AND adopted = false;");
+		         ResultSet resultSet = statement.executeQuery 
+		        		 ("SELECT * FROM dog WHERE dog.dogid NOT IN (SELECT userdogs.dogid FROM userdogs WHERE userdogs.userid = "+ user.getUserID() + " ) "
+		         		+ "AND dog.dogid NOT IN (SELECT userpasseddogs.dogid FROM userpasseddogs WHERE userpasseddogs.userid = "+ user.getUserID() + " );");
 		         while (resultSet.next()) {
 		        	// only add a dog if adoption = false and its id is not negative (if negative, its a dummy dog)	
 		        	 
-		        	 	String dogName = resultSet.getString ("dogname");
-			    		int dogId = resultSet.getInt("dogid"); 
-			    		int ageId = resultSet.getInt("ageid");  
-			    		int energyId = resultSet.getInt("energylevelid"); 
-			    		int sizeId = resultSet.getInt("sizeid"); 
-			    		int sexId = resultSet.getInt("sexid"); 
-			    		int posterId = resultSet.getInt("posterid"); 
-			    		boolean adoptedBool = resultSet.getBoolean("adopted"); 
-					    String imagePath = resultSet.getString("imagePath");
-					    String biography = resultSet.getString("biography");
-				    Dog dog = new Dog(
-				    		dogName, 
-				    		dogId,
-				    		ageId,
-				    		energyId,
-				    		sizeId,
-				    		sexId,
-				    		posterId,
-				    		adoptedBool,
-				    		imagePath,
-				    		biography
+					String dogName = resultSet.getString ("dogname");
+					int dogId = resultSet.getInt("dogid"); 
+					int ageId = resultSet.getInt("ageid");  
+					int energyId = resultSet.getInt("energylevelid"); 
+					int sizeId = resultSet.getInt("sizeid"); 
+					int sexId = resultSet.getInt("sexid"); 
+					int posterId = resultSet.getInt("posterid"); 
+					boolean adoptedBool = resultSet.getBoolean("adopted"); 
+					String imagePath = resultSet.getString("imagePath");
+					String biography = resultSet.getString("biography");
+					Dog dog = new Dog(
+							dogName, 
+							dogId,
+							ageId,
+							energyId,
+							sizeId,
+							sexId,
+							posterId,
+							adoptedBool,
+							imagePath,
+							biography
+					
 						    );
-				    
+
 				    
 				    dog.setTags(getDogTags(dogId, statement2));
 				    
@@ -122,27 +126,27 @@ public class Database {
 	
 
 	public static Dog getADog(int userid){
-//	gets the users ideal dog including its tags
-        Dog dog = null;
-        
+//		gets the users ideal dog including its tags
+	        Dog dog = null;
+	        
 
-        try{
-        Connection connection = databaseConnector.connect();
-        Statement statement = connection.createStatement () ;
-        ResultSet resultSet = statement.executeQuery ("SELECT * FROM idealdogs WHERE idealdogs.dogid = " + userid + ";") ;
-        while (resultSet.next()) {
-        	// only add a dog if adoption = false and its id is not negative (if negative, its a dummy dog)
-		    dog = new Dog(resultSet.getString("dogname"), resultSet.getInt("dogid"), resultSet.getInt("ageid"),  resultSet.getInt("energylevelid"), resultSet.getInt("sizeid"), resultSet.getInt("sexid"));  
-		    dog.setTags(Database.getIdealDogTags(dog.getId(),connection));
-         }
-             connection.close () ;
+	        try{
+	        Connection connection = databaseConnector.connect();
+	        Statement statement = connection.createStatement () ;
+	        ResultSet resultSet = statement.executeQuery ("SELECT * FROM idealdogs WHERE idealdogs.dogid = " + userid + ";") ;
+	        while (resultSet.next()) {
+	        	// only add a dog if adoption = false and its id is not negative (if negative, its a dummy dog)
+			    dog = new Dog(resultSet.getString("dogname"), resultSet.getInt("dogid"), resultSet.getInt("ageid"),  resultSet.getInt("energylevelid"), resultSet.getInt("sizeid"), resultSet.getInt("sexid"));  
+			    dog.setTags(Database.getIdealDogTags(dog.getId(),connection));
+	         }
+	             connection.close () ;
 
-           }
-         catch (SQLException e) {
-        	 	System.out.println ("Connection failure.") ;
-        	 	e.printStackTrace () ;
-          }
-         return dog;
+	           }
+	         catch (SQLException e) {
+	        	 	System.out.println ("Connection failure.") ;
+	        	 	e.printStackTrace () ;
+	          }
+	         return dog;
 	}
 	
 	public static void updateAllAdoptedDogs(ArrayList<Dog> doglist) {
@@ -176,8 +180,29 @@ public class Database {
         ResultSet resultSet = statement.executeQuery ("SELECT * FROM dog WHERE dog.posterid = " + posterId + ";");
         while (resultSet.next()) {
         	// only add a dog if adoption = false and its id is not negative (if negative, its a dummy dog)	
-		    Dog dog = new Dog(resultSet.getString ("dogname"), resultSet.getInt("dogid"), resultSet.getInt("ageid"),  resultSet.getInt("energylevelid"), resultSet.getInt("sizeid"), resultSet.getInt("sexid"), resultSet.getInt("posterid"), resultSet.getBoolean("adopted"), 
-		    resultSet.getString("imagePath"), resultSet.getString("biography"));
+			String dogName = resultSet.getString ("dogname");
+			int dogId = resultSet.getInt("dogid"); 
+			int ageId = resultSet.getInt("ageid");  
+			int energyId = resultSet.getInt("energylevelid"); 
+			int sizeId = resultSet.getInt("sizeid"); 
+			int sexId = resultSet.getInt("sexid"); 
+//			int posterId = resultSet.getInt("posterid"); 
+			boolean adoptedBool = resultSet.getBoolean("adopted"); 
+			String imagePath = resultSet.getString("imagePath");
+			String biography = resultSet.getString("biography");
+			Dog dog = new Dog(
+					dogName, 
+					dogId,
+					ageId,
+					energyId,
+					sizeId,
+					sexId,
+					posterId,
+					adoptedBool,
+					imagePath,
+					biography
+			
+				    );
             dogProfiles.add(dog);
                 
          }
@@ -191,14 +216,14 @@ public class Database {
          return dogProfiles;
 	}
 
-	public static void addLikedDog(int dogID,int userID){
+	public static void addUserDog(int dogID,int userID, String table){
 	
 			Connection connection = null;
 			PreparedStatement preparedStatement = null;
 			
 	        try {
 	        	 connection = databaseConnector.connect();
-	        	 String sql = "INSERT INTO userdogs (dogid, userid) VALUES (?, ?)";
+	        	 String sql = "INSERT INTO "+table+" (dogid, userid) VALUES (?, ?)";
 	        	 preparedStatement = connection.prepareStatement(sql);
 	        	 preparedStatement.setInt(1, dogID);
 	        	 preparedStatement.setInt(2, userID);
@@ -227,6 +252,7 @@ public class Database {
 	            }
 	        }
 	}
+	
 	
 	public static Hashtable<Integer, Tag> getDogTags(int dogId, Statement statement){
 		Hashtable <Integer, Tag> tags = new Hashtable<Integer, Tag>();
@@ -284,19 +310,37 @@ public class Database {
 	    }
 	}
 
-	public static ArrayList<Dog> getLikedDogs(int userID){
-		Connection connection = null;
-		PreparedStatement preparedStatement = null;
+	public static ArrayList<Dog> getUsersDogs(int userID, String table){
 		ArrayList<Dog> list = new ArrayList<Dog>();
 		
 	    try {
-	    	 connection = databaseConnector.connect();
-	    	 Statement statement = connection.createStatement ();
-	    	  
-	    	 ResultSet resultSet = statement.executeQuery("SELECT * FROM dog JOIN userdogs ON dog.dogid = userdogs.dogid WHERE userdogs.userid = " + userID +";");
-	    			 while (resultSet.next()) {	
-	    		 Dog dog = new Dog(resultSet.getString ("dogname"), resultSet.getInt("dogid"), resultSet.getInt("ageid"),  resultSet.getInt("energylevelid"), resultSet.getInt("sizeid"), resultSet.getInt("sexid"), resultSet.getInt("posterid"), resultSet.getBoolean("adopted"), 
-						 	resultSet.getString("imagePath"), resultSet.getString("biography"));
+	    	Connection connection = databaseConnector.connect();
+	    	Statement statement = connection.createStatement();
+	    	 ResultSet resultSet = statement.executeQuery("SELECT * FROM dog JOIN " + table + " ON dog.dogid = " + table + ".dogid WHERE " + table + ".userid = " + userID +";");
+			 while (resultSet.next()) {	
+				String dogName = resultSet.getString ("dogname");
+				int dogId = resultSet.getInt("dogid"); 
+				int ageId = resultSet.getInt("ageid");  
+				int energyId = resultSet.getInt("energylevelid"); 
+				int sizeId = resultSet.getInt("sizeid"); 
+				int sexId = resultSet.getInt("sexid"); 
+				int posterId = resultSet.getInt("posterid"); 
+				boolean adoptedBool = resultSet.getBoolean("adopted"); 
+				String imagePath = resultSet.getString("imagePath");
+				String biography = resultSet.getString("biography");
+				Dog dog = new Dog(
+						dogName, 
+						dogId,
+						ageId,
+						energyId,
+						sizeId,
+						sexId,
+						posterId,
+						adoptedBool,
+						imagePath,
+						biography
+				
+					    );
 	    		 list.add(dog);
 	    	 }			 	
 		}
@@ -568,8 +612,12 @@ public class Database {
         user = new User(resultSet.getString("username"),resultSet.getString("userpassword"));
         user.setUserID(resultSet.getInt("userid"));
         user.setEmail(resultSet.getString("email"));
-		    for (Dog d : Database.getLikedDogs(user.getUserID())) {
+        
+		    for (Dog d : Database.getUsersDogs(user.getUserID(),"userdogs")) {
 		    	user.addLikedDogs(d);
+		    }
+		    for (Dog d : Database.getUsersDogs(user.getUserID(),"userpasseddogs")) {
+		    	user.addPassedDogs(d);
 		    }
         }
         user.setDog(Database.getADog(user.getUserID()));
@@ -672,27 +720,9 @@ public class Database {
 		
 		catch (SQLException e) {
  			System.out.println ("Connection failure.") ;
- 			e.printStackTrace () ;
+ 			e.printStackTrace();
        }
-		
-		/*
-		
-		 try {
-	    	 connection = databaseConnector.connect();
-	    	 preparedStatement = connection.prepareStatement("DELETE FROM "+ tablename +" WHERE idealdogid = " + dogid + " AND tagid  = " + tagid + ";");
-	    	 int rowsAffected = preparedStatement.executeUpdate();
-	    	 if (rowsAffected > 0) {
-	            System.out.println("Dogtag remove successfully!");
-	        } else {
-	            System.out.println("Failed to remove Dogtag ");
-	        }
-	    } 
-	    catch (SQLException e) {
-	        e.printStackTrace();
-	      
-	    } */
-		
-}
+	}
 	
 	public static void deleteOldTags(int dogid) {
 		try {
@@ -715,10 +745,16 @@ public class Database {
 	public static void onApplicationClose(User user, ArrayList<Dog> doglist){
 		Database.updateAllAdoptedDogs(doglist); // sets dogs to be adopted 
 		
-		ArrayList<Dog> likedDogs = Database.getLikedDogs(user.getUserID());
+		ArrayList<Dog> likedDogs = Database.getUsersDogs(user.getUserID(),"userdogs");
 		for (Dog d : user.getLikedDogs()) {
 			if(likedDogs.contains(d) == false) 
-				Database.addLikedDog(d.getId(), user.getUserID());	
+				Database.addUserDog(d.getId(), user.getUserID(),"userdogs");	
+		}
+		
+		ArrayList<Dog> passedDogs = Database.getUsersDogs(user.getUserID(),"userpasseddogs");
+		for (Dog d : user.getPassedDogs()) {
+			if(passedDogs.contains(d) == false) 
+				Database.addUserDog(d.getId(), user.getUserID(),"userpasseddogs");	
 		}
 		
 		Dog dog = user.getDog();
@@ -763,7 +799,3 @@ class DatabaseConnector {
     }
         
 }
-
-
-
-
