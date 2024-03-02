@@ -24,7 +24,7 @@ import java.sql.SQLException;
  */
 public class Database {
 	
-	private static DatabaseConnector databaseConnector = new DatabaseConnector();
+	private static DatabaseConnector databaseConnector = new DatabaseConnector(); 
 	
 	public static  Hashtable<Integer,Poster> getAllPosters(){
 		 Poster poster = null; 
