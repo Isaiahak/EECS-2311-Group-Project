@@ -31,7 +31,9 @@ public class AppData {
 		return sortedDogProfiles;
 	}
 
+
 	public void setSortedDogProfiles(ArrayList<Dog> sortedDogProfiles) {
+
 		this.sortedDogProfiles = sortedDogProfiles;
 	}
 

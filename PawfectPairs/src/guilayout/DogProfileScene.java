@@ -83,6 +83,7 @@ public class DogProfileScene extends Application {
         
         petImageView = Components.imageView(500,500);
         
+
         Button passButton = Components.button("╳");
         passButton.setOnAction(event -> {
         	if(profileController.getDogListSize() <= 1) {
@@ -93,9 +94,10 @@ public class DogProfileScene extends Application {
 	            profileController.displayCurrentPetProfile();
 	            
         	}
+
         });
         passButton.setStyle("-fx-background-color: #0a0f40; -fx-text-fill: white; -fx-font-size: 60;");
-        
+
         Button likeButton = Components.button("♥");
         likeButton.setOnAction(e -> {
         
@@ -112,7 +114,9 @@ public class DogProfileScene extends Application {
             
            
          		   
+
          });
+        
         likeButton.setStyle("-fx-background-color: #db2a4d; -fx-text-fill: white; -fx-font-size: 60;");
      
         
@@ -125,10 +129,7 @@ public class DogProfileScene extends Application {
 		sizeLabel =  Components.mediumLabel(); // Attributes 
 		energyLabel = Components.mediumLabel();
 		
-		
-		if(posterDogs.size() <= 0 ) {
-			outOfDogs.start(primaryStage);
-		}else {
+	
 		
 		//		  Initialize layout
         // attributes hBox
@@ -205,7 +206,7 @@ public class DogProfileScene extends Application {
 		
 			}
 		}
-}
+
     
 
 
