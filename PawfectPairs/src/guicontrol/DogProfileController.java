@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.PriorityQueue;
+import java.util.TreeSet;
 
 import backend.database.Database;
 import backend.dog.Dog;
@@ -23,7 +24,7 @@ import javafx.stage.*;
 public class DogProfileController {
     private int currentIndex = 0;
 
-    private PriorityQueue<Dog> dogProfiles;
+    private ArrayList<Dog> dogProfiles;
     private Label primaryInfoLabel;
     private Label sizeLabel;
     private Label energyLabel;
@@ -36,7 +37,7 @@ public class DogProfileController {
 //    private Label bioLabel;
 //    private Label tagsLabel;
 
-    public DogProfileController(Label primaryInfoLabel, Label sizeLabel, Label energyLabel, ImageView petImageView, Label biographyText, Hyperlink posterLink, PriorityQueue<Dog> dogProfiles, StackPane tagsPane, Stage primaryStage,Hashtable<Integer,Poster> posterProfiles) {
+    public DogProfileController(Label primaryInfoLabel, Label sizeLabel, Label energyLabel, ImageView petImageView, Label biographyText, Hyperlink posterLink, ArrayList<Dog> dogProfiles, StackPane tagsPane, Stage primaryStage,Hashtable<Integer,Poster> posterProfiles) {
         this.primaryInfoLabel = primaryInfoLabel;
         this.sizeLabel = sizeLabel;
         this.energyLabel = energyLabel;
@@ -51,11 +52,11 @@ public class DogProfileController {
     }
     
     public void changeProfile() {
-    	dogProfiles.remove();
+    	dogProfiles.remove(0); // remove top element
     }
 
     public void displayCurrentPetProfile() {
-    	Dog currentProfile = dogProfiles.peek();
+    	Dog currentProfile = dogProfiles.get(0);
     	petImageView.setImage(new Image(currentProfile.getImagePath()));
     	primaryInfoLabel.setText(currentProfile.getName() +", " + currentProfile.getAge() + " years, " + currentProfile.getSex());
         sizeLabel.setText("Size: " + currentProfile.getSize());
@@ -78,12 +79,7 @@ public class DogProfileController {
         
         tagsPane.getChildren().add(Components.createTags(currentProfile.getTags()));
         
-        for(Tag t : currentProfile.getTags().values()) {
-        	System.out.println("Tag: " + t.getTagName());
-        }
-
-        
-    }
+      }
     
     
     

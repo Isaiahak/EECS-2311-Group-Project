@@ -8,7 +8,7 @@ public class Poster implements Comparable<Poster> {
 private int score; 
 private String displayName;
 private int uniqueId;
-private PriorityQueue<Dog> dogList = new PriorityQueue<Dog>(); 
+private ArrayList<Dog> dogList = new ArrayList<Dog>(); 
 
 
 public int getScore() {
@@ -20,7 +20,7 @@ public  Poster(int score, String displayName, int uniqueId) {
 	this.uniqueId = uniqueId;	
 }
 
-public void setDogList(PriorityQueue<Dog> dogList) {
+public void setDogList(ArrayList<Dog> dogList) {
 	//add a dog to the poster's dog list
 	this.dogList = dogList;
 	

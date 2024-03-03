@@ -3,6 +3,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.PriorityQueue;
+import java.util.TreeSet;
 
 import backend.database.Database;
 import backend.dog.Dog;
@@ -58,7 +59,7 @@ public class DogProfileScene extends Application {
     public void start(Stage primaryStage) {
 
     	appData = AppData.getInstance();     	
-    	PriorityQueue<Dog> posterDogs = appData.getSortedDogProfiles();
+    	ArrayList<Dog> posterDogs = appData.getSortedDogProfiles();
     	Hashtable<Integer,Poster> posterList = appData.getPosters();
     	User user = appData.getUser();
     	
@@ -82,10 +83,9 @@ public class DogProfileScene extends Application {
         
         petImageView = Components.imageView(500,500);
         
-        
         Button passButton = Components.button("╳");
         passButton.setOnAction(event -> {
-        	if(profileController.getDogListSize() == 0) {
+        	if(profileController.getDogListSize() <= 1) {
         		outOfDogs.start(primaryStage);
         	}
         	else {
@@ -99,12 +99,17 @@ public class DogProfileScene extends Application {
         Button likeButton = Components.button("♥");
         likeButton.setOnAction(e -> {
         
-        	
-            Dog dog = posterDogs.peek();
-            dog.setAdopted(true);
-            user.addLikedDogs(dog);
-            profileController.changeProfile();
-            profileController.displayCurrentPetProfile();
+        	if(profileController.getDogListSize() <= 1) {
+        		outOfDogs.start(primaryStage);
+        	}
+        	else {
+	            Dog dog = posterDogs.get(0);
+	            dog.setAdopted(true);
+	            user.addLikedDogs(dog);
+	            profileController.changeProfile();
+	            profileController.displayCurrentPetProfile();
+        	}
+            
            
          		   
          });
@@ -139,7 +144,7 @@ public class DogProfileScene extends Application {
         
         
         // nav tab
-        HBox navTab = Components.navTab(userProfile, likedDog, DogProfileScene.getInstance(), primaryStage);
+        HBox navTab = Components.navTab(userProfile, likedDog, DogProfileScene.getInstance(), primaryStage, "dogProfiles", appData);
       
        // bottom likes tab
 //        HBox bottomTab = new HBox(); 
@@ -170,7 +175,7 @@ public class DogProfileScene extends Application {
         
          // add to root vbox
 
-        root.getChildren().addAll(navTab, primaryControlTab, petImageView, primaryInfoLabel, posterLink, secondaryInfo, biographyText, tagsPane); 
+        root.getChildren().addAll(navTab, primaryControlTab, primaryInfoLabel, posterLink, secondaryInfo, biographyText, tagsPane); 
 		profileController = new DogProfileController(primaryInfoLabel, sizeLabel, energyLabel, petImageView, biographyText, posterLink, posterDogs, tagsPane, primaryStage, posterList);
 
 		
