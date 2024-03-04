@@ -89,11 +89,11 @@ public class LikedDogScene extends Application{
 //		stage.setMaximized(true);
 		stage.show();
 
-		stage.setOnCloseRequest(event -> {
-    	    System.out.println("Window is closing. Perform cleanup if needed.");
-    	    
-    	    Database.onApplicationClose(user);
-    	});
+//		stage.setOnCloseRequest(event -> {
+//    	    System.out.println("Window is closing. Perform cleanup if needed.");
+//    	    
+//    	    Database.onApplicationClose(user, posterDogs);
+//    	});
 		
 	}	
 	

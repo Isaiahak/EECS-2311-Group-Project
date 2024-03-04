@@ -63,6 +63,8 @@ public class DogProfileScene extends Application {
     	Hashtable<Integer,Poster> posterList = appData.getPosters();
     	User user = appData.getUser();
     	
+    	
+    	
     	//root is v box
 		VBox root = new VBox();
 		root.setSpacing(10);
@@ -79,6 +81,8 @@ public class DogProfileScene extends Application {
         OutOfDogsScene outOfDogs = OutOfDogsScene.getInstance();
        
         
+       
+        
         HBox primaryControlTab = new HBox();
         
         petImageView = Components.imageView(500,500);
@@ -86,35 +90,47 @@ public class DogProfileScene extends Application {
 
         Button passButton = Components.button("╳");
         passButton.setOnAction(event -> {
-        	if(profileController.getDogListSize() <= 1) {
+        	Dog dog = posterDogs.get(0);
+            user.addPassedDogs(dog);
+            if(profileController.getDogListSize() <= 0) { 
+            	outOfDogs.start(primaryStage);	
+            	
+            }
+            else if(profileController.getDogListSize() == 1) {
+            	profileController.changeProfile();
         		outOfDogs.start(primaryStage);
         	}
         	else {
-        		profileController.changeProfile();
-	            profileController.displayCurrentPetProfile();
 	            
+	            profileController.changeProfile();
+	            profileController.displayCurrentPetProfile();
         	}
+        	
+        	
 
         });
         passButton.setStyle("-fx-background-color: #0a0f40; -fx-text-fill: white; -fx-font-size: 60;");
 
         Button likeButton = Components.button("♥");
         likeButton.setOnAction(e -> {
-        
-        	if(profileController.getDogListSize() <= 1) {
-        		outOfDogs.start(primaryStage);
+        	
+        	Dog dog = posterDogs.get(0);
+            dog.setAdopted(true);
+            user.addLikedDogs(dog);
+            if(profileController.getDogListSize() <= 0) { 
+            	outOfDogs.start(primaryStage);	
+            	
+            }
+            else if(profileController.getDogListSize() == 1) {
+        		profileController.changeProfile();
+        		outOfDogs.start(primaryStage);	
         	}
-        	else {
-	            Dog dog = posterDogs.get(0);
-	            dog.setAdopted(true);
-	            user.addLikedDogs(dog);
+        	else {	
 	            profileController.changeProfile();
 	            profileController.displayCurrentPetProfile();
         	}
-            
-           
-         		   
-
+        	
+        	
          });
         
         likeButton.setStyle("-fx-background-color: #db2a4d; -fx-text-fill: white; -fx-font-size: 60;");
@@ -147,16 +163,6 @@ public class DogProfileScene extends Application {
         // nav tab
         HBox navTab = Components.navTab(userProfile, likedDog, DogProfileScene.getInstance(), primaryStage, "dogProfiles", appData);
       
-       // bottom likes tab
-//        HBox bottomTab = new HBox(); 
-     
-        
-        
-////        bottomTab.getChildren().addAll( likeButton, passButton); 
-//        bottomTab.setSpacing(20);
-//        bottomTab.setAlignment(Pos.CENTER);
-//        
-       
         
         // poster link
         posterLink = Components.hyperlink();
@@ -176,10 +182,16 @@ public class DogProfileScene extends Application {
         
          // add to root vbox
 
-        root.getChildren().addAll(navTab, primaryControlTab, primaryInfoLabel, posterLink, secondaryInfo, biographyText, tagsPane); 
+        
 		profileController = new DogProfileController(primaryInfoLabel, sizeLabel, energyLabel, petImageView, biographyText, posterLink, posterDogs, tagsPane, primaryStage, posterList);
-
 		
+		
+		 if(profileController.getDogListSize() <= 0) {
+	    		outOfDogs.start(primaryStage);
+	    	} // check if any dogs to show
+		 else {
+		 
+		 root.getChildren().addAll(navTab, primaryControlTab, primaryInfoLabel, posterLink, secondaryInfo, biographyText, tagsPane); 
 
 	      // Display the initial pet profile
 	      profileController.displayCurrentPetProfile();
@@ -203,7 +215,7 @@ public class DogProfileScene extends Application {
 //    	    Database.onApplicationClose(user, posterDogs);
 //    	});
 //		}
-		
+		 }
 			}
 		}
 
