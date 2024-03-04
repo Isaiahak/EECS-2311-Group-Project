@@ -193,3 +193,7 @@ March 3, 2024
     - created database getters and setters for both user and poster funds 
     - created mock ui to test wallet methods 
     - modified wallet methods to work without constant calls to the database
+
+March 4, 2024 
+- Zainab finished ui for wallet settings and added to user settings 
+- Zainab began setting up UI for dog sponsoring, (she already set up backend for it)
