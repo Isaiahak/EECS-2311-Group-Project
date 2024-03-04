@@ -96,6 +96,7 @@ public class User {
 	}
 
 	public void addLikedDogs(Dog likedDog) {
+		System.out.println(",dog name liek: "+ likedDog.getName()+ ",dog id like: " + likedDog.getId());
 		likedDogs.add(likedDog);
 	}
 	
@@ -104,6 +105,7 @@ public class User {
 	}
 
 	public void addPassedDogs(Dog likedDog) {
+		System.out.println(",dog name pass: "+ likedDog.getName()+ ",dog id  pass: " + likedDog.getId());
 		passedDogs.add(likedDog);
 	}
 	
