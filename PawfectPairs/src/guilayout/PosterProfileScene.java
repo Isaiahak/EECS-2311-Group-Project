@@ -122,13 +122,13 @@ public class PosterProfileScene extends Application {
 	primaryStage.setScene(scene);
 	primaryStage.show();
 	
-		primaryStage.setOnCloseRequest(event -> {
-		    System.out.println("Window is closing. Perform cleanup if needed.");
-		    
-		    Database.onApplicationClose(user);
-		});
-	        
-	  System.out.println(currentPoster.getScore());
+//		primaryStage.setOnCloseRequest(event -> {
+//		    System.out.println("Window is closing. Perform cleanup if needed.");
+//		    
+//		    Database.onApplicationClose(user, posterDogs);
+//		});
+//	        
+//	  System.out.println(currentPoster.getScore());
 	        
 	    }  
 	 

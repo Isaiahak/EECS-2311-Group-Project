@@ -749,9 +749,8 @@ public class Database {
        }
 	}
 	
-	
-	public static void onApplicationClose(User user){
-		
+	public static void onApplicationClose(User user, ArrayList<Dog> doglist){
+		Database.updateAllAdoptedDogs(doglist); // sets dogs to be adopted 
 		
 		ArrayList<Dog> likedDogs = Database.getUsersDogs(user.getUserID(),"userdogs");
 		for (Dog d : user.getLikedDogs()) {
