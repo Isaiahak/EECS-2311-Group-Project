@@ -161,7 +161,9 @@ Feb 24, 2024
         - modified parameters in the DB to match parameters in the constructors  
   - successfully made a copy of the DB
   - attempted to connect it to eclipse
-- Zainab and Connor finalized the test cases and the integration testing
+- Zainab and Connor finalized the test cases
+- Zainab did the integration testing and fixed gradle test to work with all testing files
+- Zainab ensured all previous test cases were consistent with the new changes done to constructors, classes and behaviours
 - Connor worked on some of the things that needed to be done that were on the list.
   - fixed the dog class so that it can update the image path and the biography
   - fixed some of the test cases to reflect the changes from the dog class
@@ -179,3 +181,15 @@ Feb 25, 2024
 -Isaiah and Ekaterina finalized the integration of the DB with the UI
 - Isaiah created the final database methods
 - Ekaterina debugged Isaiah's database methods 
+
+Feb 27, 2024 
+- Zainab worked on the "BREEDER/SHELTER INFO UI to show contact info" and "SHELTER CONTACT INFO
+Link to email/phone" stories 
+- Zainab began implementing backend of the wallet user stories
+
+March 3, 2024
+- Zainab finallized UI for the Breeder/shelter/poster info stories 
+- Zainab worked on the database, adding schemas/tables to create associations posters and their funds as well as users and their funds
+    - created database getters and setters for both user and poster funds 
+    - created mock ui to test wallet methods 
+    - modified wallet methods to work without constant calls to the database
