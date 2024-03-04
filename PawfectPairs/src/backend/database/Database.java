@@ -60,60 +60,65 @@ public class Database {
 	 * DOG METHODS
 	 */
 	
-	public static Hashtable<Integer, PriorityQueue<Dog>> getAllDogs(User user, Set<Integer> posterIds){
+	public static Hashtable<Integer, ArrayList<Dog>> getAllDogs(User user, Set<Integer> posterIds){
 		
 
-		 Hashtable<Integer, PriorityQueue<Dog>> dogProfiles = new Hashtable<Integer, PriorityQueue<Dog>>();
-
-		 Connection connection = databaseConnector.connect();
-		 try {
-			 for (Integer id : posterIds){
-				 
-				 PriorityQueue<Dog> queue= new PriorityQueue<Dog>();
+		Hashtable<Integer, ArrayList<Dog>> dogProfiles = new Hashtable<Integer, ArrayList<Dog>>();
+		for (Integer id : posterIds){
+				 ArrayList<Dog> queue = new ArrayList<Dog>();
 				 dogProfiles.put(id, queue);// populate the outer hashtable with poster id's
-		         Statement statement = connection.createStatement ();
-		         Statement statement2 = connection.createStatement();
+		}		 
+		Connection connection = databaseConnector.connect();
+		try {	
+	         Statement statement = connection.createStatement () ;
+	         Statement statement2 = connection.createStatement();
 //		         ResultSet resultSet = statement.executeQuery ("SELECT * FROM dog WHERE dog.dogid NOT IN (SELECT userdogs.dogid FROM userdogs WHERE userdogs.userid = "+ user.getUserID() + " ) AND adopted = false;");
-		         ResultSet resultSet = statement.executeQuery 
-		        		 ("SELECT * FROM dog WHERE dog.dogid NOT IN (SELECT userdogs.dogid FROM userdogs WHERE userdogs.userid = "+ user.getUserID() + " ) "
-		         		+ "AND dog.dogid NOT IN (SELECT userpasseddogs.dogid FROM userpasseddogs WHERE userpasseddogs.userid = "+ user.getUserID() + " );");
-		         while (resultSet.next()) {
-		        	// only add a dog if adoption = false and its id is not negative (if negative, its a dummy dog)	
-		        	 
-					String dogName = resultSet.getString ("dogname");
-					int dogId = resultSet.getInt("dogid"); 
-					int ageId = resultSet.getInt("ageid");  
-					int energyId = resultSet.getInt("energylevelid"); 
-					int sizeId = resultSet.getInt("sizeid"); 
-					int sexId = resultSet.getInt("sexid"); 
-					int posterId = resultSet.getInt("posterid"); 
-					boolean adoptedBool = resultSet.getBoolean("adopted"); 
-					String imagePath = resultSet.getString("imagePath");
-					String biography = resultSet.getString("biography");
-					Dog dog = new Dog(
-							dogName, 
-							dogId,
-							ageId,
-							energyId,
-							sizeId,
-							sexId,
-							posterId,
-							adoptedBool,
-							imagePath,
-							biography
-					
-						    );
+	         ResultSet resultSet = statement.executeQuery 
+	        		 ("SELECT * FROM dog WHERE dog.dogid NOT IN (SELECT userdogs.dogid FROM userdogs WHERE userdogs.userid = "+ user.getUserID() + " ) "
+	         		+ "AND dog.dogid NOT IN (SELECT userpasseddogs.dogid FROM userpasseddogs WHERE userpasseddogs.userid = "+ user.getUserID() + " );");
+	         while (resultSet.next()) {
+	        	// only add a dog if adoption = false and its id is not negative (if negative, its a dummy dog)	
+	        	 
+				String dogName = resultSet.getString ("dogname");
+				int dogId = resultSet.getInt("dogid"); 
+				int ageId = resultSet.getInt("ageid");  
+				int energyId = resultSet.getInt("energylevelid"); 
+				int sizeId = resultSet.getInt("sizeid"); 
+				int sexId = resultSet.getInt("sexid"); 
+				int posterId = resultSet.getInt("posterid"); 
+				boolean adoptedBool = resultSet.getBoolean("adopted"); 
+				String imagePath = resultSet.getString("imagePath");
+				String biography = resultSet.getString("biography");
+				Dog dog = new Dog(
+						dogName, 
+						dogId,
+						ageId,
+						energyId,
+						sizeId,
+						sexId,
+						posterId,
+						adoptedBool,
+						imagePath,
+						biography
+				
+					    );
 
 				    
-				    dog.setTags(getDogTags(dogId, statement2));
-				    
-				    dog.calculateScore(user.getDog().getTags()); // initialise dog score
+			    dog.setTags(getDogTags(dogId, statement2));
+			    
+			    
+			    dog.calculateScore(user.getDog().getTags()); // initialise dog score
 //				    System.out.println("key set =" + dogProfiles.keySet().toString());
-				    
-				    queue.add(dog);
+			    
+//			    for(Dog d : queue) {
+//		        	 System.out.println(d.getName() + d.getPosterId());
+//		         }
+			    
+			   dogProfiles.get(posterId).add(dog);
 
-		         	}    
+	        
          	 }
+	         
             connection.close () ;
 
            }
@@ -255,15 +260,15 @@ public class Database {
 	
 	
 	public static Hashtable<Integer, Tag> getDogTags(int dogId, Statement statement){
+
 		Hashtable <Integer, Tag> tags = new Hashtable<Integer, Tag>();
 		
-		// get all tags in dogtag data table associated with the dog id
-//		
+		// get all tags in dogtag data table associated with the dog id	
 		try {
 //			Statement statement = connection.createStatement() ;
 			ResultSet resultSet = statement.executeQuery("SELECT tags.tagname, tags.tagid FROM tags JOIN dogtag ON tags.tagid = dogtag.tagid WHERE dogtag.dogid = " + dogId + ";");
 			
-			while (resultSet.next()) {	 
+			while (resultSet.next()) {	
 				tags.put(resultSet.getInt("tagid"),new Tag(resultSet.getString("tagname")));
 			}
 		}
@@ -416,6 +421,8 @@ public class Database {
 	 */
 	
 	public static HashMap<Integer, Tag> getAllTags(){
+		
+		
 
 	        HashMap <Integer, Tag> tags = new HashMap<Integer, Tag>();
 
@@ -565,25 +572,25 @@ public class Database {
 		
 	}
 	
-	public static void removeDogTags(int dogid,int tagid, String tablename) {
-		Connection connection = null;
-		PreparedStatement preparedStatement = null;
-	    try {
-	    	 connection = databaseConnector.connect();
-	    	 preparedStatement = connection.prepareStatement("DELETE FROM "+ tablename +" WHERE idealdogid = " + dogid + " AND tagid  = " + tagid + ";");
-	    	 int rowsAffected = preparedStatement.executeUpdate();
-	    	 if (rowsAffected > 0) {
-	            System.out.println("Dogtag remove successfully!");
-	        } else {
-	            System.out.println("Failed to remove Dogtag ");
-	        }
-	    } 
-	    catch (SQLException e) {
-	        e.printStackTrace();
-	      
-	    } 
-		
-	}
+//	public static void removeDogTags(int dogid,int tagid, String tablename) {
+//		Connection connection = null;
+//		PreparedStatement preparedStatement = null;
+//	    try {
+//	    	 connection = databaseConnector.connect();
+//	    	 preparedStatement = connection.prepareStatement("DELETE FROM "+ tablename +" WHERE idealdogid = " + dogid + " AND tagid  = " + tagid + ";");
+//	    	 int rowsAffected = preparedStatement.executeUpdate();
+//	    	 if (rowsAffected > 0) {
+//	            System.out.println("Dogtag remove successfully!");
+//	        } else {
+//	            System.out.println("Failed to remove Dogtag ");
+//	        }
+//	    } 
+//	    catch (SQLException e) {
+//	        e.printStackTrace();
+//	      
+//	    } 
+//		
+//	}
 
 
 	

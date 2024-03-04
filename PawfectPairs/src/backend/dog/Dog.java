@@ -28,7 +28,7 @@ public class Dog  implements Comparable<Dog>{
 	    private int oldScore; // used to help optimise sorting algorithms, and identify which elemnets have been changed
 	    private int score; //score calculated based on intersection of this dog's tags with ideal dog's tags
 	    private String biography;
-	    private Hashtable<Integer, Tag> tags = new Hashtable<Integer, Tag>();   
+	    private Hashtable<Integer, Tag> tags = new Hashtable<Integer, Tag>();    // tags are stored by their ids
 		
 	    public Dog(int dogSize, int dogEnergyLevel){ //why do we have this here? //its a constructor that does not set the other attributes
 	        setSize(new Size(dogSize));
@@ -50,20 +50,40 @@ public class Dog  implements Comparable<Dog>{
 
 	    }
 	    
-	    public Dog(String name, int id, int age, int energyLevel, int size, int sex, int posterId, boolean adopted) {
-	        this.name = name;
-	        this.id = id;
+	    public Dog(Dog dog) { //copy constructor (for ideal dog)
+	    	this.name = dog.getName();
+	        this.id = dog.getId();
 	       
-	        setAge(new Age(age));
-	        setSex(new Sex(sex));
-	        setSize(new Size(size));
-	        setEnergyLevel(new EnergyLevel(energyLevel));
-
-	        this.posterId = posterId;
-	        this.adopted = adopted;
+	        setAge(new Age(dog.getAge().getWeight()));
+	        setSex(new Sex(dog.getSex().getWeight()));
+	        setSize(new Size(dog.getSize().getWeight()));
+	        setEnergyLevel(new EnergyLevel(dog.getEnergyLevel().getWeight()));
+	        
+	        Hashtable<Integer,Tag> tags = new Hashtable<Integer, Tag>();
+	        
+	        for(Tag t : dog.getTags().values()) {
+	        	// copy
+	        	tags.put(t.getTagId(), t);
+	        }
+	        
+	        setTags(tags);
+	    	
 	    }
 	    
-	    public Dog(String name, int id, int age, int energyLevel, int size, int sex) {
+//	    public Dog(String name, int id, int age, int energyLevel, int size, int sex, int posterId, boolean adopted) {
+//	        this.name = name;
+//	        this.id = id;
+//	       
+//	        setAge(new Age(age));
+//	        setSex(new Sex(sex));
+//	        setSize(new Size(size));
+//	        setEnergyLevel(new EnergyLevel(energyLevel));
+//
+//	        this.posterId = posterId;
+//	        this.adopted = adopted;
+//	    }
+	    
+	    public Dog(String name, int id, int age, int energyLevel, int size, int sex) {// ideal dog constructor
 	        this.name = name;
 	        this.id = id;
 	       
@@ -71,8 +91,9 @@ public class Dog  implements Comparable<Dog>{
 	        setSex(new Sex(sex));
 	        setSize(new Size(size));
 	        setEnergyLevel(new EnergyLevel(energyLevel));
+	        
 
-	    }
+	    } 
 	    
 	    public int calculateScore(Hashtable<Integer, Tag> tags) {
 	    	/*
@@ -190,8 +211,39 @@ public class Dog  implements Comparable<Dog>{
 	        return stringBuilder.toString();
 	    }
 		
+		    public boolean arePreferencesEqual(Dog d) { // check if tags and attributes are the same 	
+		    	
+		    	Hashtable<Integer,Tag> currDogTags = this.getTags(); 
+		    	Hashtable<Integer,Tag> otherDogTags = d.getTags();
+		    	Set<Integer >otherDogKeys = otherDogTags.keySet();
+		    	Set<Integer >currDogKeys = currDogTags.keySet();
+		    	
+		    	if(currDogKeys.size() != otherDogKeys.size()) return false;
+		    	
+			    	
+		    	for(int key : otherDogKeys) {
+		    		if(!currDogTags.containsKey(key)) {
+		    			return false;
+		    		}
+		    	}
+		    	
+		    	for(int key : currDogKeys) {
+		    		if(!otherDogTags.containsKey(key)) {
+		    			return false;
+		    		}
+		    	}
+		    	
+		    	
+		    	if(this.age.getWeight() != d.age.getWeight() || this.sex.getWeight() != d.sex.getWeight()  // check if attrubutes have changed 
+		    			|| this.size.getWeight() != d.size.getWeight() || this.energyLevel.getWeight() != d.energyLevel.getWeight()) {
+		    		return false;
+		    	}
+		    	
+	    		return true;
+		    }
+		
 		 @Override 
-		    public boolean equals(Object o) {
+		    public boolean equals(Object o) { // for checking if two dogs are the same
 		    	
 		    	if(this.getId() == ((Dog) o).getId()) return true;
 		    	
@@ -200,9 +252,9 @@ public class Dog  implements Comparable<Dog>{
 		    }
 
 		@Override
-		public int compareTo(Dog o) {
+		public int compareTo(Dog o) { // for priorityqueue
 
-		        return Integer.compare(this.score, o.score);
+		        return Integer.compare(o.score,this.score);
 
 		}
 }

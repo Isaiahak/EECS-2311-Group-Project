@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.PriorityQueue;
+import java.util.TreeSet;
 
 import backend.database.Database;
 import backend.dog.Dog;
@@ -63,7 +64,7 @@ public class PosterProfileScene extends Application {
 	 @Override  
      public void start(Stage primaryStage) throws Exception {  
 	 appData = AppData.getInstance();
-	 PriorityQueue<Dog> posterDogs = appData.getSortedDogProfiles();
+	 ArrayList<Dog> posterDogs = appData.getSortedDogProfiles();
 	 User user = appData.getUser();
 	 DogProfileScene dogProfileScene = DogProfileScene.getInstance();
 	 UserProfile userProfile = UserProfile.getInstance();
@@ -74,7 +75,7 @@ public class PosterProfileScene extends Application {
 	
 	
 	
-	 HBox navTab = Components.navTab(userProfile, LikedDogScene.getInstance(), dogProfileScene, primaryStage);
+	 HBox navTab = Components.navTab(userProfile, LikedDogScene.getInstance(), dogProfileScene, primaryStage,"posterProfile",appData);
 	 navTab.setAlignment(Pos.CENTER);
 	
 	

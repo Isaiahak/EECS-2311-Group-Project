@@ -61,7 +61,7 @@ public class Components{
 		return button;
 	}
 	
-	public static HBox navTab(UserProfile userScene,LikedDogScene likedDog, DogProfileScene dogProfile, Stage stage) { //create a navigation tab: settings, schedule, messages, etc
+	public static HBox navTab(UserProfile userScene,LikedDogScene likedDog, DogProfileScene dogProfile, Stage stage,  String currentScene, AppData appData) { //create a navigation tab: settings, schedule, messages, etc
 		// settings hBox
         HBox navTab = new HBox();
         navTab.setStyle("-fx-background-color: #f5f5f5;");
@@ -70,21 +70,60 @@ public class Components{
         Button settingsButton = Components.button("⚙ Settings ⚙");
         Button dogProfileButton = Components.button("🐕 Dog Profiles 🐕");
         Button likedDogButton = Components.button("♥ Liked Dogs  🐶");
+        
+        String defaultStyle = "-fx-background-color: #4CAF50; -fx-text-fill: white;";
+        String highlightedStyle = "-fx-background-color: #2ed934; -fx-text-fill: white;";
+        
   
-        settingsButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
-        likedDogButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
-        dogProfileButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
+        settingsButton.setStyle(defaultStyle);
+        likedDogButton.setStyle(defaultStyle);
+        dogProfileButton.setStyle(defaultStyle);
         
+        // set hightlight on current page button  
+        switch(currentScene) {
+        case "userProfile":
+        	settingsButton.setStyle(highlightedStyle);
+        	break;
+        	
+        case "likedDogs":
+        	likedDogButton.setStyle(highlightedStyle);
+        	break;
+        	
+        case "dogProfiles":
+        	dogProfileButton.setStyle(highlightedStyle);
+        	break;
+        	
+        default:
+        	break; // do nothing 
+        }
         
-        settingsButton.setOnAction(event -> {
-        	userScene.start(stage);
-        });
-        likedDogButton.setOnAction(event -> {
-        	likedDog.start(stage);
-        });
-        dogProfileButton.setOnAction(event -> {
-        	dogProfile.start(stage);
-        });
+        if(currentScene == "userProfile") { // if we are currently on userProfile, we should update dog scores when we change to a different page 
+        	
+	    	settingsButton.setOnAction(event -> {
+	    	appData.updateDogScores();	
+	    	userScene.start(stage);
+	        });
+	        likedDogButton.setOnAction(event -> {
+	        	appData.updateDogScores();	
+	        	likedDog.start(stage);
+	        });
+	        dogProfileButton.setOnAction(event -> {
+	        	appData.updateDogScores();	
+	        	dogProfile.start(stage);
+	        });
+	        
+        }else {
+        	settingsButton.setOnAction(event -> {
+	    	userScene.start(stage);
+	        });
+	        likedDogButton.setOnAction(event -> {
+	        	likedDog.start(stage);
+	        });
+	        dogProfileButton.setOnAction(event -> {
+	        	dogProfile.start(stage);
+	        });
+        }
+        
        
         
         navTab.getChildren().addAll(settingsButton, dogProfileButton, likedDogButton);
@@ -166,7 +205,7 @@ public class Components{
 	}
 	
 	public static Label tagLabel(String tag,Tag labelTag, Dog dog, Hashtable<Integer, Tag> hashtable) {
-		
+		// tags in the user profile to change preferences
 		Label label = new Label(tag);
 		label.setFont(Font.font(font, fontSm));
 		label.setWrapText(true);
@@ -252,6 +291,8 @@ public class Components{
 	}
 	
 	public static Label dogTagLabel(String tag) {
+		// tags used to label dogs
+		
 		Label label = new Label(tag);
 		label.setFont(Font.font(font, fontSm));
 		label.setWrapText(true);

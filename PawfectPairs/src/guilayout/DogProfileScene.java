@@ -3,6 +3,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.PriorityQueue;
+import java.util.TreeSet;
 
 import backend.database.Database;
 import backend.dog.Dog;
@@ -58,7 +59,7 @@ public class DogProfileScene extends Application {
     public void start(Stage primaryStage) {
 
     	appData = AppData.getInstance();     	
-    	PriorityQueue<Dog> posterDogs = appData.getSortedDogProfiles();
+    	ArrayList<Dog> posterDogs = appData.getSortedDogProfiles();
     	Hashtable<Integer,Poster> posterList = appData.getPosters();
     	User user = appData.getUser();
     	
@@ -82,36 +83,38 @@ public class DogProfileScene extends Application {
         
         petImageView = Components.imageView(500,500);
         
-        
-     
+
         Button passButton = Components.button("╳");
         passButton.setOnAction(event -> {
-            Dog dog = posterDogs.peek();
-            user.addPassedDogs(dog);
-            profileController.changeProfile();
-            if(profileController.getDogListSize() == 0) {
-                outOfDogs.start(primaryStage);
-            }
-            else {
-                profileController.displayCurrentPetProfile();
+        	if(profileController.getDogListSize() <= 1) {
+        		outOfDogs.start(primaryStage);
+        	}
+        	else {
+        		profileController.changeProfile();
+	            profileController.displayCurrentPetProfile();
+	            
+        	}
 
-            }
         });
         passButton.setStyle("-fx-background-color: #0a0f40; -fx-text-fill: white; -fx-font-size: 60;");
 
         Button likeButton = Components.button("♥");
         likeButton.setOnAction(e -> {
-            Dog dog = posterDogs.peek();
-//                    dog.setAdopted(true);
-            user.addLikedDogs(dog);
-            profileController.changeProfile();
-            if(profileController.getDogListSize() == 0) {
-                outOfDogs.start(primaryStage);
-            }
-            else {
-                profileController.displayCurrentPetProfile();
+        
+        	if(profileController.getDogListSize() <= 1) {
+        		outOfDogs.start(primaryStage);
+        	}
+        	else {
+	            Dog dog = posterDogs.get(0);
+	            dog.setAdopted(true);
+	            user.addLikedDogs(dog);
+	            profileController.changeProfile();
+	            profileController.displayCurrentPetProfile();
+        	}
+            
+           
+         		   
 
-            }
          });
         
         likeButton.setStyle("-fx-background-color: #db2a4d; -fx-text-fill: white; -fx-font-size: 60;");
@@ -142,7 +145,7 @@ public class DogProfileScene extends Application {
         
         
         // nav tab
-        HBox navTab = Components.navTab(userProfile, likedDog, DogProfileScene.getInstance(), primaryStage);
+        HBox navTab = Components.navTab(userProfile, likedDog, DogProfileScene.getInstance(), primaryStage, "dogProfiles", appData);
       
        // bottom likes tab
 //        HBox bottomTab = new HBox(); 
@@ -173,7 +176,7 @@ public class DogProfileScene extends Application {
         
          // add to root vbox
 
-        root.getChildren().addAll(navTab, primaryControlTab, petImageView, primaryInfoLabel, posterLink, secondaryInfo, biographyText, tagsPane); 
+        root.getChildren().addAll(navTab, primaryControlTab, primaryInfoLabel, posterLink, secondaryInfo, biographyText, tagsPane); 
 		profileController = new DogProfileController(primaryInfoLabel, sizeLabel, energyLabel, petImageView, biographyText, posterLink, posterDogs, tagsPane, primaryStage, posterList);
 
 		
@@ -194,15 +197,15 @@ public class DogProfileScene extends Application {
 	//      primaryStage.setMaximized(true);
 	      primaryStage.show();
       
-      primaryStage.setOnCloseRequest(event -> {
-    	    System.out.println("Window is closing. Perform cleanup if needed.");
-    	    
-    	    Database.onApplicationClose(user);
-    	});
+//      primaryStage.setOnCloseRequest(event -> {
+//    	    System.out.println("Window is closing. Perform cleanup if needed.");
+//    	    
+//    	    Database.onApplicationClose(user, posterDogs);
+//    	});
+//		}
+		
+			}
 		}
-		
-}
-		
 
     
 

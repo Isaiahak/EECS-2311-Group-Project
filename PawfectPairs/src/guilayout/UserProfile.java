@@ -8,6 +8,7 @@ import javafx.stage.Stage;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.PriorityQueue;
+import java.util.TreeSet;
 
 import backend.database.Database;
 import backend.dog.Dog;
@@ -16,6 +17,7 @@ import backend.user.User;
 import guicontrol.AppData;
 
 public class UserProfile extends Application{
+	private Dog oldPreferences; 
 	
 	private static UserProfile instance;
 	
@@ -35,11 +37,14 @@ public class UserProfile extends Application{
 	public static void main(String[] args) {
         launch(args);
     }
+	public Dog getOldPreferences() {
+		return this.oldPreferences;
+	}
 
     @Override
     public void start(Stage primaryStage) {
     	appData = AppData.getInstance();
-    	PriorityQueue<Dog> posterDogs = appData.getSortedDogProfiles();
+    	ArrayList<Dog> posterDogs = appData.getSortedDogProfiles();
     	User user = appData.getUser();
     	HashMap<Integer, Tag> tags = appData.getallTags();		
     	DogProfileScene dogProfileScene = DogProfileScene.getInstance();  
@@ -47,11 +52,15 @@ public class UserProfile extends Application{
 //    	System.out.println(dog.getName());	
     	VBox root = new VBox();
     	
+    	// save an copy of the user's preferences prior to changing them (optimise)
+    	
+    	oldPreferences = new Dog(dog);
+    	
     	
     	// create navBar
     	   	
     	// back button
-    	HBox navTab = Components.navTab(UserProfile.getInstance(), LikedDogScene.getInstance(), dogProfileScene, primaryStage);
+    	HBox navTab = Components.navTab(UserProfile.getInstance(), LikedDogScene.getInstance(), dogProfileScene, primaryStage, "userProfile", appData);
     	// set up preferences vbox
     	VBox preferences = new VBox();
     	preferences.setAlignment(javafx.geometry.Pos.CENTER);

@@ -11,6 +11,7 @@ import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import java.util.ArrayList;
 import java.util.PriorityQueue;
+import java.util.TreeSet;
 
 import backend.database.Database;
 import backend.dog.Dog;
@@ -36,7 +37,7 @@ public class LikedDogScene extends Application{
 	@Override
 	public void start(Stage stage){
 		appData = AppData.getInstance();
-		PriorityQueue<Dog> posterDogs = appData.getSortedDogProfiles();
+		ArrayList<Dog> posterDogs = appData.getSortedDogProfiles();
 		User user = appData.getUser();
 		
 		DogProfileScene dogProfileScene = DogProfileScene.getInstance();  
@@ -47,7 +48,7 @@ public class LikedDogScene extends Application{
 		root.setAlignment(javafx.geometry.Pos.CENTER);
     	root.setSpacing(20);
     	
-    	HBox navTab = Components.navTab(userProfile, LikedDogScene.getInstance(), dogProfileScene, stage);
+    	HBox navTab = Components.navTab(userProfile, LikedDogScene.getInstance(), dogProfileScene, stage,"likedDogs", appData);
  
 		VBox likedDogsDisplay = new VBox();
 	    	

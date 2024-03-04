@@ -3,6 +3,7 @@ package guilayout;
 
 import java.util.ArrayList;
 import java.util.PriorityQueue;
+import java.util.TreeSet;
 
 import backend.database.Database;
 import backend.dog.Dog;
@@ -40,7 +41,7 @@ public class OutOfDogsScene extends Application{
 	@Override
 	public void start(Stage stage) {
 		appData = AppData.getInstance();
-		PriorityQueue<Dog> posterDogs = appData.getSortedDogProfiles();
+		ArrayList<Dog> posterDogs = appData.getSortedDogProfiles();
 		User user = appData.getUser();
 		
 		VBox root = new VBox();
@@ -50,7 +51,7 @@ public class OutOfDogsScene extends Application{
 		UserProfile userProfile = UserProfile.getInstance();
 		Label pageLabel = Components.largeLabel("Out of Dogs!",Pos.TOP_CENTER);
 		stage.setTitle("Pawfect Pairs");	
-		HBox navTab = Components.navTab(userProfile, likedDog, DogProfileScene.getInstance(), stage);
+		HBox navTab = Components.navTab(userProfile, likedDog, DogProfileScene.getInstance(), stage, "dogProfiles", appData);
 		root.getChildren().addAll(navTab,pageLabel);
 		StackPane stackPane = new StackPane(root);
 		stackPane.setAlignment(javafx.geometry.Pos.CENTER);
