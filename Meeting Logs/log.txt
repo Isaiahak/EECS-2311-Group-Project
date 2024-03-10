@@ -229,7 +229,7 @@ March 8 2024
 
 March 9, 2024 - 
 - Edson, Sidney and Connor added the second page in the UI called appointments allowing for user to see appointments and cancel and reschedule
--  Due to ongoing updates in the branches, Edson and Sidney have decided to work off a zip file from Deliverable 1
+- Due to ongoing updates in the branches, Edson and Sidney have decided to work off a zip file from Deliverable 1
 - Ekaterina worked on implementing attribute functionality (intiially, we had it so that user could only pick one atribute, but we need user to be able to pick more than one to filter dogs by)
 - Ekaterina designed the new data tables for the attributes functionality
 - Ekaterina updated the DataBase.java methods to initialise the user with the new attributes, and update the attributes
