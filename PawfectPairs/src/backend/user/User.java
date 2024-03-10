@@ -1,16 +1,24 @@
 package backend.user;
 
 import java.util.ArrayList;
+import java.util.Hashtable;
 
-import backend.database.Database;
 import backend.dog.Dog;
-import backend.poster.Poster;
-
+import backend.dog.trait.*;
+import backend.tag.Tag;
 
 
 public class User {
 	
-	private Dog preferredDog;
+	private TagPreferences tagPreferences;
+
+	private AgePreferences agePreferences;
+
+	private SizePreferences sizePreferences;
+
+	private SexPreferences sexPreferences;
+
+	private EnergyLevelPreferences energyLevelPreferences;
 	
 	private String username;
 	
@@ -43,14 +51,7 @@ public class User {
 	/*
 	 * For adding and for removing attribute/tag preferences
 	 */
-	public Dog getDog() {
-		return preferredDog;
-	}
-	
-	public void setDog(Dog dog) {
-		this.preferredDog = dog;
-		
-	}
+
 	public int getUserID() {
 		return userID;
 	}
@@ -106,7 +107,47 @@ public class User {
 	public void addPassedDogs(Dog likedDog) {
 		passedDogs.add(likedDog);
 	}
-	
+
+	public ArrayList<Attribute> getSizePreferences() {
+		return sizePreferences.getPreferences();
+	}
+
+	public ArrayList<Attribute> getEnergyLevelPreferences() {
+		return energyLevelPreferences.getPreferences();
+	}
+
+	public ArrayList<Attribute> getSexPreferences() {
+		return sexPreferences.getPreferences();
+	}
+
+	public ArrayList<Attribute> getAgePreferences() {
+		return agePreferences.getPreferences();
+	}
+
+	public void setTagPreferences(TagPreferences tagPreferences) {
+		this.tagPreferences = tagPreferences;
+	}
+
+	public void setSizePreferences(SizePreferences sizePreferences) {
+		this.sizePreferences = sizePreferences;
+	}
+
+	public void setAgePreferences(AgePreferences agePreferences) {
+		this.agePreferences = agePreferences;
+	}
+
+	public void setSexPreferences(SexPreferences sexPreferences) {
+		this.sexPreferences = sexPreferences;
+	}
+
+	public void setEnergyLevelPreferences(EnergyLevelPreferences energyLevelPreferences) {
+		this.energyLevelPreferences = energyLevelPreferences;
+	}
+
+	public Hashtable<Integer, Tag> getTagPreferences() {
+		return tagPreferences.getTagPreferences();
+	}
+
 	@Override
 	public String toString() {
 		return "User [username=" + username + ", email=" + email + ", password="

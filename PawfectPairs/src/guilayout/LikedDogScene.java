@@ -17,10 +17,7 @@ import backend.database.Database;
 import backend.dog.Dog;
 
 
-public class LikedDogScene extends Application{
-	
-	
-	AppData appData;
+public class LikedDogScene extends PrimaryScene{
 
 	private static LikedDogScene instance;
 
@@ -30,20 +27,14 @@ public class LikedDogScene extends Application{
 		}
 		return instance;
 	}
+
 	private LikedDogScene() {
 		
 	}
 	
 	@Override
 	public void start(Stage stage){
-		appData = AppData.getInstance();
-		ArrayList<Dog> posterDogs = appData.getSortedDogProfiles();
-		User user = appData.getUser();
-		
-		DogProfileScene dogProfileScene = DogProfileScene.getInstance();  
 		ArrayList<Dog> likedDogs = user.getLikedDogs();
-		UserProfile userProfile = UserProfile.getInstance();
-		
 		VBox root = new VBox();
 		root.setAlignment(javafx.geometry.Pos.CENTER);
     	root.setSpacing(20);

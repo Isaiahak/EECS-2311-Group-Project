@@ -1,50 +1,32 @@
 package guilayout;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Hashtable;
-import java.util.PriorityQueue;
-import java.util.TreeSet;
 
-import backend.database.Database;
 import backend.dog.Dog;
 
-import backend.poster.Poster;
-import backend.user.User;
-import guilayout.Components;
-import guicontrol.AppData;
-import guicontrol.DogProfileController;
-import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.*;
 import javafx.scene.layout.*;
-import javafx.scene.text.*;
 import javafx.stage.Stage;
 
-public class DogProfileScene extends Application {
-	private static DogProfileScene instance;
+public class DogProfileScene extends PrimaryScene{
 
-	
+	private static DogProfileScene instance;
 	public static DogProfileScene getInstance() {
 		if (instance == null) {
 			instance = new DogProfileScene();		
 		}
 		return instance;
 	}
-	
-
-    private DogProfileController profileController;
 
     private ImageView petImageView;
     private Label sizeLabel;
     private Label energyLabel;
     private Label primaryInfoLabel; 
-    private TextFlow biographyText;
+    private Label biographyText;
     private Hyperlink posterLink;
-    
-    AppData appData;
-    
+	private StackPane tagsPane;
+	private Stage stage;
 //    private int l = 1080; 
 //    private int w = 1920; 
 
@@ -58,84 +40,63 @@ public class DogProfileScene extends Application {
     @Override
     public void start(Stage primaryStage) {
 
-    	appData = AppData.getInstance();     	
-    	ArrayList<Dog> posterDogs = appData.getSortedDogProfiles();
-    	Hashtable<Integer,Poster> posterList = appData.getPosters();
-    	User user = appData.getUser();
-    	
-    	
-    	
     	//root is v box
 		VBox root = new VBox();
 		root.setSpacing(10);
 		root.setAlignment(Pos.CENTER);
-		
 
         primaryStage.setTitle("Pawfect Pairs");
-        
-        
-        
-        UserProfile userProfile = UserProfile.getInstance();
         PosterProfileScene posterProfile = PosterProfileScene.getInstance();
-        LikedDogScene likedDog = LikedDogScene.getInstance();
         OutOfDogsScene outOfDogs = OutOfDogsScene.getInstance();
-       
-        
-       
-        
+
+
         HBox primaryControlTab = new HBox();
         
         petImageView = Components.imageView(500,500);
-        
 
         Button passButton = Components.button("╳");
+		passButton.setStyle("-fx-background-color: #0a0f40; -fx-text-fill: white; -fx-font-size: 60;");
         passButton.setOnAction(event -> {
         	Dog dog = posterDogs.get(0);
             user.addPassedDogs(dog);
-            if(profileController.getDogListSize() <= 0) { 
+            if(posterDogs.size() <= 0) {
             	outOfDogs.start(primaryStage);	
             	
             }
-            else if(profileController.getDogListSize() == 1) {
-            	profileController.changeProfile();
+            else if(posterDogs.size() == 1) {
+            	changeProfile();
         		outOfDogs.start(primaryStage);
         	}
         	else {
-	            
-	            profileController.changeProfile();
-	            profileController.displayCurrentPetProfile();
+	            changeProfile();
+	            displayCurrentPetProfile();
         	}
         	
         	
 
         });
-        passButton.setStyle("-fx-background-color: #0a0f40; -fx-text-fill: white; -fx-font-size: 60;");
 
         Button likeButton = Components.button("♥");
+		likeButton.setStyle("-fx-background-color: #db2a4d; -fx-text-fill: white; -fx-font-size: 60;");
         likeButton.setOnAction(e -> {
         	
         	Dog dog = posterDogs.get(0);
             dog.setAdopted(true);
             user.addLikedDogs(dog);
-            if(profileController.getDogListSize() <= 0) { 
+            if(posterDogs.size() <= 0) {
             	outOfDogs.start(primaryStage);	
             	
             }
-            else if(profileController.getDogListSize() == 1) {
-        		profileController.changeProfile();
+            else if(posterDogs.size() == 1) {
+        		changeProfile();
         		outOfDogs.start(primaryStage);	
         	}
         	else {	
-	            profileController.changeProfile();
-	            profileController.displayCurrentPetProfile();
+	            changeProfile();
+	            displayCurrentPetProfile();
         	}
-        	
-        	
          });
-        
-        likeButton.setStyle("-fx-background-color: #db2a4d; -fx-text-fill: white; -fx-font-size: 60;");
-     
-        
+
         primaryControlTab.getChildren().addAll(likeButton,petImageView,passButton);
         primaryControlTab.setSpacing(20);
         primaryControlTab.setAlignment(Pos.CENTER);
@@ -175,39 +136,32 @@ public class DogProfileScene extends Application {
         });
         
         // add dog tags
-        
-        
-       	StackPane tagsPane = new StackPane();
-        
+
+
+		tagsPane = new StackPane();
+        stage = primaryStage;
         
          // add to root vbox
 
-        
-		profileController = new DogProfileController(primaryInfoLabel, sizeLabel, energyLabel, petImageView, biographyText, posterLink, posterDogs, tagsPane, primaryStage, posterList);
-		
-		
-		 if(profileController.getDogListSize() <= 0) {
-	    		outOfDogs.start(primaryStage);
-	    	} // check if any dogs to show
-		 else {
-		 
-		 root.getChildren().addAll(navTab, primaryControlTab, primaryInfoLabel, posterLink, secondaryInfo, biographyText, tagsPane); 
 
-	      // Display the initial pet profile
-	      profileController.displayCurrentPetProfile();
-	      StackPane stackPane = new StackPane(root);
-	      stackPane.setAlignment(javafx.geometry.Pos.CENTER);
+		 
+		root.getChildren().addAll(navTab, primaryControlTab, primaryInfoLabel, posterLink, secondaryInfo, biographyText, tagsPane);
+
+		// Display the initial pet profile
+		displayCurrentPetProfile();
+		StackPane stackPane = new StackPane(root);
+		stackPane.setAlignment(javafx.geometry.Pos.CENTER);
+
+		ScrollPane scrollPane = new ScrollPane(stackPane);
+		scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+		scrollPane.setFitToWidth(true);
+
+		Scene scene = new Scene(scrollPane, Components.screenWidth, Components.screenHeight);
+
+		primaryStage.setScene(scene);
 	      
-	      ScrollPane scrollPane = new ScrollPane(stackPane);
-	      scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-	      scrollPane.setFitToWidth(true);
-	      
-	      Scene scene = new Scene(scrollPane, Components.screenWidth, Components.screenHeight);
-	
-	      primaryStage.setScene(scene);
-	      
-	//      primaryStage.setMaximized(true);
-	      primaryStage.show();
+	//  primaryStage.setMaximized(true);
+		primaryStage.show();
       
 //      primaryStage.setOnCloseRequest(event -> {
 //    	    System.out.println("Window is closing. Perform cleanup if needed.");
@@ -215,9 +169,39 @@ public class DogProfileScene extends Application {
 //    	    Database.onApplicationClose(user, posterDogs);
 //    	});
 //		}
-		 }
+	}
+
+	public void displayCurrentPetProfile() {
+		Dog currentProfile = posterDogs.get(0);
+		petImageView.setImage(new Image(currentProfile.getImagePath()));
+		primaryInfoLabel.setText(currentProfile.getName() +", " + currentProfile.getAge() + " years, " + currentProfile.getSex());
+		sizeLabel.setText("Size: " + currentProfile.getSize());
+		energyLabel.setText("Energy Level: " + currentProfile.getEnergyLevel());
+		biographyText.setText(currentProfile.getBiography());
+
+		posterLink.setText(posterList.get(currentProfile.getPosterId()).getDisplayName());
+		PosterProfileScene posterProfile = PosterProfileScene.getInstance();
+		posterProfile.setCurrentPoster(posterList.get(currentProfile.getPosterId()));
+
+		posterLink.setOnAction(event -> {
+			try {
+				posterProfile.start(stage);
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
-		}
+		});
+
+		tagsPane.getChildren().clear();
+
+		tagsPane.getChildren().add(Components.createTags(currentProfile.getTags()));
+
+	}
+
+	public void changeProfile() {
+		posterDogs.remove(0); // remove top element
+	}
+}
+
 
     
 

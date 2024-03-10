@@ -107,7 +107,7 @@ public class Database {
 			    dog.setTags(getDogTags(dogId, statement2));
 			    
 			    
-			    dog.calculateScore(user.getDog().getTags()); // initialise dog score
+			    dog.calculateScore(user.getTagPreferences()); // initialise dog score
 //				    System.out.println("key set =" + dogProfiles.keySet().toString());
 			    
 //			    for(Dog d : queue) {
@@ -557,7 +557,7 @@ public class Database {
 	        Statement statement = connection.createStatement () ;
 	        ResultSet resultSet = statement.executeQuery ("SELECT tagid FROM tags WHERE tagname = '" + tagname + "'") ;
 	        while (resultSet.next()) {
-	        	tagid = resultSet.getInt("tagid");         
+	        	tagid = resultSet.getInt("tagid");
 	         }
 	             connection.close () ;
 
@@ -566,7 +566,7 @@ public class Database {
 	        	 	System.out.println ("Connection failure.") ;
 	        	 	e.printStackTrace () ;
 	          }
-	         
+
 		return tagid;
 		
 		
@@ -627,7 +627,12 @@ public class Database {
 		    	user.addPassedDogs(d);
 		    }
         }
-        user.setDog(Database.getADog(user.getUserID()));
+		user.setAgePreferences();
+		user.setEnergyLevelPreferences();
+		user.setSexPreferences();
+		user.setSizePreferences();
+		user.setTagPreferences();
+
     } 
     catch (SQLException e) {
         e.printStackTrace();
@@ -636,6 +641,25 @@ public class Database {
     
 	return user; 	
 }
+
+	public static ArrayList<Attribute> getUserAttributes(String AttributeType,int userid){
+		try{
+			Connection connection = databaseConnector.connect();
+			Statement statement = connection.createStatement () ;
+			ResultSet resultSet = statement.executeQuery ("SELECT * FROM tags WHERE tagname = '" + tagname + "'") ;
+			while (resultSet.next()) {
+				tagid = resultSet.getInt("tagid");
+			}
+			connection.close () ;
+
+		}
+		catch (SQLException e) {
+			System.out.println ("Connection failure.") ;
+			e.printStackTrace () ;
+		}
+
+		return tagid;
+	}
 	
 	// gets user id
 	public static int getUserID(String username, String password) {
@@ -789,7 +813,7 @@ class DatabaseConnector {
         	
         	Class.forName("org.postgresql.Driver"); // Replace with your database driver
         	
-        	Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/paw", "postgres", "doglover123");
+        	Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5434/postgres", "postgres", "321123");
 //        	System.out.println( "Connected to the PostgreSQL server successfully.");
         	
         	return connection; 
