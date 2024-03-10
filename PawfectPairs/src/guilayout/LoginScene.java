@@ -85,6 +85,9 @@ public class LoginScene extends Application{
                 appData.setUser(username, password);
                 System.out.println("Logging the user in!");
                 dogProfileScene.start(primaryStage);
+                //Code Edson and Sidney for Making DB calls
+                //Database.makingCalendarObjects();
+                ////////////////////////////////////////////////////
             } else {
                 // Display an alert for unsuccessful login
                 showAlert("Login Failed", "Invalid username or password.");

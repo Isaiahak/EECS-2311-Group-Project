@@ -15,7 +15,10 @@ import java.sql.Date;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 
+import backend.calendar.Appointment;
+import backend.calendar.AppointmentManager;
 import backend.database.Database;
 import backend.dog.Dog;
 import backend.poster.Poster;
@@ -35,6 +38,9 @@ public class AppointmentScene extends Application {
     Dog currentDog;
     Date appointment;
     User user;
+    AppointmentManager userAppointments;
+    ArrayList <Appointment> appointments = new ArrayList<>();
+    Appointment currentAppointment;
 
     private AppointmentScene() {
     }
@@ -54,6 +60,7 @@ public class AppointmentScene extends Application {
         meetWithLabel.setAlignment(Pos.CENTER);
         
         user = AppData.getInstance().getUser();
+        userAppointments = new AppointmentManager (user.getUserID(), appointments);
 
         VBox root = new VBox();
         root.setAlignment(Pos.CENTER);
@@ -202,9 +209,12 @@ public class AppointmentScene extends Application {
         
         java.util.Date utilDate = Date.from(date.atStartOfDay(ZoneId.systemDefault()).toInstant());
         java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
+        currentAppointment = new Appointment(currentPoster.getUniqueId(),currentDog.getId(), sqlDate,user.getUserID());
         
         //adding to the DB
-        if (Database.addBookedDate(currentPoster.getUniqueId(), currentDog.getId(), sqlDate,user.getUserID())) {
+        if (!(userAppointments.appointmentExists(currentAppointment))) {
+        	//Database.addBookedDate(currentPoster.getUniqueId(), currentDog.getId(), sqlDate,user.getUserID());
+        	userAppointments.addAppointment(currentAppointment);
         	successLabel.setText("Date added successfully!");
         	
         }
@@ -229,6 +239,30 @@ public class AppointmentScene extends Application {
 		 
 		 //updateMeetWithLabel(poster, dog);
 	 }
+
+	public AppointmentManager getUserAppointments() {
+		return userAppointments;
+	}
+
+	public void setUserAppointments(AppointmentManager userAppointments) {
+		this.userAppointments = userAppointments;
+	}
+
+	public ArrayList<Appointment> getAppointments() {
+		return appointments;
+	}
+
+	public void setAppointments(ArrayList<Appointment> appointments) {
+		this.appointments = appointments;
+	}
+
+	public Appointment getCurrentAppointment() {
+		return currentAppointment;
+	}
+
+	public void setCurrentAppointment(Appointment currentAppointment) {
+		this.currentAppointment = currentAppointment;
+	}
     
    /* public void updateMeetWithLabel(Poster poster, Dog dog) {
     	setCurrentPosterDog(poster,dog);
@@ -238,4 +272,5 @@ public class AppointmentScene extends Application {
             meetWithLabel.setText("Meet with the selected Dog"); // Clear the label if either poster or dog is null
         }
     }*/
+    
 }

@@ -4,6 +4,8 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import backend.calendar.Appointment;
+import backend.calendar.AppointmentManager;
 import backend.database.Database;
 import backend.dog.Dog;
 import backend.dog.trait.Age;
@@ -474,6 +476,10 @@ public class Components{
 	}
 	
 	public static Hyperlink hyperlinkToCancelAppointment(Dog dog, Stage primaryStage) {
+		AppointmentManager userManager = AppointmentScene.getInstance().getUserAppointments();
+		ArrayList<Appointment> userAppointments = userManager.getUserAppointments();
+		
+		
 		Hyperlink appointmentLink = Components.hyperlink();
 		appointmentLink.setText("Cancel");//Database.getPosterById(dog.getPosterId())
 		
@@ -485,9 +491,19 @@ public class Components{
 	
 		appointmentLink.setOnAction(event -> {
         	try {
-        		Database.deleteAppointment(poster.getUniqueId(),dog.getId());
-        		BookedAppointmentScene bookedPage = BookedAppointmentScene.getInstance();
-        		bookedPage.start(primaryStage);
+        		
+        		for (Appointment appointment : userAppointments) {
+        	        if (appointment.getDogID() == dog.getId()) {
+        	        	userManager.removeAppointment(appointment);
+        	        	BookedAppointmentScene bookedPage = BookedAppointmentScene.getInstance();
+                		bookedPage.start(primaryStage);
+        	        	
+        	        }
+        		}
+        		//Database.deleteAppointment(poster.getUniqueId(),dog.getId());
+        		
+        		//BookedAppointmentScene bookedPage = BookedAppointmentScene.getInstance();
+        		//bookedPage.start(primaryStage);
         		
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -497,21 +513,33 @@ public class Components{
 		return appointmentLink;
 	}
 	public static Hyperlink hyperlinkToReschedule(Dog dog, Stage primaryStage) {
+		AppointmentManager userManager = AppointmentScene.getInstance().getUserAppointments();
+		ArrayList<Appointment> userAppointments = userManager.getUserAppointments();
+		
 		Hyperlink appointmentLink = Components.hyperlink();
 		appointmentLink.setText("Reschedule");//Database.getPosterById(dog.getPosterId())
 		
 		Poster poster = Database.getPosterById(dog.getPosterId());
 		//PosterProfileScene posterProfile = PosterProfileScene.getInstance();
-		//Dog selectedDog = Database.getADog(dog.getId());
+		Dog selectedDog = Database.getADog(dog.getId()); //need to change to local Call
 		AppointmentScene appointmentPage = AppointmentScene.getInstance();
 		
 	
 		appointmentLink.setOnAction(event -> {
         	try {
-        		Database.deleteAppointment(poster.getUniqueId(),dog.getId());
-        		appointmentPage.setCurrentPosterDog(poster,dog);
+        		
+        		for (Appointment appointment : userAppointments) {
+        	        if (appointment.getDogID() == dog.getId()) {
+        	        	userManager.removeAppointment(appointment);
+        	        	appointmentPage.setCurrentPosterDog(poster,dog);
+                		appointmentPage.start(primaryStage);
+        	        	
+        	        }
+        		}
+        		//Database.deleteAppointment(poster.getUniqueId(),dog.getId());
+        		//appointmentPage.setCurrentPosterDog(poster,dog);
         		//appointmentPage.updateMeetWithLabel(poster, selectedDog);
-        		appointmentPage.start(primaryStage);
+        		//appointmentPage.start(primaryStage);
         		
 			} catch (Exception e) {
 				e.printStackTrace();
