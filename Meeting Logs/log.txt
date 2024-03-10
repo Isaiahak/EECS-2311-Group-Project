@@ -187,13 +187,30 @@ Feb 27, 2024
 Link to email/phone" stories 
 - Zainab began implementing backend of the wallet user stories
 
-March 3, 2024
+Mar 1, 2024
+- Edson and Sidney started working on the design for the Calendar class 
+- Due to ongoing updates in the branches, Edson and Sidney have decided to work off a zip file from Deliverable 1
+
+Mar 2, 2024
+- Edson and Sidney worked on implementing the logic for the calendar including DB calls and the logic for the 2-page design
+- Edson and Sidney updated the DB with the new logic
+-  Due to ongoing updates in the branches, Edson and Sidney have decided to work off a zip file from Deliverable 1
+
+Mar 3, 2024
+- Edson and Sidney started working on the UI calendar page 
+-  Due to ongoing updates in the branches, Edson and Sidney have decided to work off a zip file from Deliverable 1
 - Zainab finallized UI for the Breeder/shelter/poster info stories 
 - Zainab worked on the database, adding schemas/tables to create associations posters and their funds as well as users and their funds
     - created database getters and setters for both user and poster funds 
     - created mock ui to test wallet methods 
     - modified wallet methods to work without constant calls to the database
 
-March 4, 2024 
+Mar 4, 2024
+- Edson and Sidney finalized calendar page allowing users to book appointments with each dog
+-  Due to ongoing updates in the branches, Edson and Sidney have decided to work off a zip file from Deliverable 1
 - Zainab finished ui for wallet settings and added to user settings 
 - Zainab began setting up UI for dog sponsoring, (she already set up backend for it)
+
+March 9, 2024 - 
+- Edson, Sidney and Connor added the second page in the UI called appointments allowing for user to see appointments and cancel and reschedule
+-  Due to ongoing updates in the branches, Edson and Sidney have decided to work off a zip file from Deliverable 1
