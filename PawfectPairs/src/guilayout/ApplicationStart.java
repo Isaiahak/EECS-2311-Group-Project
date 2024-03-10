@@ -21,6 +21,7 @@ public class ApplicationStart extends Application {
 	
 	LoginScene loginScene = LoginScene.getInstance();   
 	
+	
 	@Override
     public void start(Stage stage) {
         Label l = new Label("Hello world!!!!!");

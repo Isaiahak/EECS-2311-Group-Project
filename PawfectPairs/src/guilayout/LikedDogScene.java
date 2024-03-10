@@ -10,7 +10,6 @@ import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import java.util.ArrayList;
-import java.util.PriorityQueue;
 
 import backend.database.Database;
 import backend.dog.Dog;
@@ -19,7 +18,9 @@ import backend.dog.Dog;
 public class LikedDogScene extends Application{
 	
 	
-	AppData appData;
+	ArrayList<Dog> posterDogs;
+	ArrayList<Dog> likedDogs;
+	User user;
 
 	private static LikedDogScene instance;
 
@@ -35,24 +36,30 @@ public class LikedDogScene extends Application{
 	
 	@Override
 	public void start(Stage stage){
-		appData = AppData.getInstance();
-		PriorityQueue<Dog> posterDogs = appData.getSortedDogProfiles();
-		User user = appData.getUser();
+		posterDogs = AppData.getInstance().getDogProfiles();//TEMP
+		user = AppData.getInstance().getUser();
 		
 		DogProfileScene dogProfileScene = DogProfileScene.getInstance();  
-		ArrayList<Dog> likedDogs = user.getLikedDogs();
+		likedDogs = user.getLikedDogs();
 		UserProfile userProfile = UserProfile.getInstance();
 		
 		VBox root = new VBox();
 		root.setAlignment(javafx.geometry.Pos.CENTER);
     	root.setSpacing(20);
     	
-    	HBox navTab = Components.navTab(userProfile, LikedDogScene.getInstance(), dogProfileScene, stage);
- 
+    	HBox navTab = Components.navTab(userProfile, LikedDogScene.getInstance(), DogProfileScene.getInstance(), BookedAppointmentScene.getInstance(), stage);
+    	
+//		Button backButton = Components.button("Back");
+//		backButton.setAlignment(Pos.TOP_LEFT);
+		
+//		 backButton.setOnAction(e -> {
+//			 dogProfileScene.start(stage);
+//	     });
+		 
 		VBox likedDogsDisplay = new VBox();
 	    	
     	for(Dog d : likedDogs) {
-    		likedDogsDisplay.getChildren().add(Components.likedDogView(d, stage, appData.getPosters()));
+    		likedDogsDisplay.getChildren().add(Components.likedDogView(d, stage));
     	}
     	likedDogsDisplay.setAlignment(javafx.geometry.Pos.CENTER);
     	
@@ -87,13 +94,17 @@ public class LikedDogScene extends Application{
 		stage.setTitle("Pawfect Pairs");
 //		stage.setMaximized(true);
 		stage.show();
-
-		stage.setOnCloseRequest(event -> {
-    	    System.out.println("Window is closing. Perform cleanup if needed.");
-    	    
-    	    Database.onApplicationClose(user);
-    	});
+//		stage.setOnCloseRequest(event -> {
+//    	    System.out.println("Window is closing. Perform cleanup if needed.");
+//    	    
+//    	    Database.onApplicationClose(user, posterDogs);
+//    	});
 		
 	}	
+	// Method to get the list of liked dogs
+    public ArrayList<Dog> getLikedDogs() {
+        return likedDogs;
+    }
 	
+
 }

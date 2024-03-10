@@ -5,13 +5,11 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
+
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.PriorityQueue;
 
 import backend.database.Database;
 import backend.dog.Dog;
-import backend.tag.Tag;
 import backend.user.User;
 import guicontrol.AppData;
 
@@ -19,7 +17,8 @@ public class UserProfile extends Application{
 	
 	private static UserProfile instance;
 	
-    AppData appData;
+    User user;
+    ArrayList<Dog> posterDogs;
 	
 	public static UserProfile getInstance() {
 		if (instance == null) {
@@ -27,31 +26,34 @@ public class UserProfile extends Application{
 		}
 		return instance;
 	}
-	
 	private UserProfile() {
 		
 	}
 
-	public static void main(String[] args) {
+  public static void main(String[] args) {
         launch(args);
     }
 
     @Override
     public void start(Stage primaryStage) {
-    	appData = AppData.getInstance();
-    	PriorityQueue<Dog> posterDogs = appData.getSortedDogProfiles();
-    	User user = appData.getUser();
-    	HashMap<Integer, Tag> tags = appData.getallTags();		
-    	DogProfileScene dogProfileScene = DogProfileScene.getInstance();  
-		Dog dog = user.getDog();   
-//    	System.out.println(dog.getName());	
+    	
+    	posterDogs = AppData.getInstance().getDogProfiles();//TEMP
+    	user = AppData.getInstance().getUser();
+    	
+    	LoginScene loginScene  = LoginScene.getInstance();
+		DogProfileScene dogProfileScene = DogProfileScene.getInstance();  
+		
+//    	Dog dog = user.getDog();   
+		Dog dog = Database.getADog(user.getUserID());
+    	System.out.println(dog.getName());
+    	
     	VBox root = new VBox();
     	
     	
     	// create navBar
     	   	
     	// back button
-    	HBox navTab = Components.navTab(UserProfile.getInstance(), LikedDogScene.getInstance(), dogProfileScene, primaryStage);
+    	HBox navTab = Components.navTab(UserProfile.getInstance(), LikedDogScene.getInstance(), DogProfileScene.getInstance(), BookedAppointmentScene.getInstance(), primaryStage);
     	// set up preferences vbox
     	VBox preferences = new VBox();
     	preferences.setAlignment(javafx.geometry.Pos.CENTER);
@@ -76,7 +78,7 @@ public class UserProfile extends Application{
     	
     	//display all tags
     	
-    	GridPane tagsGrid =  Components.createTags(tags,dog);
+    	GridPane tagsGrid =  Components.createTags(Database.getAllTags(),dog);
     	tagsGrid.setAlignment(javafx.geometry.Pos.CENTER);
     	
     	VBox attributes = new VBox();
@@ -144,10 +146,10 @@ public class UserProfile extends Application{
 //		primaryStage.setMaximized(true);
 		primaryStage.show();
 		
-		primaryStage.setOnCloseRequest(event -> {
-    	    System.out.println("Window is closing. Perform cleanup if needed.");
-    	    Database.onApplicationClose(user);
-    	});
+//		primaryStage.setOnCloseRequest(event -> {
+//    	    System.out.println("Window is closing. Perform cleanup if needed.");
+//    	    Database.onApplicationClose(user, posterDogs);
+//    	});
 		
 		
 

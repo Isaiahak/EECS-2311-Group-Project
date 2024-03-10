@@ -1,9 +1,8 @@
 package guilayout;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Hashtable;
 
 import backend.database.Database;
 import backend.dog.Dog;
@@ -61,36 +60,40 @@ public class Components{
 		return button;
 	}
 	
-	public static HBox navTab(UserProfile userScene,LikedDogScene likedDog, DogProfileScene dogProfile, Stage stage) { //create a navigation tab: settings, schedule, messages, etc
+	public static HBox navTab(UserProfile userScene, LikedDogScene likedDog, DogProfileScene dogProfile, BookedAppointmentScene appointmentScene, Stage stage) { //create a navigation tab: settings, schedule, messages, etc
 		// settings hBox
-        HBox navTab = new HBox();
-        navTab.setStyle("-fx-background-color: #f5f5f5;");
-        navTab.setSpacing(20);
-        
-        Button settingsButton = Components.button("⚙ Settings ⚙");
-        Button dogProfileButton = Components.button("🐕 Dog Profiles 🐕");
-        Button likedDogButton = Components.button("♥ Liked Dogs  🐶");
-  
-        settingsButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
-        likedDogButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
-        dogProfileButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
-        
-        
-        settingsButton.setOnAction(event -> {
-        	userScene.start(stage);
-        });
-        likedDogButton.setOnAction(event -> {
-        	likedDog.start(stage);
-        });
-        dogProfileButton.setOnAction(event -> {
-        	dogProfile.start(stage);
-        });
-       
-        
-        navTab.getChildren().addAll(settingsButton, dogProfileButton, likedDogButton);
-        
-        navTab.setAlignment(Pos.TOP_CENTER);
-        return navTab; 
+	    HBox navTab = new HBox();
+	    navTab.setStyle("-fx-background-color: #f5f5f5;");
+	    navTab.setSpacing(20);
+
+	    Button settingsButton = Components.button("⚙ Settings ⚙");
+	    Button dogProfileButton = Components.button("🐕 Dog Profiles 🐕");
+	    Button likedDogButton = Components.button("♥ Liked Dogs  🐶");
+	    Button appointmentsButton = Components.button("📅 Appointments 📅");
+
+	    settingsButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
+	    likedDogButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
+	    dogProfileButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
+	    appointmentsButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
+
+	    settingsButton.setOnAction(event -> {
+	        userScene.start(stage);
+	    });
+	    likedDogButton.setOnAction(event -> {
+	        likedDog.start(stage);
+	    });
+	    dogProfileButton.setOnAction(event -> {
+	        dogProfile.start(stage);
+	    });
+
+	    appointmentsButton.setOnAction(event -> {
+	        appointmentScene.start(stage);
+	    });
+
+	    navTab.getChildren().addAll(settingsButton, dogProfileButton, likedDogButton, appointmentsButton);
+
+	    navTab.setAlignment(Pos.TOP_CENTER);
+	    return navTab;
 	}
 	
 	public static Hyperlink hyperlink() {
@@ -165,7 +168,7 @@ public class Components{
 		
 	}
 	
-	public static Label tagLabel(String tag,Tag labelTag, Dog dog, Hashtable<Integer, Tag> hashtable) {
+	public static Label tagLabel(String tag,Tag labelTag, Dog dog, ArrayList<Tag> dogTags) {
 		
 		Label label = new Label(tag);
 		label.setFont(Font.font(font, fontSm));
@@ -193,7 +196,7 @@ public class Components{
 		//function to be able to turn the label highlighted when loading them if in the dog tags list.
 		
 		
-		if(hashtable.contains(labelTag) == true) {
+		if(dogTags.contains(labelTag) == true) {
 			
 			label.setStyle(highLightedStyle);
 		}
@@ -206,15 +209,19 @@ public class Components{
             if (label.getStyle().equals(defaultStyle)) {
             	label.setStyle(highLightedStyle); // highlight if not highlighted
             	if(dog.getTags().contains(labelTag) == false) {
-            		dog.getTags().put(labelTag.getTagId(),labelTag);
+            		dog.getTags().add(labelTag);
+            		Database.setDogTags(dog.getTags(), dog.getId());
             	}
             	
             	
             } else {
             	if(dog.getTags().contains(labelTag) == true) {
-            		dog.getTags().remove(labelTag.getTagId());
+            		dog.getTags().remove(labelTag);
             	}
-            	label.setStyle(defaultStyle);         	
+            	label.setStyle(defaultStyle);
+            	Database.removeDogTags(dog.getId(), Database.getTagID(labelTag.getTagName()), "idealdogtag");
+            	
+            	
             }
         });
 		
@@ -222,7 +229,7 @@ public class Components{
 		return label;
 	}
 	
-	public static GridPane createTags(HashMap<Integer, Tag> tags, Dog dog) {
+	public static GridPane createTags(ArrayList<Tag> tags, Dog dog) {
 		GridPane gridPane = new GridPane();
 		int row = 0;
         int col = 0;
@@ -230,10 +237,12 @@ public class Components{
         int maxRows = 5;
         
         int i = 0; // current index
-             
-		for(Tag t : tags.values()) {
+        
+        ArrayList<Tag> dogTags = Database.getDogTags(dog.getId());
+        
+		for(Tag t : tags) {
 			
-			Label label = tagLabel(t.getTagName(), t, dog, dog.getTags());
+			Label label = tagLabel(t.getTagName(),t, dog, dogTags);
 			
             // Add the label to the grid
             gridPane.add(label, row, col);
@@ -274,7 +283,7 @@ public class Components{
 		return label;
 	}
 	
-	public static GridPane createTags(Hashtable<Integer, Tag> hashtable) { // non highlightable tags
+	public static GridPane createTags(ArrayList<Tag> tags) { // non highlightable tags
 		GridPane gridPane = new GridPane();
 		gridPane.setHgap(10); // Set horizontal gap
         gridPane.setVgap(10); // Set vertical gap
@@ -285,7 +294,7 @@ public class Components{
         
         int i = 0; // current index
         
-		for(Tag t : hashtable.values()) {
+		for(Tag t : tags) {
 			
 			Label label = dogTagLabel(t.getTagName());
 			
@@ -378,8 +387,7 @@ public class Components{
             	}
             	label.setStyle(highLightedStyle); 
             	dogAttribute.setName(label.getText());
-            	dogAttribute.setWeight(weight);
-            	
+            	Database.changeAttribute(dogAttribute, dog.getId(), weight);
             } 
         });
 		
@@ -399,19 +407,40 @@ public class Components{
 		return gridPane;
 	}
 	
-	public static HBox likedDogView(Dog dog, Stage primaryStage, Hashtable<Integer,Poster> poster) {
+	//Sidney, Edson and Connor were here :) 
+	public static HBox appointmentView(Dog dog,Date date, Stage primaryStage) {
+        ImageView img = Components.imageView(200, 200);
+        img.setImage(new Image(dog.getImagePath()));
+
+        Label primaryInfoLabel = Components.mediumLabel(dog.getName() + ", " + dog.getAge() + " years, " + dog.getSex(), Pos.CENTER);
+        Label appointmentDate = Components.mediumLabel("Appointment Date: " + date.toString(),Pos.CENTER);
+
+        Hyperlink rescheduleLink = hyperlinkToReschedule(dog, primaryStage);
+        
+        Hyperlink cancelLink = hyperlinkToCancelAppointment(dog, primaryStage);
+
+        VBox info = new VBox(primaryInfoLabel, appointmentDate, rescheduleLink, cancelLink);
+        HBox HBox = new HBox(img, info);
+        HBox.setAlignment(Pos.CENTER);
+        HBox.setSpacing(50);
+
+        return HBox;
+    }
+	
+	public static HBox likedDogView(Dog dog, Stage primaryStage) {
 
 		ImageView img = Components.imageView(200, 200);
 		img.setImage(new Image(dog.getImagePath()));
 		
 		Label primaryInfoLabel = Components.mediumLabel(dog.getName() + ", " + dog.getAge() + " years, " + dog.getSex(),Pos.CENTER); 
 		
-		Hyperlink posterLink = hyperlinkToPosterProfile(dog, primaryStage, poster);
+		Hyperlink posterLink = hyperlinkToPosterProfile(dog, primaryStage);
+		Hyperlink appointmentLink = hyperlinkToAppointment(dog, primaryStage);
 		
 		
 		VBox info = new VBox(
 				primaryInfoLabel,
-				posterLink
+				posterLink, appointmentLink
 				);
 		
 		HBox HBox = new HBox(img, info);
@@ -424,13 +453,17 @@ public class Components{
 		
 	}
 	
-	public static Hyperlink hyperlinkToPosterProfile(Dog dog, Stage primaryStage, Hashtable<Integer,Poster> poster) {
+	public static Hyperlink hyperlinkToPosterProfile(Dog dog, Stage primaryStage) {
 		Hyperlink posterLink = Components.hyperlink();
-		posterLink.setText(poster.get(dog.getPosterId()).getDisplayName());
+		posterLink.setText(Database.getPosterById(dog.getPosterId()).getDisplayName());
+		
+		Poster poster = Database.getPosterById(dog.getPosterId());
 		PosterProfileScene posterProfile = PosterProfileScene.getInstance();
+		
+	
 		posterLink.setOnAction(event -> {
         	try {
-        		posterProfile.setCurrentPoster(poster.get(dog.getPosterId()));
+        		posterProfile.setCurrentPoster(poster);
 				posterProfile.start(primaryStage);
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -440,6 +473,79 @@ public class Components{
 		return posterLink;
 	}
 	
+	public static Hyperlink hyperlinkToCancelAppointment(Dog dog, Stage primaryStage) {
+		Hyperlink appointmentLink = Components.hyperlink();
+		appointmentLink.setText("Cancel");//Database.getPosterById(dog.getPosterId())
+		
+		Poster poster = Database.getPosterById(dog.getPosterId());
+		//PosterProfileScene posterProfile = PosterProfileScene.getInstance();
+		//Dog selectedDog = Database.getADog(dog.getId());
+		AppointmentScene appointmentPage = AppointmentScene.getInstance();
+		
+	
+		appointmentLink.setOnAction(event -> {
+        	try {
+        		Database.deleteAppointment(poster.getUniqueId(),dog.getId());
+        		BookedAppointmentScene bookedPage = BookedAppointmentScene.getInstance();
+        		bookedPage.start(primaryStage);
+        		
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+        });
+		
+		return appointmentLink;
+	}
+	public static Hyperlink hyperlinkToReschedule(Dog dog, Stage primaryStage) {
+		Hyperlink appointmentLink = Components.hyperlink();
+		appointmentLink.setText("Reschedule");//Database.getPosterById(dog.getPosterId())
+		
+		Poster poster = Database.getPosterById(dog.getPosterId());
+		//PosterProfileScene posterProfile = PosterProfileScene.getInstance();
+		//Dog selectedDog = Database.getADog(dog.getId());
+		AppointmentScene appointmentPage = AppointmentScene.getInstance();
+		
+	
+		appointmentLink.setOnAction(event -> {
+        	try {
+        		Database.deleteAppointment(poster.getUniqueId(),dog.getId());
+        		appointmentPage.setCurrentPosterDog(poster,dog);
+        		//appointmentPage.updateMeetWithLabel(poster, selectedDog);
+        		appointmentPage.start(primaryStage);
+        		
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+        });
+		
+		return appointmentLink;
+	}
+	
+	
+	public static Hyperlink hyperlinkToAppointment(Dog dog, Stage primaryStage) {
+		Hyperlink appointmentLink = Components.hyperlink();
+		appointmentLink.setText("Meet me!");//Database.getPosterById(dog.getPosterId())
+		
+		Poster poster = Database.getPosterById(dog.getPosterId());
+		//PosterProfileScene posterProfile = PosterProfileScene.getInstance();
+		//Dog selectedDog = Database.getADog(dog.getId());
+		AppointmentScene appointmentPage = AppointmentScene.getInstance();
+		
+	
+		appointmentLink.setOnAction(event -> {
+        	try {
+        		appointmentPage.setCurrentPosterDog(poster,dog);
+        		//appointmentPage.updateMeetWithLabel(poster, selectedDog);
+        		appointmentPage.start(primaryStage);
+        		
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+        });
+		
+		return appointmentLink;
+	}
+
 	public static HBox posterDogView(Dog dog) {
 
 		ImageView img = Components.imageView(200, 200);

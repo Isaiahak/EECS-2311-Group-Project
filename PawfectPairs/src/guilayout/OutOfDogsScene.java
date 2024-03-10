@@ -2,7 +2,6 @@ package guilayout;
 
 
 import java.util.ArrayList;
-import java.util.PriorityQueue;
 
 import backend.database.Database;
 import backend.dog.Dog;
@@ -18,8 +17,8 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class OutOfDogsScene extends Application{
-	
-	AppData appData;
+	ArrayList<Dog> posterDogs;
+	User user;
 
 	
 	private static OutOfDogsScene instance;
@@ -39,9 +38,9 @@ public class OutOfDogsScene extends Application{
 
 	@Override
 	public void start(Stage stage) {
-		appData = AppData.getInstance();
-		PriorityQueue<Dog> posterDogs = appData.getSortedDogProfiles();
-		User user = appData.getUser();
+		
+		posterDogs = AppData.getInstance().getDogProfiles();//TEMP
+		user = AppData.getInstance().getUser();
 		
 		VBox root = new VBox();
 		root.setSpacing(15);
@@ -50,18 +49,18 @@ public class OutOfDogsScene extends Application{
 		UserProfile userProfile = UserProfile.getInstance();
 		Label pageLabel = Components.largeLabel("Out of Dogs!",Pos.TOP_CENTER);
 		stage.setTitle("Pawfect Pairs");	
-		HBox navTab = Components.navTab(userProfile, likedDog, DogProfileScene.getInstance(), stage);
+		HBox navTab = Components.navTab(userProfile, likedDog, DogProfileScene.getInstance(),BookedAppointmentScene.getInstance(), stage);
 		root.getChildren().addAll(navTab,pageLabel);
 		StackPane stackPane = new StackPane(root);
 		stackPane.setAlignment(javafx.geometry.Pos.CENTER);
 		Scene scene = new Scene(stackPane, Components.screenWidth, Components.screenHeight);		 
 		stage.setScene(scene);
 		stage.show();
-		stage.setOnCloseRequest(event -> {
-    	    System.out.println("Window is closing. Perform cleanup if needed.");
-    	    
-    	    Database.onApplicationClose(user);
-    	});
+//		stage.setOnCloseRequest(event -> {
+//    	    System.out.println("Window is closing. Perform cleanup if needed.");
+//    	    
+//    	    Database.onApplicationClose(user, posterDogs);
+//    	});
 		
 	}
 

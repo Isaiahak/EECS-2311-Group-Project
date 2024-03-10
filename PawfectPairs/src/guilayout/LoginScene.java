@@ -19,7 +19,8 @@ import guicontrol.AppData;
 public class LoginScene extends Application{
 	private User userInfo = new User("","");
 	private static LoginScene instance;
-	AppData appData;
+	ArrayList<Dog> posterDogs = AppData.getInstance().getDogProfiles();//TEMP
+	User user = AppData.getInstance().getUser();
 	
 	ArrayList<User> userlist = new ArrayList<User>();
 	
@@ -79,8 +80,9 @@ public class LoginScene extends Application{
 
             
             if (Database.getUser(username, password) != null /*userlist.contains(userInfo)*/ ||  username != "" && password != "" ) {
-                appData = AppData.getInstance();    
-                appData.onStart(username, password);
+                AppData appData = AppData.getInstance();
+                appData.setDogProfiles();
+                appData.setUser(username, password);
                 System.out.println("Logging the user in!");
                 dogProfileScene.start(primaryStage);
             } else {
@@ -94,7 +96,11 @@ public class LoginScene extends Application{
         Scene scene = new Scene(grid, width, height);
         primaryStage.setScene(scene);
         primaryStage.show();
- 
+//        primaryStage.setOnCloseRequest(event -> {
+//    	    System.out.println("Window is closing. Perform cleanup if needed.");
+//    	    
+//    	    Database.onApplicationClose(user, posterDogs);
+//    	});
     }
 
     private void clearFields(TextField usernameField, PasswordField passwordField) {
