@@ -263,6 +263,8 @@ public class Database {
 
 		Hashtable <Integer, Tag> tags = new Hashtable<Integer, Tag>();
 		
+		
+		
 		// get all tags in dogtag data table associated with the dog id	
 		try {
 //			Statement statement = connection.createStatement() ;
@@ -789,7 +791,7 @@ class DatabaseConnector {
         	
         	Class.forName("org.postgresql.Driver"); // Replace with your database driver
         	
-        	Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/paw", "postgres", "doglover123");
+        	Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/bigone", "postgres", "doglover123");
 //        	System.out.println( "Connected to the PostgreSQL server successfully.");
         	
         	return connection; 
