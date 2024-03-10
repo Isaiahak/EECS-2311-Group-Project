@@ -24,8 +24,6 @@ public class User {
 	
 	private ArrayList<Dog> likedDogs = new ArrayList<Dog>();
 	
-	private ArrayList<Dog> passedDogs = new ArrayList<Dog>();
-	
 
 	
 	public User(String username, String password) {
@@ -47,8 +45,8 @@ public class User {
 		return preferredDog;
 	}
 	
-	public void setDog(Dog dog) {
-		this.preferredDog = dog;
+	public void setDog(int userid) {
+		Database.getADog(userid);
 		
 	}
 	public int getUserID() {
@@ -96,17 +94,7 @@ public class User {
 	}
 
 	public void addLikedDogs(Dog likedDog) {
-		System.out.println(",dog name liek: "+ likedDog.getName()+ ",dog id like: " + likedDog.getId());
 		likedDogs.add(likedDog);
-	}
-	
-	public ArrayList<Dog> getPassedDogs() {
-		return passedDogs;
-	}
-
-	public void addPassedDogs(Dog likedDog) {
-		System.out.println(",dog name pass: "+ likedDog.getName()+ ",dog id  pass: " + likedDog.getId());
-		passedDogs.add(likedDog);
 	}
 	
 	@Override
