@@ -27,13 +27,12 @@ public class PosterList {
     	TreeMap<String, Dog> PosterDogsMap = new TreeMap<>();
     
     	for (Dog dog : dogMap.values()) {
-         //   if (Database.getPosterById(dog.getPosterId()).equals(poster)) { //implement Comparable Interface: ->finished comparable interface for poster
+            if (Database.getPosterById(dog.getPosterId()).equals(poster)) { //implement Comparable Interface: ->finished comparable interface for poster
                 PosterDogsMap.put(dog.getName(), dog);
             }
-    	return PosterDogsMap;
     	}
-        
-    
+        return PosterDogsMap;
+    }
 
 	@Override
 	public String toString() {
