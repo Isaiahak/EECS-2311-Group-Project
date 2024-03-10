@@ -211,36 +211,36 @@ public class Dog  implements Comparable<Dog>{
 	        return stringBuilder.toString();
 	    }
 		
-		    public boolean arePreferencesEqual(Dog d) { // check if tags and attributes are the same 	
-		    	
-		    	Hashtable<Integer,Tag> currDogTags = this.getTags(); 
-		    	Hashtable<Integer,Tag> otherDogTags = d.getTags();
-		    	Set<Integer >otherDogKeys = otherDogTags.keySet();
-		    	Set<Integer >currDogKeys = currDogTags.keySet();
-		    	
-		    	if(currDogKeys.size() != otherDogKeys.size()) return false;
-		    	
-			    	
-		    	for(int key : otherDogKeys) {
-		    		if(!currDogTags.containsKey(key)) {
-		    			return false;
-		    		}
-		    	}
-		    	
-		    	for(int key : currDogKeys) {
-		    		if(!otherDogTags.containsKey(key)) {
-		    			return false;
-		    		}
-		    	}
-		    	
-		    	
-		    	if(this.age.getWeight() != d.age.getWeight() || this.sex.getWeight() != d.sex.getWeight()  // check if attrubutes have changed 
-		    			|| this.size.getWeight() != d.size.getWeight() || this.energyLevel.getWeight() != d.energyLevel.getWeight()) {
-		    		return false;
-		    	}
-		    	
-	    		return true;
-		    }
+//		    public boolean arePreferencesEqual(Dog d) { // check if tags and attributes are the same 	
+//		    	
+//		    	Hashtable<Integer,Tag> currDogTags = this.getTags(); 
+//		    	Hashtable<Integer,Tag> otherDogTags = d.getTags();
+//		    	Set<Integer >otherDogKeys = otherDogTags.keySet();
+//		    	Set<Integer >currDogKeys = currDogTags.keySet();
+//		    	
+//		    	if(currDogKeys.size() != otherDogKeys.size()) return false;
+//		    	
+//			    	
+//		    	for(int key : otherDogKeys) {
+//		    		if(!currDogTags.containsKey(key)) {
+//		    			return false;
+//		    		}
+//		    	}
+//		    	
+//		    	for(int key : currDogKeys) {
+//		    		if(!otherDogTags.containsKey(key)) {
+//		    			return false;
+//		    		}
+//		    	}
+//		    	
+//		    	
+//		    	if(this.age.getWeight() != d.age.getWeight() || this.sex.getWeight() != d.sex.getWeight()  // check if attrubutes have changed 
+//		    			|| this.size.getWeight() != d.size.getWeight() || this.energyLevel.getWeight() != d.energyLevel.getWeight()) {
+//		    		return false;
+//		    	}
+//		    	
+//	    		return true;
+//		    }
 		
 		 @Override 
 		    public boolean equals(Object o) { // for checking if two dogs are the same

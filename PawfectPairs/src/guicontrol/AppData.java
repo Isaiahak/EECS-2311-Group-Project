@@ -82,10 +82,16 @@ public class AppData {
 	// calculate dog scores
 	public void updateDogScores() {
 	// perform check on if the user's preferences have changed before updating scores	
-	if(!this.user.getDog().arePreferencesEqual(UserProfile.getInstance().getOldPreferences())) { 
+	if(!this.user.arePreferencesEqual(
+			UserProfile.getInstance().getOldSexPreferences(),
+			UserProfile.getInstance().getOldAgePreferences(),
+			UserProfile.getInstance().getOldSizePreferences(),
+			UserProfile.getInstance().getOldEnergyLevelPreferences(),
+			UserProfile.getInstance().getOldTagPreferences())
+	){ 
 		
 		for(Dog d : this.sortedDogProfiles) {
-			d.calculateScore(user.getDog().getTags());
+			d.calculateScore(user.getTagPreferences());
 
 		}
 		// re-sort dogs

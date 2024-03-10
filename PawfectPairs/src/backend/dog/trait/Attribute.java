@@ -4,6 +4,7 @@ public abstract class Attribute implements Comparable<Attribute>{
     // attributes abstract class to implement comparable, order-able attributes, such as size, energy level, etc
     protected int weight;
     private String name;
+    protected static int type;
     
 
     public int compareTo(Attribute o) {
@@ -23,6 +24,8 @@ public abstract class Attribute implements Comparable<Attribute>{
     }
     
     public abstract String[] getNames();
+    
+    public abstract int getType(); 
 
     public void setWeight(int weight) {
         this.weight = weight;

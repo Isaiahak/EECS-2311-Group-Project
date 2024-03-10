@@ -1,4 +1,10 @@
 package guilayout;
+import backend.dog.trait.Age;
+import backend.dog.trait.Attribute;
+import backend.dog.trait.EnergyLevel;
+import backend.dog.trait.Sex;
+import backend.dog.trait.Size;
+import backend.user.*;
 import javafx.application.Application;
 import javafx.geometry.*;
 import javafx.scene.Scene;
@@ -7,22 +13,43 @@ import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.PriorityQueue;
 import java.util.TreeSet;
 
 import backend.database.Database;
 import backend.dog.Dog;
 import backend.tag.Tag;
-import backend.user.User;
 import guicontrol.AppData;
 
-public class UserProfile extends Application{
-	private Dog oldPreferences; 
+public class UserProfile extends PrimaryScene{
+	private ArrayList<Attribute> oldAgePreferences;
+	private ArrayList<Attribute> oldSexPreferences;
+	private ArrayList<Attribute> oldSizePreferences;
+	private ArrayList<Attribute> oldEnergyLevelPreferences;
+	private Hashtable<Integer, Tag> oldTagPreferences; 
 	
 	private static UserProfile instance;
+
+	public ArrayList<Attribute> getOldEnergyLevelPreferences() {
+		return oldEnergyLevelPreferences;
+	}
+
+	public ArrayList<Attribute> getOldSizePreferences() {
+		return oldSizePreferences;
+	}
+
+	public ArrayList<Attribute> getOldSexPreferences() {
+		return oldSexPreferences;
+	}
 	
-    AppData appData;
-	
+	public ArrayList<Attribute> getOldAgePreferences() {
+		return oldAgePreferences;
+	}
+	public Hashtable<Integer, Tag> getOldTagPreferences(){
+		return oldTagPreferences; 
+	}
+
 	public static UserProfile getInstance() {
 		if (instance == null) {
 			instance = new UserProfile();		
@@ -37,25 +64,25 @@ public class UserProfile extends Application{
 	public static void main(String[] args) {
         launch(args);
     }
-	public Dog getOldPreferences() {
-		return this.oldPreferences;
-	}
 
-    @Override
+
+	
+
+	@Override
     public void start(Stage primaryStage) {
-    	appData = AppData.getInstance();
-    	ArrayList<Dog> posterDogs = appData.getSortedDogProfiles();
-    	User user = appData.getUser();
-    	HashMap<Integer, Tag> tags = appData.getallTags();		
-    	DogProfileScene dogProfileScene = DogProfileScene.getInstance();  
-		Dog dog = user.getDog();   
+		initailizePrimaryScene();
+    	HashMap<Integer, Tag> tags = appData.getallTags();
 //    	System.out.println(dog.getName());	
     	VBox root = new VBox();
     	
     	// save an copy of the user's preferences prior to changing them (optimise)
     	
-    	oldPreferences = new Dog(dog);
-    	
+    	oldSexPreferences = user.getSexPreferences();
+		oldAgePreferences = user.getAgePreferences();
+		oldEnergyLevelPreferences = user.getEnergyLevelPreferences();
+		oldSizePreferences = user.getSizePreferences();
+		oldTagPreferences = user.getTagPreferences();
+
     	
     	// create navBar
     	   	
@@ -85,7 +112,7 @@ public class UserProfile extends Application{
     	
     	//display all tags
     	
-    	GridPane tagsGrid =  Components.createTags(tags,dog);
+    	GridPane tagsGrid =  Components.createTags(tags,user);
     	tagsGrid.setAlignment(javafx.geometry.Pos.CENTER);
     	
     	VBox attributes = new VBox();
@@ -95,19 +122,19 @@ public class UserProfile extends Application{
     	Label attributesTitle = Components.mediumLabel("Attributes", Pos.CENTER);
     	
     	Label sexAttributesTitle = Components.smallLabel("Sex", Pos.BASELINE_LEFT);
-    	GridPane sexAttributeGrid = Components.createAttribute(dog.getSex(), dog);
+    	GridPane sexAttributeGrid = Components.createAttribute(user.getSexPreferences(), new Sex(0));
     	sexAttributeGrid.setAlignment(javafx.geometry.Pos.CENTER);   	
     	
     	Label sizeAttributesTitle = Components.smallLabel("Size",  Pos.BASELINE_LEFT);
-    	GridPane sizeAttributeGrid = Components.createAttribute(dog.getSize(), dog);
+    	GridPane sizeAttributeGrid = Components.createAttribute(user.getSizePreferences(), new Size(0));
     	sizeAttributeGrid.setAlignment(javafx.geometry.Pos.CENTER);   	
     	  	
     	Label energyLevelAttributesTitle = Components.smallLabel("EnergyLevel",  Pos.BASELINE_LEFT);
-    	GridPane energyLevelAttributeGrid = Components.createAttribute(dog.getEnergyLevel(), dog);
+    	GridPane energyLevelAttributeGrid = Components.createAttribute(user.getEnergyLevelPreferences(), new EnergyLevel(0));
     	energyLevelAttributeGrid.setAlignment(javafx.geometry.Pos.CENTER);   	 	
     	
     	Label ageAttributesTitle = Components.smallLabel("Age",  Pos.BASELINE_LEFT);
-    	GridPane ageAttributeGrid = Components.createAttribute(dog.getAge(), dog);
+    	GridPane ageAttributeGrid = Components.createAttribute(user.getAgePreferences(), new Age(0));
     	ageAttributeGrid.setAlignment(javafx.geometry.Pos.CENTER);   	
     	
     	

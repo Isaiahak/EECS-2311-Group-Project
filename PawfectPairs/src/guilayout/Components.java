@@ -14,6 +14,7 @@ import backend.dog.trait.Sex;
 import backend.dog.trait.Size;
 import backend.poster.Poster;
 import backend.tag.Tag;
+import backend.user.AttributePreferenceFactor;
 import backend.user.User;
 import guicontrol.AppData;
 import javafx.application.Application;
@@ -204,7 +205,7 @@ public class Components{
 		
 	}
 	
-	public static Label tagLabel(String tag,Tag labelTag, Dog dog, Hashtable<Integer, Tag> hashtable) {
+	public static Label tagLabel(String tag,Tag labelTag, User user) {
 		// tags in the user profile to change preferences
 		Label label = new Label(tag);
 		label.setFont(Font.font(font, fontSm));
@@ -232,7 +233,7 @@ public class Components{
 		//function to be able to turn the label highlighted when loading them if in the dog tags list.
 		
 		
-		if(hashtable.contains(labelTag) == true) {
+		if(user.getTagPreferences().contains(labelTag) == true) {
 			
 			label.setStyle(highLightedStyle);
 		}
@@ -244,14 +245,14 @@ public class Components{
             // Toggle background color on click
             if (label.getStyle().equals(defaultStyle)) {
             	label.setStyle(highLightedStyle); // highlight if not highlighted
-            	if(dog.getTags().contains(labelTag) == false) {
-            		dog.getTags().put(labelTag.getTagId(),labelTag);
+            	if(user.getTagPreferences().contains(labelTag) == false) {
+					user.getTagPreferences().put(labelTag.getTagId(),labelTag);
             	}
             	
             	
             } else {
-            	if(dog.getTags().contains(labelTag) == true) {
-            		dog.getTags().remove(labelTag.getTagId());
+            	if(user.getTagPreferences().contains(labelTag) == true) {
+            		user.getTagPreferences().remove(labelTag);
             	}
             	label.setStyle(defaultStyle);         	
             }
@@ -261,7 +262,7 @@ public class Components{
 		return label;
 	}
 	
-	public static GridPane createTags(HashMap<Integer, Tag> tags, Dog dog) {
+	public static GridPane createTags(HashMap<Integer, Tag> tags, User user) {
 		GridPane gridPane = new GridPane();
 		int row = 0;
         int col = 0;
@@ -272,7 +273,7 @@ public class Components{
              
 		for(Tag t : tags.values()) {
 			
-			Label label = tagLabel(t.getTagName(), t, dog, dog.getTags());
+			Label label = tagLabel(t.getTagName(), t, user);
 			
             // Add the label to the grid
             gridPane.add(label, row, col);
@@ -379,7 +380,7 @@ public class Components{
 		return stars; 
 	}
 	
-	public static Label attributeLabel(String name, GridPane gridPane,Attribute dogAttribute, Dog dog, int weight) {
+	public static Label attributeLabel(String name, GridPane gridPane, ArrayList<Attribute> attributeList,int attributeType, int weight) {
 		Label label = new Label(name);
 		label.setFont(Font.font(font, fontSm));
 		label.setWrapText(true);
@@ -403,7 +404,8 @@ public class Components{
 		        "-fx-alignment: center;"; // Text alignment;
 		
 		//function to be able to turn the label highlighted when loading them if dog attribute matches.
-		if(dogAttribute.getWeight() == weight) {
+		for (Attribute attribute : attributeList)
+		if(attribute.getWeight() == weight) {
 			label.setStyle(highLightedStyle);
 		}
 		else {
@@ -412,33 +414,37 @@ public class Components{
 		
 		label.setOnMouseClicked(event -> {	
             if (label.getStyle().equals(defaultStyle)) {
-            	for(Node l : labels) {
-            		if (l.getStyle().equals(highLightedStyle)) {
-            			l.setStyle(defaultStyle);
-            		}
-            	}
-            	label.setStyle(highLightedStyle); 
-            	dogAttribute.setName(label.getText());
-            	dogAttribute.setWeight(weight);
-            	
-            } 
+            	label.setStyle(highLightedStyle);
+				attributeList.add(AttributePreferenceFactor.getAttribute(attributeType,weight));
+            }
+			else{
+				label.setStyle(defaultStyle);
+				for(Attribute attribute : attributeList){
+					if(attribute.getName().compareTo(name) == 0){
+						attributeList.remove(attribute);
+					}
+				}
+			}
         });
 		
 		
 		return label;
 	}
 	
-	public static GridPane createAttribute(Attribute dogAttribute, Dog dog) {
+	public static GridPane createAttribute(ArrayList<Attribute> userAttributeList, Attribute attributeExample) {
 		GridPane gridPane = new GridPane();
-		String[] names = dogAttribute.getNames();
+		String[] names = attributeExample.getNames();
+		
+		int attributeType = attributeExample.getType();
 		for(int j = 0; j < names.length; j++) {
 			// Add the label to the grid
-			Label label = attributeLabel(names[j], gridPane, dogAttribute, dog, j );
+			Label label = attributeLabel(names[j], gridPane, userAttributeList, attributeType, j );
             gridPane.add(label, j,0);
             
 		} 
 		return gridPane;
 	}
+	
 	
 	public static HBox likedDogView(Dog dog, Stage primaryStage, Hashtable<Integer,Poster> poster) {
 
