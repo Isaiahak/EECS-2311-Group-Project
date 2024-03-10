@@ -187,6 +187,15 @@ Feb 27, 2024
 Link to email/phone" stories 
 - Zainab began implementing backend of the wallet user stories
 
+Feb 28 2024
+- Ekaterina worked on making large database optimizations (removing redundant methods, refactoring alogritms/db calls)
+- Ekaterina transferred the entire system to initialize local objects from the DB, and update the DB from local obejects on close
+        - Updated methods in Database.java
+        - Changed attribute types to optimise performance
+        - Created optimized alogritms for DB calling (and some for matchmaking class)
+-Ekaterina planned out the matchmaking algortim and developed a method to calculate the score of a dog against user preferences (only tags for now)
+- Ekaterina added more dog photos :)
+
 Mar 1, 2024
 - Edson and Sidney started working on the design for the Calendar class 
 - Due to ongoing updates in the branches, Edson and Sidney have decided to work off a zip file from Deliverable 1
@@ -204,6 +213,10 @@ Mar 3, 2024
     - created database getters and setters for both user and poster funds 
     - created mock ui to test wallet methods 
     - modified wallet methods to work without constant calls to the database
+-Ekaterina made large updates to the database class to further optimise performance
+- Ekatierina integrated the matchmaking class to efficiently sort dogs in an order which best match to the user
+- Ekaterina created several comparaotr methods and sorting algortims, as well as optimisations (for instance, ONYL update/sort when preferences are changed)
+- Ekaterina fixed the dog profile scene (for what feels like the millionth time) and fixed a null reference bug 
 
 Mar 4, 2024
 - Edson and Sidney finalized calendar page allowing users to book appointments with each dog
@@ -211,6 +224,14 @@ Mar 4, 2024
 - Zainab finished ui for wallet settings and added to user settings 
 - Zainab began setting up UI for dog sponsoring, (she already set up backend for it)
 
+March 8 2024
+- Ekaterina created a program to generate a database of a set size, and used this database to test the dog sorting and DB call efficiency
+
 March 9, 2024 - 
 - Edson, Sidney and Connor added the second page in the UI called appointments allowing for user to see appointments and cancel and reschedule
 -  Due to ongoing updates in the branches, Edson and Sidney have decided to work off a zip file from Deliverable 1
+- Ekaterina worked on implementing attribute functionality (intiially, we had it so that user could only pick one atribute, but we need user to be able to pick more than one to filter dogs by)
+- Ekaterina designed the new data tables for the attributes functionality
+- Ekaterina updated the DataBase.java methods to initialise the user with the new attributes, and update the attributes
+- Ekaterina refactored the entire program to incldue the new attribute changes (we moved attributes from being stored in a 'dummy' dog owned by a user, to just being in a user's preferences list)
+- Ekaterina is almost ifnished with GUI implementations for the attribute functionality, but still needs to do some debugging (and needs to implemetn attributes into sorting alogrithm)
