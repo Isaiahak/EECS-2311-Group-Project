@@ -643,22 +643,8 @@ public class Database {
 }
 
 	public static ArrayList<Attribute> getUserAttributes(String AttributeType,int userid){
-		try{
-			Connection connection = databaseConnector.connect();
-			Statement statement = connection.createStatement () ;
-			ResultSet resultSet = statement.executeQuery ("SELECT * FROM tags WHERE tagname = '" + tagname + "'") ;
-			while (resultSet.next()) {
-				tagid = resultSet.getInt("tagid");
-			}
-			connection.close () ;
 
-		}
-		catch (SQLException e) {
-			System.out.println ("Connection failure.") ;
-			e.printStackTrace () ;
-		}
-
-		return tagid;
+		return null;
 	}
 	
 	// gets user id
