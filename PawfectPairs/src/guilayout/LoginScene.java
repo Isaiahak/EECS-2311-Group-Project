@@ -74,9 +74,13 @@ public class LoginScene extends Application{
 //            userInfo.setUsername(username);
 //            userInfo.setPassword(password);
 //            userlist.add(userInfo);
+            
             if (Database.addUser(username, password, appData.getAllAttributes()) == false || password == "" && username == "")
             	showAlert("Sign up Failed", "Please enter a valid username or password.");
             clearFields(userTextField, passwordField);
+            User user =Database.getUser(username, password);
+            Database.blankWallet(user.getUserID());
+        		appData.initializeWallet(user.getUserID(), password);
         });
         loginButton.setOnAction(e -> {
             String username = userTextField.getText();

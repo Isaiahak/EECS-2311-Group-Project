@@ -6,6 +6,7 @@ import backend.dog.Dog;
 
 import backend.poster.Poster;
 import backend.user.User;
+import backend.wallet.Wallet;
 import guicontrol.AppData;
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -19,6 +20,7 @@ public class PrimaryScene extends Application{
     protected LikedDogScene likedDog;
     protected DogProfileScene dogProfileScene;
     protected User user;
+    protected Wallet wallet;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -34,6 +36,6 @@ public class PrimaryScene extends Application{
         this.likedDog = LikedDogScene.getInstance();
         this.dogProfileScene = DogProfileScene.getInstance();
         this.user = appData.getUser();
-        
+        this.wallet= appData.getWallet();
     }
 }
