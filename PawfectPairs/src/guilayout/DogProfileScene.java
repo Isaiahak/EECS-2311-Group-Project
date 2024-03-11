@@ -27,7 +27,8 @@ public class DogProfileScene extends PrimaryScene{
     private Hyperlink posterLink;
 	private StackPane tagsPane;
 	private Stage stage;
-	private int currentProfileIndex;
+	private int currentProfileIndex = 0;
+	private OutOfDogsScene outOfDogs;
 
 //    private int l = 1080; 
 //    private int w = 1920; 
@@ -41,7 +42,6 @@ public class DogProfileScene extends PrimaryScene{
 
     @Override
     public void start(Stage primaryStage) {
-		currentProfileIndex = 0;
     	initailizePrimaryScene();
     	
     	//root is v box
@@ -51,7 +51,8 @@ public class DogProfileScene extends PrimaryScene{
 
         primaryStage.setTitle("Pawfect Pairs");
         PosterProfileScene posterProfile = PosterProfileScene.getInstance();
-        OutOfDogsScene outOfDogs = OutOfDogsScene.getInstance();
+        outOfDogs = OutOfDogsScene.getInstance();
+
 
 
         HBox primaryControlTab = new HBox();
@@ -62,14 +63,10 @@ public class DogProfileScene extends PrimaryScene{
 		passButton.setStyle("-fx-background-color: #0a0f40; -fx-text-fill: white; -fx-font-size: 60;");
         passButton.setOnAction(event -> {
             user.addPassedDogs(posterDogs.get(currentProfileIndex));
-            if(posterDogs.size() <= 0) {
-            	outOfDogs.start(primaryStage);	
-            	
+			posterDogs.remove(currentProfileIndex);
+            if(currentProfileIndex + 1 > posterDogs.size()) {
+            	outOfDogs.start(primaryStage);
             }
-            else if(posterDogs.size() == 1) {
-            	changeProfile();
-        		outOfDogs.start(primaryStage);
-        	}
         	else {
 	            changeProfile();
 	            displayCurrentPetProfile();
@@ -78,20 +75,15 @@ public class DogProfileScene extends PrimaryScene{
         	
 
         });
-
         Button likeButton = Components.button("♥");
 		likeButton.setStyle("-fx-background-color: #db2a4d; -fx-text-fill: white; -fx-font-size: 60;");
         likeButton.setOnAction(e -> {
 			posterDogs.get(currentProfileIndex).setAdopted(true);
             user.addLikedDogs(posterDogs.get(currentProfileIndex));
-            if(posterDogs.size() <= 0) {
-            	outOfDogs.start(primaryStage);	
-            	
+			posterDogs.remove(currentProfileIndex);
+            if(currentProfileIndex + 1 > posterDogs.size()) {
+            	outOfDogs.start(primaryStage);
             }
-            else if(posterDogs.size() == 1) {
-        		changeProfile();
-        		outOfDogs.start(primaryStage);	
-        	}
         	else {	
 	            changeProfile();
 	            displayCurrentPetProfile();
@@ -150,6 +142,7 @@ public class DogProfileScene extends PrimaryScene{
 
 		// Display the initial pet profile
 		displayCurrentPetProfile();
+
 		StackPane stackPane = new StackPane(root);
 		stackPane.setAlignment(javafx.geometry.Pos.CENTER);
 
@@ -162,7 +155,12 @@ public class DogProfileScene extends PrimaryScene{
 		primaryStage.setScene(scene);
 	      
 	//  primaryStage.setMaximized(true);
-		primaryStage.show();
+		if(currentProfileIndex + 1 > posterDogs.size()){
+			outOfDogs.start(stage);
+		}
+		else{
+			primaryStage.show();
+		}
       
 //      primaryStage.setOnCloseRequest(event -> {
 //    	    System.out.println("Window is closing. Perform cleanup if needed.");
@@ -173,43 +171,55 @@ public class DogProfileScene extends PrimaryScene{
 	}
 
 	public void displayCurrentPetProfile() {
-		Dog currentProfile = posterDogs.get(currentProfileIndex);
-		while(user.getAgePreferences().contains(currentProfile.getAge()) == false ||
-				user.getSizePreferences().contains(currentProfile.getSize()) == false ||
-				user.getSexPreferences().contains(currentProfile.getSex()) == false||
-				user.getEnergyLevelPreferences().contains(currentProfile.getEnergyLevel()) == false){
-			
-			changeProfile();
-			currentProfile = posterDogs.get(currentProfileIndex);
+		if (currentProfileIndex + 1 > posterDogs.size()) {
+			outOfDogs.start(stage);
 		}
-		petImageView.setImage(new Image(currentProfile.getImagePath()));
-		primaryInfoLabel.setText(currentProfile.getName() +", " + currentProfile.getAge() + " years, " + currentProfile.getSex());
-		sizeLabel.setText("Size: " + currentProfile.getSize());
-		energyLabel.setText("Energy Level: " + currentProfile.getEnergyLevel());
-		biographyText.setText(currentProfile.getBiography());
-
-		posterLink.setText(posterList.get(currentProfile.getPosterId()).getDisplayName());
-		PosterProfileScene posterProfile = PosterProfileScene.getInstance();
-		posterProfile.setCurrentPoster(posterList.get(currentProfile.getPosterId()));
-
-		posterLink.setOnAction(event -> {
-			try {
-				posterProfile.start(stage);
-			} catch (Exception e) {
-				e.printStackTrace();
+		else {
+			Dog currentProfile = posterDogs.get(currentProfileIndex);
+			while ((user.getAgePreferences().contains(currentProfile.getAge()) == false ||
+					user.getSizePreferences().contains(currentProfile.getSize()) == false ||
+					user.getSexPreferences().contains(currentProfile.getSex()) == false ||
+					user.getEnergyLevelPreferences().contains(currentProfile.getEnergyLevel()) == false) &&
+					currentProfileIndex + 1 < posterDogs.size()) {
+				changeProfile();
+				currentProfile = posterDogs.get(currentProfileIndex);
 			}
-		});
 
-		tagsPane.getChildren().clear();
+			petImageView.setImage(new Image(currentProfile.getImagePath()));
+			primaryInfoLabel.setText(currentProfile.getName() + ", " + currentProfile.getAge() + " years, " + currentProfile.getSex());
+			sizeLabel.setText("Size: " + currentProfile.getSize());
+			energyLabel.setText("Energy Level: " + currentProfile.getEnergyLevel());
+			biographyText.setText(currentProfile.getBiography());
 
-		tagsPane.getChildren().add(Components.createTags(currentProfile.getTags()));
+			posterLink.setText(posterList.get(currentProfile.getPosterId()).getDisplayName());
+			PosterProfileScene posterProfile = PosterProfileScene.getInstance();
+			posterProfile.setCurrentPoster(posterList.get(currentProfile.getPosterId()));
 
-	}
+			posterLink.setOnAction(event -> {
+				try {
+					posterProfile.start(stage);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			});
 
-	public void changeProfile() {
-		currentProfileIndex ++;
+			tagsPane.getChildren().clear();
 
-	}
+			tagsPane.getChildren().add(Components.createTags(currentProfile.getTags()));
+			}
+		}
+
+
+		public void changeProfile () {
+			currentProfileIndex++;
+
+		}
+
+		public void setCurrentProfileIndex ( int index){
+			if (index <= posterDogs.size())
+				this.currentProfileIndex = index;
+		}
+
 }
 
 

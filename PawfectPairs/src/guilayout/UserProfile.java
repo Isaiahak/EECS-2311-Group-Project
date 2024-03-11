@@ -78,11 +78,11 @@ public class UserProfile extends PrimaryScene{
     	
     	// save an copy of the user's preferences prior to changing them (optimise)
     	
-    	oldSexPreferences = user.getSexPreferences();
-		oldAgePreferences = user.getAgePreferences();
-		oldEnergyLevelPreferences = user.getEnergyLevelPreferences();
-		oldSizePreferences = user.getSizePreferences();
-		oldTagPreferences = user.getTagPreferences();
+    	oldSexPreferences = user.getCopyOfSexPreferences(user.getSexPreferences());
+		oldAgePreferences = user.getCopyOfAgePreferences(user.getAgePreferences());
+		oldEnergyLevelPreferences = user.getCopyOfEnergyLevelPreferences(user.getEnergyLevelPreferences());
+		oldSizePreferences = user.getCopyOfSizePreferences(user.getSizePreferences());
+		oldTagPreferences = user.getCopyOfTagPreferences(user.getTagPreferences());
 
     	
     	// create navBar

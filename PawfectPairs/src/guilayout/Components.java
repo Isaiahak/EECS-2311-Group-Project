@@ -101,15 +101,18 @@ public class Components{
         if(currentScene == "userProfile") { // if we are currently on userProfile, we should update dog scores when we change to a different page 
         	
 	    	settingsButton.setOnAction(event -> {
-	    	appData.updateDogScores();	
+	    	appData.updateDogScores();
+			appData.CheckIfAttributePreferencesHaveBeenChanged();
 	    	userScene.start(stage);
 	        });
 	        likedDogButton.setOnAction(event -> {
-	        	appData.updateDogScores();	
+	        	appData.updateDogScores();
+				appData.CheckIfAttributePreferencesHaveBeenChanged();
 	        	likedDog.start(stage);
 	        });
 	        dogProfileButton.setOnAction(event -> {
-	        	appData.updateDogScores();	
+	        	appData.updateDogScores();
+				appData.CheckIfAttributePreferencesHaveBeenChanged();
 	        	dogProfile.start(stage);
 	        });
 	        

@@ -18,6 +18,7 @@ import backend.dog.trait.Size;
 import backend.poster.Poster;
 import backend.tag.Tag;
 import backend.user.User;
+import guilayout.DogProfileScene;
 import guilayout.UserProfile;
 
 public class AppData {
@@ -32,14 +33,11 @@ public class AppData {
 	private HashMap<Integer, ArrayList<Attribute>> allAttributes; 
 	
 	public ArrayList<Dog> getSortedDogProfiles() {
-		
-		
 		return sortedDogProfiles;
 	}
 
 
 	public void setSortedDogProfiles(ArrayList<Dog> sortedDogProfiles) {
-
 		this.sortedDogProfiles = sortedDogProfiles;
 	}
 
@@ -88,27 +86,24 @@ public class AppData {
 	
 	// calculate dog scores
 	public void updateDogScores() {
+
 	// perform check on if the user's preferences have changed before updating scores	
-	if(!this.user.arePreferencesEqual(
-			UserProfile.getInstance().getOldSexPreferences(),
-			UserProfile.getInstance().getOldAgePreferences(),
-			UserProfile.getInstance().getOldSizePreferences(),
-			UserProfile.getInstance().getOldEnergyLevelPreferences(),
-			UserProfile.getInstance().getOldTagPreferences())
-	){ 
-		
-		for(Dog d : this.sortedDogProfiles) {
-			d.calculateScore(user.getTagPreferences());
-
+		if(this.user.arePreferencesEqual(UserProfile.getInstance().getOldTagPreferences()) == false){
+			for(Dog d : this.sortedDogProfiles) {
+				d.calculateScore(user.getTagPreferences());
+			}
+			// re-sort dogs
+			Collections.sort(this.sortedDogProfiles);
 		}
-		// re-sort dogs
-		Collections.sort(this.sortedDogProfiles);
-		
-
-		
-			
 	}
-	
+
+	public void CheckIfAttributePreferencesHaveBeenChanged(){
+		if(!this.user.areAttributesEqual(UserProfile.getInstance().getOldSexPreferences(),
+				UserProfile.getInstance().getOldAgePreferences(),
+				UserProfile.getInstance().getOldSizePreferences(),
+				UserProfile.getInstance().getOldEnergyLevelPreferences())){
+					DogProfileScene.getInstance().setCurrentProfileIndex(0);
+		}
 	}
 	
 	public void initializeDogProfilesSorted() {  // to be optimized
