@@ -34,5 +34,6 @@ public class PrimaryScene extends Application{
         this.likedDog = LikedDogScene.getInstance();
         this.dogProfileScene = DogProfileScene.getInstance();
         this.user = appData.getUser();
+        
     }
 }

@@ -43,16 +43,17 @@ public class User {
 		this.username = username;
 		this.password = password;
 	}
-	public User(String username, String email, String password) {
-		super();
-		this.username = username;
-		this.password = password;
-		this.email = email;
-	}
-	
+//	public User(String username, String email, String password) {
+//		super();
+//		this.username = username;
+//		this.password = password;
+//		this.email = email;
+//	}
+//	
 	/*
 	 * For adding and for removing attribute/tag preferences
 	 */
+	
 
 	public int getUserID() {
 		return userID;

@@ -639,10 +639,10 @@ public class Database {
         }
         int userId = user.getUserID();
         
-        user.setAgePreferences(getUsersPreferredAgeAttributes(userId));
-        user.setSexPreferences(getUsersPreferredSexAttributes(userId));
-        user.setSizePreferences(getUsersPreferredSizeAttributes(userId));
-        user.setEnergyLevelPreferences(getUsersPreferredEnergyLevelAttributes(userId));
+        user.setAgePreferences(getUsersPreferredAttributes(userId, 0));
+        user.setSexPreferences(getUsersPreferredAttributes(userId, 1));
+        user.setSizePreferences(getUsersPreferredAttributes(userId, 3));
+        user.setEnergyLevelPreferences(getUsersPreferredAttributes(userId, 2));
         
         user.setTagPreferences(getUsersPreferredTags(userId));
 
@@ -655,29 +655,8 @@ public class Database {
     
 	return user; 	
 }
-	public static Hashtable<Integer, Tag> getUsersPreferredTags(int userId){
-	Hashtable <Integer, Tag> tags = new Hashtable<Integer, Tag>();
-	Connection connection = null;
-	// get all tags in dogtag data table associated with the dog id
-//	
-	try {
-		connection = databaseConnector.connect();
-		Statement statement = connection.createStatement () ;
-		ResultSet resultSet = statement.executeQuery ("SELECT tagid FROM usertagpreferences WHERE userid = " + userId + ";");
-		
-		while (resultSet.next()) {	 
-			tags.put(resultSet.getInt("tagid"),new Tag(resultSet.getString("tagname")));
-		}
-	}
-	catch (SQLException e) {
-		e.printStackTrace();
-	}
 	
-	
-	return tags;
-}
-
-	public static ArrayList<Attribute> getUsersPreferredAgeAttributes(int userid){
+public static ArrayList<Attribute> getUsersPreferredAttributes(int userid, int attType){
 		
 		ArrayList<Attribute> newList = new ArrayList<Attribute>();
 		
@@ -686,7 +665,7 @@ public class Database {
 		
         try {
         	 connection = databaseConnector.connect();
-		    	 String sql = "SELECT * FROM userattributepreferences WHERE userid = " + userid + " AND attributeid = " + (new Age(0)).getType() + ";"; 
+		    	 String sql = "SELECT * FROM userattributepreferences WHERE userid = " + userid + " AND attributetype = " + attType + ";"; 
 		    	 preparedStatement = connection.prepareStatement(sql);
 		    	 
 		    	 ResultSet resultSet = preparedStatement.executeQuery();
@@ -717,130 +696,29 @@ public class Database {
         return newList;
 		
 	}
-	
-	public static ArrayList<Attribute> getUsersPreferredSexAttributes(int userid){
+
+	public static Hashtable<Integer, Tag> getUsersPreferredTags(int userId){
+	Hashtable <Integer, Tag> tags = new Hashtable<Integer, Tag>();
+	Connection connection = null;
+	// get all tags in dogtag data table associated with the dog id
+//	
+	try {
+		connection = databaseConnector.connect();
+		Statement statement = connection.createStatement () ;
+		ResultSet resultSet = statement.executeQuery ("SELECT tagid FROM usertagpreferences WHERE userid = " + userId + ";");
 		
-		ArrayList<Attribute> newList = new ArrayList<Attribute>();
-		
-		Connection connection = null;
-		PreparedStatement preparedStatement = null;
-		
-        try {
-        	 connection = databaseConnector.connect();
-		    	 String sql = "SELECT * FROM userattributepreferences WHERE userid = " + userid + " AND attributeid = " + (new Sex(0)).getType() + ";"; 
-		    	 preparedStatement = connection.prepareStatement(sql);
-		    	 
-		    	 ResultSet resultSet = preparedStatement.executeQuery();
-		    	 
-		    	 while (resultSet.next()) {
-			        	newList.add(new Sex(resultSet.getInt("attributeid")));
-			        }
-		    
-        }
-        catch (SQLException e) {
-            e.printStackTrace();
-          
-        } 
-        finally {
-            try {
-                if (preparedStatement != null) {
-                    preparedStatement.close();
-                }
-                if (connection != null) {
-                    connection.close();
-                }
-            } 
-            catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-	
-        return newList;
-		
+		while (resultSet.next()) {	 
+			tags.put(resultSet.getInt("tagid"),new Tag(resultSet.getString("tagname")));
+		}
+	}
+	catch (SQLException e) {
+		e.printStackTrace();
 	}
 	
-	public static ArrayList<Attribute> getUsersPreferredSizeAttributes(int userid){
-		
-		ArrayList<Attribute> newList = new ArrayList<Attribute>();
-		
-		Connection connection = null;
-		PreparedStatement preparedStatement = null;
-		
-        try {
-        	 connection = databaseConnector.connect();
-		    	 String sql = "SELECT * FROM userattributepreferences WHERE userid = " + userid + " AND attributeid = " + (new Size(0)).getType() + ";"; 
-		    	 preparedStatement = connection.prepareStatement(sql);
-		    	 
-		    	 ResultSet resultSet = preparedStatement.executeQuery();
-		    	 
-		    	 while (resultSet.next()) {
-			        	newList.add(new Size(resultSet.getInt("attributeid")));
-			        }
-		    
-        }
-        catch (SQLException e) {
-            e.printStackTrace();
-          
-        } 
-        finally {
-            try {
-                if (preparedStatement != null) {
-                    preparedStatement.close();
-                }
-                if (connection != null) {
-                    connection.close();
-                }
-            } 
-            catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
 	
-        return newList;
-		
-	}
-	
-	public static ArrayList<Attribute> getUsersPreferredEnergyLevelAttributes(int userid){
-		
-		ArrayList<Attribute> newList = new ArrayList<Attribute>();
-		
-		Connection connection = null;
-		PreparedStatement preparedStatement = null;
-		
-        try {
-        	 connection = databaseConnector.connect();
-		    	 String sql = "SELECT * FROM userattributepreferences WHERE userid = " + userid + " AND attributeid = " + (new EnergyLevel(0)).getType() + ";"; 
-		    	 preparedStatement = connection.prepareStatement(sql);
-		    	 
-		    	 ResultSet resultSet = preparedStatement.executeQuery();
-		    	 
-		    	 while (resultSet.next()) {
-			        	newList.add(new EnergyLevel(resultSet.getInt("attributeid")));
-			        }
-		    
-        }
-        catch (SQLException e) {
-            e.printStackTrace();
-          
-        } 
-        finally {
-            try {
-                if (preparedStatement != null) {
-                    preparedStatement.close();
-                }
-                if (connection != null) {
-                    connection.close();
-                }
-            } 
-            catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-	
-        return newList;
-		
-	}
-	
+	return tags;
+}
+
 	// gets user id
 	public static int getUserID(String username, String password) {
 		Connection connection = null;
@@ -875,13 +753,15 @@ public class Database {
 		return userid; 	
 	}
 
-	public static boolean addUser(String username, String password) {
+	public static boolean addUser(String username, String password, HashMap<Integer,ArrayList<Attribute>> allAttributes) {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
+		PreparedStatement preparedStatement2 = null;
 		
         try {
         	 connection = databaseConnector.connect();
         	 String sql = "INSERT INTO users (username, userpassword) VALUES (?, ?)";
+        	
         	 preparedStatement = connection.prepareStatement(sql);
         	 preparedStatement.setString(1, username);
         	 preparedStatement.setString(2, password);
@@ -889,7 +769,21 @@ public class Database {
         	 if (rowsAffected > 0) {
                 System.out.println("User added successfully!");
                 int userid = Database.getUserID(username, password);
-
+                String sql2 = "INSERT INTO userattributepreferences (userid, attributetype, attributeid) VALUES ";
+                
+                for(int i = 0; i < allAttributes.keySet().size(); i++) { // type
+                	for(int j = 0; j < allAttributes.get(i).size(); j++) { // weight
+                		sql2 += "(" + userid + "," + i + "," + j +"),";
+                	}
+                }
+                
+                
+                sql2 = sql2.substring( 0, sql2.length() - 1);
+                
+                preparedStatement2 = connection.prepareStatement(sql2);
+                
+                preparedStatement2.executeUpdate();
+            	 		
                 return true;
             } else {
                 System.out.println("Failed to add User.");

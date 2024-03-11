@@ -31,6 +31,8 @@ public class DogProfileScene extends PrimaryScene{
 	private Stage stage;
     private Button donate = Components.button("Sponsor");
     DonateScene donatePage = DonateScene.getInstance();//ADDED DONATE PAGE
+	private int currentProfileIndex;
+private Dog currentProfile;
 
 //    private int l = 1080; 
 //    private int w = 1920; 
@@ -47,7 +49,7 @@ public class DogProfileScene extends PrimaryScene{
 
     @Override
     public void start(Stage primaryStage) {
-    	
+		currentProfileIndex = 0;
     	initailizePrimaryScene();
     	//wallet=appData.getWallet();
     	//root is v box
@@ -67,8 +69,7 @@ public class DogProfileScene extends PrimaryScene{
         Button passButton = Components.button("╳");
 		passButton.setStyle("-fx-background-color: #0a0f40; -fx-text-fill: white; -fx-font-size: 60;");
         passButton.setOnAction(event -> {
-        	Dog dog = posterDogs.get(0);
-            user.addPassedDogs(dog);
+            user.addPassedDogs(posterDogs.get(currentProfileIndex));
             if(posterDogs.size() <= 0) {
             	outOfDogs.start(primaryStage);	
             	
@@ -89,10 +90,8 @@ public class DogProfileScene extends PrimaryScene{
         Button likeButton = Components.button("♥");
 		likeButton.setStyle("-fx-background-color: #db2a4d; -fx-text-fill: white; -fx-font-size: 60;");
         likeButton.setOnAction(e -> {
-        	
-        	Dog dog = posterDogs.get(0);
-            dog.setAdopted(true);
-            user.addLikedDogs(dog);
+			posterDogs.get(currentProfileIndex).setAdopted(true);
+            user.addLikedDogs(posterDogs.get(currentProfileIndex));
             if(posterDogs.size() <= 0) {
             	outOfDogs.start(primaryStage);	
             	
@@ -188,7 +187,15 @@ public class DogProfileScene extends PrimaryScene{
 	}
 
 	public void displayCurrentPetProfile() {
-		Dog currentProfile = posterDogs.get(0);
+		currentProfile = posterDogs.get(currentProfileIndex);
+		while(user.getAgePreferences().contains(currentProfile.getAge()) == false ||
+				user.getSizePreferences().contains(currentProfile.getSize()) == false ||
+				user.getSexPreferences().contains(currentProfile.getSex()) == false||
+				user.getEnergyLevelPreferences().contains(currentProfile.getEnergyLevel()) == false){
+			
+			changeProfile();
+			currentProfile = posterDogs.get(currentProfileIndex);
+		}
 		petImageView.setImage(new Image(currentProfile.getImagePath()));
 		primaryInfoLabel.setText(currentProfile.getName() +", " + currentProfile.getAge() + " years, " + currentProfile.getSex());
 		sizeLabel.setText("Size: " + currentProfile.getSize());
@@ -223,7 +230,11 @@ public class DogProfileScene extends PrimaryScene{
 
 	
 	public void changeProfile() {
-		posterDogs.remove(0); // remove top element
+		currentProfileIndex ++;
+
+	}
+	public Dog getCurrentProfile() {
+		return this.currentProfile;
 	}
 }
 

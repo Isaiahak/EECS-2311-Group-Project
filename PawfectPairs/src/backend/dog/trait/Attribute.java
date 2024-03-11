@@ -47,9 +47,12 @@ public abstract class Attribute implements Comparable<Attribute>{
     }
     
     
-    public boolean equals(Attribute att) {
+    @Override
+    public boolean equals(Object att) {
     	
-    	if(this.getType() == att.getType() && this.getWeight() == att.getWeight()) return true;
+    	if(this.getWeight() == ((Attribute) att).getWeight()) return true;
+    	
+    	
     	return false;
     }
     
