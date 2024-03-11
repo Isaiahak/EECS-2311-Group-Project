@@ -292,17 +292,24 @@ public class DonateScene extends PrimaryScene {
 		if (amountToDonate>wallet.getBalance())
 			showAlert("Insufficient funds", "Your recurring payment did not go through", AlertType.ERROR);
 		else	{
+			if(!howOftenBox.getValue().equals("Once")) {
+				if(wallet.getRecurringPayments().containsKey(currentDog.getId()))
+					{
+					showAlert("Recurring Payment Updated", "Your existing recurring payment was updated for this dog", AlertType.INFORMATION);
+					wallet.removeRecurringPayment(currentDog.getId());
+					wallet.addRecurringPayment(new RecurringPayment(amountToDonate, daysBetweenPayments, currentDog.getId(), currentDog.getPosterId()));
+
+					}
+				else
+					wallet.addRecurringPayment(new RecurringPayment(amountToDonate, daysBetweenPayments, currentDog.getId(), currentDog.getPosterId()));
+					showAlert("Recurring Payment Created", "You have set up recurring payments for this dog", AlertType.INFORMATION);
+
+			}
+			
 			wallet.donate(amountToDonate, poster);
 			showAlert("Payment went through",currentDog.getName()+" is thankful for you! ♥", AlertType.CONFIRMATION);
 		}
-		if(!howOftenBox.getValue().equals("Once")) {
-			if(wallet.getRecurringPayments().containsKey(currentDog.getId()))
-				showAlert("Payment already exists", "You already have a recurring payment set up for this dog", AlertType.ERROR);
-
-			else
-				wallet.addRecurringPayment(new RecurringPayment(amountToDonate, daysBetweenPayments, currentDog.getId(), currentDog.getPosterId()));
-
-		}
+		
 
 
 		currentFunds.setText("Your current balance "+String.format("%.2f",  wallet.getBalance()));
