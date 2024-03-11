@@ -125,6 +125,8 @@ public class AppData {
 		}
 	}
 	
+	
+	
 	public void onStart(String user, String pass) {
 		getInstance(); 	
 		

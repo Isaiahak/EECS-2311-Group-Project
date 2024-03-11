@@ -76,7 +76,7 @@ public class PosterProfileScene extends Application {
 	
 	
 	
-	 HBox navTab = Components.navTab(userProfile, LikedDogScene.getInstance(), dogProfileScene, primaryStage,"posterProfile",appData);
+	 HBox navTab = Components.navTab(userProfile, LikedDogScene.getInstance(), dogProfileScene,BookedAppointmentScene.getInstance(), primaryStage,"posterProfile",appData);
 	 navTab.setAlignment(Pos.CENTER);
 	
 	
