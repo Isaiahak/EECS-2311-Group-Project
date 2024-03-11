@@ -25,5 +25,6 @@ public class Age extends Attribute {
 		return type; 
 	}
 
+
 }
 

@@ -380,7 +380,7 @@ public class Components{
 		return stars; 
 	}
 	
-	public static Label attributeLabel(String name, GridPane gridPane, ArrayList<Attribute> attributeList,int attributeType, int weight) {
+	public static Label attributeLabel(String name, GridPane gridPane, ArrayList<Attribute> userAttributeList, int attributeType, int weight, HashMap<Integer,ArrayList<Attribute>> allAttributes ) {
 		Label label = new Label(name);
 		label.setFont(Font.font(font, fontSm));
 		label.setWrapText(true);
@@ -391,39 +391,35 @@ public class Components{
 				"-fx-background-color: #e1fcf6;" + // Background color
 		        "-fx-padding: 10px;" + // Padding
 		        "-fx-border-radius: 10px;" + // Border radius
-//		        "-fx-border-color: navy;" + // Border color
-//		        "-fx-font-size: 14px;" + // Font size
 		        "-fx-alignment: center;"; // Text alignment;
 		
 		String highLightedStyle = 
 				"-fx-background-color: #98f5e1;" + // Background color
 		        "-fx-padding: 10px;" + // Padding
 		        "-fx-border-radius: 10px;" + // Border radius
-//		        "-fx-border-color: navy;" + // Border color
-//		        "-fx-font-size: 14px;" + // Font size
 		        "-fx-alignment: center;"; // Text alignment;
 		
 		//function to be able to turn the label highlighted when loading them if dog attribute matches.
-		for (Attribute attribute : attributeList)
-		if(attribute.getWeight() == weight) {
-			label.setStyle(highLightedStyle);
-		}
-		else {
-			label.setStyle(defaultStyle);
+		
+		label.setStyle(defaultStyle);
+		
+		for (Attribute attribute : userAttributeList) {
+			if(attribute.getWeight() == weight) {
+				
+				label.setStyle(highLightedStyle);
+			}
+			
 		}
 		
 		label.setOnMouseClicked(event -> {	
             if (label.getStyle().equals(defaultStyle)) {
             	label.setStyle(highLightedStyle);
-				attributeList.add(AttributePreferenceFactor.getAttribute(attributeType,weight));
-            }
-			else{
+            	userAttributeList.add(allAttributes.get(attributeType).get(weight));
+				
+            }else{
 				label.setStyle(defaultStyle);
-				for(Attribute attribute : attributeList){
-					if(attribute.getName().compareTo(name) == 0){
-						attributeList.remove(attribute);
-					}
-				}
+				userAttributeList.remove(allAttributes.get(attributeType).get(weight));
+				
 			}
         });
 		
@@ -431,14 +427,13 @@ public class Components{
 		return label;
 	}
 	
-	public static GridPane createAttribute(ArrayList<Attribute> userAttributeList, Attribute attributeExample) {
+	public static GridPane createAttribute(ArrayList<Attribute> userAttributeList, int attributeType, HashMap<Integer,ArrayList<Attribute>> allAttributes ) {
 		GridPane gridPane = new GridPane();
-		String[] names = attributeExample.getNames();
+		String[] names = allAttributes.get(attributeType).get(0).getNames();
 		
-		int attributeType = attributeExample.getType();
 		for(int j = 0; j < names.length; j++) {
 			// Add the label to the grid
-			Label label = attributeLabel(names[j], gridPane, userAttributeList, attributeType, j );
+			Label label = attributeLabel(names[j], gridPane, userAttributeList, attributeType, j,allAttributes );
             gridPane.add(label, j,0);
             
 		} 

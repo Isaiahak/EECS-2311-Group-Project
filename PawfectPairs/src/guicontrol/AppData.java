@@ -10,6 +10,11 @@ import java.util.TreeSet;
 
 import backend.database.Database;
 import backend.dog.Dog;
+import backend.dog.trait.Age;
+import backend.dog.trait.Attribute;
+import backend.dog.trait.EnergyLevel;
+import backend.dog.trait.Sex;
+import backend.dog.trait.Size;
 import backend.poster.Poster;
 import backend.tag.Tag;
 import backend.user.User;
@@ -22,8 +27,9 @@ public class AppData {
 	private HashMap<Integer, Tag> allTags;
 	private Hashtable<Integer,Poster> posterProfiles; // poster profiles by id 
 	private ArrayList<Dog> sortedDogProfiles;
-	
 	private static AppData instance;
+	
+	private HashMap<Integer, ArrayList<Attribute>> allAttributes; 
 	
 	public ArrayList<Dog> getSortedDogProfiles() {
 		
@@ -79,6 +85,7 @@ public class AppData {
 	}
 	
 	
+	
 	// calculate dog scores
 	public void updateDogScores() {
 	// perform check on if the user's preferences have changed before updating scores	
@@ -125,7 +132,51 @@ public class AppData {
 		}
 	}
 	
+	public void initializeAttributes(){
+		this.allAttributes = new HashMap<Integer, ArrayList<Attribute>>();
+		
+		Attribute attEx = new Sex(0);
+		ArrayList<Attribute> sexList = new ArrayList<Attribute>();
+		for(int i = 0 ; i < attEx.getNames().length; i++) {
+			sexList.add(new Sex(i));
+			
+		}
+		this.allAttributes.put(attEx.getType(), sexList);
+		
+		attEx = new Size(0);
+		ArrayList<Attribute> sizeList = new ArrayList<Attribute>();
+		for(int i = 0 ; i < attEx.getNames().length; i++) {
+			sizeList.add(new Size(i));
+			
+		}
+		this.allAttributes.put(attEx.getType(), sizeList);
+		
+		attEx = new EnergyLevel(0);
+		ArrayList<Attribute> energyLevelList = new ArrayList<Attribute>();
+		for(int i = 0 ; i < attEx.getNames().length; i++) {
+			energyLevelList.add(new EnergyLevel(i));
+			
+		}
+		this.allAttributes.put(attEx.getType(), energyLevelList);
+		
+		attEx = new Age(0);
+		ArrayList<Attribute> ageList = new ArrayList<Attribute>();
+		for(int i = 0 ; i < attEx.getNames().length; i++) {
+			ageList.add(new Age(i));
+			
+		}
+		
+		this.allAttributes.put(attEx.getType(), ageList);
+		
+	}
+	public HashMap<Integer, ArrayList<Attribute>> getAllAttributes(){
+		return this.allAttributes;
+		
+	}
+	
 	public void onStart(String user, String pass) {
+		initializeAttributes(); 
+		
 		getInstance(); 	
 		
 		setUser(user, pass); // sets user, dog liked list, ideal dog attribtues
