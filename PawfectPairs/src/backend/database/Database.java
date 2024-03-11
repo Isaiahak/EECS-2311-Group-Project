@@ -1140,7 +1140,7 @@ public static ArrayList<Attribute> getUsersPreferredAttributes(int userid, int a
        }
 	}
 	
-	public static void onApplicationClose(User user, ArrayList<Dog> doglist){
+	public static void onApplicationClose(User user, ArrayList<Dog> doglist, AppointmentManager appman){
 		Database.updateAllAdoptedDogs(doglist); // sets dogs to be adopted 
 		
 		ArrayList<Dog> likedDogs = Database.getUsersDogs(user.getUserID(),"userdogs");
@@ -1174,15 +1174,19 @@ public static ArrayList<Attribute> getUsersPreferredAttributes(int userid, int a
 		Database.addPreferenceTagsToUser(tags, userId);
 //		
 		// update user's ideal dog attributes
-		//Database.deleteAppointment(userId);
+		Database.deleteAppointment(userId);
+		Database.setUserAppointments(appman);
+		
 		Database.deleteUserAttributePreferences(userId);
-		//Database.setUserAppointments(appointmentManager);
 		Database.addUserAttributePreferences(age, userId);
 		Database.addUserAttributePreferences(energyLevel, userId);
 		Database.addUserAttributePreferences(size, userId);
 		Database.addUserAttributePreferences(sex, userId);
 		
 		updateRecurringPayments(user);
+		
+		
+		
 	}
 	
 	

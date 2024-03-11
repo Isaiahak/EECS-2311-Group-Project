@@ -1,5 +1,6 @@
 package guilayout;
 
+import backend.calendar.AppointmentManager;
 import backend.database.Database;
 import backend.dog.Dog;
 import backend.poster.Poster;
@@ -55,7 +56,7 @@ public class DogProfileScene extends PrimaryScene{
 		VBox root = new VBox();
 		root.setSpacing(10);
 		root.setAlignment(Pos.CENTER);
-    	wallet=user.getWallet();
+//    	wallet=user.getWallet();
 
 
         primaryStage.setTitle("Pawfect Pairs");
@@ -182,10 +183,10 @@ public class DogProfileScene extends PrimaryScene{
 //      primaryStage.setOnCloseRequest(event -> {
 //    	    System.out.println("Window is closing. Perform cleanup if needed.");
 //    	    
-//    	    Database.onApplicationClose(user, posterDogs);
+//    	    Database.onApplicationClose(user, posterDogs, appData.getAppointmentManager());
 //    	});
-//		}
-	}
+		}
+	
 
 	public void displayCurrentPetProfile() {
 	if (currentProfileIndex + 1 > posterDogs.size()) {

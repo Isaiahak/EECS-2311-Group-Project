@@ -452,7 +452,7 @@ public class Components{
             	userAttributeList.add(allAttributes.get(attributeType).get(weight));
 				
             }else{
-            	if(allAttributes.size() >= 2) {
+            	if(userAttributeList.size() >= 2) {
             		label.setStyle(defaultStyle);
 				userAttributeList.remove(allAttributes.get(attributeType).get(weight));
             	}
