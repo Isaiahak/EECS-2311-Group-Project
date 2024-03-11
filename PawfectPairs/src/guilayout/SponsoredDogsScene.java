@@ -17,18 +17,18 @@ import backend.database.Database;
 import backend.dog.Dog;
 
 
-public class LikedDogScene extends PrimaryScene{
+public class SponsoredDogsScene extends PrimaryScene{
 
-	private static LikedDogScene instance;
+	private static SponsoredDogsScene instance;
 
-	public static LikedDogScene getInstance() {
+	public static SponsoredDogsScene getInstance() {
 		if (instance == null) {
-			instance = new LikedDogScene();		
+			instance = new SponsoredDogsScene();		
 		}
 		return instance;
 	}
 
-	private LikedDogScene() {
+	private SponsoredDogsScene() {
 		
 	}
 	
@@ -36,30 +36,29 @@ public class LikedDogScene extends PrimaryScene{
 	public void start(Stage stage){
 		initailizePrimaryScene();
 		
-		ArrayList<Dog> likedDogs = user.getLikedDogs();
+		ArrayList<Dog> sponsoredDogs = user.getSponsoredDogs();
 		VBox root = new VBox();
 		root.setAlignment(javafx.geometry.Pos.CENTER);
     	root.setSpacing(20);
     	
-
-    	HBox navTab = Components.navTab(userProfile, LikedDogScene.getInstance(), dogProfileScene, sponsoredDog, BookedAppointmentScene.getInstance(),stage,"likedDogs", appData);
-		VBox likedDogsDisplay = new VBox();
+    	HBox navTab = Components.navTab(userProfile, likedDog, dogProfileScene, sponsoredDog, stage,"sponsoredDogs", appData);
+ 
+		VBox sponsoredDogsDisplay = new VBox();
 	    	
-    	for(Dog d : likedDogs) {
-    		likedDogsDisplay.getChildren().add(Components.likedDogView(d, stage, appData.getPosters()));
+    	for(Dog d : sponsoredDogs) {
+    		sponsoredDogsDisplay.getChildren().add(Components.sponsoredDogView(d, stage, appData.getPosters()));
     	}
-    	likedDogsDisplay.setAlignment(javafx.geometry.Pos.CENTER);
+    	sponsoredDogsDisplay.setAlignment(javafx.geometry.Pos.CENTER);
     	
 //    	ScrollPane scrollPane = new ScrollPane(likedDogsDisplay);  
     	
-    	Label likedDogsLabel = Components.largeLabel("Dogs you've Liked", Pos.CENTER);
+    	Label sponsoredDogsLabel = Components.largeLabel("Dogs you've Liked", Pos.CENTER);
     	 
     	
     	root.getChildren().addAll(
     			navTab,
-    			likedDogsLabel,
-    			likedDogsDisplay
-    			
+    			sponsoredDogsLabel,
+    			sponsoredDogsDisplay
     			);
 	    	
 

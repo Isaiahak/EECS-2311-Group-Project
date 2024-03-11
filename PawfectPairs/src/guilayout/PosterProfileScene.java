@@ -92,7 +92,9 @@ public class PosterProfileScene extends PrimaryScene {
 
 
 
-		HBox navTab = Components.navTab(userProfile, LikedDogScene.getInstance(), dogProfileScene,BookedAppointmentScene.getInstance(), primaryStage,"posterProfile",appData);
+
+		HBox navTab = Components.navTab(userProfile, LikedDogScene.getInstance(), dogProfileScene, sponsoredDog, BookedAppointmentScene.getInstance(), primaryStage,"posterProfile",appData);
+
 		navTab.setAlignment(Pos.CENTER);
 
 

@@ -130,7 +130,9 @@ public class DogProfileScene extends PrimaryScene{
       
         
         // nav tab
-        HBox navTab = Components.navTab(userProfile, likedDog, DogProfileScene.getInstance(), BookedAppointmentScene.getInstance(),primaryStage, "dogProfiles", appData);
+
+        HBox navTab = Components.navTab(userProfile, likedDog, DogProfileScene.getInstance(),sponsoredDog, BookedAppointmentScene.getInstance(),primaryStage, "dogProfiles", appData);
+
       
         
         // poster link
@@ -202,13 +204,13 @@ public class DogProfileScene extends PrimaryScene{
 
 
 
-		donate.setOnAction(event -> {
-		  //	wallet=user.getWallet();
-			Poster poster =posterList.get(posterDogs.get(currentProfileIndex).getPosterId());
-			wallet.setPosterToSponsorPending(poster.getUniqueId());
-			donatePage.start(stage);
-
-		});
+//		donate.setOnAction(event -> {
+//		  //	wallet=user.getWallet();
+//			Poster poster =posterList.get(posterDogs.get(currentProfileIndex).getPosterId());
+//			wallet.setPosterToSponsorPending(poster.getUniqueId());
+//			donatePage.start(stage);
+//
+//		});
 
 
 		petImageView.setImage(new Image(currentProfile.getImagePath()));
