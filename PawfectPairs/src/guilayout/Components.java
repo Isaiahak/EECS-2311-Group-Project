@@ -542,6 +542,8 @@ public class Components{
 		
 		Hyperlink posterLink = hyperlinkToPosterProfile(d, stage, poster);
 		
+		Button cancelButton = new Button("Cancel Origin");
+		
 		
 		VBox info = new VBox(
 				primaryInfoLabel,
@@ -551,6 +553,7 @@ public class Components{
 		HBox HBox = new HBox(img, info);
 		HBox.setAlignment(Pos.CENTER);
 		HBox.setSpacing(50);
+		
 		
 		
 		return HBox;
