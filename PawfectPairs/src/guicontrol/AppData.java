@@ -8,6 +8,8 @@ import java.util.Hashtable;
 import java.util.PriorityQueue;
 import java.util.TreeSet;
 
+import backend.calendar.Appointment;
+import backend.calendar.AppointmentManager;
 import backend.database.Database;
 import backend.dog.Dog;
 import backend.dog.trait.Age;
@@ -30,9 +32,12 @@ public class AppData {
 	private Hashtable<Integer,Poster> posterProfiles; // poster profiles by id 
 	private ArrayList<Dog> sortedDogProfiles;
 	private static AppData instance;
+	private AppointmentManager appointmentManager;
 	
-	private HashMap<Integer, ArrayList<Attribute>> allAttributes; 
-	
+	private HashMap<Integer, ArrayList<Attribute>> allAttributes;
+
+
+
 //	//Wallet Methods
 //	public void initializeWallet (int userid, String password) {
 //		this.user.setWallet(Database.getWallet(userid, password));
@@ -41,6 +46,16 @@ public class AppData {
 //		return this.user.getWallet();
 //	}
 //	//
+
+
+	public AppointmentManager getAppointmentManager() {
+		return appointmentManager;
+	}
+
+	public void setAppointmentManager(AppointmentManager appointmentManager) {
+		this.appointmentManager = appointmentManager;
+	}
+
 	public ArrayList<Dog> getSortedDogProfiles() {
 		return sortedDogProfiles;
 	}
@@ -179,10 +194,10 @@ public class AppData {
 	}
 
 	
-	public void onStart(String user, String pass) {
+	public void onStart(String username, String pass) {
 		getInstance(); 	
 		
-		setUser(user, pass); // sets user, dog liked list, ideal dog attribtues
+		setUser(username, pass); // sets user, dog liked list, ideal dog attribtues
 		
 //		initializeWallet(getUser().getUserID(), pass);
 		
@@ -195,6 +210,8 @@ public class AppData {
 		setPosterDogLists();
 		
 		initializeDogProfilesSorted();
+
+		setAppointmentManager(new AppointmentManager(user.getUserID(), Database.getUserAppointments(user.getUserID())));
 		
 		
 		

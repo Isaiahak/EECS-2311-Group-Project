@@ -1,5 +1,6 @@
 package guilayout;
 
+import backend.calendar.AppointmentManager;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -78,8 +79,9 @@ public class LoginScene extends Application{
             if (Database.addUser(username, password, appData.getAllAttributes()) == false || password == "" && username == "")
             	showAlert("Sign up Failed", "Please enter a valid username or password.");
             clearFields(userTextField, passwordField);
-            User user =Database.getUser(username, password);
+            User user = Database.getUser(username, password);
             Database.blankWallet(user.getUserID());
+            appData.setAppointmentManager(new AppointmentManager(user.getUserID(),new ArrayList<>()));
 //        		appData.initializeWallet(user.getUserID(), password);
         });
         loginButton.setOnAction(e -> {
