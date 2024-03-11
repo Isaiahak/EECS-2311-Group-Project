@@ -18,6 +18,7 @@ import backend.dog.trait.Size;
 import backend.poster.Poster;
 import backend.tag.Tag;
 import backend.user.User;
+import backend.wallet.Wallet;
 import guilayout.UserProfile;
 
 public class AppData {
@@ -31,6 +32,14 @@ public class AppData {
 	
 	private HashMap<Integer, ArrayList<Attribute>> allAttributes; 
 	
+	//Wallet Methods
+	public void setWallet (int userid, String password) {
+		this.user.setWallet(Database.getWallet(userid, password));
+	}
+	public Wallet getWallet () {
+		return this.user.getWallet();
+	}
+	//
 	public ArrayList<Dog> getSortedDogProfiles() {
 		
 		
@@ -52,7 +61,7 @@ public class AppData {
 	public void setUser(String user, String password) {
 		this.user = Database.getUser(user, password);
 	}
-	
+
 	public User getUser() {
 		return this.user;
 	}

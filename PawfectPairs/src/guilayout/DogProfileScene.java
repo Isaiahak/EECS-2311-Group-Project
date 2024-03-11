@@ -1,7 +1,9 @@
 package guilayout;
 
+import backend.database.Database;
 import backend.dog.Dog;
-
+import backend.poster.Poster;
+import backend.wallet.Wallet;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -27,11 +29,17 @@ public class DogProfileScene extends PrimaryScene{
     private Hyperlink posterLink;
 	private StackPane tagsPane;
 	private Stage stage;
+    private Button donate = Components.button("Sponsor");
+    DonateScene donatePage = DonateScene.getInstance();//ADDED DONATE PAGE
+
 //    private int l = 1080; 
 //    private int w = 1920; 
 
 //    private Label bioLabel;
 //    private Label tagsLabel;
+	
+	
+    private Wallet wallet;
 
     public static void main(String[] args) {
         launch(args);
@@ -41,7 +49,7 @@ public class DogProfileScene extends PrimaryScene{
     public void start(Stage primaryStage) {
     	
     	initailizePrimaryScene();
-    	
+    	wallet=user.getWallet();
     	//root is v box
 		VBox root = new VBox();
 		root.setSpacing(10);
@@ -123,6 +131,12 @@ public class DogProfileScene extends PrimaryScene{
         // tags box - TO BE IMPLEMENTED -
         
         
+        
+        //BUTTON FOR WALLET / DONATE TO OR SPONSOR AN ANIMAL 
+        
+        
+      
+        
         // nav tab
         HBox navTab = Components.navTab(userProfile, likedDog, DogProfileScene.getInstance(), primaryStage, "dogProfiles", appData);
       
@@ -147,7 +161,7 @@ public class DogProfileScene extends PrimaryScene{
 
 
 		 
-		root.getChildren().addAll(navTab, primaryControlTab, primaryInfoLabel, posterLink, secondaryInfo, biographyText, tagsPane);
+		root.getChildren().addAll(navTab, primaryControlTab, primaryInfoLabel, posterLink, donate, secondaryInfo, biographyText, tagsPane);
 
 		// Display the initial pet profile
 		displayCurrentPetProfile();
@@ -192,6 +206,14 @@ public class DogProfileScene extends PrimaryScene{
 				e.printStackTrace();
 			}
 		});
+		
+		  donate.setOnAction(event -> {
+			  //	wallet=user.getWallet();
+	        	Poster poster =posterList.get(currentProfile.getPosterId());
+	        	wallet.setPosterToSponsorPending(poster.getUniqueId());
+				donatePage.start(stage);
+
+	        });
 
 		tagsPane.getChildren().clear();
 
@@ -199,6 +221,7 @@ public class DogProfileScene extends PrimaryScene{
 
 	}
 
+	
 	public void changeProfile() {
 		posterDogs.remove(0); // remove top element
 	}

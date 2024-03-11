@@ -3,6 +3,7 @@ package backend.user;
 import java.util.List;
 import backend.dog.Dog;
 import backend.tag.Tag;
+import backend.wallet.Wallet;
 
 public class UserConfig {
 	
