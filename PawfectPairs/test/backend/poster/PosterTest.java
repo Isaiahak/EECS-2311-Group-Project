@@ -21,7 +21,7 @@ class PosterTest {
 
     @Test
     void testConstructorAndGetters() {
-        Poster poster = new Poster(5, "John", 1);
+        Poster poster = new Poster(5, "John", 1,"123-456","poster@email.com", 123.5);
         assertEquals(5, poster.getScore());
         assertEquals("John", poster.getDisplayName());
         assertEquals(1, poster.getUniqueId());
@@ -29,7 +29,7 @@ class PosterTest {
 
     @Test
     void testSetters() {
-        Poster poster = new Poster(5, "John", 1);
+        Poster poster = new Poster(5, "John", 1,"123-456","poster@email.com", 123.5);
         poster.setScore(10);
         poster.setDisplayName("Doe");
         poster.setUniqueId(2);
@@ -41,24 +41,25 @@ class PosterTest {
 
     @Test
     void testToString() {
-        Poster poster = new Poster(5, "John", 1);
+        Poster poster = new Poster(5, "John", 1,"123-456","poster@email.com", 123.5);
         String expected = "Poster [score=5, displayName=John, uniqueId=1]";
         assertEquals(expected, poster.toString());
     }
 
     @Test
     void testCompareTo() {
-        Poster poster1 = new Poster(5, "John", 1);
-        Poster poster2 = new Poster(10, "Doe", 2);
+        Poster poster1 = new Poster(5, "John", 1,"123-456","poster@email.com", 123.5);
+        Poster poster2 = new Poster(10, "Doe", 2,"123-456","poster@email.com", 123.5);
 
         assertTrue(poster1.compareTo(poster2) < 0); // poster1 should be less than poster2
 
         // Make two posters with the same uniqueId and displayName
-        Poster poster3 = new Poster(10, "Doe", 2);
+        Poster poster3 = new Poster(10, "Doe", 2,"123-456","poster@email.com", 123.5);
         assertEquals(0, poster2.compareTo(poster3)); // poster2 and poster3 should be equal
 
         // Make two posters with the same uniqueId and different displayName
-        Poster poster4 = new Poster(8, "Smith", 2);
+        Poster poster4 = new Poster(8, "Smith", 2,"123-456","poster@email.com", 123.5);
         assertTrue(poster3.compareTo(poster4) < 0); // poster3 should be less than poster4
     }
 }
+
