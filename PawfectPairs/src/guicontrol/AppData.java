@@ -175,8 +175,6 @@ public class AppData {
 	}
 	
 	public void onStart(String user, String pass) {
-		initializeAttributes(); 
-		
 		getInstance(); 	
 		
 		setUser(user, pass); // sets user, dog liked list, ideal dog attribtues

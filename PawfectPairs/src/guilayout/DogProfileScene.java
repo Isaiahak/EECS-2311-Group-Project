@@ -178,7 +178,9 @@ public class DogProfileScene extends PrimaryScene{
 				user.getSizePreferences().contains(currentProfile.getSize()) == false ||
 				user.getSexPreferences().contains(currentProfile.getSex()) == false||
 				user.getEnergyLevelPreferences().contains(currentProfile.getEnergyLevel()) == false){
+			
 			changeProfile();
+			currentProfile = posterDogs.get(currentProfileIndex);
 		}
 		petImageView.setImage(new Image(currentProfile.getImagePath()));
 		primaryInfoLabel.setText(currentProfile.getName() +", " + currentProfile.getAge() + " years, " + currentProfile.getSex());
