@@ -49,7 +49,7 @@ public class DogProfileScene extends PrimaryScene{
     public void start(Stage primaryStage) {
     	
     	initailizePrimaryScene();
-    	wallet=user.getWallet();
+    	wallet=appData.getWallet();
     	//root is v box
 		VBox root = new VBox();
 		root.setSpacing(10);

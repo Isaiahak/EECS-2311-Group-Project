@@ -33,7 +33,7 @@ public class AppData {
 	private HashMap<Integer, ArrayList<Attribute>> allAttributes; 
 	
 	//Wallet Methods
-	public void setWallet (int userid, String password) {
+	public void initializeWallet (int userid, String password) {
 		this.user.setWallet(Database.getWallet(userid, password));
 	}
 	public Wallet getWallet () {
@@ -190,6 +190,7 @@ public class AppData {
 		
 		setUser(user, pass); // sets user, dog liked list, ideal dog attribtues
 		
+		//setWallet(, pass);
 		setAllTags();
 		
 		setPosters();
@@ -199,6 +200,8 @@ public class AppData {
 		setPosterDogLists();
 		
 		initializeDogProfilesSorted();
+		
+		
 		
 
 	}

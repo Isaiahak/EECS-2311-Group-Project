@@ -113,22 +113,31 @@ public class Wallet {
 		this.balance=this.balance+amount;
 	}
 
+//
+//	public String singlePayment (double amount, int posterid) {//rn set up to return error message if failed or nothing if success
+//		//boolean issues= true;
+//		try {
+//			donate(amount, posterid);
+//			//issues=false;
+//		}
+//		catch (FundsTooLow e) {
+//			return e.getMessage();
+//
+//		}
+//		finally {
+//			return "";
+//		}
+//	}
 
-	public String singlePayment (double amount, int posterid) {//rn set up to return error message if failed or nothing if success
-		//boolean issues= true;
-		try {
-			donate(amount, posterid);
-			//issues=false;
-		}
-		catch (FundsTooLow e) {
-			return e.getMessage();
-
-		}
-		finally {
-			return "";
-		}
+	public String singlePayment(double amount, int posterid) throws FundsTooLow {
+	    try {
+	        donate(amount, posterid);
+	        return ""; // Return an empty string if donation is successful
+	    } catch (FundsTooLow e) {
+	        throw e; // Re-throw the exception to propagate it up the call stack
+	    }
 	}
-
+	
 	public static void test () {
 		System.out.println("cute "+LocalDate.now() + " "+ java.time.LocalDateTime.now());
 
