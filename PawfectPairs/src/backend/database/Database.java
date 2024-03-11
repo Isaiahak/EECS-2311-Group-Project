@@ -810,6 +810,59 @@ public static ArrayList<Attribute> getUsersPreferredAttributes(int userid, int a
         return false;
 	}
 	
+	public static boolean blankWallet(int userid) {
+	    Connection connection = null;
+	    PreparedStatement preparedStatement = null;
+
+	    try {
+	        connection = databaseConnector.connect();
+
+	        String sql = "INSERT INTO userfunds (balance, userid, recurringpayment, "
+	                + "frequency, recurringamount, postertosponsorpending, recurringposter, "
+	                + "oldpaymentdate) VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
+
+	        preparedStatement = connection.prepareStatement(sql);
+	        preparedStatement.setInt(1, 0);
+	        preparedStatement.setInt(2, userid);
+	        preparedStatement.setBoolean(3, false);
+	        preparedStatement.setInt(4, 0);
+	        preparedStatement.setInt(5, 0);
+	        preparedStatement.setInt(6, 0);
+	        preparedStatement.setInt(7, 0);
+	        preparedStatement.setDate(8, null);
+
+	        int rowsAffected = preparedStatement.executeUpdate();
+
+	        if (rowsAffected > 0) {
+	            System.out.println("Wallet added successfully!");
+	            return true;
+	        } else {
+	            System.out.println("Failed to add Wallet.");
+	            return false;
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        // Close resources in a separate try-catch block to ensure closure even if an exception occurs
+	        try {
+	            if (preparedStatement != null) {
+	                preparedStatement.close();
+	            }
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+
+	        try {
+	            if (connection != null) {
+	                connection.close();
+	            }
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    }
+	    return false;
+	}
+	
 	public static void deleteUserAttributePreferences(int userId) {
 
 		try {
@@ -1059,6 +1112,8 @@ public static ArrayList<Attribute> getUsersPreferredAttributes(int userid, int a
 		return posterWallets;
 		
 	}
+	
+	
 	public static void setWallet(Wallet wallet, int userId) {
 	    try (Connection connection = databaseConnector.connect()) {
 	        String updateQuery = "UPDATE userfunds SET " +

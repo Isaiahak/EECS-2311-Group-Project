@@ -56,6 +56,8 @@ private Dog currentProfile;
 		VBox root = new VBox();
 		root.setSpacing(10);
 		root.setAlignment(Pos.CENTER);
+    	wallet=user.getWallet();
+
 
         primaryStage.setTitle("Pawfect Pairs");
         PosterProfileScene posterProfile = PosterProfileScene.getInstance();
