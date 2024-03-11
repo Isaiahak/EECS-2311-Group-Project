@@ -10,18 +10,20 @@ private String displayName;
 private int uniqueId;
 private String phone; 
 private String email; 
-private ArrayList<Dog> dogList = new ArrayList<Dog>(); 
+private ArrayList<Dog> dogList = new ArrayList<Dog>();
+private double balance; 
 
 
 public int getScore() {
 	return score;
 }
-public  Poster(int score, String displayName, int uniqueId, String phone, String email) {
+public  Poster(int score, String displayName, int uniqueId, String phone, String email, double balance) {
 	this.score = score;
 	this.displayName = displayName;
 	this.uniqueId = uniqueId;	
 	this.phone = phone;
 	this.email = email;
+	this.balance = balance;
 }
 
 public String getEmail() {
@@ -38,6 +40,10 @@ public void setDogList(ArrayList<Dog> dogList) {
 	//add a dog to the poster's dog list
 	this.dogList = dogList;
 	
+}
+
+public void depositDonation(double amount) {
+	this.balance += amount;
 }
 
 public void setScore(int score) {

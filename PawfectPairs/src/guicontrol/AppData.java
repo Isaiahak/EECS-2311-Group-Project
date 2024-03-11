@@ -22,12 +22,13 @@ import backend.tag.Tag;
 import backend.user.User;
 import guilayout.DogProfileScene;
 import backend.wallet.Wallet;
+import backend.wallet.Wallet.FundsTooLow;
 import guilayout.UserProfile;
 public class AppData {
 	
 	private User user;//comment
 
-	private Hashtable<Integer, ArrayList<Dog>> dogProfileHashtable;
+	private Hashtable<Integer, ArrayList<Dog>> dogProfileHashtable; // posterid, dogs
 	private HashMap<Integer, Tag> allTags;
 	private Hashtable<Integer,Poster> posterProfiles; // poster profiles by id 
 	private ArrayList<Dog> sortedDogProfiles;
@@ -39,9 +40,11 @@ public class AppData {
 
 
 //	//Wallet Methods
-//	public void initializeWallet (int userid, String password) {
-//		this.user.setWallet(Database.getWallet(userid, password));
-//	}
+	public void initializeWallet (int userid, String password) {
+		this.user.setWallet(Database.getWallet(userid, password));
+		
+		this.user.getWallet().makeRecurringPayments(posterProfiles);
+	}
 //	public Wallet getWallet () {
 //		return this.user.getWallet();
 //	}
@@ -58,6 +61,10 @@ public class AppData {
 
 	public ArrayList<Dog> getSortedDogProfiles() {
 		return sortedDogProfiles;
+	}
+	
+	public Hashtable<Integer,Poster> getPosterProfiles(){
+		return posterProfiles;
 	}
 
 
@@ -199,7 +206,7 @@ public class AppData {
 		
 		setUser(username, pass); // sets user, dog liked list, ideal dog attribtues
 		
-//		initializeWallet(getUser().getUserID(), pass);
+		initializeWallet(getUser().getUserID(), pass);
 		
 		setAllTags();
 		

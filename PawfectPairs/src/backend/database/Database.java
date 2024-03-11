@@ -16,7 +16,7 @@ import backend.dog.trait.Attribute;
 import backend.poster.Poster;
 import backend.tag.Tag;
 import backend.user.User;
-
+import backend.wallet.RecurringPayment;
 import backend.wallet.Wallet;
 
 import java.sql.Connection;
@@ -248,8 +248,9 @@ public class Database {
 				                int score = resultSet.getInt("score");
 				                String phone = resultSet.getString("phone");
 				                String email = resultSet.getString("email");
+				                double balance = resultSet.getDouble("balance");
 			                
-			                poster = new Poster(score, displayName, posterId, phone, email); 
+			                poster = new Poster(score, displayName, posterId, phone, email, balance); 
 			                posters.put(posterId, poster);
 			            }
 			        }catch (SQLException e) {
@@ -957,11 +958,12 @@ public static ArrayList<Attribute> getUsersPreferredAttributes(int userid, int a
 		
         try {
         	 connection = databaseConnector.connect();
-        	 String sql = "INSERT INTO users (username, userpassword) VALUES (?, ?)";
+        	 String sql = "INSERT INTO users (username, userpassword, balance) VALUES (?, ?, ?)";
         	
         	 preparedStatement = connection.prepareStatement(sql);
         	 preparedStatement.setString(1, username);
         	 preparedStatement.setString(2, password);
+        	 preparedStatement.setDouble(3, 0);
         	 int rowsAffected = preparedStatement.executeUpdate();
         	 if (rowsAffected > 0) {
                 System.out.println("User added successfully!");
@@ -1007,58 +1009,58 @@ public static ArrayList<Attribute> getUsersPreferredAttributes(int userid, int a
         return false;
 	}
 	
-	public static boolean blankWallet(int userid) {
-	    Connection connection = null;
-	    PreparedStatement preparedStatement = null;
-
-	    try {
-	        connection = databaseConnector.connect();
-
-	        String sql = "INSERT INTO userfunds (balance, userid, recurringpayment, "
-	                + "frequency, recurringamount, postertosponsorpending, recurringposter, "
-	                + "oldpaymentdate) VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
-
-	        preparedStatement = connection.prepareStatement(sql);
-	        preparedStatement.setInt(1, 0);
-	        preparedStatement.setInt(2, userid);
-	        preparedStatement.setBoolean(3, false);
-	        preparedStatement.setInt(4, 0);
-	        preparedStatement.setInt(5, 0);
-	        preparedStatement.setInt(6, 0);
-	        preparedStatement.setInt(7, 0);
-	        preparedStatement.setDate(8, null);
-
-	        int rowsAffected = preparedStatement.executeUpdate();
-
-	        if (rowsAffected > 0) {
-	            System.out.println("Wallet added successfully!");
-	            return true;
-	        } else {
-	            System.out.println("Failed to add Wallet.");
-	            return false;
-	        }
-	    } catch (SQLException e) {
-	        e.printStackTrace();
-	    } finally {
-	        // Close resources in a separate try-catch block to ensure closure even if an exception occurs
-	        try {
-	            if (preparedStatement != null) {
-	                preparedStatement.close();
-	            }
-	        } catch (SQLException e) {
-	            e.printStackTrace();
-	        }
-
-	        try {
-	            if (connection != null) {
-	                connection.close();
-	            }
-	        } catch (SQLException e) {
-	            e.printStackTrace();
-	        }
-	    }
-	    return false;
-	}
+//	public static boolean blankWallet(int userid) {
+//	    Connection connection = null;
+//	    PreparedStatement preparedStatement = null;
+//
+//	    try {
+//	        connection = databaseConnector.connect();
+//
+//	        String sql = "INSERT INTO userfunds (balance, userid, recurringpayment, "
+//	                + "frequency, recurringamount, postertosponsorpending, recurringposter, "
+//	                + "oldpaymentdate) VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
+//
+//	        preparedStatement = connection.prepareStatement(sql);
+//	        preparedStatement.setInt(1, 0);
+//	        preparedStatement.setInt(2, userid);
+//	        preparedStatement.setBoolean(3, false);
+//	        preparedStatement.setInt(4, 0);
+//	        preparedStatement.setInt(5, 0);
+//	        preparedStatement.setInt(6, 0);
+//	        preparedStatement.setInt(7, 0);
+//	        preparedStatement.setDate(8, null);
+//
+//	        int rowsAffected = preparedStatement.executeUpdate();
+//
+//	        if (rowsAffected > 0) {
+//	            System.out.println("Wallet added successfully!");
+//	            return true;
+//	        } else {
+//	            System.out.println("Failed to add Wallet.");
+//	            return false;
+//	        }
+//	    } catch (SQLException e) {
+//	        e.printStackTrace();
+//	    } finally {
+//	        // Close resources in a separate try-catch block to ensure closure even if an exception occurs
+//	        try {
+//	            if (preparedStatement != null) {
+//	                preparedStatement.close();
+//	            }
+//	        } catch (SQLException e) {
+//	            e.printStackTrace();
+//	        }
+//
+//	        try {
+//	            if (connection != null) {
+//	                connection.close();
+//	            }
+//	        } catch (SQLException e) {
+//	            e.printStackTrace();
+//	        }
+//	    }
+//	    return false;
+//	}
 	
 	public static void deleteUserAttributePreferences(int userId) {
 
@@ -1179,48 +1181,111 @@ public static ArrayList<Attribute> getUsersPreferredAttributes(int userid, int a
 		Database.addUserAttributePreferences(energyLevel, userId);
 		Database.addUserAttributePreferences(size, userId);
 		Database.addUserAttributePreferences(sex, userId);
+		
+		updateRecurringPayments(user);
 	}
 	
 	
 //	// DB METHODS FOR WALLET AND POSTER INFO
-//	public static Wallet getWallet(int userid, String password) {
-//		Connection connection = null;
-//		PreparedStatement preparedStatement = null;
-//		Wallet wallet = null;
-//
-//		try {
-//			connection = databaseConnector.connect();
-//
-//			//	        Statement statement = connection.createStatement ();
-//			//	        ResultSet resultSet = statement.executeQuery ("SELECT * FROM users WHERE username = " + username + " AND userpassword  = " + password + ";") ;
-//
-//			String sql = "SELECT * FROM userfunds WHERE userid = ?";
-//
-//			preparedStatement = connection.prepareStatement(sql);
-//
-//			preparedStatement.setInt(1,  userid);
-//
-//
-//			ResultSet resultSet = preparedStatement.executeQuery();
-//			//	public Wallet(double balance, boolean recurringPayment, int frequency, int userid,	Map<Integer, Double> posterWallets, int recurringAmount) {
-//			if (resultSet.next()) {
-//				//	public Wallet(double balance, boolean recurringPayment, int frequency, int userid,int recurringAmount, int posterToSponsorPending, int recurringPoster) {
-//
-//				wallet = new Wallet(resultSet.getDouble("balance"),resultSet.getBoolean("recurringpayment"), resultSet.getInt("frequency"),resultSet.getInt("userid"), 
-//						resultSet.getInt("recurringamount"), resultSet.getInt("posterToSponsorPending"),resultSet.getInt("recurringPoster"));
-//				//				for (Dog d : Database.getLikedDogs(user.getUserID())) {
-//				//					user.addLikedDogs(d);
-//				//				}
-//			}
-//			//			user.setDog(user.getUserID());
-//		} 
-//		catch (SQLException e) {
-//			e.printStackTrace();
-//
-//		}
-//
-//		return wallet; 	
-//	}
+	public static Wallet getWallet(int userid, String password) {
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		Wallet wallet = null;
+
+		try {
+			connection = databaseConnector.connect();
+
+			//	        Statement statement = connection.createStatement ();
+			//	        ResultSet resultSet = statement.executeQuery ("SELECT * FROM users WHERE username = " + username + " AND userpassword  = " + password + ";") ;
+
+			String sql = "SELECT * FROM users WHERE userid = ?";
+
+			preparedStatement = connection.prepareStatement(sql);
+
+			preparedStatement.setInt(1,  userid);
+
+
+			ResultSet resultSet = preparedStatement.executeQuery();
+			//	public Wallet(double balance, boolean recurringPayment, int frequency, int userid,	Map<Integer, Double> posterWallets, int recurringAmount) {
+			if (resultSet.next()) {
+				//	public Wallet(double balance, boolean recurringPayment, int frequency, int userid,int recurringAmount, int posterToSponsorPending, int recurringPoster) {
+
+				wallet = new Wallet(resultSet.getDouble("balance"),resultSet.getInt("userid"));
+				
+				//				for (Dog d : Database.getLikedDogs(user.getUserID())) {
+				//					user.addLikedDogs(d);
+				//				}
+			}
+			
+			// get recurring payments
+			
+			String sql2 = "SELECT * FROM userpayments WHERE userid = " + userid;
+			preparedStatement = connection.prepareStatement(sql2);
+			
+			while(resultSet.next()) {
+				wallet.addRecurringPayment(
+						new RecurringPayment(resultSet.getDouble("paymentamount"),
+						resultSet.getInt("daysbetweenpayment"),
+						resultSet.getInt("dogid"),
+						resultSet.getInt("posterid"),
+						resultSet.getString("lastpaymentdate")
+						)
+				);
+			}
+		} 
+		catch (SQLException e) {
+			e.printStackTrace();
+
+		}
+
+		return wallet; 	
+	}
+	
+	public static Wallet updateRecurringPayments(User user) {
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		Wallet wallet = null;
+
+		try {
+			connection = databaseConnector.connect();
+
+			//	        Statement statement = connection.createStatement ();
+			//	        ResultSet resultSet = statement.executeQuery ("SELECT * FROM users WHERE username = " + username + " AND userpassword  = " + password + ";") ;
+
+			String sql = "DELETE * FROM userpayments WHERE userid = ?";
+
+			preparedStatement = connection.prepareStatement(sql);
+
+			preparedStatement.setInt(1,  user.getUserID());
+
+
+			preparedStatement.executeUpdate();
+			//	public Wallet(double balance, boolean recurringPayment, int frequency, int userid,	Map<Integer, Double> posterWallets, int recurringAmount) {
+			
+			// add all paeyments 
+
+			for(RecurringPayment p : user.getWallet().getRecurringPayments().values()) {
+				String sql2 = "INSERT INTO userpayments (userid, paymentamount,daysbetweenpayment,dogid,lastpaymentdate,posterid) VALUES (?, ?,?,?,?,?) ";
+				preparedStatement = connection.prepareStatement(sql); 
+				preparedStatement.setInt(1, user.getUserID());
+				preparedStatement.setDouble(2, p.getPaymentAmount());
+				preparedStatement.setInt(3, p.getDaysBetweenPayments());
+				preparedStatement.setInt(4, p.getDogId());
+				preparedStatement.setString(5, p.getLastPaymentDateToString());
+				preparedStatement.setInt(6, p.getPosterId());
+			}
+			
+
+		} 
+		catch (SQLException e) {
+			e.printStackTrace();
+
+		}
+
+		return wallet; 	
+	}
+	
+	
 //
 //	public static void setUserOldPaymentDate(LocalDate date, int userid) {
 //
@@ -1579,7 +1644,8 @@ class DatabaseConnector {
         	Class.forName("org.postgresql.Driver"); // Replace with your database driver
         	
 
-        	Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5434/pawsome", "postgres", "321123");
+        	Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/thebestoneyet", "postgres", "doglover123");
+
 
 //        	System.out.println( "Connected to the PostgreSQL server successfully.");
         	

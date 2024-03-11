@@ -31,8 +31,8 @@ public class DogProfileScene extends PrimaryScene{
 	private Stage stage;
 	private int currentProfileIndex = 0;
 	private OutOfDogsScene outOfDogs;
-    private Button donate = Components.button("Sponsor");
-    DonateScene donatePage = DonateScene.getInstance();//ADDED DONATE PAGE
+//    private Button donate = Components.button("Sponsor");
+//    DonateScene donatePage = DonateScene.getInstance();//ADDED DONATE PAGE
 
 
 
@@ -155,7 +155,7 @@ public class DogProfileScene extends PrimaryScene{
 
 
 		 
-		root.getChildren().addAll(navTab, primaryControlTab, primaryInfoLabel, posterLink, donate, secondaryInfo, biographyText, tagsPane);
+		root.getChildren().addAll(navTab, primaryControlTab, primaryInfoLabel, posterLink, secondaryInfo, biographyText, tagsPane);
 
 		// Display the initial pet profile
 		displayCurrentPetProfile();
