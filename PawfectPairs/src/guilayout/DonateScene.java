@@ -19,6 +19,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.TextField;
 
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -87,13 +88,15 @@ public class DonateScene extends PrimaryScene {
         howOftenBox.setValue("Once");
 
         
-        currentFunds = Components.largeLabel("Current balance: " + wallet.getBalance(), Pos.CENTER);
+        currentFunds = Components.largeLabel("Current balance: " + String.format("%.2f",  wallet.getBalance()), Pos.CENTER);
         
         Button donateButton = new Button("Donate");
         
         donateButton.setOnAction(event -> {
 			try {
+				
 				makePayment(appData, howOftenBox.getValue());
+				
 			} catch (FundsTooLow e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -268,6 +271,7 @@ public class DonateScene extends PrimaryScene {
 		Poster poster = appData.getPosterProfiles().get(currentDog.getPosterId());
 		int daysBetweenPayments = 0;
 		
+	
 		switch(duration) {
 			case "Weekly":
 				daysBetweenPayments = 7;
@@ -285,25 +289,43 @@ public class DonateScene extends PrimaryScene {
 				break;
 							
 		}
-		
+		if (amountToDonate>wallet.getBalance())
+				showAlert("Insufficient funds", "Your recurring payment did not go through", AlertType.ERROR);
+		else	{
 		wallet.donate(amountToDonate, poster);
-		
+		showAlert("Payment went through",currentDog.getName()+" is thankful for you! ♥", AlertType.CONFIRMATION);
+		}
 		if(!howOftenBox.getValue().equals("Once")) {
 			wallet.addRecurringPayment(new RecurringPayment(amountToDonate, daysBetweenPayments, currentDog.getId(), currentDog.getPosterId()));
 			
 		}
 		
-
-		currentFunds.setText("Your current balance "+ wallet.getBalance());
-
+		
+		currentFunds.setText("Your current balance "+String.format("%.2f",  wallet.getBalance()));
+System.out.println("poster"+poster.getDisplayName() +"'s balance is"+poster.getBalance());
 
 		
 	}
-	  private void showAlert(String title, String message) {
-	        Alert alert = new Alert(Alert.AlertType.ERROR);
-	        alert.setTitle(title);
-	        alert.setHeaderText(null);
-	        alert.setContentText(message);
-	        alert.showAndWait();
-	    }
+//	 private void showPositiveAlert(String title, String message) {
+//	        Alert alert = new Alert(AlertType.INFORMATION);
+//	        alert.setTitle(title);
+//	        alert.setHeaderText(null); // No header text
+//	        alert.setContentText(message);
+//
+//	        // Customize the alert style (Optional)
+//	        alert.getDialogPane().getStylesheets().add(
+//	                getClass().getResource("styles.css").toExternalForm());
+//
+//	        alert.showAndWait();
+//	    }
+
+	private void showAlert(String title, String message, Alert.AlertType alertType) {
+	    Alert alert = new Alert(alertType);
+	    alert.setTitle(title);
+	    alert.setHeaderText(null);
+	    alert.setContentText(message);
+
+	  
+	    alert.showAndWait();
+	}
 }

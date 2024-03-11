@@ -41,5 +41,7 @@ public class PrimaryScene extends Application{
         this.user = appData.getUser();
         this.bookedAppointment = BookedAppointmentScene.getInstance();
 //        this.wallet= appData.getWallet();
+    	this.wallet=user.getWallet();
+
     }
 }
