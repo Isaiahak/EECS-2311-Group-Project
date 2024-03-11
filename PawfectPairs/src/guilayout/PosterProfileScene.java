@@ -37,7 +37,7 @@ public class PosterProfileScene extends PrimaryScene {
 	//hyperlink
     private Hyperlink posterinfoLink;
   //private static PosterInfoPage instanceInfo; 
-    PosterInfoPage posterProfileinfopage = PosterInfoPage.getInstance();
+//    PosterInfoPage posterProfileinfopage = PosterInfoPage.getInstance();
     
 	private static PosterProfileScene instance; 
 
@@ -113,28 +113,17 @@ public class PosterProfileScene extends PrimaryScene {
 		PosterInfo.setAlignment(Pos.CENTER);
 
 		HBox stars = Components.generateStars(currentPoster.getScore());
-
-		  // poster link
-        posterinfoLink = Components.hyperlink();
-        posterinfoLink.setText("View Contact Information");
-
-        posterinfoLink.setOnAction(event -> {
-        	try {
-				posterProfileinfopage.start(primaryStage);
-        		//wallet.start(primaryStage);
-        		
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-        });
-        
-        
-     
+	
+		
+		Label email = Components.mediumLabel("Email 📧:  "+ currentPoster.getEmail(), Pos.CENTER);
+		Label phone = Components.mediumLabel("Phone ☎:  "+ currentPoster.getPhone(), Pos.CENTER);
+		
 		// generate stars and display name 
 		PosterInfo.getChildren().addAll(
 				name, 
-				stars, posterinfoLink);
+				email,
+				phone,
+				stars);
 
 
 		VBox posterProfileDogsDisplay = new VBox();

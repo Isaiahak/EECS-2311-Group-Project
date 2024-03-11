@@ -42,7 +42,7 @@ public class Wallet {
 	//		this.userid=userid;
 	//	}
 	public Wallet(double balance, boolean recurringPayment, int frequency, int userid,int recurringAmount, int posterToSponsorPending, int recurringPoster) {
-		super();
+//		super();
 		this.balance = balance;
 		this.recurringPayment = recurringPayment;
 		this.frequency = frequency;
@@ -226,34 +226,34 @@ public class Wallet {
 		//	        // Shutdown the scheduler when done
 		//	        scheduler.shutdown();
 		//		}
-
-		if (this.recurringPayment) {
-			ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-
-			// Schedule the non-static method for execution after an initial delay and then at a fixed rate
-			int initialDelay = 0; // delay before the first execution
-			int period = this.frequency; // time between subsequent executions (in seconds)
-			TimeUnit timeUnit = TimeUnit.SECONDS;
-
-			scheduler.scheduleAtFixedRate(() -> {
-				try {
-					this.donateRe(amount, this.frequency);
-				} catch (FundsTooLow e) {
-					e.printStackTrace();
-				}
-			}, initialDelay, period, timeUnit);
-
-			// Sleep for a while to allow scheduled executions
-			try {
-				Thread.sleep(5 * 1000); // Sleep for 30 seconds//cant be 0 or nothing works//cant be 60 or program stops resoinding and doesnt update balance on time
-
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-
-			// Shutdown the scheduler when done
-			// scheduler.shutdown(); //!!commented this out
-		}
+//
+//		if (this.recurringPayment) {
+//			ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+//
+//			// Schedule the non-static method for execution after an initial delay and then at a fixed rate
+//			int initialDelay = 0; // delay before the first execution
+//			int period = this.frequency; // time between subsequent executions (in seconds)
+//			TimeUnit timeUnit = TimeUnit.SECONDS;
+//
+//			scheduler.scheduleAtFixedRate(() -> {
+//				try {
+//					this.donateRe(amount, this.frequency);
+//				} catch (FundsTooLow e) {
+//					e.printStackTrace();
+//				}
+//			}, initialDelay, period, timeUnit);
+//
+//			// Sleep for a while to allow scheduled executions
+//			try {
+//				Thread.sleep(5 * 1000); // Sleep for 30 seconds//cant be 0 or nothing works//cant be 60 or program stops resoinding and doesnt update balance on time
+//
+//			} catch (InterruptedException e) {
+//				e.printStackTrace();
+//			}
+//
+//			// Shutdown the scheduler when done
+//			// scheduler.shutdown(); //!!commented this out
+//		}
 	}
 
 	public double getBalance() {

@@ -1,12 +1,9 @@
 package backend.database;
 
 import java.sql.*;
-import java.sql.Connection.*;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Map;
-import java.util.PriorityQueue;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.HashMap;
@@ -14,9 +11,6 @@ import java.util.HashMap;
 import backend.dog.Dog;
 import backend.dog.trait.Age;
 import backend.dog.trait.Attribute;
-import backend.dog.trait.EnergyLevel;
-import backend.dog.trait.Sex;
-import backend.dog.trait.Size;
 import backend.poster.Poster;
 import backend.tag.Tag;
 import backend.user.User;
@@ -48,8 +42,10 @@ public class Database {
 				                String displayName = resultSet.getString("displayName");
 				                int posterId = resultSet.getInt("poster_id");
 				                int score = resultSet.getInt("score");
+				                String phone = resultSet.getString("phone");
+				                String email = resultSet.getString("email");
 			                
-			                poster = new Poster(score, displayName, posterId); 
+			                poster = new Poster(score, displayName, posterId, phone, email); 
 			                posters.put(posterId, poster);
 			            }
 			        }catch (SQLException e) {
@@ -1381,7 +1377,7 @@ class DatabaseConnector {
         	
         	Class.forName("org.postgresql.Driver"); // Replace with your database driver
         	
-        	Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/pawdbnew", "postgres", "1234");
+        	Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/paw6", "postgres", "doglover123");
 
 //        	System.out.println( "Connected to the PostgreSQL server successfully.");
         	
