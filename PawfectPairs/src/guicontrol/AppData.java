@@ -33,14 +33,14 @@ public class AppData {
 	
 	private HashMap<Integer, ArrayList<Attribute>> allAttributes; 
 	
-	//Wallet Methods
-	public void initializeWallet (int userid, String password) {
-		this.user.setWallet(Database.getWallet(userid, password));
-	}
-	public Wallet getWallet () {
-		return this.user.getWallet();
-	}
-	//
+//	//Wallet Methods
+//	public void initializeWallet (int userid, String password) {
+//		this.user.setWallet(Database.getWallet(userid, password));
+//	}
+//	public Wallet getWallet () {
+//		return this.user.getWallet();
+//	}
+//	//
 	public ArrayList<Dog> getSortedDogProfiles() {
 		return sortedDogProfiles;
 	}
@@ -183,7 +183,7 @@ public class AppData {
 		
 		setUser(user, pass); // sets user, dog liked list, ideal dog attribtues
 		
-		initializeWallet(getUser().getUserID(), pass);
+//		initializeWallet(getUser().getUserID(), pass);
 		
 		setAllTags();
 		
