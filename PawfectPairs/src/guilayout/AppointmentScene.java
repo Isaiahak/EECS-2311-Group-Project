@@ -60,7 +60,7 @@ public class AppointmentScene extends Application {
         meetWithLabel.setAlignment(Pos.CENTER);
         
         user = AppData.getInstance().getUser();
-        userAppointments = new AppointmentManager (user.getUserID(), appointments);
+        userAppointments = AppData.getInstance().getAppointmentManager();
 
         VBox root = new VBox();
         root.setAlignment(Pos.CENTER);
@@ -200,12 +200,12 @@ public class AppointmentScene extends Application {
     }*/
     
     private void handleDayButtonClick(LocalDate date) {
-        System.out.println("Selected date: " + date);
-        System.out.println("Year: " + date.getYear());
-        System.out.println("Month: " + date.getMonth());
-        System.out.println("Day: " + date.getDayOfMonth());
-        System.out.println("Dog: " + currentDog.getName());
-        System.out.println("Poster: " + currentPoster.getDisplayName());
+//        System.out.println("Selected date: " + date);
+//        System.out.println("Year: " + date.getYear());
+//        System.out.println("Month: " + date.getMonth());
+//        System.out.println("Day: " + date.getDayOfMonth());
+//        System.out.println("Dog: " + currentDog.getName());
+//        System.out.println("Poster: " + currentPoster.getDisplayName());
         
         java.util.Date utilDate = Date.from(date.atStartOfDay(ZoneId.systemDefault()).toInstant());
         java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
@@ -231,9 +231,8 @@ public class AppointmentScene extends Application {
     }
     public void setCurrentPosterDog(Poster poster, Dog dog) { //dog obbject is null why?
 		 this.currentPoster = poster; // set current poster
-		 System.out.println("Poster Set: "+ currentPoster.getDisplayName());
+
 		 this.currentDog = dog;
-		 System.out.println("Dog Set: "+ dog.getName());
 		 meetWithLabel.setText("Meet with " + dog.getName() + " and " + poster.getDisplayName());
 		 
 		 

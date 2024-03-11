@@ -75,8 +75,15 @@ public class BookedAppointmentScene extends Application {
         
         if (appointments!= null) {
         	for (Appointment selectedAppointment : appointments) {
-        		Dog dog =  Database.getDogById(selectedAppointment.getDogID()); //Katya and Isaiah, we might need to chenge this to get dog locally
-        		appointmentsDisplay.getChildren().add(Components.appointmentView(dog, selectedAppointment.getDate(), stage,AppData.getInstance().getPosters()));
+                ArrayList<Dog> doglist = AppData.getInstance().getDogProfiles().get(selectedAppointment.getPosterID());
+                Dog appointmentDog = null;
+                for(Dog dog : doglist){
+                    if( dog.getId() == selectedAppointment.getDogID()){
+                       appointmentDog = dog;
+                    }
+                }
+        		//Katya and Isaiah, we might need to chenge this to get dog locally
+        		appointmentsDisplay.getChildren().add(Components.appointmentView(appointmentDog, selectedAppointment.getDate(), stage,AppData.getInstance().getPosters()));
         	}
         }
         else {

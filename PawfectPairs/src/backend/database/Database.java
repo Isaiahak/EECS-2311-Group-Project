@@ -8,6 +8,8 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.HashMap;
 
+import backend.calendar.Appointment;
+import backend.calendar.AppointmentManager;
 import backend.dog.Dog;
 import backend.dog.trait.Age;
 import backend.dog.trait.Attribute;
@@ -28,17 +30,16 @@ import java.time.LocalDate;
  */
 public class Database {
 	//Sidney and Edson's stuff :)
-	
-		public static void deleteAppointment (int posterID, int dogID) {
+
+		public static void deleteAppointment (int userID) {
 	        Connection connection = null;
 	        PreparedStatement statement = null;
 
 	        try {
 	            connection = databaseConnector.connect();// Assuming you have a method to get the database connection
-	            String query = "DELETE FROM datesbooked WHERE \"posterID\" = ? AND \"dogID\" = ?";
+	            String query = "DELETE FROM datesbooked WHERE userid = ?";
 	            statement = connection.prepareStatement(query);
-	            statement.setInt(1, posterID);
-	            statement.setInt(2, dogID);
+	            statement.setInt(1, userID);
 	            statement.executeUpdate();
 	        } catch (SQLException e) {
 	            e.printStackTrace();
@@ -55,72 +56,77 @@ public class Database {
 	            }
 	        }
 	    }
+
+		public static void setUserAppointments(AppointmentManager appointmentManager){
+			Connection connection = null;
+			PreparedStatement preparedStatement = null;
+
+			try {
+				connection = databaseConnector.connect();
+				for(Appointment app : appointmentManager.getUserAppointments()) {
+					String sql = "INSERT INTO datesbooked (userid, dogid, posterid, date) VALUES (?, ?, ?, ?)";
+					preparedStatement = connection.prepareStatement(sql);
+
+					preparedStatement.setInt(1, app.getUserID());
+					preparedStatement.setInt(2, app.getDogID());
+					preparedStatement.setInt(3, app.getPosterID());
+					preparedStatement.setDate(4, app.getDate());
+
+					int rowsAffected = preparedStatement.executeUpdate();
+				}
+			}
+
+			catch (SQLException e) {
+				e.printStackTrace();
+
+			}
+			finally {
+				try {
+					if (preparedStatement != null) {
+						preparedStatement.close();
+					}
+					if (connection != null) {
+						connection.close();
+					}
+				}
+				catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+
 		
 		
-		public static Dog getDogById(int dogId) {
-	        Connection connection = null;
-	        PreparedStatement preparedStatement = null;
-	        Dog dog = null;
 
-	        try {
-	            connection = databaseConnector.connect();
-	            String sql = "SELECT * FROM dog WHERE dogid = ?";
-	            preparedStatement = connection.prepareStatement(sql);
-	            preparedStatement.setInt(1, dogId);
-
-	            try (ResultSet resultSet = preparedStatement.executeQuery()) {
-	                if (resultSet.next()) {
-	                    dog = new Dog(resultSet.getString("dogname"), resultSet.getInt("dogid"), resultSet.getInt("ageid"),
-	                            resultSet.getInt("energylevelid"), resultSet.getInt("sizeid"), resultSet.getInt("sexid"),
-	                            resultSet.getInt("posterid"), resultSet.getBoolean("adopted"), resultSet.getString("imagePath"),
-	                            resultSet.getString("biography"));
-	                }
-	            }
-	        } catch (SQLException e) {
-	            e.printStackTrace();
-	        } finally {
-	            try {
-	                if (preparedStatement != null) {
-	                    preparedStatement.close();
-	                }
-	                if (connection != null) {
-	                    connection.close();
-	                }
-	            } catch (SQLException e) {
-	                e.printStackTrace();
-	            }
-	        }
-	        return dog;
-	    }
 		
-		 public static TreeMap<Integer, Date> getUserAppointments(int userID) {
-			 Connection connection = databaseConnector.connect();
-		        TreeMap<Integer, Date> appointments = new TreeMap<>();
-		        try {
+		public static ArrayList<Appointment> getUserAppointments(int userID) {
+			Connection connection = databaseConnector.connect();
+			ArrayList<Appointment> appointments = new ArrayList<>();
+			try {
+			String query = "SELECT dogid,posterid,date FROM datesbooked WHERE userid = ?";
+			PreparedStatement preparedStatement = connection.prepareStatement(query);
+				// Set the userID parameter
+				preparedStatement.setInt(1, userID);
 
-		        String query = "SELECT \"dogID\", date FROM datesbooked WHERE \"userID\" = ?";
-		        PreparedStatement preparedStatement = connection.prepareStatement(query);
-		            // Set the userID parameter
-		            preparedStatement.setInt(1, userID);
+				// Execute the query
+				try (ResultSet resultSet = preparedStatement.executeQuery()) {
+					// Iterate over the result set and populate the TreeMap
+					while (resultSet.next()) {
+						int dogID = resultSet.getInt("dogid");
+						int posterID = resultSet.getInt("posterid");
+						Date date = resultSet.getDate("date");
+						appointments.add(new Appointment(posterID,dogID,date,userID));
+					}
+				}
 
-		            // Execute the query
-		            try (ResultSet resultSet = preparedStatement.executeQuery()) {
-		                // Iterate over the result set and populate the TreeMap
-		                while (resultSet.next()) {
-		                    int dogID = resultSet.getInt("dogID");
-		                    Date date = resultSet.getDate("date");
-		                    appointments.put(dogID, date);
-		                }
-		            }
-		 
-		        
-		        return appointments;
-		        }catch (SQLException e) {
-		            e.printStackTrace();
-		        }
-		        return null;
-		        
-		    }
+
+			return appointments;
+			}catch (SQLException e) {
+				e.printStackTrace();
+			}
+			return null;
+
+		}
 
 		 // Method to check if a date exists in the table
 		    public static boolean isDateExists(int  dogID,int userID, Connection connection) {
@@ -1168,9 +1174,9 @@ public static ArrayList<Attribute> getUsersPreferredAttributes(int userid, int a
 		Database.addPreferenceTagsToUser(tags, userId);
 //		
 		// update user's ideal dog attributes
-		
+		//Database.deleteAppointment(userId);
 		Database.deleteUserAttributePreferences(userId);
-		
+		//Database.setUserAppointments(appointmentManager);
 		Database.addUserAttributePreferences(age, userId);
 		Database.addUserAttributePreferences(energyLevel, userId);
 		Database.addUserAttributePreferences(size, userId);
@@ -1639,6 +1645,7 @@ class DatabaseConnector {
         	
 
         	Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/thebestoneyet", "postgres", "doglover123");
+
 
 //        	System.out.println( "Connected to the PostgreSQL server successfully.");
         	
