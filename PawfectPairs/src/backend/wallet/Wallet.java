@@ -62,7 +62,7 @@ public class Wallet {
 	}
 	
 	public void donate (double amount, Poster poster){//withdraw from wallet ->donate to poster
-		if (amount>this.balance)
+		//if (amount>this.balance)//need to comment this out too
 //			throw new FundsTooLow("Deposit amount exceeds balance");
 			// temporarily doenst thorw erors
 		

@@ -1648,7 +1648,7 @@ class DatabaseConnector {
         	Class.forName("org.postgresql.Driver"); // Replace with your database driver
         	
 
-        	Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/thebestoneyet", "postgres", "doglover123");
+        	Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/pawitr2", "postgres", "1234");
 
 
 //        	System.out.println( "Connected to the PostgreSQL server successfully.");

@@ -23,7 +23,7 @@ public  Poster(int score, String displayName, int uniqueId, String phone, String
 	this.uniqueId = uniqueId;	
 	this.phone = phone;
 	this.email = email;
-	this.balance = balance;
+	this.setBalance(balance);
 }
 
 public String getEmail() {
@@ -43,7 +43,7 @@ public void setDogList(ArrayList<Dog> dogList) {
 }
 
 public void depositDonation(double amount) {
-	this.balance += amount;
+	this.setBalance(this.getBalance() + amount);
 }
 
 public void setScore(int score) {
@@ -76,6 +76,12 @@ public int compareTo(Poster o) {
     }
     else //compare score if both id and name are equal
     	return Integer.compare(this.score, o.score);
+}
+public double getBalance() {
+	return balance;
+}
+public void setBalance(double balance) {
+	this.balance = balance;
 }
 
 
