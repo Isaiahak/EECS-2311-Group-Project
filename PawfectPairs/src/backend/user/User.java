@@ -8,6 +8,7 @@ import java.util.Set;
 import backend.dog.Dog;
 import backend.dog.trait.*;
 import backend.tag.Tag;
+import backend.wallet.Wallet;
 
 
 public class User {

@@ -1,28 +1,26 @@
 package backend.database;
 
 import java.sql.*;
-import java.sql.Connection.*;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Hashtable;
-import java.util.PriorityQueue;
+import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.HashMap;
 
 import backend.dog.Dog;
 import backend.dog.trait.Age;
 import backend.dog.trait.Attribute;
-import backend.dog.trait.EnergyLevel;
-import backend.dog.trait.Sex;
-import backend.dog.trait.Size;
 import backend.poster.Poster;
 import backend.tag.Tag;
 import backend.user.User;
+import backend.wallet.Wallet;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.time.LocalDate;
 /*
  * Public class to centralize all communications to and from database
  */
@@ -44,8 +42,10 @@ public class Database {
 				                String displayName = resultSet.getString("displayName");
 				                int posterId = resultSet.getInt("poster_id");
 				                int score = resultSet.getInt("score");
+				                String phone = resultSet.getString("phone");
+				                String email = resultSet.getString("email");
 			                
-			                poster = new Poster(score, displayName, posterId); 
+			                poster = new Poster(score, displayName, posterId, phone, email); 
 			                posters.put(posterId, poster);
 			            }
 			        }catch (SQLException e) {
@@ -806,6 +806,59 @@ public static ArrayList<Attribute> getUsersPreferredAttributes(int userid, int a
         return false;
 	}
 	
+	public static boolean blankWallet(int userid) {
+	    Connection connection = null;
+	    PreparedStatement preparedStatement = null;
+
+	    try {
+	        connection = databaseConnector.connect();
+
+	        String sql = "INSERT INTO userfunds (balance, userid, recurringpayment, "
+	                + "frequency, recurringamount, postertosponsorpending, recurringposter, "
+	                + "oldpaymentdate) VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
+
+	        preparedStatement = connection.prepareStatement(sql);
+	        preparedStatement.setInt(1, 0);
+	        preparedStatement.setInt(2, userid);
+	        preparedStatement.setBoolean(3, false);
+	        preparedStatement.setInt(4, 0);
+	        preparedStatement.setInt(5, 0);
+	        preparedStatement.setInt(6, 0);
+	        preparedStatement.setInt(7, 0);
+	        preparedStatement.setDate(8, null);
+
+	        int rowsAffected = preparedStatement.executeUpdate();
+
+	        if (rowsAffected > 0) {
+	            System.out.println("Wallet added successfully!");
+	            return true;
+	        } else {
+	            System.out.println("Failed to add Wallet.");
+	            return false;
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        // Close resources in a separate try-catch block to ensure closure even if an exception occurs
+	        try {
+	            if (preparedStatement != null) {
+	                preparedStatement.close();
+	            }
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+
+	        try {
+	            if (connection != null) {
+	                connection.close();
+	            }
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    }
+	    return false;
+	}
+	
 	public static void deleteUserAttributePreferences(int userId) {
 
 		try {
@@ -927,6 +980,392 @@ public static ArrayList<Attribute> getUsersPreferredAttributes(int userid, int a
 		Database.addUserAttributePreferences(sex, userId);
 	}
 	
+	
+	// DB METHODS FOR WALLET AND POSTER INFO
+	public static Wallet getWallet(int userid, String password) {
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		Wallet wallet = null;
+
+		try {
+			connection = databaseConnector.connect();
+
+			//	        Statement statement = connection.createStatement ();
+			//	        ResultSet resultSet = statement.executeQuery ("SELECT * FROM users WHERE username = " + username + " AND userpassword  = " + password + ";") ;
+
+			String sql = "SELECT * FROM userfunds WHERE userid = ?";
+
+			preparedStatement = connection.prepareStatement(sql);
+
+			preparedStatement.setInt(1,  userid);
+
+
+			ResultSet resultSet = preparedStatement.executeQuery();
+			//	public Wallet(double balance, boolean recurringPayment, int frequency, int userid,	Map<Integer, Double> posterWallets, int recurringAmount) {
+			if (resultSet.next()) {
+				//	public Wallet(double balance, boolean recurringPayment, int frequency, int userid,int recurringAmount, int posterToSponsorPending, int recurringPoster) {
+
+				wallet = new Wallet(resultSet.getDouble("balance"),resultSet.getBoolean("recurringpayment"), resultSet.getInt("frequency"),resultSet.getInt("userid"), 
+						resultSet.getInt("recurringamount"), resultSet.getInt("posterToSponsorPending"),resultSet.getInt("recurringPoster"));
+				//				for (Dog d : Database.getLikedDogs(user.getUserID())) {
+				//					user.addLikedDogs(d);
+				//				}
+			}
+			//			user.setDog(user.getUserID());
+		} 
+		catch (SQLException e) {
+			e.printStackTrace();
+
+		}
+
+		return wallet; 	
+	}
+
+	public static void setUserOldPaymentDate(LocalDate date, int userid) {
+
+		try {
+			
+			Connection connection = databaseConnector.connect();
+			String query = "UPDATE userfunds SET oldpaymentdate = ? WHERE userid = ?";
+	        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+	            // Convert LocalDate to java.sql.Date
+	            java.sql.Date sqlDate = Date.valueOf(date);
+
+	            // Set parameters for the prepared statement
+	            preparedStatement.setDate(1, sqlDate);
+	            preparedStatement.setInt(2, userid);
+
+	            // Execute the update
+	            int affectedRows = preparedStatement.executeUpdate();
+
+	            if (affectedRows > 0) {
+	                System.out.println("User old payment date updated successfully.");
+	            } else {
+	                System.out.println("No rows were affected. User not found?");
+	            }
+	        } finally {
+	            connection.close();
+	        }
+	    } 
+
+		catch (SQLException e) {
+			System.out.println ("Connection failure.") ;
+			e.printStackTrace () ; 
+		}
+	}
+	
+	public static void setPosterWallets(Wallet wallet, int userid) {
+	    try (Connection connection = databaseConnector.connect()) {
+	        String updateQuery = "UPDATE posterfunds SET " +
+	                "balance = ?, " +
+	                "posterid = ?, " +
+	                "userid = ?, " ;
+
+	        try (PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
+	        	Map<Integer, Double> postermap = wallet.getPosterWallets();
+	            // Set parameters for the prepared statement
+	        	for (Integer key : postermap.keySet()) {
+	        	   // System.out.println(key + ": " + postermap.get(key));
+	        	
+	        	preparedStatement.setDouble (1,postermap.get(key));
+	            preparedStatement.setInt(2, key);
+	            preparedStatement.setInt(3, userid);
+	        	}
+	            
+	           
+	            // Execute the update
+	            int affectedRows = preparedStatement.executeUpdate();
+
+	            if (affectedRows > 0) {
+	                System.out.println("Poster Funds information updated successfully.");
+	            } else {
+	                System.out.println("No rows were affected. User not found?");
+	            }
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	}
+	public static Map<Integer, Double> getPosterWallets (Wallet wallet, int userid){
+		Map<Integer, Double> posterWallets = new TreeMap<>();
+		
+		try{
+			Connection connection = databaseConnector.connect();
+			Statement statement = connection.createStatement () ;
+			ResultSet resultSet = statement.executeQuery ("SELECT * FROM posterfunds WHERE userid = '" + userid + "'") ;
+			while (resultSet.next()) {
+				posterWallets.put(resultSet.getInt("posterid"),resultSet.getDouble("balance") );
+			}
+			 
+			  // Statement upon success
+	        System.out.println("Poster Funds information retrieved successfully.");
+
+		}
+		catch (SQLException e) {
+			System.out.println ("Connection failure.") ;
+			e.printStackTrace () ;
+		}
+		return posterWallets;
+		
+	}
+	
+	
+	public static void setWallet(Wallet wallet, int userId) {
+	    try (Connection connection = databaseConnector.connect()) {
+	        String updateQuery = "UPDATE userfunds SET " +
+	                "balance = ?, " +
+	                "recurringpayment = ?, " +
+	                "frequency = ?, " +
+	                "recurringamount = ?, " +
+	                "postertosponsorpending = ?, " +
+	                "recurringposter = ?, " +
+	                "oldpaymentdate = ? " +
+	                "WHERE userid = ?";
+
+	        try (PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
+	            // Set parameters for the prepared statement
+	            preparedStatement.setDouble (1, wallet.getBalance());
+	            preparedStatement.setBoolean(2, wallet.getRecurringPayment());
+	            preparedStatement.setInt(3, wallet.getFrequency());
+	            preparedStatement.setDouble (4, wallet.getRecurringAmount());
+	            preparedStatement.setInt(5, wallet.getPosterToSponsorPending());
+	            preparedStatement.setInt(6, wallet.getRecurringPoster());
+	            
+	            // Convert LocalDate to java.sql.Date for oldpaymentdate
+	            java.sql.Date sqlDate = Date.valueOf(wallet.getOldPaymentDate());
+	            preparedStatement.setDate(7, sqlDate);
+
+	            preparedStatement.setInt(8, userId);
+
+	            // Execute the update
+	            int affectedRows = preparedStatement.executeUpdate();
+
+	            if (affectedRows > 0) {
+	                System.out.println("Wallet information updated successfully.");
+	            } else {
+	                System.out.println("No rows were affected. User not found?");
+	            }
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	}
+	public static ArrayList<String> getPosterInfo(int posterid){//index 0 = poster email, index 1 = poster phone
+		ArrayList<String> valReturn= new ArrayList<>();
+		try{
+			Connection connection = databaseConnector.connect();
+			Statement statement = connection.createStatement () ;
+			// ArrayList<String> finding = new ArrayList<>(List.of("posteremail", "posterphone"));
+			ResultSet resultSet = statement.executeQuery ("SELECT * FROM posterinfo WHERE posterinfoid = '" + posterid + "'") ;
+			while (resultSet.next()) {
+				valReturn.add(resultSet.getString("posteremail"));
+				valReturn.add(resultSet.getString("posterphone"));
+			}
+			connection.close () ;
+
+		}
+		catch (SQLException e) {
+			System.out.println ("Connection failure.") ;
+			e.printStackTrace () ;
+		}
+
+		return valReturn;
+	}
+	public static void setPosterFunds(int newBalance, int posterid) {
+
+		try {
+			Connection connection = databaseConnector.connect();
+			Statement statement = connection.createStatement ();
+
+			PreparedStatement preppedStatement = connection.prepareStatement("UPDATE posterfunds SET balance = " + newBalance + " WHERE posterid = " + posterid + ";");
+			//	UPDATE public."PosterFunds" SET "Balance" =100 WHERE "PosterId" = 1; 
+			preppedStatement.executeUpdate();
+
+			connection.close();
+		}
+
+		catch (SQLException e) {
+			System.out.println ("Connection failure.") ;
+			e.printStackTrace () ; 
+		}
+	}
+
+	public static int getPosterFunds(int posterid) {
+		int balance=0;
+		try{
+			Connection connection = databaseConnector.connect();
+			Statement statement = connection.createStatement () ;
+			// ArrayList<String> finding = new ArrayList<>(List.of("posteremail", "posterphone"));
+			ResultSet resultSet = statement.executeQuery ("SELECT * FROM posterfunds WHERE posterid = '" + posterid + "'") ;
+			while (resultSet.next()) {
+				balance=resultSet.getInt("balance");
+			}
+			connection.close () ;
+
+		}
+		catch (SQLException e) {
+			System.out.println ("Connection failure.") ;
+			e.printStackTrace () ;
+		}
+
+		return balance;
+	}
+
+
+	public static void setUserFunds(int newBalance, int userid) {
+
+		try {
+			Connection connection = databaseConnector.connect();
+			Statement statement = connection.createStatement ();
+
+			PreparedStatement preppedStatement = connection.prepareStatement("UPDATE userfunds SET balance = " + newBalance + " WHERE userid = " + userid + ";");
+			preppedStatement.executeUpdate();
+
+			connection.close();
+		}
+
+		catch (SQLException e) {
+			System.out.println ("Connection failure.") ;
+			e.printStackTrace () ; 
+		}
+	}
+
+	public static void setUserRecurringPayment(boolean recur, int userid) {
+
+		try {
+			Connection connection = databaseConnector.connect();
+			Statement statement = connection.createStatement ();
+
+			PreparedStatement preppedStatement = connection.prepareStatement("UPDATE userfunds SET recurringpayment = " + recur + " WHERE userid = " + userid + ";");
+			preppedStatement.executeUpdate();
+
+			connection.close();
+		}
+
+		catch (SQLException e) {
+			System.out.println ("Connection failure.") ;
+			e.printStackTrace () ; 
+		}
+	}
+
+	public static boolean getUserRecurringPayment(int userid) {
+		boolean balance=false;
+		try{
+			Connection connection = databaseConnector.connect();
+			Statement statement = connection.createStatement () ;
+			ResultSet resultSet = statement.executeQuery ("SELECT * FROM userfunds WHERE userid = '" + userid + "'") ;
+			while (resultSet.next()) {
+				balance=resultSet.getBoolean("recurringpayment");
+			}
+			connection.close () ;
+
+		}
+		catch (SQLException e) {
+			System.out.println ("Connection failure.") ;
+			e.printStackTrace () ;
+		}
+
+		return balance;
+	}
+	public static int getUserRecurringAmount(int userid) {
+		int balance=0;
+		try{
+			Connection connection = databaseConnector.connect();
+			Statement statement = connection.createStatement () ;
+			ResultSet resultSet = statement.executeQuery ("SELECT * FROM userfunds WHERE userid = '" + userid + "'") ;
+			while (resultSet.next()) {
+				balance=resultSet.getInt("recurringamount");
+			}
+			connection.close () ;
+
+		}
+		catch (SQLException e) {
+			System.out.println ("Connection failure.") ;
+			e.printStackTrace () ;
+		}
+
+		return balance;
+	}
+
+	public static int getUserFrequency(int userid) {
+		int frequency=0;
+		try{
+			Connection connection = databaseConnector.connect();
+			Statement statement = connection.createStatement () ;
+			ResultSet resultSet = statement.executeQuery ("SELECT * FROM userfunds WHERE userid = '" + userid + "'") ;
+			while (resultSet.next()) {
+				frequency=resultSet.getInt("frequency");
+			}
+			connection.close () ;
+
+		}
+		catch (SQLException e) {
+			System.out.println ("Connection failure.") ;
+			e.printStackTrace () ;
+		}
+
+		return frequency;
+	}
+
+	public static void setUserfrequency(int freq, int userid) {
+
+		try {
+			Connection connection = databaseConnector.connect();
+			Statement statement = connection.createStatement ();
+
+			PreparedStatement preppedStatement = connection.prepareStatement("UPDATE userfunds SET frequency = " + freq + " WHERE userid = " + userid + ";");
+			preppedStatement.executeUpdate();
+
+			connection.close();
+		}
+
+		catch (SQLException e) {
+			System.out.println ("Connection failure.") ;
+			e.printStackTrace () ; 
+		}
+	}
+	
+	public static LocalDate getUserOldPaymentDate(int userid) {
+		LocalDate balance=null;
+		try{
+			
+			
+			Connection connection = databaseConnector.connect();
+			Statement statement = connection.createStatement () ;
+			ResultSet resultSet = statement.executeQuery ("SELECT * FROM userfunds WHERE userid = '" + userid + "'") ;
+			while (resultSet.next()) {
+				balance=resultSet.getDate("oldpaymentdate").toLocalDate();;
+			}
+			connection.close () ;
+
+		}
+		catch (SQLException e) {
+			System.out.println ("Connection failure.") ;
+			e.printStackTrace () ;
+		}
+
+		return balance;
+	}
+	public static int getUserFunds(int userid) {
+		int balance=0;
+		try{
+			Connection connection = databaseConnector.connect();
+			Statement statement = connection.createStatement () ;
+			ResultSet resultSet = statement.executeQuery ("SELECT * FROM userfunds WHERE userid = '" + userid + "'") ;
+			while (resultSet.next()) {
+				balance=resultSet.getInt("balance");
+			}
+			connection.close () ;
+
+		}
+		catch (SQLException e) {
+			System.out.println ("Connection failure.") ;
+			e.printStackTrace () ;
+		}
+
+		return balance;
+	}
+	
 }
 
 
@@ -938,7 +1377,11 @@ class DatabaseConnector {
         	
         	Class.forName("org.postgresql.Driver"); // Replace with your database driver
         	
+<<<<<<< HEAD
         	Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5434/postgres", "postgres", "321123");
+=======
+        	Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/paw6", "postgres", "doglover123");
+>>>>>>> 2b4bbdbc28899be8c88a8d8fb6d4296df1d183a8
 
 //        	System.out.println( "Connected to the PostgreSQL server successfully.");
         	

@@ -8,17 +8,31 @@ public class Poster implements Comparable<Poster> {
 private int score; 
 private String displayName;
 private int uniqueId;
+private String phone; 
+private String email; 
 private ArrayList<Dog> dogList = new ArrayList<Dog>(); 
 
 
 public int getScore() {
 	return score;
 }
-public  Poster(int score, String displayName, int uniqueId) {
+public  Poster(int score, String displayName, int uniqueId, String phone, String email) {
 	this.score = score;
 	this.displayName = displayName;
 	this.uniqueId = uniqueId;	
+	this.phone = phone;
+	this.email = email;
 }
+
+public String getEmail() {
+	return this.email;
+	
+}
+
+public String getPhone() {
+	return this.phone;
+}
+	
 
 public void setDogList(ArrayList<Dog> dogList) {
 	//add a dog to the poster's dog list
