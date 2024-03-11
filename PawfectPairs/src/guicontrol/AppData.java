@@ -23,7 +23,8 @@ import guilayout.UserProfile;
 
 public class AppData {
 	
-	private User user;
+	private User user;//comment
+
 	private Hashtable<Integer, ArrayList<Dog>> dogProfileHashtable;
 	private HashMap<Integer, Tag> allTags;
 	private Hashtable<Integer,Poster> posterProfiles; // poster profiles by id 
