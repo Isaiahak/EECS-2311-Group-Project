@@ -1,12 +1,14 @@
 package backend.user;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Hashtable;
 import java.util.Set;
 
 import backend.dog.Dog;
 import backend.dog.trait.*;
 import backend.tag.Tag;
+import backend.wallet.Wallet;
 
 
 public class User {
@@ -42,16 +44,17 @@ public class User {
 		this.username = username;
 		this.password = password;
 	}
-	public User(String username, String email, String password) {
-		super();
-		this.username = username;
-		this.password = password;
-		this.email = email;
-	}
-	
+//	public User(String username, String email, String password) {
+//		super();
+//		this.username = username;
+//		this.password = password;
+//		this.email = email;
+//	}
+//	
 	/*
 	 * For adding and for removing attribute/tag preferences
 	 */
+	
 
 	public int getUserID() {
 		return userID;
@@ -149,7 +152,7 @@ public class User {
 		return tagPreferences;
 	}
 	
-	public boolean arePreferencesEqual(ArrayList<Attribute> sex, ArrayList<Attribute> age, ArrayList<Attribute> size, ArrayList<Attribute> energyLevel, Hashtable<Integer, Tag> tags) { // check if tags and attributes are the same 	
+	public boolean arePreferencesEqual(Hashtable<Integer, Tag> tags) { // check if tags and attributes are the same
     	// compare 'old' tags/preferences (provided in parameters) to current user's to detect any change
 		
     	Hashtable<Integer,Tag> currTags = this.getTagPreferences(); 
@@ -171,19 +174,61 @@ public class User {
     			return false;
     		}
     	}
-    	
-    	
-    	if(!this.agePreferences.equals(age)|| !this.sexPreferences.equals(sex)  // check if attrubutes have changed 
-    			|| !this.sizePreferences.equals(size)|| !this.energyLevelPreferences.equals(energyLevel)) {
-    		return false;
-    	}
-    	
 		return true;
     }
+
+	public boolean areAttributesEqual(ArrayList<Attribute> sex, ArrayList<Attribute> age, ArrayList<Attribute> size, ArrayList<Attribute> energyLevel){
+		if(!this.agePreferences.equals(age) || !this.sexPreferences.equals(sex)  // check if attrubutes have changed
+				|| !this.sizePreferences.equals(size)|| !this.energyLevelPreferences.equals(energyLevel)) {
+			return false;
+		}
+		return true;
+	}
 
 	@Override
 	public String toString() {
 		return "User [username=" + username + ", email=" + email + ", password="
 				+ password + "]";
+	}
+
+	public ArrayList<Attribute> getCopyOfAgePreferences(ArrayList<Attribute> agePreferences){
+		ArrayList<Attribute> preferences = new ArrayList<>();
+		for(Attribute att : agePreferences){
+			preferences.add(new Age(att.getWeight()));
+		}
+		return preferences;
+	}
+
+	public ArrayList<Attribute> getCopyOfSizePreferences(ArrayList<Attribute> SizePreferences){
+		ArrayList<Attribute> preferences = new ArrayList<>();
+		for(Attribute att : SizePreferences){
+			preferences.add(new Age(att.getWeight()));
+		}
+		return preferences;
+	}
+
+	public ArrayList<Attribute> getCopyOfSexPreferences(ArrayList<Attribute> SexPreferences){
+		ArrayList<Attribute> preferences = new ArrayList<>();
+		for(Attribute att : SexPreferences){
+			preferences.add(new Age(att.getWeight()));
+		}
+		return preferences;
+	}
+
+	public ArrayList<Attribute> getCopyOfEnergyLevelPreferences(ArrayList<Attribute> EnergyLevelPreferences){
+		ArrayList<Attribute> preferences = new ArrayList<>();
+		for(Attribute att : EnergyLevelPreferences){
+			preferences.add(new Age(att.getWeight()));
+		}
+		return preferences;
+	}
+
+	public Hashtable<Integer,Tag> getCopyOfTagPreferences(Hashtable<Integer,Tag> TagPreferences){
+		Hashtable<Integer,Tag> preferences = new Hashtable<>();
+		Collection<Tag> tags = TagPreferences.values();
+		for(Tag tag : tags){
+			preferences.put(tag.getWeight(),(new Tag(tag.getTagName(),tag.getWeight())));
+		}
+		return preferences;
 	}
 }
