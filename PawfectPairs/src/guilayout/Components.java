@@ -709,7 +709,10 @@ public class Components{
 		Button cancelButton = button("Cancel Donation :(");
 //		Button editButton = new Button("Edit Donation :D"); // to be implemented
 		cancelButton.setOnAction(event -> { 
+        	//System.out.println("before removal "+appdata.getUser().getWallet().getRecurringPaymentsDogsList().toString());
+
         	appdata.getUser().getWallet().removeRecurringPayment(d.getId());
+        	//System.out.println("after removal "+ appdata.getUser().getWallet().getRecurringPaymentsDogsList().toString());
         	// hacky way to reload page :)
         	page.start(stage);
         	
