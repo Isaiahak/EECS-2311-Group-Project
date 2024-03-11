@@ -51,7 +51,7 @@ public class BookedAppointmentScene extends Application {
         root.setAlignment(javafx.geometry.Pos.CENTER);
         root.setSpacing(20);
 
-        HBox navTab = Components.navTab(UserProfile.getInstance(), LikedDogScene.getInstance(), DogProfileScene.getInstance(), BookedAppointmentScene.getInstance(), stage,"appointments",AppData.getInstance());
+        HBox navTab = Components.navTab(UserProfile.getInstance(), LikedDogScene.getInstance(), DogProfileScene.getInstance(), SponsoredDogsScene.getInstance(), BookedAppointmentScene.getInstance(), stage, "appointments", AppData.getInstance());
 
         Label appointmentsLabel = Components.largeLabel("Your Booked Appointments", Pos.CENTER);
 

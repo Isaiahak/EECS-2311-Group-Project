@@ -67,7 +67,7 @@ public class AppointmentScene extends Application {
         root.setSpacing(10);
         root.setPadding(new Insets(10));
 
-        HBox navTab = Components.navTab(UserProfile.getInstance(), LikedDogScene.getInstance(), DogProfileScene.getInstance(), BookedAppointmentScene.getInstance(), stage, "appointments", AppData.getInstance());
+        HBox navTab = Components.navTab(UserProfile.getInstance(), LikedDogScene.getInstance(), DogProfileScene.getInstance(), SponsoredDogsScene.getInstance(), BookedAppointmentScene.getInstance(), stage, "appointments", AppData.getInstance());
         // Title label to display the current month and year
         Button titleLabel = new Button(getFormattedTitle());
         titleLabel.setDisable(true);

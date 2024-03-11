@@ -22,6 +22,7 @@ public class PrimaryScene extends Application{
     protected SponsoredDogsScene sponsoredDog; 
     protected User user;
     protected Wallet wallet;
+	protected BookedAppointmentScene bookedAppointment;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -38,6 +39,7 @@ public class PrimaryScene extends Application{
         this.dogProfileScene = DogProfileScene.getInstance();
         this.sponsoredDog = SponsoredDogsScene.getInstance();
         this.user = appData.getUser();
+        this.bookedAppointment = BookedAppointmentScene.getInstance();
 //        this.wallet= appData.getWallet();
     }
 }

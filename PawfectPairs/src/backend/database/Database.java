@@ -14,8 +14,7 @@ import backend.dog.trait.Attribute;
 import backend.poster.Poster;
 import backend.tag.Tag;
 import backend.user.User;
-<<<<<<< HEAD
-=======
+
 import backend.wallet.Wallet;
 
 import java.sql.Connection;
@@ -23,7 +22,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.time.LocalDate;
->>>>>>> main
+
 /*
  * Public class to centralize all communications to and from database
  */
@@ -1573,20 +1572,8 @@ class DatabaseConnector {
         	
         	Class.forName("org.postgresql.Driver"); // Replace with your database driver
         	
-<<<<<<< HEAD
-<<<<<<< HEAD
-        	Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/usertagupdate", "postgres", "123");
-=======
-<<<<<<< HEAD
-        	Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5434/postgres", "postgres", "321123");
-=======
-        	Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/paw6", "postgres", "doglover123");
->>>>>>> 2b4bbdbc28899be8c88a8d8fb6d4296df1d183a8
->>>>>>> main
-=======
 
         	Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/paw6", "postgres", "doglover123");
->>>>>>> main
 
 //        	System.out.println( "Connected to the PostgreSQL server successfully.");
         	

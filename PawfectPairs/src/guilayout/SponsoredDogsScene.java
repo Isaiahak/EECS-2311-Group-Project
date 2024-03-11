@@ -41,7 +41,7 @@ public class SponsoredDogsScene extends PrimaryScene{
 		root.setAlignment(javafx.geometry.Pos.CENTER);
     	root.setSpacing(20);
     	
-    	HBox navTab = Components.navTab(userProfile, likedDog, dogProfileScene, sponsoredDog, stage,"sponsoredDogs", appData);
+    	HBox navTab = Components.navTab(userProfile, likedDog, dogProfileScene, sponsoredDog, bookedAppointment, stage,"sponsoredDogs", appData);
  
 		VBox sponsoredDogsDisplay = new VBox();
 	    	

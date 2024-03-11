@@ -80,7 +80,7 @@ public class LoginScene extends Application{
             clearFields(userTextField, passwordField);
             User user =Database.getUser(username, password);
             Database.blankWallet(user.getUserID());
-        		appData.initializeWallet(user.getUserID(), password);
+//        		appData.initializeWallet(user.getUserID(), password);
         });
         loginButton.setOnAction(e -> {
             String username = userTextField.getText();
