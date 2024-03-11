@@ -18,7 +18,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class OutOfDogsScene extends Application{
+public class OutOfDogsScene extends PrimaryScene{
 	
 	AppData appData;
 
@@ -40,6 +40,7 @@ public class OutOfDogsScene extends Application{
 
 	@Override
 	public void start(Stage stage) {
+		initailizePrimaryScene();
 		appData = AppData.getInstance();
 		ArrayList<Dog> posterDogs = appData.getSortedDogProfiles();
 		User user = appData.getUser();
@@ -47,11 +48,11 @@ public class OutOfDogsScene extends Application{
 		VBox root = new VBox();
 		root.setSpacing(15);
 		root.setAlignment(Pos.TOP_CENTER);
-		LikedDogScene likedDog = LikedDogScene.getInstance();
-		UserProfile userProfile = UserProfile.getInstance();
+//		LikedDogScene likedDog = LikedDogScene.getInstance();
+//		UserProfile userProfile = UserProfile.getInstance();
 		Label pageLabel = Components.largeLabel("Out of Dogs!",Pos.TOP_CENTER);
 		stage.setTitle("Pawfect Pairs");	
-		HBox navTab = Components.navTab(userProfile, likedDog, DogProfileScene.getInstance(), stage, "dogProfiles", appData);
+		HBox navTab = Components.navTab(userProfile, likedDog, dogProfileScene, sponsoredDog, stage, "dogProfiles", appData);
 		root.getChildren().addAll(navTab,pageLabel);
 		StackPane stackPane = new StackPane(root);
 		stackPane.setAlignment(javafx.geometry.Pos.CENTER);

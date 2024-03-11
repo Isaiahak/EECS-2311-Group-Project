@@ -11,27 +11,26 @@ import backend.poster.Poster;
 
 public class Wallet {
 	private double balance; 
-	private boolean recurringPayment; 
-	private int frequency;//set up to count in 24 days 
 	private int userid;
-	private Map<Integer, Double> posterWallets = new TreeMap<>();
-	private int recurringAmount;
-	private int posterToSponsorPending;
-	private int recurringPoster;
-	LocalDate oldPaymentDate;
+	private HashMap<Integer, RecurringPayment> recurringPayments = new HashMap<Integer, RecurringPayment>(); // dogid, payment
+//	private Map<Integer, Double> posterWallets = new TreeMap<>();
+//	private int recurringAmount;
+//	private int posterToSponsorPending;
+//	private int recurringPoster;
+//	LocalDate oldPaymentDate;
 
-	public LocalDate getOldPaymentDate() {
-		return oldPaymentDate;
-	}
-	public void setOldPaymentDate(LocalDate oldPaymentDate) {
-		this.oldPaymentDate = oldPaymentDate;
-	}
-	public int getRecurringAmount() {
-		return recurringAmount;
-	}
-	public void setRecurringAmount(int recurringAmount) {
-		this.recurringAmount = recurringAmount;
-	}
+//	public LocalDate getOldPaymentDate() {
+//		return oldPaymentDate;
+//	}
+//	public void setOldPaymentDate(LocalDate oldPaymentDate) {
+//		this.oldPaymentDate = oldPaymentDate;
+//	}
+//	public int getRecurringAmount() {
+//		return recurringAmount;
+//	}
+//	public void setRecurringAmount(int recurringAmount) {
+//		this.recurringAmount = recurringAmount;
+//	}
 	public void setBalance(double balance) {
 		this.balance = balance;
 	}
@@ -41,14 +40,12 @@ public class Wallet {
 	//		this.frequency = frequency;
 	//		this.userid=userid;
 	//	}
-	public Wallet(double balance, boolean recurringPayment, int frequency, int userid,int recurringAmount, int posterToSponsorPending, int recurringPoster) {
-//		super();
+	public Wallet(double balance, int userid) {
 		this.balance = balance;
-		this.recurringPayment = recurringPayment;
-		this.frequency = frequency;
+//		this.frequency = frequency;
 		this.userid = userid;
-//		this.posterWallets = posterWallets;
-		this.recurringAmount = recurringAmount;
+////		this.posterWallets = posterWallets;
+//		this.recurringAmount = recurringAmount;
 	}
 	
 	
@@ -63,15 +60,18 @@ public class Wallet {
 			throw new FundsTooLow("Deposit amount exceeds balance");
 		
 		this.balance=this.balance-amount;
-		//Database.setPosterFunds(amount, poster.getUniqueId());
-		//	int keyToUpdate = poster.getUniqueId();
-		int keyToUpdate = posterid;
-		Double oldValue = posterWallets.getOrDefault(keyToUpdate, 0.0); // Default to 0 if key doesn't exist
-		double additionalValue = amount;
-		double newValue = oldValue + additionalValue;
-
-		// Updating the treemap with the new value
-		posterWallets.put(keyToUpdate, newValue);
+		
+		// FIX THIS METHOD ALSO
+		
+//		//Database.setPosterFunds(amount, poster.getUniqueId());
+//		//	int keyToUpdate = poster.getUniqueId();
+//		int keyToUpdate = posterid;
+//		Double oldValue = posterWallets.getOrDefault(keyToUpdate, 0.0); // Default to 0 if key doesn't exist
+//		double additionalValue = amount;
+//		double newValue = oldValue + additionalValue;
+//
+//		// Updating the treemap with the new value
+//		posterWallets.put(keyToUpdate, newValue);
 		
 
 
@@ -83,31 +83,25 @@ public class Wallet {
 
 		System.out.println("execute start");
 		this.balance=this.balance-amount;
-		//Database.setPosterFunds(amount, poster.getUniqueId());
-		//	int keyToUpdate = poster.getUniqueId();
-		int keyToUpdate = posterid;
-		Double oldValue = posterWallets.getOrDefault(keyToUpdate, 0.0); // Default to 0 if key doesn't exist
-		double additionalValue = amount;
-		double newValue = oldValue + additionalValue;
-
-		// Updating the treemap with the new value
-		posterWallets.put(keyToUpdate, newValue);
-		System.out.println("execute: new balance "+this.balance);
+		
+		// FIX THIS METHOD
+		
+//		//Database.setPosterFunds(amount, poster.getUniqueId());
+//		//	int keyToUpdate = poster.getUniqueId();
+//		int keyToUpdate = posterid;
+//		Double oldValue = posterWallets.getOrDefault(keyToUpdate, 0.0); // Default to 0 if key doesn't exist
+//		double additionalValue = amount;
+//		double newValue = oldValue + additionalValue;
+//
+//		// Updating the treemap with the new value
+//		posterWallets.put(keyToUpdate, newValue);
+//		System.out.println("execute: new balance "+this.balance);
 		return () -> System.out.println("Non-static recurring event executed at: " + System.currentTimeMillis());
 
 
 	}
 
-	public Map<Integer, Double> getPosterWallets() {
-		return posterWallets;
-	}
-	public double getPosterBalance (int posterid) {
-		return this.posterWallets.get(posterid);
-
-	}
-	public void setPosterWallets(Map<Integer, Double> posterWallets) {
-		this.posterWallets = posterWallets;
-	}
+	
 	public void deposit (double amount)
 	{
 		this.balance=this.balance+amount;
@@ -157,7 +151,7 @@ public class Wallet {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			this.setOldPaymentDate(LocalDate.now());
+//			this.setOldPaymentDate(LocalDate.now());
 
 		}
 		return current.equals(DateToPay);
@@ -193,7 +187,7 @@ public class Wallet {
 	 */
 
 	//timer method
-	public void redo (double amount, int frequency, int id ) {
+//	public void redo (double amount, int frequency, int id ) {
 		//		if(this.recurringPayment) {
 		//		 ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 		//
@@ -254,7 +248,7 @@ public class Wallet {
 //			// Shutdown the scheduler when done
 //			// scheduler.shutdown(); //!!commented this out
 //		}
-	}
+//	}
 
 	public double getBalance() {
 		return balance;
@@ -262,34 +256,34 @@ public class Wallet {
 	public void setBalance(int balance) {
 		this.balance = balance;
 	}
-	public boolean getRecurringPayment() {
-		return recurringPayment;
-	}
-	public void setRecurringPayment(boolean recurringPayment) {
-		this.recurringPayment = recurringPayment;
-	}
-	public int getFrequency() {
-		return frequency;
-	}
-	public void setFrequency(int frequency) {
-		this.frequency = frequency;
-	}
-
-
-	public int getPosterToSponsorPending() {
-		return posterToSponsorPending;
-	}
-	public void setPosterToSponsorPending(int posterToSponsorPending) {
-		this.posterToSponsorPending = posterToSponsorPending;
-	}
-
-
-	public int getRecurringPoster() {
-		return recurringPoster;
-	}
-	public void setRecurringPoster(int recurringPoster) {
-		this.recurringPoster = recurringPoster;
-	}
+//	public boolean getRecurringPayment() {
+//		return recurringPayment;
+//	}
+//	public void setRecurringPayment(boolean recurringPayment) {
+//		this.recurringPayment = recurringPayment;
+//	}
+//	public int getFrequency() {
+//		return frequency;
+//	}
+//	public void setFrequency(int frequency) {
+//		this.frequency = frequency;
+//	}
+//
+//
+//	public int getPosterToSponsorPending() {
+//		return posterToSponsorPending;
+//	}
+//	public void setPosterToSponsorPending(int posterToSponsorPending) {
+//		this.posterToSponsorPending = posterToSponsorPending;
+//	}
+//
+//
+//	public int getRecurringPoster() {
+//		return recurringPoster;
+//	}
+//	public void setRecurringPoster(int recurringPoster) {
+//		this.recurringPoster = recurringPoster;
+//	}
 
 
 	public class FundsTooLow extends Exception { 

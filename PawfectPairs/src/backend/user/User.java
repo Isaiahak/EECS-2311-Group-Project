@@ -231,4 +231,10 @@ public class User {
 		}
 		return preferences;
 	}
+
+
+	public ArrayList<Dog> getSponsoredDogs() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

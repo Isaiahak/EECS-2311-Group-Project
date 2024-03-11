@@ -62,7 +62,7 @@ public class Components{
 		return button;
 	}
 	
-	public static HBox navTab(UserProfile userScene,LikedDogScene likedDog, DogProfileScene dogProfile, Stage stage,  String currentScene, AppData appData) { //create a navigation tab: settings, schedule, messages, etc
+	public static HBox navTab(UserProfile userScene,LikedDogScene likedDog, DogProfileScene dogProfile, SponsoredDogsScene sponsoredDogs, Stage stage,  String currentScene, AppData appData) { //create a navigation tab: settings, schedule, messages, etc
 		// settings hBox
         HBox navTab = new HBox();
         navTab.setStyle("-fx-background-color: #f5f5f5;");
@@ -71,6 +71,7 @@ public class Components{
         Button settingsButton = Components.button("⚙ Settings ⚙");
         Button dogProfileButton = Components.button("🐕 Dog Profiles 🐕");
         Button likedDogButton = Components.button("♥ Liked Dogs  🐶");
+        Button sponsoredDogButton = Components.button("💸 Sponsored Dogs  💸");
         
         String defaultStyle = "-fx-background-color: #4CAF50; -fx-text-fill: white;";
         String highlightedStyle = "-fx-background-color: #2ed934; -fx-text-fill: white;";
@@ -79,6 +80,7 @@ public class Components{
         settingsButton.setStyle(defaultStyle);
         likedDogButton.setStyle(defaultStyle);
         dogProfileButton.setStyle(defaultStyle);
+        sponsoredDogButton.setStyle(defaultStyle);
         
         // set hightlight on current page button  
         switch(currentScene) {
@@ -92,6 +94,10 @@ public class Components{
         	
         case "dogProfiles":
         	dogProfileButton.setStyle(highlightedStyle);
+        	break;
+        	
+        case "sponsoredDogs":
+        	sponsoredDogButton.setStyle(highlightedStyle);
         	break;
         	
         default:
@@ -115,6 +121,11 @@ public class Components{
 				appData.CheckIfAttributePreferencesHaveBeenChanged();
 	        	dogProfile.start(stage);
 	        });
+	        sponsoredDogButton.setOnAction(event -> {
+	        	appData.updateDogScores();
+				appData.CheckIfAttributePreferencesHaveBeenChanged();
+	        	likedDog.start(stage);
+	        });
 	        
         }else {
         	settingsButton.setOnAction(event -> {
@@ -126,6 +137,10 @@ public class Components{
 	        dogProfileButton.setOnAction(event -> {
 	        	dogProfile.start(stage);
 	        });
+	        sponsoredDogButton.setOnAction(event -> {
+	        	sponsoredDogs.start(stage);
+	        });
+	        
         }
         
        
@@ -420,8 +435,11 @@ public class Components{
             	userAttributeList.add(allAttributes.get(attributeType).get(weight));
 				
             }else{
-				label.setStyle(defaultStyle);
+            	if(allAttributes.size() >= 2) {
+            		label.setStyle(defaultStyle);
 				userAttributeList.remove(allAttributes.get(attributeType).get(weight));
+            	}
+				
 				
 			}
         });
@@ -514,6 +532,28 @@ public class Components{
 //			}
 //        });
 		
+	}
+
+	public static HBox sponsoredDogView(Dog d, Stage stage, Hashtable<Integer, Poster> poster) {
+		ImageView img = Components.imageView(200, 200);
+		img.setImage(new Image(d.getImagePath()));
+		
+		Label primaryInfoLabel = Components.mediumLabel(d.getName() + ", " + d.getAge() + " years, " + d.getSex(),Pos.CENTER); 
+		
+		Hyperlink posterLink = hyperlinkToPosterProfile(d, stage, poster);
+		
+		
+		VBox info = new VBox(
+				primaryInfoLabel,
+				posterLink
+				);
+		
+		HBox HBox = new HBox(img, info);
+		HBox.setAlignment(Pos.CENTER);
+		HBox.setSpacing(50);
+		
+		
+		return HBox;
 	}
 
 }

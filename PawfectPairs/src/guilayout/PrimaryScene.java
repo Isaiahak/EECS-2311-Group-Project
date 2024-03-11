@@ -19,6 +19,7 @@ public class PrimaryScene extends Application{
     protected UserProfile userProfile;
     protected LikedDogScene likedDog;
     protected DogProfileScene dogProfileScene;
+    protected SponsoredDogsScene sponsoredDog; 
     protected User user;
     protected Wallet wallet;
 
@@ -35,6 +36,7 @@ public class PrimaryScene extends Application{
         this.userProfile = UserProfile.getInstance();
         this.likedDog = LikedDogScene.getInstance();
         this.dogProfileScene = DogProfileScene.getInstance();
+        this.sponsoredDog = SponsoredDogsScene.getInstance();
         this.user = appData.getUser();
         this.wallet= appData.getWallet();
     }

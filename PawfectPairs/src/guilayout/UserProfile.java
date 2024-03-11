@@ -96,7 +96,7 @@ public class UserProfile extends PrimaryScene{
     	// create navBar
     	   	
     	// back button
-    	HBox navTab = Components.navTab(UserProfile.getInstance(), LikedDogScene.getInstance(), dogProfileScene, primaryStage, "userProfile", appData);
+    	HBox navTab = Components.navTab(userProfile, likedDog, dogProfileScene, sponsoredDog, primaryStage, "userProfile", appData);
     	// set up preferences vbox
     	VBox preferences = new VBox();
     	preferences.setAlignment(javafx.geometry.Pos.CENTER);
@@ -178,59 +178,59 @@ public class UserProfile extends PrimaryScene{
     	scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
 	    scrollPane.setFitToWidth(true);
 
-	  //ADDING WALLET STUFF
-    	VBox container = new VBox();
-container.setSpacing(80);//SPACE BETWEEN ATTRIBUTES AND WALLET
-
-
-    	ScrollPane scrollPane1 = new ScrollPane(container);
-    	scrollPane1.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-	    scrollPane1.setFitToWidth(true);
-
-		Button deposit = Components.button("Deposit funds into your wallet");
-		ScrollBar scrollBar = new ScrollBar();
-        //scrollBar.setStyle("-fx-pref-width: 1;");
-       scrollBar.setStyle("-fx-pref-height: 20;");
-
-        Label valueLabel =Components.mediumLabel();
-        valueLabel.setText("Selected Value: ");
-        VBox scrollContainer = new VBox();   
-        scrollContainer.setMargin(scrollBar, new Insets(20, 100, 20, 100));  // top, right, bottom, left
-        scrollContainer.getChildren().addAll(scrollBar);
-        // Set the range of the scroll bar
-        scrollBar.setMin(0);
-        scrollBar.setMax(SingleMaxWalletDepositLimit);//for now arbitrarily set max single deposit limit to 1000
+//	  //ADDING WALLET STUFF
+//    	VBox container = new VBox();
+//container.setSpacing(80);//SPACE BETWEEN ATTRIBUTES AND WALLET
+//
+//
+//    	ScrollPane scrollPane1 = new ScrollPane(container);
+//    	scrollPane1.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+//	    scrollPane1.setFitToWidth(true);
+//
+//		Button deposit = Components.button("Deposit funds into your wallet");
+//		ScrollBar scrollBar = new ScrollBar();
+//        //scrollBar.setStyle("-fx-pref-width: 1;");
+//       scrollBar.setStyle("-fx-pref-height: 20;");
+//
+//        Label valueLabel =Components.mediumLabel();
+//        valueLabel.setText("Selected Value: ");
+//        VBox scrollContainer = new VBox();   
+//        scrollContainer.setMargin(scrollBar, new Insets(20, 100, 20, 100));  // top, right, bottom, left
+//        scrollContainer.getChildren().addAll(scrollBar);
+//        // Set the range of the scroll bar
+//        scrollBar.setMin(0);
+//        scrollBar.setMax(SingleMaxWalletDepositLimit);//for now arbitrarily set max single deposit limit to 1000
+//        
+//        Label currentFunds =Components.mediumLabel();
+//        currentFunds.setText("Your current balance: "+ wallet.getBalance());
+//        // Add listener to capture value changes
+//        scrollBar.valueProperty().addListener((observable, oldValue, newValue) -> {
+//            valueLabel.setText("Selected Value: " + String.format("%.2f", newValue));
+//            ValueSelectedInScrollBar=Double.parseDouble(String.format("%.2f", newValue));
+//        });
+//
+//        deposit.setOnAction(event -> {
+//        				wallet.deposit(ValueSelectedInScrollBar);
+//
+//        				currentFunds.setText("Your current balance "+ wallet.getBalance());
+//
+//
+//        	});
+//		VBox allWalletUserComponents = new VBox();
+//		allWalletUserComponents.setSpacing(30);
+//		allWalletUserComponents.getChildren().addAll(deposit, scrollContainer, valueLabel, currentFunds);
+//		allWalletUserComponents.setAlignment(Pos.TOP_CENTER);
+//		 // Set padding for the VBox (top, right, bottom, left)
+//		allWalletUserComponents.setPadding(new javafx.geometry.Insets(20, 10, 20, 10));
+//		
+//		//END OF WALLET UI STUFF
+//		container.getChildren().addAll(stackPane, allWalletUserComponents);
+//
+//    	
+////        scrollPane.setAlignment(javafx.geometry.Pos.CENTER);
         
-        Label currentFunds =Components.mediumLabel();
-        currentFunds.setText("Your current balance: "+ wallet.getBalance());
-        // Add listener to capture value changes
-        scrollBar.valueProperty().addListener((observable, oldValue, newValue) -> {
-            valueLabel.setText("Selected Value: " + String.format("%.2f", newValue));
-            ValueSelectedInScrollBar=Double.parseDouble(String.format("%.2f", newValue));
-        });
-
-        deposit.setOnAction(event -> {
-        				wallet.deposit(ValueSelectedInScrollBar);
-
-        				currentFunds.setText("Your current balance "+ wallet.getBalance());
-
-
-        	});
-		VBox allWalletUserComponents = new VBox();
-		allWalletUserComponents.setSpacing(30);
-		allWalletUserComponents.getChildren().addAll(deposit, scrollContainer, valueLabel, currentFunds);
-		allWalletUserComponents.setAlignment(Pos.TOP_CENTER);
-		 // Set padding for the VBox (top, right, bottom, left)
-		allWalletUserComponents.setPadding(new javafx.geometry.Insets(20, 10, 20, 10));
-		
-		//END OF WALLET UI STUFF
-		container.getChildren().addAll(stackPane, allWalletUserComponents);
-
-    	
-//        scrollPane.setAlignment(javafx.geometry.Pos.CENTER);
         
-        
-    	Scene scene = new Scene(scrollPane1, Components.screenWidth, Components.screenHeight);
+    	Scene scene = new Scene(scrollPane, Components.screenWidth, Components.screenHeight);
     	
 		primaryStage.setScene(scene);
 		primaryStage.setTitle("Pawfect Pairs");
