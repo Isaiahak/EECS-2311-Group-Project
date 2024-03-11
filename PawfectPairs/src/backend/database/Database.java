@@ -878,6 +878,7 @@ public class Database {
         try {
         	 connection = databaseConnector.connect();
         	 String sql = "INSERT INTO users (username, userpassword) VALUES (?, ?)";
+        	
         	 preparedStatement = connection.prepareStatement(sql);
         	 preparedStatement.setString(1, username);
         	 preparedStatement.setString(2, password);
@@ -885,7 +886,9 @@ public class Database {
         	 if (rowsAffected > 0) {
                 System.out.println("User added successfully!");
                 int userid = Database.getUserID(username, password);
-
+//                String sql2 = "INSERT INTO userattributepreferences (userid, attributetype, attributeid) "
+//            	 		+ "VALUES "
+//            	 		+ "(" + userid + ", 0, )";
                 return true;
             } else {
                 System.out.println("Failed to add User.");

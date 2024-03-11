@@ -175,6 +175,8 @@ public class DogProfileScene extends PrimaryScene{
 
 	public void displayCurrentPetProfile() {
 		Dog currentProfile = posterDogs.get(0);
+		
+		
 		petImageView.setImage(new Image(currentProfile.getImagePath()));
 		primaryInfoLabel.setText(currentProfile.getName() +", " + currentProfile.getAge() + " years, " + currentProfile.getSex());
 		sizeLabel.setText("Size: " + currentProfile.getSize());
