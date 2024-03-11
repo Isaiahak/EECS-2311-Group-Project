@@ -135,7 +135,7 @@ public class AppData {
 
 		}
 	}
-	
+
 	public void initializeAttributes(){
 		this.allAttributes = new HashMap<Integer, ArrayList<Attribute>>();
 		
@@ -177,6 +177,7 @@ public class AppData {
 		return this.allAttributes;
 		
 	}
+
 	
 	public void onStart(String user, String pass) {
 		getInstance(); 	

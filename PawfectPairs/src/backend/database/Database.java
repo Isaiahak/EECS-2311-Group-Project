@@ -14,6 +14,8 @@ import backend.dog.trait.Attribute;
 import backend.poster.Poster;
 import backend.tag.Tag;
 import backend.user.User;
+<<<<<<< HEAD
+=======
 import backend.wallet.Wallet;
 
 import java.sql.Connection;
@@ -21,11 +23,208 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.time.LocalDate;
+>>>>>>> main
 /*
  * Public class to centralize all communications to and from database
  */
 public class Database {
+	//Sidney and Edson's stuff :)
 	
+		public static void deleteAppointment (int posterID, int dogID) {
+	        Connection connection = null;
+	        PreparedStatement statement = null;
+
+	        try {
+	            connection = databaseConnector.connect();// Assuming you have a method to get the database connection
+	            String query = "DELETE FROM datesbooked WHERE \"posterID\" = ? AND \"dogID\" = ?";
+	            statement = connection.prepareStatement(query);
+	            statement.setInt(1, posterID);
+	            statement.setInt(2, dogID);
+	            statement.executeUpdate();
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        } finally {
+	            try {
+	                if (statement != null) {
+	                    statement.close();
+	                }
+	                if (connection != null) {
+	                    connection.close();
+	                }
+	            } catch (SQLException e) {
+	                e.printStackTrace();
+	            }
+	        }
+	    }
+		
+		
+		public static Dog getDogById(int dogId) {
+	        Connection connection = null;
+	        PreparedStatement preparedStatement = null;
+	        Dog dog = null;
+
+	        try {
+	            connection = databaseConnector.connect();
+	            String sql = "SELECT * FROM dog WHERE dogid = ?";
+	            preparedStatement = connection.prepareStatement(sql);
+	            preparedStatement.setInt(1, dogId);
+
+	            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+	                if (resultSet.next()) {
+	                    dog = new Dog(resultSet.getString("dogname"), resultSet.getInt("dogid"), resultSet.getInt("ageid"),
+	                            resultSet.getInt("energylevelid"), resultSet.getInt("sizeid"), resultSet.getInt("sexid"),
+	                            resultSet.getInt("posterid"), resultSet.getBoolean("adopted"), resultSet.getString("imagePath"),
+	                            resultSet.getString("biography"));
+	                }
+	            }
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        } finally {
+	            try {
+	                if (preparedStatement != null) {
+	                    preparedStatement.close();
+	                }
+	                if (connection != null) {
+	                    connection.close();
+	                }
+	            } catch (SQLException e) {
+	                e.printStackTrace();
+	            }
+	        }
+	        return dog;
+	    }
+		
+		 public static TreeMap<Integer, Date> getUserAppointments(int userID) {
+			 Connection connection = databaseConnector.connect();
+		        TreeMap<Integer, Date> appointments = new TreeMap<>();
+		        try {
+
+		        String query = "SELECT \"dogID\", date FROM datesbooked WHERE \"userID\" = ?";
+		        PreparedStatement preparedStatement = connection.prepareStatement(query);
+		            // Set the userID parameter
+		            preparedStatement.setInt(1, userID);
+
+		            // Execute the query
+		            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+		                // Iterate over the result set and populate the TreeMap
+		                while (resultSet.next()) {
+		                    int dogID = resultSet.getInt("dogID");
+		                    Date date = resultSet.getDate("date");
+		                    appointments.put(dogID, date);
+		                }
+		            }
+		 
+		        
+		        return appointments;
+		        }catch (SQLException e) {
+		            e.printStackTrace();
+		        }
+		        return null;
+		        
+		    }
+
+		 // Method to check if a date exists in the table
+		    public static boolean isDateExists(int  dogID,int userID, Connection connection) {
+		    	
+		        PreparedStatement preparedStatement = null;
+		        String query = "SELECT COUNT(*) FROM datesbooked WHERE \"dogID\" = ? AND \"userID\" = ?";
+		        try {
+		        	connection = databaseConnector.connect();
+		        	preparedStatement = connection.prepareStatement(query);
+		        	
+		            
+		        	preparedStatement.setInt(1, dogID);
+		        	preparedStatement.setInt(2, userID);
+		           
+
+		            // Execute the query
+		            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+		                // If any rows are returned, the date exists
+		                if (resultSet.next()) {
+		                    int count = resultSet.getInt(1);
+		                    System.out.println("Date and Poster found successfully!");
+		                    return count > 0;
+		                }
+		            }
+		        } catch (SQLException e) {
+		            e.printStackTrace();
+		        }
+		        return false; // Return false if an exception occurs or no rows are returned
+		    }
+
+		    public static boolean addBookedDate(int posterID, int dogID, Date date, int userID) {
+		        
+		    	Connection connection = databaseConnector.connect();
+		        PreparedStatement preparedStatement = null ;
+		        
+		        
+		        try {
+		            //String sql = "INSERT INTO datesbooked (\"posterID\", \"dogID\", \"date\", \"userID\") VALUES (?, ?, ?, ?)";
+		            String sql = "INSERT INTO datesbooked (\"posterID\", \"dogID\", \"date\", \"userID\") VALUES (?, ?, ?,?)";
+		     
+		            connection = databaseConnector.connect();
+		        	 
+		        	 preparedStatement = connection.prepareStatement(sql);
+		        	 if (!(isDateExists(dogID, userID,connection)==true)) {
+		            // Convert Calendar to java.util.Date
+		            preparedStatement.setInt(1, posterID);
+		            preparedStatement.setInt(2, dogID);
+		            preparedStatement.setDate(3, date);
+		            preparedStatement.setInt(4, userID );
+		            int rowsAffected = preparedStatement.executeUpdate();
+		            if (rowsAffected > 0) {
+		                System.out.println("Date added successfully!");
+		                ;
+		                return true;
+		            } else {
+		                System.out.println("Failed to add Date.");
+		                return false;
+		            }}
+		        	 else {
+		        		 System.out.println("Date is already there.");
+		        	 }
+		            
+		           /* if (!(isDateExists(date, posterID, connection)==true)) {
+		            preparedStatement = connection.prepareStatement(sql);
+		            preparedStatement.setInt(1, posterID);
+		            preparedStatement.setInt(2, dogID);
+		           // preparedStatement.setDate(3, date);
+		            //preparedStatement.setInt (4, userID);
+		            int rowsAffected = preparedStatement.executeUpdate();
+		            if (rowsAffected > 0) {
+		                System.out.println("Date added successfully!");
+		                //int userid = Database.getUserID(username, password,date, userID);
+		                //Database.addDog(userid);
+		                return true;
+		            } else {
+		                System.out.println("Failed to add User.");
+		                return false;
+		            }
+		            }
+		            else {
+		            	System.out.println("Date is already there. Me don't understand what ur doing please stop :)");
+		            }*/
+		            
+		        } catch (SQLException e) {
+		            e.printStackTrace();
+		        } finally {
+		            try {
+		                if (preparedStatement != null) {
+		                    preparedStatement.close();
+		                }
+		                if (connection != null) {
+		                    connection.close();
+		                }
+		            } catch (SQLException e) {
+		                e.printStackTrace();
+		            }
+		        }
+		        return false;
+		    }
+		    
+		    
+		
+		///////////////////////////////////////////////////////////////////////////////////////////////////////////
 	private static DatabaseConnector databaseConnector = new DatabaseConnector();
 	
 	public static  Hashtable<Integer,Poster> getAllPosters(){
@@ -1374,8 +1573,20 @@ class DatabaseConnector {
         	
         	Class.forName("org.postgresql.Driver"); // Replace with your database driver
         	
+<<<<<<< HEAD
+<<<<<<< HEAD
+        	Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/usertagupdate", "postgres", "123");
+=======
+<<<<<<< HEAD
+        	Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5434/postgres", "postgres", "321123");
+=======
+        	Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/paw6", "postgres", "doglover123");
+>>>>>>> 2b4bbdbc28899be8c88a8d8fb6d4296df1d183a8
+>>>>>>> main
+=======
 
         	Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/paw6", "postgres", "doglover123");
+>>>>>>> main
 
 //        	System.out.println( "Connected to the PostgreSQL server successfully.");
         	

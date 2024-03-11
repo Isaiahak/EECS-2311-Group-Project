@@ -52,7 +52,8 @@ public class OutOfDogsScene extends PrimaryScene{
 //		UserProfile userProfile = UserProfile.getInstance();
 		Label pageLabel = Components.largeLabel("Out of Dogs!",Pos.TOP_CENTER);
 		stage.setTitle("Pawfect Pairs");	
-		HBox navTab = Components.navTab(userProfile, likedDog, dogProfileScene, sponsoredDog, stage, "dogProfiles", appData);
+
+		HBox navTab = Components.navTab(userProfile, likedDog, DogProfileScene.getInstance(), sponsoredDog, BookedAppointmentScene.getInstance(), stage, "dogProfiles", appData);
 		root.getChildren().addAll(navTab,pageLabel);
 		StackPane stackPane = new StackPane(root);
 		stackPane.setAlignment(javafx.geometry.Pos.CENTER);

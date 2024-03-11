@@ -34,18 +34,11 @@ public class PosterProfileScene extends PrimaryScene {
 
 	AppData appData;
 	
-	//hyperlink
+
     private Hyperlink posterinfoLink;
-  //private static PosterInfoPage instanceInfo; 
-//    PosterInfoPage posterProfileinfopage = PosterInfoPage.getInstance();
-    
-	private static PosterProfileScene instance; 
+	private static PosterProfileScene instance;
 
-
-	//	
-	//	 ArrayList<Dog> posterDogs = AppData.getInstance().getDogProfiles();//TEMP
-	//	 User user = AppData.getInstance().getUser();
-	Poster currentPoster; 
+	Poster currentPoster;
 	public void setCurrentPoster(Poster poster) {
 		this.currentPoster = poster; // set current poster
 	}
@@ -99,7 +92,9 @@ public class PosterProfileScene extends PrimaryScene {
 
 
 
-		HBox navTab = Components.navTab(userProfile, likedDog, dogProfileScene, sponsoredDog, primaryStage,"posterProfile",appData);
+
+		HBox navTab = Components.navTab(userProfile, LikedDogScene.getInstance(), dogProfileScene, sponsoredDog, BookedAppointmentScene.getInstance(), primaryStage,"posterProfile",appData);
+
 		navTab.setAlignment(Pos.CENTER);
 
 

@@ -130,7 +130,9 @@ public class DogProfileScene extends PrimaryScene{
       
         
         // nav tab
-        HBox navTab = Components.navTab(userProfile, likedDog, dogProfileScene, sponsoredDog, primaryStage, "dogProfiles", appData);
+
+        HBox navTab = Components.navTab(userProfile, likedDog, DogProfileScene.getInstance(),sponsoredDog, BookedAppointmentScene.getInstance(),primaryStage, "dogProfiles", appData);
+
       
         
         // poster link
