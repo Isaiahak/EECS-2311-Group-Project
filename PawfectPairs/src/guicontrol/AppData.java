@@ -190,7 +190,7 @@ public class AppData {
 		
 		setUser(user, pass); // sets user, dog liked list, ideal dog attribtues
 		
-		//setWallet(, pass);
+		initializeWallet(getUser().getUserID(), pass);
 		setAllTags();
 		
 		setPosters();
