@@ -7,6 +7,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import backend.database.Database;
+import backend.dog.Dog;
 import backend.poster.Poster;
 
 public class Wallet {
@@ -48,6 +49,10 @@ public class Wallet {
 //		this.recurringAmount = recurringAmount;
 	}
 	
+	public void addRecurringPayment(RecurringPayment payment) {
+		this.recurringPayments.put(payment.getDogId(), payment);
+		
+	}
 	
 	public int getUserid() {
 		return userid;
@@ -55,56 +60,57 @@ public class Wallet {
 	public void setUserid(int userid) {
 		this.userid = userid;
 	}
-	public void donate (double amount, int posterid) throws FundsTooLow {//withdraw from wallet ->donate to poster
+	
+	public void donate (double amount, Poster poster){//withdraw from wallet ->donate to poster
 		if (amount>this.balance)
-			throw new FundsTooLow("Deposit amount exceeds balance");
+//			throw new FundsTooLow("Deposit amount exceeds balance");
+			// temporarily doenst thorw erors
 		
-		this.balance=this.balance-amount;
+		this.balance = this.balance-amount;
 		
-		// FIX THIS METHOD ALSO
+		poster.depositDonation(amount);
+	}
+	
+	public void makeRecurringPayments(Hashtable<Integer, Poster> posters){
 		
-//		//Database.setPosterFunds(amount, poster.getUniqueId());
-//		//	int keyToUpdate = poster.getUniqueId();
-//		int keyToUpdate = posterid;
-//		Double oldValue = posterWallets.getOrDefault(keyToUpdate, 0.0); // Default to 0 if key doesn't exist
-//		double additionalValue = amount;
-//		double newValue = oldValue + additionalValue;
-//
-//		// Updating the treemap with the new value
-//		posterWallets.put(keyToUpdate, newValue);
+		for(RecurringPayment recurrPay : this.recurringPayments.values()) {
+			if(recurrPay.isTodayAPaymentDate()) {
+				donate(recurrPay.getPaymentAmount(), posters.get(recurrPay.getPosterId()));
+				recurrPay.setLastPaymentDateToToday(LocalDate.now());
+				
+			}
+		}
 		
-
-
 	}
 
-	public Runnable donateRe (double amount, int posterid) throws FundsTooLow {//withdraw from wallet ->donate to poster
-		if (amount>this.balance)
-			throw new FundsTooLow("Deposit amount exceeds balance");
-
-		System.out.println("execute start");
-		this.balance=this.balance-amount;
-		
-		// FIX THIS METHOD
-		
-//		//Database.setPosterFunds(amount, poster.getUniqueId());
-//		//	int keyToUpdate = poster.getUniqueId();
-//		int keyToUpdate = posterid;
-//		Double oldValue = posterWallets.getOrDefault(keyToUpdate, 0.0); // Default to 0 if key doesn't exist
-//		double additionalValue = amount;
-//		double newValue = oldValue + additionalValue;
+//	public Runnable donateRecurring (double amount, int posterid) throws FundsTooLow {//withdraw from wallet ->donate to poster
+//		if (amount>this.balance)
+//			throw new FundsTooLow("Deposit amount exceeds balance");
 //
-//		// Updating the treemap with the new value
-//		posterWallets.put(keyToUpdate, newValue);
-//		System.out.println("execute: new balance "+this.balance);
-		return () -> System.out.println("Non-static recurring event executed at: " + System.currentTimeMillis());
-
-
-	}
+//		System.out.println("execute start");
+//		this.balance=this.balance-amount;
+//		
+//		// FIX THIS METHOD
+//		
+////		//Database.setPosterFunds(amount, poster.getUniqueId());
+////		//	int keyToUpdate = poster.getUniqueId();
+////		int keyToUpdate = posterid;
+////		Double oldValue = posterWallets.getOrDefault(keyToUpdate, 0.0); // Default to 0 if key doesn't exist
+////		double additionalValue = amount;
+////		double newValue = oldValue + additionalValue;
+////
+////		// Updating the treemap with the new value
+////		posterWallets.put(keyToUpdate, newValue);
+////		System.out.println("execute: new balance "+this.balance);
+//		return () -> System.out.println("Non-static recurring event executed at: " + System.currentTimeMillis());
+//
+//
+//	}
 
 	
 	public void deposit (double amount)
 	{
-		this.balance=this.balance+amount;
+		this.balance += amount;
 	}
 
 //
@@ -123,39 +129,37 @@ public class Wallet {
 //		}
 //	}
 
-	public String singlePayment(double amount, int posterid) throws FundsTooLow {
-	    try {
-	        donate(amount, posterid);
-	        return ""; // Return an empty string if donation is successful
-	    } catch (FundsTooLow e) {
-	        throw e; // Re-throw the exception to propagate it up the call stack
-	    }
-	}
 	
-	public static void test () {
-		System.out.println("cute "+LocalDate.now() + " "+ java.time.LocalDateTime.now());
-
-	}
-
-	public boolean doRecurringPayment (double amount, LocalDate lastDate, int frequency, int posterid) {
-
-		LocalDate current = LocalDate.now();
-
-		int timeRemaininginDays = frequency;
-		LocalDate DateToPay = lastDate.plusDays(timeRemaininginDays);
-
-		if(current.equals(DateToPay)) {
-			try {
-				donate(amount,posterid);
-			} catch (FundsTooLow e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-//			this.setOldPaymentDate(LocalDate.now());
-
-		}
-		return current.equals(DateToPay);
-	}
+//	public String singlePayment(double amount, int posterid) throws FundsTooLow {
+//	    try {
+//	        donate(amount, posterid);
+//	        return ""; // Return an empty string if donation is successful
+//	    } catch (FundsTooLow e) {
+//	        throw e; // Re-throw the exception to propagate it up the call stack
+//	    }
+//	}
+//	
+//
+//
+//	public boolean doRecurringPayment (double amount, LocalDate lastDate, int frequency, int posterid) {
+//
+//		LocalDate current = LocalDate.now();
+//
+//		int timeRemaininginDays = frequency;
+//		LocalDate DateToPay = lastDate.plusDays(timeRemaininginDays);
+//
+//		if(current.equals(DateToPay)) {
+//			try {
+//				donate(amount,posterid);
+//			} catch (FundsTooLow e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+////			this.setOldPaymentDate(LocalDate.now());
+//
+//		}
+//		return current.equals(DateToPay);
+//	}
 	/*	public static void RecurringPayment (double amount, LocalDate initial, int frequency, int posterid) {
 //		LocalDate currentDate= LocalDate.now();
 //		LocalDate next=initial.plusDays(frequency);
@@ -294,5 +298,14 @@ public class Wallet {
 			super(errorMessage);
 		}
 
+	}
+
+
+	public void removeRecurringPayment(int dogid) {
+		this.recurringPayments.remove(recurringPayments.get(dogid));
+		
+	}
+	public HashMap<Integer, RecurringPayment> getRecurringPayments() {
+		return this.recurringPayments; 
 	}
 }

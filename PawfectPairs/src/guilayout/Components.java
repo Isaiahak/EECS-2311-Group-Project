@@ -162,7 +162,7 @@ public class Components{
         
        
         
-        navTab.getChildren().addAll(settingsButton, dogProfileButton, likedDogButton,appointmentsButton);
+        navTab.getChildren().addAll(settingsButton, dogProfileButton, likedDogButton, sponsoredDogButton, appointmentsButton);
         
         navTab.setAlignment(Pos.TOP_CENTER);
         return navTab; 
@@ -509,12 +509,16 @@ public class Components{
 		
 		Hyperlink posterLink = hyperlinkToPosterProfile(dog, primaryStage, poster);
 		
+		Hyperlink sponsorLink = hyperLinkToSponsor(dog, primaryStage);
+		
 		
 		Hyperlink appointmentLink = hyperlinkToAppointment(dog, primaryStage, poster);
 		
 		VBox info = new VBox(
 				primaryInfoLabel,
-				posterLink,appointmentLink
+				posterLink,
+				appointmentLink,
+				sponsorLink
 				);
 		
 		HBox HBox = new HBox(img, info);
@@ -525,6 +529,21 @@ public class Components{
 		return HBox;
 		
 		
+	}
+	public static Hyperlink hyperLinkToSponsor(Dog dog, Stage primaryStage) {
+		Hyperlink sponsorLink = Components.hyperlink();
+		sponsorLink.setText("Sponsor " + dog.getName() + "!");
+		DonateScene donateScene = DonateScene.getInstance();
+		sponsorLink.setOnAction(event -> {
+        	try {
+        		donateScene.setCurrentDog(dog);
+        		donateScene.start(primaryStage);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+        });
+		
+		return sponsorLink;
 	}
 	
 	public static Hyperlink hyperlinkToPosterProfile(Dog dog, Stage primaryStage, Hashtable<Integer,Poster> poster) {
@@ -679,7 +698,7 @@ public class Components{
 		
 	}
 
-	public static HBox sponsoredDogView(Dog d, Stage stage, Hashtable<Integer, Poster> poster) {
+	public static HBox sponsoredDogView(Dog d, Stage stage, Hashtable<Integer, Poster> poster, AppData appdata,SponsoredDogsScene page) {
 		ImageView img = Components.imageView(200, 200);
 		img.setImage(new Image(d.getImagePath()));
 		
@@ -687,15 +706,22 @@ public class Components{
 		
 		Hyperlink posterLink = hyperlinkToPosterProfile(d, stage, poster);
 		
-		Button cancelButton = new Button("Cancel Origin");
-		
+		Button cancelButton = button("Cancel Donation :(");
+//		Button editButton = new Button("Edit Donation :D"); // to be implemented
+		cancelButton.setOnAction(event -> { 
+        	appdata.getUser().getWallet().removeRecurringPayment(d.getId());
+        	// hacky way to reload page :)
+        	page.start(stage);
+        	
+        });
 		
 		VBox info = new VBox(
 				primaryInfoLabel,
-				posterLink
+				posterLink,
+				cancelButton
 				);
-		
-		HBox HBox = new HBox(img, info);
+		HBox HBox = new HBox();
+		HBox.getChildren().addAll(img, info);
 		HBox.setAlignment(Pos.CENTER);
 		HBox.setSpacing(50);
 		

@@ -1,6 +1,7 @@
 package guilayout;
 
 import backend.user.User;
+import backend.wallet.RecurringPayment;
 import guicontrol.AppData;
 import javafx.application.Application;
 import javafx.collections.*;
@@ -10,6 +11,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.PriorityQueue;
 import java.util.TreeSet;
 
@@ -34,9 +36,10 @@ public class SponsoredDogsScene extends PrimaryScene{
 	
 	@Override
 	public void start(Stage stage){
+		
 		initailizePrimaryScene();
 		
-		ArrayList<Dog> sponsoredDogs = user.getSponsoredDogs();
+		HashMap<Integer, RecurringPayment> recurringPayments = user.getWallet().getRecurringPayments();
 		VBox root = new VBox();
 		root.setAlignment(javafx.geometry.Pos.CENTER);
     	root.setSpacing(20);
@@ -45,14 +48,18 @@ public class SponsoredDogsScene extends PrimaryScene{
  
 		VBox sponsoredDogsDisplay = new VBox();
 	    	
-    	for(Dog d : sponsoredDogs) {
-    		sponsoredDogsDisplay.getChildren().add(Components.sponsoredDogView(d, stage, appData.getPosters()));
+    	for(RecurringPayment pay : recurringPayments.values()) {
+    		ArrayList<Dog> dogs = appData.getDogProfiles().get(pay.getPosterId()); 
+    		Dog d = findDogById(dogs, pay.getDogId());
+    		
+    		
+    		sponsoredDogsDisplay.getChildren().add(Components.sponsoredDogView(d, stage, appData.getPosters(), appData, sponsoredDog));
     	}
     	sponsoredDogsDisplay.setAlignment(javafx.geometry.Pos.CENTER);
     	
 //    	ScrollPane scrollPane = new ScrollPane(likedDogsDisplay);  
     	
-    	Label sponsoredDogsLabel = Components.largeLabel("Dogs you've Liked", Pos.CENTER);
+    	Label sponsoredDogsLabel = Components.largeLabel("Dogs you've Sponsored", Pos.CENTER);
     	 
     	
     	root.getChildren().addAll(
@@ -89,5 +96,14 @@ public class SponsoredDogsScene extends PrimaryScene{
 //    	});
 		
 	}	
+	
+	private Dog findDogById(ArrayList<Dog> list, int targetId) {
+        for (Dog d : list) {
+            if (d.getId() == targetId) {
+                return d; // Return the object if the ID matches
+            }
+        }
+        return null; // Return null if the object is not found
+    }
 	
 }

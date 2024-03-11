@@ -79,7 +79,6 @@ public class LoginScene extends Application{
             	showAlert("Sign up Failed", "Please enter a valid username or password.");
             clearFields(userTextField, passwordField);
             User user =Database.getUser(username, password);
-            Database.blankWallet(user.getUserID());
 //        		appData.initializeWallet(user.getUserID(), password);
         });
         loginButton.setOnAction(e -> {

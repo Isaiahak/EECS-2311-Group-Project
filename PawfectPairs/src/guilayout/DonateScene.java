@@ -7,10 +7,12 @@ import backend.dog.Dog;
 import backend.poster.Poster;
 import backend.user.User;
 import backend.poster.*;
+import backend.wallet.RecurringPayment;
 import backend.wallet.Wallet;
 import backend.wallet.Wallet.FundsTooLow;
 import guicontrol.AppData;
 import javafx.application.Application;
+import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -18,39 +20,48 @@ import javafx.scene.control.TextField;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollBar;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ToggleButton;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class DonateScene<Textfield> extends PrimaryScene {
-	ArrayList<Dog> posterDogs;
-	User user;
-	Wallet wallet;
-	Poster poster;
-	double SingleMaxWalletDepositLimit=1000;//in dollars
-	double ValueSelectedInScrollBar=0;
+public class DonateScene extends PrimaryScene {
+//	double SingleMaxWalletDepositLimit=1000;//in dollars
+//	double ValueSelectedInScrollBar=0;
 	private static DonateScene instance;
+	private Dog currentDog;
+	private Label currentFunds;
+	
+	ComboBox<String>  howOftenBox;
+	TextField howMuchMoney;
 	
 	public static DonateScene getInstance() {
 		if (instance == null)
 			instance = new DonateScene();
 		return instance;
 	}
-	private DonateScene() {
-		
-	}
 	
 	public static void main(String[] args) {
         launch(args);
     }
+	
+	public void setCurrentDog(Dog d) {
+		this.currentDog = d;
+	}
 
 	@Override
 	public void start(Stage stage) {
     	initailizePrimaryScene();
+    	HBox navTab = Components.navTab(userProfile, likedDog, dogProfileScene, sponsoredDog, bookedAppointment, stage,"likeddogs", appData);
+    	
+    	
     	//wallet=appData.getWallet();
     	//root is v box
 		VBox root = new VBox();
@@ -60,7 +71,48 @@ public class DonateScene<Textfield> extends PrimaryScene {
 
 
         stage.setTitle("Pawfect Pairs");
-        user = AppData.getInstance().getUser();		
+        user = appData.getUser();		
+        
+        Label dogLabel = Components.largeLabel(currentDog.getName() + " is thankful for you ♥", Pos.CENTER); 
+        ImageView image = Components.imageView(500,500); 
+        image.setImage(new Image(currentDog.getImagePath()));
+        
+        Label howMuch = Components.mediumLabel("How much would you like to donate?", Pos.CENTER);
+        howMuchMoney = new TextField();
+        
+        Label howOften = Components.mediumLabel("How often would you like to donate?", Pos.CENTER);
+        howOftenBox = new ComboBox<>(FXCollections.observableArrayList("Once", "Weekly", "Biweekly", "Monthly"));
+
+        // Optional: Set a default value
+        howOftenBox.setValue("Once");
+
+        
+        currentFunds = Components.largeLabel("Current balance: " + wallet.getBalance(), Pos.CENTER);
+        
+        Button donateButton = new Button("Donate");
+        
+        donateButton.setOnAction(event -> {
+			try {
+				makePayment(appData, howOftenBox.getValue());
+			} catch (FundsTooLow e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		});
+        
+        
+        root.getChildren().addAll(
+        		navTab,
+        		dogLabel,
+        		image,
+        		currentFunds,
+        		howMuch,
+        		howMuchMoney,
+        		howOften,
+        		howOftenBox,
+        		donateButton
+        		);
+        
 //		//posterDogs = AppData.getInstance().getDogProfiles();//TEMP
 //		
 //		 
@@ -195,6 +247,56 @@ public class DonateScene<Textfield> extends PrimaryScene {
 ////    	    
 ////    	    Database.onApplicationClose(user, posterDogs);
 ////    	});
+        StackPane stackPane = new StackPane(root);
+    	stackPane.setAlignment(javafx.geometry.Pos.CENTER);
+    	
+    	ScrollPane scrollPane = new ScrollPane(stackPane);
+    	
+    	scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        scrollPane.setFitToWidth(true);
+        
+        Scene scene = new Scene(scrollPane, Components.screenWidth, Components.screenHeight);
+    	
+		stage.setScene(scene);
+		stage.setTitle("Pawfect Pairs");
+//		stage.setMaximized(true);
+		stage.show();
+	}
+	
+	private void makePayment(AppData appdata, String duration) throws FundsTooLow {
+		double amountToDonate = Double.parseDouble(howMuchMoney.getText()); 
+		Poster poster = appData.getPosterProfiles().get(currentDog.getPosterId());
+		int daysBetweenPayments = 0;
+		
+		switch(duration) {
+			case "Weekly":
+				daysBetweenPayments = 7;
+				break;
+				
+			case "BiWeekly":
+				daysBetweenPayments = 14;
+				break;
+				
+			case "Monthly":
+				daysBetweenPayments = 30;
+				break;
+				
+			default:
+				break;
+							
+		}
+		
+		wallet.donate(amountToDonate, poster);
+		
+		if(!howOftenBox.getValue().equals("Once")) {
+			wallet.addRecurringPayment(new RecurringPayment(amountToDonate, daysBetweenPayments, currentDog.getId(), currentDog.getPosterId()));
+			
+		}
+		
+
+		currentFunds.setText("Your current balance "+ wallet.getBalance());
+
+
 		
 	}
 	  private void showAlert(String title, String message) {
