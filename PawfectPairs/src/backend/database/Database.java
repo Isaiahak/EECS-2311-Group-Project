@@ -32,64 +32,37 @@ public class Database {
 	public static void deleteAppointment (int userID) {
 		Connection connection = null;
 		PreparedStatement statement = null;
-
 		try {
 			connection = databaseConnector.connect();// Assuming you have a method to get the database connection
 			String query = "DELETE FROM datesbooked WHERE userid = ?";
 			statement = connection.prepareStatement(query);
 			statement.setInt(1, userID);
 			statement.executeUpdate();
-		} catch (SQLException e) {
+		}
+		catch (SQLException e) {
 			e.printStackTrace();
-		} finally {
-			try {
-				if (statement != null) {
-					statement.close();
-				}
-				if (connection != null) {
-					connection.close();
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
 		}
 	}
 
 	public static void setUserAppointments(AppointmentManager appointmentManager){
 		Connection connection = null;
-		PreparedStatement preparedStatement = null;
-
 		try {
 			connection = databaseConnector.connect();
-			for(Appointment app : appointmentManager.getUserAppointments()) {
-				String sql = "INSERT INTO datesbooked (userid, dogid, posterid, date) VALUES (?, ?, ?, ?)";
-				preparedStatement = connection.prepareStatement(sql);
-
-				preparedStatement.setInt(1, app.getUserID());
-				preparedStatement.setInt(2, app.getDogID());
-				preparedStatement.setInt(3, app.getPosterID());
-				preparedStatement.setDate(4, app.getDate());
-
-				int rowsAffected = preparedStatement.executeUpdate();
+			Statement statement = connection.createStatement();
+			StringBuilder query = new StringBuilder("INSERT INTO datesbooked (userid, dogid, posterid, date) VALUES ");
+			ArrayList<Appointment> appList = appointmentManager.getUserAppointments();
+			for(int i = 0; i < appList.size(); i++){
+				if(i != 0 || i != appList.size()){
+					query.append(",");
+				}
+				query.append( "( " + appList.get(i).getUserID() +", " + appList.get(i).getDogID() + "," + appList.get(i).getPosterID()+ "," + appList.get(i).getDate() + ")");
 			}
+			statement.addBatch(query.toString());
+			statement.executeBatch();
 		}
-
 		catch (SQLException e) {
 			e.printStackTrace();
 
-		}
-		finally {
-			try {
-				if (preparedStatement != null) {
-					preparedStatement.close();
-				}
-				if (connection != null) {
-					connection.close();
-				}
-			}
-			catch (SQLException e) {
-				e.printStackTrace();
-			}
 		}
 	}
 
@@ -751,7 +724,8 @@ public class Database {
         	 int rowsAffected = preparedStatement.executeUpdate();
         	 if (rowsAffected > 0) {
                 System.out.println("User added successfully!");
-                int userid = Database.getUserID(username, password);
+				sql = "SELECT userid FROM users WHERE username = " + username + " AND password = " + password + ";";
+                int userid = connection.prepareStatement(sql).getResultSet().getInt("userid");
                 String sql2 = "INSERT INTO userattributepreferences (userid, attributetype, attributeid) VALUES ";
                 for(int type = 0; type < allAttributes.keySet().size(); type++) {
                 	for(int weight = 0; weight < allAttributes.get(type).size(); weight++) {
@@ -991,7 +965,7 @@ class DatabaseConnector {
     public Connection connect() {
         try{
         	Class.forName("org.postgresql.Driver"); // Replace with your database driver
-        	Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/thebestoneyet", "postgres", "doglover123");
+        	Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5434/pawsome", "postgres", "321123");
 			//System.out.println( "Connected to the PostgreSQL server successfully.");
         	return connection;
         }

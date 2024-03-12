@@ -13,13 +13,13 @@ public class Poster implements Comparable<Poster> {
 	private ArrayList<Dog> dogList = new ArrayList<Dog>();
 	private double balance;
 
-	public  Poster(int score, String displayName, int uniqueId, String phone, String email, double balance) {
-	this.score = score;
-	this.displayName = displayName;
-	this.uniqueId = uniqueId;
-	this.phone = phone;
-	this.email = email;
-	this.setBalance(balance);
+	public Poster(int score, String displayName, int uniqueId, String phone, String email, double balance) {
+		this.score = score;
+		this.displayName = displayName;
+		this.uniqueId = uniqueId;
+		this.phone = phone;
+		this.email = email;
+		this.setBalance(balance);
 	}
 
 	public void setDogList(ArrayList<Dog> dogList) {
@@ -29,64 +29,64 @@ public class Poster implements Comparable<Poster> {
 	}
 
 	public String getEmail() {
-	return this.email;
+		return this.email;
 
 	}
 
 	public String getPhone() {
-	return this.phone;
+		return this.phone;
 	}
 
 	public void depositDonation(double amount) {
-	this.setBalance(this.getBalance() + amount);
+		this.setBalance(this.getBalance() + amount);
 	}
 
 	public int getScore() {
 		return score;
 	}
+
 	public void setScore(int score) {
-	this.score = score;
+		this.score = score;
 	}
 
 	public String getDisplayName() {
-	return displayName;
+		return displayName;
 	}
 
 	public void setDisplayName(String displayName) {
-	this.displayName = displayName;
+		this.displayName = displayName;
 	}
 
 	public int getUniqueId() {
-	return uniqueId;
+		return uniqueId;
 	}
 
 	public void setUniqueId(int uniqueId) {
-	this.uniqueId = uniqueId;
+		this.uniqueId = uniqueId;
 	}
 
 	public double getBalance() {
-	return balance;
+		return balance;
 	}
 
 	public void setBalance(double balance) {
-	this.balance = balance;
+		this.balance = balance;
 	}
 
 	@Override
 	public String toString() {
-	return "Poster [score=" + score + ", displayName=" + displayName + ", uniqueId=" + uniqueId + "]";
+		return "Poster [score=" + score + ", displayName=" + displayName + ", uniqueId=" + uniqueId + "]";
 	}
 
 	@Override
 	public int compareTo(Poster o) {
-		if (Integer.compare(this.uniqueId,o.uniqueId) != 0) {
-			return Integer.compare(this.uniqueId,o.uniqueId);
-		}
-		else if (this.displayName.compareTo(o.displayName)!=0) {
-		  //compare name if id is equal
+		if (Integer.compare(this.uniqueId, o.uniqueId) != 0) {
+			return Integer.compare(this.uniqueId, o.uniqueId);
+		} else if (this.displayName.compareTo(o.displayName) != 0) {
+			//compare name if id is equal
 			return this.displayName.compareTo(o.displayName);
-		}
-		else{ //compare score if both id and name are equal
+		} else { //compare score if both id and name are equal
 			return Integer.compare(this.score, o.score);
+		}
 	}
 }
