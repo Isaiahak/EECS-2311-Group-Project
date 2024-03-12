@@ -465,6 +465,21 @@ public class Components{
 		return label;
 	}
 	
+	public static Button calendarCell() {
+		
+		
+		Button cell = new Button();
+		cell.setFont(Font.font(font, fontSm));
+		cell.setPrefSize(80, 80);
+		
+		String def = "-fx-background-color: #d1d1d1; -fx-text-fill: #0f0f0f; -fx-alignment: top-right;";
+		String high = "-fx-background-color: #e0e0e0; -fx-text-fill: #0f0f0f; -fx-alignment: top-right;";
+		cell.setStyle(def);
+		
+		return cell;
+		
+	}
+	
 	public static GridPane createAttribute(ArrayList<Attribute> userAttributeList, int attributeType, HashMap<Integer,ArrayList<Attribute>> allAttributes ) {
 		GridPane gridPane = new GridPane();
 		String[] names = allAttributes.get(attributeType).get(0).getNames();
