@@ -72,9 +72,9 @@ public class DogProfileScene extends PrimaryScene{
         Button passButton = Components.button("╳");
 		passButton.setStyle("-fx-background-color: #0a0f40; -fx-text-fill: white; -fx-font-size: 60;");
         passButton.setOnAction(event -> {
-            user.addPassedDogs(posterDogs.get(currentProfileIndex));
-			posterDogs.remove(currentProfileIndex);
-            if(currentProfileIndex + 1 > posterDogs.size()) {
+            user.addPassedDogs(allDogs.get(currentProfileIndex));
+			allDogs.remove(currentProfileIndex);
+            if(currentProfileIndex + 1 > allDogs.size()) {
             	outOfDogs.start(primaryStage);
             }
         	else {
@@ -88,10 +88,10 @@ public class DogProfileScene extends PrimaryScene{
         Button likeButton = Components.button("♥");
 		likeButton.setStyle("-fx-background-color: #db2a4d; -fx-text-fill: white; -fx-font-size: 60;");
         likeButton.setOnAction(e -> {
-			posterDogs.get(currentProfileIndex).setAdopted(true);
-            user.addLikedDogs(posterDogs.get(currentProfileIndex));
-			posterDogs.remove(currentProfileIndex);
-            if(currentProfileIndex + 1 > posterDogs.size()) {
+			allDogs.get(currentProfileIndex).setAdopted(true);
+            user.addLikedDogs(allDogs.get(currentProfileIndex));
+			allDogs.remove(currentProfileIndex);
+            if(currentProfileIndex + 1 > allDogs.size()) {
             	outOfDogs.start(primaryStage);
             }
         	else {	
@@ -132,7 +132,7 @@ public class DogProfileScene extends PrimaryScene{
         
         // nav tab
 
-        HBox navTab = Components.navTab(userProfile, likedDog, DogProfileScene.getInstance(),sponsoredDog, BookedAppointmentScene.getInstance(),primaryStage, "dogProfiles", appData);
+        HBox navTab = Components.navTab(userProfileScene, likedDogsScene, DogProfileScene.getInstance(),sponsoredDogsScene, BookedAppointmentScene.getInstance(),primaryStage, "dogProfiles", appData);
 
       
         
@@ -173,7 +173,7 @@ public class DogProfileScene extends PrimaryScene{
 		primaryStage.setScene(scene);
 	      
 	//  primaryStage.setMaximized(true);
-		if(currentProfileIndex + 1 > posterDogs.size()){
+		if(currentProfileIndex + 1 > allDogs.size()){
 			outOfDogs.start(stage);
 		}
 		else{
@@ -189,18 +189,18 @@ public class DogProfileScene extends PrimaryScene{
 	
 
 	public void displayCurrentPetProfile() {
-	if (currentProfileIndex + 1 > posterDogs.size()) {
+	if (currentProfileIndex + 1 > allDogs.size()) {
 		outOfDogs.start(stage);
 	}
 	else {
-		Dog currentProfile = posterDogs.get(currentProfileIndex);
+		Dog currentProfile = allDogs.get(currentProfileIndex);
 		while ((user.getAgePreferences().contains(currentProfile.getAge()) == false ||
 				user.getSizePreferences().contains(currentProfile.getSize()) == false ||
 				user.getSexPreferences().contains(currentProfile.getSex()) == false ||
 				user.getEnergyLevelPreferences().contains(currentProfile.getEnergyLevel()) == false) &&
-				currentProfileIndex + 1 < posterDogs.size()) {
+				currentProfileIndex + 1 < allDogs.size()) {
 			changeProfile();
-			currentProfile = posterDogs.get(currentProfileIndex);
+			currentProfile = allDogs.get(currentProfileIndex);
 		}
 
 
@@ -240,7 +240,7 @@ public class DogProfileScene extends PrimaryScene{
 	}
 
 	public void setCurrentProfileIndex ( int index){
-		if (index <= posterDogs.size())
+		if (index <= allDogs.size())
 			this.currentProfileIndex = index;
 	}
 
@@ -249,7 +249,7 @@ public class DogProfileScene extends PrimaryScene{
 
 	}
 	public Dog getCurrentProfile() {
-		return this.posterDogs.get(currentProfileIndex);
+		return this.allDogs.get(currentProfileIndex);
 	}
 
 }

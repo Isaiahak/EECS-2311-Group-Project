@@ -563,7 +563,7 @@ public class Components{
 	}
 	
 	public static Hyperlink hyperlinkToCancelAppointment(Dog dog, Stage primaryStage, Hashtable<Integer,Poster> poster) {
-		AppointmentManager userManager = AppointmentScene.getInstance().getUserAppointments();
+		AppointmentManager userManager = CalendarScene.getInstance().getUserAppointments();
 		ArrayList<Appointment> userAppointments = userManager.getUserAppointments();
 		
 		
@@ -575,7 +575,7 @@ public class Components{
 		
 		//PosterProfileScene posterProfile = PosterProfileScene.getInstance();
 		//Dog selectedDog = Database.getADog(dog.getId());
-		AppointmentScene appointmentPage = AppointmentScene.getInstance();
+		CalendarScene appointmentPage = CalendarScene.getInstance();
 		
 	
 		appointmentLink.setOnAction(event -> {
@@ -602,7 +602,7 @@ public class Components{
 		return appointmentLink;
 	}
 	public static Hyperlink hyperlinkToReschedule(Dog dog, Stage primaryStage, Hashtable<Integer,Poster> poster) {
-		AppointmentManager userManager = AppointmentScene.getInstance().getUserAppointments();
+		AppointmentManager userManager = CalendarScene.getInstance().getUserAppointments();
 		ArrayList<Appointment> userAppointments = userManager.getUserAppointments();
 		
 		Hyperlink appointmentLink = Components.hyperlink();
@@ -614,7 +614,7 @@ public class Components{
 		//PosterProfileScene posterProfile = PosterProfileScene.getInstance();
 		
 		//Dog selectedDog = Database.getADog(dog.getId()); //need to change to local Call
-		AppointmentScene appointmentPage = AppointmentScene.getInstance();
+		CalendarScene appointmentPage = CalendarScene.getInstance();
 		
 	
 		appointmentLink.setOnAction(event -> {
@@ -650,7 +650,7 @@ public class Components{
 		Poster selectedPoster = poster.get(dog.getPosterId());
 		//PosterProfileScene posterProfile = PosterProfileScene.getInstance();
 		//Dog selectedDog = Database.getADog(dog.getId());
-		AppointmentScene appointmentPage = AppointmentScene.getInstance();
+		CalendarScene appointmentPage = CalendarScene.getInstance();
 		
 	
 		appointmentLink.setOnAction(event -> {
