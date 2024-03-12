@@ -70,9 +70,9 @@ public class Wallet {
 	public double getBalance() {
 		return balance;
 	}
-	public void setBalance(int balance) {
-		this.balance = balance;
-	}
+//	public void setBalance(int balance) {
+//		this.balance = balance;
+//	}
 
 
 	public class FundsTooLow extends Exception { 
