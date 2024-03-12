@@ -2,7 +2,7 @@ package backend.calendar;
 
 import java.sql.Date;
 
-public class Appointment {
+public class Appointment{
 	private int posterID;
 	private int dogID;
 	private Date date;
@@ -41,6 +41,15 @@ public class Appointment {
 	}
 	public void setUserID(int userID) {
 		this.userID = userID;
+	}
+	
+	
+	@Override
+	public boolean equals(Object o) {
+		if(this.dogID == ((Appointment) o).getDogID()) return true;
+		
+		return false;
+		
 	}
 	
 	

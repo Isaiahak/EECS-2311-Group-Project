@@ -3,6 +3,8 @@ package backend.database;
 import java.sql.*;
 import java.sql.Date;
 import java.util.*;
+import java.time.LocalDate;
+import java.time.ZoneId;
 
 import backend.calendar.Appointment;
 import backend.calendar.AppointmentManager;
@@ -65,7 +67,6 @@ public class Database {
 					preparedStatement.setInt(2, app.getDogID());
 					preparedStatement.setInt(3, app.getPosterID());
 					preparedStatement.setDate(4, app.getDate());
-
 					int rowsAffected = preparedStatement.executeUpdate();
 				}
 			}

@@ -43,7 +43,9 @@ public boolean appointmentExists(Appointment appointment) {
     
     for (Appointment existingAppointment : this.userAppointments) {
         if (existingAppointment.getPosterID() == posterID && existingAppointment.getDogID() == dogID) {
-            return true;
+        	System.out.println("other: p,d" + posterID + " " +dogID  );
+        	System.out.println("this: p,d" + existingAppointment.getPosterID() + " " +existingAppointment.getDogID()  );
+        	return true;
         }
     }
     

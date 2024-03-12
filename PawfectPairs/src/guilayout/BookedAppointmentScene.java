@@ -49,17 +49,10 @@ public class BookedAppointmentScene extends PrimaryScene {
 
         Label appointmentsLabel = Components.largeLabel("Your Booked Appointments", Pos.CENTER);
 
-        // Get user appointments from the database
-        
-        //DB Call
-        //TreeMap<Integer, Date> userAppointments = Database.getUserAppointments(user.getUserID());
-        
-        //Local Object
-        userAppointments = CalendarScene.getInstance().getUserAppointments();
-        if (userAppointments!=null) {
-        appointments = userAppointments.getUserAppointments();
-        }
-        
+        appointments = appData.getAppointmentManager().getUserAppointments();
+//        for(Appointment app : appointments) {
+//        	System.out.println(app.getDogID());
+//        }
 
         VBox appointmentsDisplay = new VBox();
 
@@ -67,22 +60,25 @@ public class BookedAppointmentScene extends PrimaryScene {
         //change code below
         // Display user appointments
         
-        if (appointments!= null) {
+//        if (appointments!= null) {
         	for (Appointment selectedAppointment : appointments) {
-                ArrayList<Dog> doglist = AppData.getInstance().getDogProfiles().get(selectedAppointment.getPosterID());
+//                ArrayList<Dog> doglist = appData.getDogProfiles().get(selectedAppointment.getPosterID());
+        		ArrayList<Dog> doglist = appData.getUser().getLikedDogs();
+                
                 Dog appointmentDog = null;
+                
                 for(Dog dog : doglist){
                     if( dog.getId() == selectedAppointment.getDogID()){
                        appointmentDog = dog;
                     }
                 }
         		//Katya and Isaiah, we might need to chenge this to get dog locally
-        		appointmentsDisplay.getChildren().add(Components.appointmentView(appointmentDog, selectedAppointment.getDate(), stage,AppData.getInstance().getPosters()));
+        		appointmentsDisplay.getChildren().add(Components.appointmentView(appointmentDog, selectedAppointment.getDate(), stage, appData.getPosters()));
         	}
-        }
-        else {
-        	appointmentsDisplay.getChildren().add(new Label("No appointments found."));
-        }
+//        }
+//        else {
+//        	appointmentsDisplay.getChildren().add(new Label("No appointments found."));
+//        }
         /*if (userAppointments != null) {
             for (Integer dogID : userAppointments.keySet()) {
                 Dog dog = Database.getDogById(dogID); // Fetch dog details

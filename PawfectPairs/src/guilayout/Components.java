@@ -1,6 +1,7 @@
 package guilayout;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.*;
 
 import backend.calendar.Appointment;
@@ -18,6 +19,8 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
@@ -33,6 +36,7 @@ public class Components{
 	public static int screenHeight =  (int) Screen.getPrimary().getVisualBounds().getHeight();
 	public static int screenWidth =  (int) Screen.getPrimary().getVisualBounds().getWidth(); 
 	
+	private static int fontTn = 15;
 	private static int fontSm = 20;
 	private static int fontMd = 30;
 	private static int fontLg = 50; 
@@ -186,6 +190,16 @@ public class Components{
 		Label label = new Label(text);
 		label.setAlignment(pos);
 		label.setFont(Font.font(font, fontSm));
+		label.setWrapText(true);
+
+		
+		return label;
+	}
+	
+	public static Label tinyLabel(String text, Pos pos) {
+		Label label = new Label(text);
+		label.setAlignment(pos);
+		label.setFont(Font.font(font, fontTn));
 		label.setWrapText(true);
 
 		
@@ -452,16 +466,32 @@ public class Components{
 		return label;
 	}
 	
-	public static Button calendarCell() {
+	public static Button calendarButton(String text) {
 		
+		Button button = new Button(text);
+		button.setFont(Font.font(font, fontMd));
 		
-		Button cell = new Button();
-		cell.setFont(Font.font(font, fontSm));
-		cell.setPrefSize(80, 80);
+		button.setStyle(
+				"-fx-background-color: #82daf5; -fx-text-fill: #ffffff; -fx-alignment: center;"
+				);
+		
+		return button;
+		
+	}
+	
+	public static StackPane calendarCell(String day) {
+		StackPane cell = new StackPane();
+		Label cellText = new Label();
+		cellText.setText(day);
+		cellText.setFont(Font.font(font, fontSm));
+		cell.setPrefSize(90, 90);
+		StackPane.setAlignment(cellText, Pos.TOP_RIGHT);
 		
 		String def = "-fx-background-color: #d1d1d1; -fx-text-fill: #0f0f0f; -fx-alignment: top-right;";
 		String high = "-fx-background-color: #e0e0e0; -fx-text-fill: #0f0f0f; -fx-alignment: top-right;";
 		cell.setStyle(def);
+		
+		cell.getChildren().add(cellText);
 		
 		return cell;
 		
@@ -482,12 +512,12 @@ public class Components{
 	}
 	
 	//Sidney, Edson and Connor were here :) 
-		public static HBox appointmentView(Dog dog, Date date, Stage primaryStage, Hashtable<Integer,Poster> poster) {
+		public static HBox appointmentView(Dog dog, Date localDate, Stage primaryStage, Hashtable<Integer,Poster> poster) {
 	        ImageView img = Components.imageView(200, 200);
 	        img.setImage(new Image(dog.getImagePath()));
 
 	        Label primaryInfoLabel = Components.mediumLabel(dog.getName() + ", " + dog.getAge() + " years, " + dog.getSex(), Pos.CENTER);
-	        Label appointmentDate = Components.mediumLabel("Appointment Date: " + date.toString(),Pos.CENTER);
+	        Label appointmentDate = Components.mediumLabel("Appointment Date: " + localDate.toString(),Pos.CENTER);
 
 	        Hyperlink rescheduleLink = hyperlinkToReschedule(dog, primaryStage, poster);
 	        
@@ -566,7 +596,7 @@ public class Components{
 	}
 	
 	public static Hyperlink hyperlinkToCancelAppointment(Dog dog, Stage primaryStage, Hashtable<Integer,Poster> poster) {
-		AppointmentManager userManager = CalendarScene.getInstance().getUserAppointments();
+		AppointmentManager userManager = AppData.getInstance().getAppointmentManager();
 		ArrayList<Appointment> userAppointments = userManager.getUserAppointments();
 		
 		
@@ -605,7 +635,7 @@ public class Components{
 		return appointmentLink;
 	}
 	public static Hyperlink hyperlinkToReschedule(Dog dog, Stage primaryStage, Hashtable<Integer,Poster> poster) {
-		AppointmentManager userManager = CalendarScene.getInstance().getUserAppointments();
+		AppointmentManager userManager = AppData.getInstance().getAppointmentManager();
 		ArrayList<Appointment> userAppointments = userManager.getUserAppointments();
 		
 		Hyperlink appointmentLink = Components.hyperlink();
@@ -625,7 +655,6 @@ public class Components{
         		
         		for (Appointment appointment : userAppointments) {
         	        if (appointment.getDogID() == dog.getId()) {
-        	        	userManager.removeAppointment(appointment);
         	        	appointmentPage.setCurrentPosterDog(selectedPoster,dog);
                 		appointmentPage.start(primaryStage);
         	        	
