@@ -235,3 +235,26 @@ March 9, 2024 -
 - Ekaterina updated the DataBase.java methods to initialise the user with the new attributes, and update the attributes
 - Ekaterina refactored the entire program to incldue the new attribute changes (we moved attributes from being stored in a 'dummy' dog owned by a user, to just being in a user's preferences list)
 - Ekaterina is almost ifnished with GUI implementations for the attribute functionality, but still needs to do some debugging (and needs to implemetn attributes into sorting alogrithm)
+- Isaiah helped update and fix the attributes
+
+March 10, 2024
+- Ekaterina implemented Wallet class into main
+      - Ekaterina updated wallet class to support mutiple sponsorshipts
+      - Ekaterina restruvtured wallet class and refactored
+      - Ekaterina udpated the DB and GUI for the wallet/donations
+- Ekaterina finished integrating the dog attribute sorting
+- Ekaterina fixed the attributes in the gui and added some constraints
+- Ekaterina debugged Database issues
+- Isaiagh debugged database issues
+- Isaiah implemented Calendar class into main 
+- Isaiah finished calendar class by adding database calls to it
+
+March 11, 2024
+- Ekaterina made some minor updates to the wallet and calendar classes
+- Ekaterina made some renaming changes
+- Ekaterina helped debug database and dog sorting algorithm
+- Ekaterina added constaints to calendar (prevent user from making appointmnet inthe past)
+- Isaiah updated the database methods (do pushes/pulls more frequently to optimize performance)
+- Isaiah debugged database bugs
+- Ekaterina udpated the calendar gui
+- Isaiah debugged the sorting algortim (changed DB calls, so we needed to change some data structures)
