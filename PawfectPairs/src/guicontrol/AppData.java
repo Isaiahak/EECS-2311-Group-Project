@@ -1,14 +1,7 @@
 package guicontrol;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Hashtable;
-import java.util.PriorityQueue;
-import java.util.TreeSet;
+import java.util.*;
 
-import backend.calendar.Appointment;
 import backend.calendar.AppointmentManager;
 import backend.database.Database;
 import backend.dog.Dog;
@@ -20,9 +13,6 @@ import backend.dog.trait.Size;
 import backend.poster.Poster;
 import backend.tag.Tag;
 import backend.user.User;
-import guilayout.DogProfileScene;
-import backend.wallet.Wallet;
-import backend.wallet.Wallet.FundsTooLow;
 import guilayout.UserProfile;
 public class AppData {
 	
@@ -31,7 +21,7 @@ public class AppData {
 	private Hashtable<Integer, ArrayList<Dog>> dogProfileHashtable; // posterid, dogs
 	private HashMap<Integer, Tag> allTags;
 	private Hashtable<Integer,Poster> posterProfiles; // poster profiles by id 
-	private ArrayList<Dog> sortedDogProfiles;
+	private PriorityQueue<Dog> sortedDogProfiles;
 	private static AppData instance;
 	private AppointmentManager appointmentManager;
 	
@@ -59,7 +49,7 @@ public class AppData {
 		this.appointmentManager = appointmentManager;
 	}
 
-	public ArrayList<Dog> getSortedDogProfiles() {
+	public PriorityQueue<Dog> getSortedDogProfiles() {
 		return sortedDogProfiles;
 	}
 	
@@ -68,7 +58,7 @@ public class AppData {
 	}
 
 
-	public void setSortedDogProfiles(ArrayList<Dog> sortedDogProfiles) {
+	public void setSortedDogProfiles(PriorityQueue sortedDogProfiles) {
 		this.sortedDogProfiles = sortedDogProfiles;
 	}
 
@@ -119,35 +109,41 @@ public class AppData {
 	public void updateDogScores() {
 
 	// perform check on if the user's preferences have changed before updating scores	
-		if(this.user.arePreferencesEqual(UserProfile.getInstance().getOldTagPreferences()) == false){
-			for(Dog d : this.sortedDogProfiles) {
-				d.calculateScore(user.getTagPreferences());
-			}
-			// re-sort dogs
-			Collections.sort(this.sortedDogProfiles);
-		}
-	}
-
-	public void CheckIfAttributePreferencesHaveBeenChanged(){
-		if(!this.user.areAttributesEqual(UserProfile.getInstance().getOldSexPreferences(),
+		if(this.user.arePreferencesEqual(UserProfile.getInstance().getOldTagPreferences()) == false || this.user.areAttributesEqual(UserProfile.getInstance().getOldSexPreferences(),
 				UserProfile.getInstance().getOldAgePreferences(),
 				UserProfile.getInstance().getOldSizePreferences(),
-				UserProfile.getInstance().getOldEnergyLevelPreferences())){
-					DogProfileScene.getInstance().setCurrentProfileIndex(0);
+				UserProfile.getInstance().getOldEnergyLevelPreferences()) == false){
+			ArrayList<Dog> likedDogs = Database.getUsersDogs(user.getUserID(),"userdogs");
+			for (Dog d : user.getLikedDogs()) {
+				if(likedDogs.contains(d) == false)
+					Database.addUserDog(d.getId(), user.getUserID(),"userdogs");
+			}
+
+			ArrayList<Dog> passedDogs = Database.getUsersDogs(user.getUserID(),"userpasseddogs");
+			for (Dog d : user.getPassedDogs()) {
+				if(passedDogs.contains(d) == false)
+					Database.addUserDog(d.getId(), user.getUserID(),"userpasseddogs");
+			}
+			Database.deletePreferenceTagsFromUser(user.getUserID());
+			Database.addPreferenceTagsToUser(user.getTagPreferences(), user.getUserID());
+			Database.deleteUserAttributePreferences(user.getUserID());
+			Database.addUserAttributePreferences(user.getAgePreferences(), user.getUserID());
+			Database.addUserAttributePreferences(user.getSexPreferences(),  user.getUserID());
+			Database.addUserAttributePreferences(user.getEnergyLevelPreferences(), user.getUserID());
+			Database.addUserAttributePreferences(user.getSizePreferences(), user.getUserID());
+			setDogProfiles();
+			setPosterDogLists();
+			initializeDogProfilesSorted();
 		}
 	}
 	
 	public void initializeDogProfilesSorted() {  // to be optimized
-		ArrayList<Dog> dogList = new ArrayList<Dog>();
+		PriorityQueue<Dog> dogList = new PriorityQueue<Dog>();
 		
 		for (ArrayList<Dog> dogs : dogProfileHashtable.values()) {
 			dogList.addAll(dogs);
 		}
-		
-
-		
 		setSortedDogProfiles(dogList);
-
 	}
 
 	public void setPosterDogLists() {
@@ -165,7 +161,6 @@ public class AppData {
 		ArrayList<Attribute> sexList = new ArrayList<Attribute>();
 		for(int i = 0 ; i < attEx.getNames().length; i++) {
 			sexList.add(new Sex(i));
-			
 		}
 		this.allAttributes.put(attEx.getType(), sexList);
 		
@@ -173,7 +168,6 @@ public class AppData {
 		ArrayList<Attribute> sizeList = new ArrayList<Attribute>();
 		for(int i = 0 ; i < attEx.getNames().length; i++) {
 			sizeList.add(new Size(i));
-			
 		}
 		this.allAttributes.put(attEx.getType(), sizeList);
 		
@@ -181,7 +175,6 @@ public class AppData {
 		ArrayList<Attribute> energyLevelList = new ArrayList<Attribute>();
 		for(int i = 0 ; i < attEx.getNames().length; i++) {
 			energyLevelList.add(new EnergyLevel(i));
-			
 		}
 		this.allAttributes.put(attEx.getType(), energyLevelList);
 		
@@ -189,7 +182,6 @@ public class AppData {
 		ArrayList<Attribute> ageList = new ArrayList<Attribute>();
 		for(int i = 0 ; i < attEx.getNames().length; i++) {
 			ageList.add(new Age(i));
-			
 		}
 		
 		this.allAttributes.put(attEx.getType(), ageList);

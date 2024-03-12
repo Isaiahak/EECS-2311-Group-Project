@@ -1,18 +1,13 @@
 package backend.database;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.Hashtable;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
-import java.util.HashMap;
+import java.sql.Date;
+import java.util.*;
 
 import backend.calendar.Appointment;
 import backend.calendar.AppointmentManager;
 import backend.dog.Dog;
-import backend.dog.trait.Age;
-import backend.dog.trait.Attribute;
+import backend.dog.trait.*;
 import backend.poster.Poster;
 import backend.tag.Tag;
 import backend.user.User;
@@ -23,7 +18,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.time.LocalDate;
 
 /*
  * Public class to centralize all communications to and from database
@@ -178,7 +172,7 @@ public class Database {
 		            preparedStatement.setInt(4, userID );
 		            int rowsAffected = preparedStatement.executeUpdate();
 		            if (rowsAffected > 0) {
-		                System.out.println("Date added successfully!");
+		                //System.out.println("Date added successfully!");
 		                ;
 		                return true;
 		            } else {
@@ -186,7 +180,7 @@ public class Database {
 		                return false;
 		            }}
 		        	 else {
-		        		 System.out.println("Date is already there.");
+		        		 //System.out.println("Date is already there.");
 		        	 }
 		            
 		           /* if (!(isDateExists(date, posterID, connection)==true)) {
@@ -280,8 +274,13 @@ public class Database {
 	         Statement statement2 = connection.createStatement();
 //		         ResultSet resultSet = statement.executeQuery ("SELECT * FROM dog WHERE dog.dogid NOT IN (SELECT userdogs.dogid FROM userdogs WHERE userdogs.userid = "+ user.getUserID() + " ) AND adopted = false;");
 	         ResultSet resultSet = statement.executeQuery 
-	        		 ("SELECT * FROM dog WHERE dog.dogid NOT IN (SELECT userdogs.dogid FROM userdogs WHERE userdogs.userid = "+ user.getUserID() + " ) "
-	         		+ "AND dog.dogid NOT IN (SELECT userpasseddogs.dogid FROM userpasseddogs WHERE userpasseddogs.userid = "+ user.getUserID() + " );");
+	        		 ("SELECT * FROM dog WHERE " +
+							 "dog.dogid NOT IN (SELECT userdogs.dogid FROM userdogs WHERE userdogs.userid = "+ user.getUserID() + " ) " +
+							 "AND dog.dogid NOT IN (SELECT userpasseddogs.dogid FROM userpasseddogs WHERE userpasseddogs.userid = "+ user.getUserID() + ")" +
+							 "AND dog.ageid IN (SELECT userattributepreferences.attributeid FROM userattributepreferences WHERE userattributepreferences.userid = " + user.getUserID() + " AND userattributepreferences.attributetype = 0) " +
+							 "AND dog.sizeid IN (SELECT userattributepreferences.attributeid FROM userattributepreferences WHERE userattributepreferences.userid = " + user.getUserID() + " AND userattributepreferences.attributetype = 3) " +
+							 "AND dog.sexid IN (SELECT userattributepreferences.attributeid FROM userattributepreferences WHERE userattributepreferences.userid = " + user.getUserID() + " AND userattributepreferences.attributetype = 1) " +
+							 "AND dog.energylevelid IN (SELECT userattributepreferences.attributeid FROM userattributepreferences WHERE userattributepreferences.userid = " + user.getUserID() + " AND userattributepreferences.attributetype = 2);");
 	         while (resultSet.next()) {
 	        	// only add a dog if adoption = false and its id is not negative (if negative, its a dummy dog)	
 	        	 
@@ -442,11 +441,6 @@ public class Database {
 	        	 preparedStatement.setInt(1, dogID);
 	        	 preparedStatement.setInt(2, userID);
 	        	 int rowsAffected = preparedStatement.executeUpdate();
-	        	 if (rowsAffected > 0) {
-	                System.out.println("Dog-User relationship added successfully!");
-	            } else {
-	                System.out.println("Failed to add Dog-User relationship.");
-	            }
 	        } 
 	        catch (SQLException e) {
 	            e.printStackTrace();
@@ -501,11 +495,6 @@ public class Database {
 	    	 preparedStatement.setInt(1, dogID);
 	    	 preparedStatement.setInt(2, userID);
 	    	 int rowsAffected = preparedStatement.executeUpdate();
-	    	 if (rowsAffected > 0) {
-	            System.out.println("Dog-User relationship added successfully!");
-	        } else {
-	            System.out.println("Failed to add Dog-User relationship.");
-	        }
 	    } 
 	    catch (SQLException e) {
 	        e.printStackTrace();
@@ -527,7 +516,7 @@ public class Database {
 	}
 
 	public static ArrayList<Dog> getUsersDogs(int userID, String table){
-		ArrayList<Dog> list = new ArrayList<Dog>();
+		ArrayList<Dog> list = new ArrayList<>();
 		
 	    try {
 	    	Connection connection = databaseConnector.connect();
@@ -722,18 +711,13 @@ public class Database {
         try {
         	 connection = databaseConnector.connect();
         	 for(Integer t : tags.keySet()) {
-		    	 String sql = "INSERT INTO userattributepreferences (userid, tagid) VALUES (?, ?)";
+		    	 String sql = "INSERT INTO usertagpreferences (userid, tagid) VALUES (?, ?)";
 		    	 preparedStatement = connection.prepareStatement(sql);
 		    	 
 		    	 preparedStatement.setInt(1, userId);
-		    	 preparedStatement.setInt(2, Database.getTagID(tags.get(t).getTagName()));
+		    	 preparedStatement.setInt(2, t);
 		    	 
 		    	 int rowsAffected = preparedStatement.executeUpdate();
-		    	 if (rowsAffected > 0) {
-		            System.out.println("User tag preference relationship added successfully!");
-		        } else {
-		            System.out.println("Failed to add user tag preference relationship.");
-		        }
 		    } 
         }
         catch (SQLException e) {
@@ -869,7 +853,21 @@ public static ArrayList<Attribute> getUsersPreferredAttributes(int userid, int a
 		    	 ResultSet resultSet = preparedStatement.executeQuery();
 		    	 
 		    	 while (resultSet.next()) {
-			        	newList.add(new Age(resultSet.getInt("attributeid")));
+					 	switch(attType){
+							case(0):
+								 newList.add(new Age(resultSet.getInt("attributeid")));
+							 break;
+							case(1):
+								newList.add(new Sex(resultSet.getInt("attributeid")));
+								break;
+							case(2):
+								newList.add(new EnergyLevel(resultSet.getInt("attributeid")));
+								break;
+							case(3):
+								newList.add(new Size(resultSet.getInt("attributeid")));
+								break;
+						}
+
 			        }
 		    
         }
@@ -903,7 +901,7 @@ public static ArrayList<Attribute> getUsersPreferredAttributes(int userid, int a
 	try {
 		connection = databaseConnector.connect();
 		Statement statement = connection.createStatement () ;
-		ResultSet resultSet = statement.executeQuery ("SELECT tagid FROM usertagpreferences WHERE userid = " + userId + ";");
+		ResultSet resultSet = statement.executeQuery ("SELECT tags.tagid, tags.tagname FROM tags JOIN usertagpreferences ON tags.tagid = usertagpreferences.tagid WHERE usertagpreferences.userid = " + userId + ";");
 		
 		while (resultSet.next()) {	 
 			tags.put(resultSet.getInt("tagid"),new Tag(resultSet.getString("tagname")));
@@ -1096,11 +1094,7 @@ public static ArrayList<Attribute> getUsersPreferredAttributes(int userid, int a
 		    	 preparedStatement.setInt(3, att.getWeight());
 		    	 
 		    	 int rowsAffected = preparedStatement.executeUpdate();
-		    	 if (rowsAffected > 0) {
-		            System.out.println("User tag preference relationship added successfully!");
-		        } else {
-		            System.out.println("Failed to add user tag preference relationship.");
-		        }
+
 		    } 
         }
         catch (SQLException e) {
@@ -1141,52 +1135,37 @@ public static ArrayList<Attribute> getUsersPreferredAttributes(int userid, int a
 	}
 	
 	public static void onApplicationClose(User user, ArrayList<Dog> doglist, AppointmentManager appman){
-		Database.updateAllAdoptedDogs(doglist); // sets dogs to be adopted 
-		
+		Database.updateAllAdoptedDogs(doglist); // sets dogs to be adopted
 		ArrayList<Dog> likedDogs = Database.getUsersDogs(user.getUserID(),"userdogs");
 		for (Dog d : user.getLikedDogs()) {
 			if(likedDogs.contains(d) == false) 
 				Database.addUserDog(d.getId(), user.getUserID(),"userdogs");	
 		}
-		
 		ArrayList<Dog> passedDogs = Database.getUsersDogs(user.getUserID(),"userpasseddogs");
 		for (Dog d : user.getPassedDogs()) {
 			if(passedDogs.contains(d) == false) 
 				Database.addUserDog(d.getId(), user.getUserID(),"userpasseddogs");	
 		}
-		
 		// TO DO: update user's attribute preferences and tag preferences :)
-		
 //		Dog dog = user.getDog();
-		
 		ArrayList<Attribute> age = user.getAgePreferences();
 		ArrayList<Attribute> sex = user.getSexPreferences();
 		ArrayList<Attribute> size = user.getSizePreferences();
 		ArrayList<Attribute> energyLevel = user.getEnergyLevelPreferences();
 		Hashtable<Integer, Tag> tags = user.getTagPreferences();
-		
-		
 		int userId = user.getUserID();
 		// update user's preferred dog tags
-		
-		
 		Database.deletePreferenceTagsFromUser(userId);
 		Database.addPreferenceTagsToUser(tags, userId);
-//		
 		// update user's ideal dog attributes
 		Database.deleteAppointment(userId);
 		Database.setUserAppointments(appman);
-		
 		Database.deleteUserAttributePreferences(userId);
 		Database.addUserAttributePreferences(age, userId);
 		Database.addUserAttributePreferences(energyLevel, userId);
 		Database.addUserAttributePreferences(size, userId);
 		Database.addUserAttributePreferences(sex, userId);
-		
 		updateRecurringPayments(user);
-		
-		
-		
 	}
 	
 	
@@ -1648,7 +1627,7 @@ class DatabaseConnector {
         	Class.forName("org.postgresql.Driver"); // Replace with your database driver
         	
 
-        	Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/thebestoneyet", "postgres", "doglover123");
+        	Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5434/pawsome", "postgres", "321123");
 
 
 //        	System.out.println( "Connected to the PostgreSQL server successfully.");

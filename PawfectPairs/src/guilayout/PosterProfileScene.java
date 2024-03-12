@@ -81,7 +81,7 @@ public class PosterProfileScene extends PrimaryScene {
 	public void start(Stage primaryStage) throws Exception {  
 
 		appData = AppData.getInstance();
-		ArrayList<Dog> posterDogs = appData.getSortedDogProfiles();
+		PriorityQueue<Dog> posterDogs = appData.getSortedDogProfiles();
 		User user = appData.getUser();
 		DogProfileScene dogProfileScene = DogProfileScene.getInstance();
 		UserProfile userProfile = UserProfile.getInstance();
