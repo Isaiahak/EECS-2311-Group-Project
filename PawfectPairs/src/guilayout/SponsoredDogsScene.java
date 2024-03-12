@@ -44,7 +44,7 @@ public class SponsoredDogsScene extends PrimaryScene{
 		root.setAlignment(javafx.geometry.Pos.CENTER);
     	root.setSpacing(20);
     	
-    	HBox navTab = Components.navTab(userProfile, likedDog, dogProfileScene, sponsoredDog, bookedAppointment, stage,"sponsoredDogs", appData);
+    	HBox navTab = Components.navTab(userProfileScene, likedDogsScene, dogProfileScene, sponsoredDogsScene, bookedAppointmentsScene, stage,"sponsoredDogs", appData);
  
 		VBox sponsoredDogsDisplay = new VBox();
 	    	
@@ -53,7 +53,7 @@ public class SponsoredDogsScene extends PrimaryScene{
     		Dog d = findDogById(dogs, pay.getDogId());
     		
     		
-    		sponsoredDogsDisplay.getChildren().add(Components.sponsoredDogView(d, stage, appData.getPosters(), appData, sponsoredDog));
+    		sponsoredDogsDisplay.getChildren().add(Components.sponsoredDogView(d, stage, appData.getPosters(), appData, sponsoredDogsScene));
     	}
     	sponsoredDogsDisplay.setAlignment(javafx.geometry.Pos.CENTER);
     	
