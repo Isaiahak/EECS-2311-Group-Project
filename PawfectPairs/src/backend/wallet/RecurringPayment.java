@@ -20,10 +20,10 @@ public class RecurringPayment {
 		this.dogId = dogId;
 		this.posterId = posterId; 
 		
-        LocalDate currentDate = LocalDate.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-        String formattedDate = currentDate.format(formatter);
-	} 
+        this.lastPaymentDate = LocalDate.now();
+//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+//        this.lastPaymentDate = currentDate.format(formatter);
+        } 
 	
 	public RecurringPayment(double paymentAmount, int daysBetweenPayments, int dogId, int posterId, String lastPaymentDate) { // from db
 		this.paymentAmount = paymentAmount;
