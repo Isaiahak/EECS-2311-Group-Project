@@ -19,12 +19,8 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class OutOfDogsScene extends PrimaryScene{
-	
 	AppData appData;
-
-	
 	private static OutOfDogsScene instance;
-	
 	public static OutOfDogsScene getInstance() {
 		if (instance == null)
 			instance = new OutOfDogsScene();
@@ -48,8 +44,6 @@ public class OutOfDogsScene extends PrimaryScene{
 		VBox root = new VBox();
 		root.setSpacing(15);
 		root.setAlignment(Pos.TOP_CENTER);
-//		LikedDogScene likedDog = LikedDogScene.getInstance();
-//		UserProfile userProfile = UserProfile.getInstance();
 		Label pageLabel = Components.largeLabel("Out of Dogs!",Pos.TOP_CENTER);
 		stage.setTitle("Pawfect Pairs");	
 
@@ -67,7 +61,5 @@ public class OutOfDogsScene extends PrimaryScene{
 //    	    
 //    	    Database.onApplicationClose(user, posterDogs);
 //    	});
-//		
 	}
-
 }

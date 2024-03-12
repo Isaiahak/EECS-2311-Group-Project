@@ -13,21 +13,16 @@ public class Size extends Attribute {
 		return this.getName();
 		}
 
-
 	@Override
 	public String[] getNames() {
 		// TODO Auto-generated method stub
 	return names;
 	}
+
 	@Override 
 	public int getType() {
 		return type; 
 	}
-//	@Override
-//	public void setWeight(int weight) {	
-//        this.weight = weight;
-//        this.setName(names[weight]);    
-//    }
 }
 
 

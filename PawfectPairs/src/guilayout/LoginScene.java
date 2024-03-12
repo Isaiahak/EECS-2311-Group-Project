@@ -21,7 +21,6 @@ public class LoginScene extends Application{
 	private User userInfo = new User("","");
 	private static LoginScene instance;
 	AppData appData;
-	
 	ArrayList<User> userlist = new ArrayList<User>();
 	
 	public static LoginScene getInstance() {
@@ -30,7 +29,6 @@ public class LoginScene extends Application{
 		}
 		return instance;
 	}
-	
 
     public static void main(String[] args) {
         launch(args);
@@ -72,41 +70,30 @@ public class LoginScene extends Application{
         signUpButton.setOnAction(e -> {
             String username = userTextField.getText();
             String password = passwordField.getText();
-//            userInfo.setUsername(username);
-//            userInfo.setPassword(password);
-//            userlist.add(userInfo);
-            
             if (Database.addUser(username, password, appData.getAllAttributes()) == false || password == "" && username == "")
             	showAlert("Sign up Failed", "Please enter a valid username or password.");
             clearFields(userTextField, passwordField);
-
             User user = Database.getUser(username, password);
-
             appData.setAppointmentManager(new AppointmentManager(user.getUserID(),new ArrayList<>()));
-
-//        		appData.initializeWallet(user.getUserID(), password);
         });
+
         loginButton.setOnAction(e -> {
             String username = userTextField.getText();
             String password = passwordField.getText();
             appData.onStart(username, password);
-            
             if (Database.getUser(username, password) != null /*userlist.contains(userInfo)*/ ||  username != "" && password != "" ) {
-                
                 System.out.println("Logging the user in!");
                 dogProfileScene.start(primaryStage);
-            } else {
-                // Display an alert for unsuccessful login
+            }
+            else {
                 showAlert("Login Failed", "Invalid username or password.");
             }
-
             clearFields(userTextField, passwordField);
         });
 
         Scene scene = new Scene(grid, width, height);
         primaryStage.setScene(scene);
         primaryStage.show();
- 
     }
 
     private void clearFields(TextField usernameField, PasswordField passwordField) {
@@ -121,9 +108,4 @@ public class LoginScene extends Application{
         alert.setContentText(message);
         alert.showAndWait();
     }
-    
-    public User sendUserInfo() {
-    return this.userInfo;
-    }
-
 }

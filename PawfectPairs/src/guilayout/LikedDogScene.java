@@ -12,7 +12,6 @@ import backend.dog.Dog;
 
 
 public class LikedDogScene extends PrimaryScene{
-
 	private static LikedDogScene instance;
 
 	public static LikedDogScene getInstance() {
@@ -29,7 +28,6 @@ public class LikedDogScene extends PrimaryScene{
 	@Override
 	public void start(Stage stage){
 		initailizePrimaryScene();
-		
 		ArrayList<Dog> likedDogs = user.getLikedDogs();
 		VBox root = new VBox();
 		root.setAlignment(javafx.geometry.Pos.CENTER);
@@ -43,9 +41,6 @@ public class LikedDogScene extends PrimaryScene{
     		likedDogsDisplay.getChildren().add(Components.likedDogView(d, stage, appData.getPosters()));
     	}
     	likedDogsDisplay.setAlignment(javafx.geometry.Pos.CENTER);
-    	
-//    	ScrollPane scrollPane = new ScrollPane(likedDogsDisplay);  
-    	
     	Label likedDogsLabel = Components.largeLabel("Dogs you've Liked", Pos.CENTER);
     	 
     	
@@ -55,9 +50,7 @@ public class LikedDogScene extends PrimaryScene{
     			likedDogsDisplay
     			
     			);
-	    	
 
-	    	
     	StackPane stackPane = new StackPane(root);
     	stackPane.setAlignment(javafx.geometry.Pos.CENTER);
     	
@@ -67,14 +60,13 @@ public class LikedDogScene extends PrimaryScene{
         scrollPane.setFitToWidth(true);
     	
     	
-//	        scrollPane.setAlignment(javafx.geometry.Pos.CENTER);
+
         
         
     	Scene scene = new Scene(scrollPane, Components.screenWidth, Components.screenHeight);
     	
 		stage.setScene(scene);
 		stage.setTitle("Pawfect Pairs");
-//		stage.setMaximized(true);
 		stage.show();
 
 //		stage.setOnCloseRequest(event -> {
@@ -83,6 +75,5 @@ public class LikedDogScene extends PrimaryScene{
 //    	    Database.onApplicationClose(user, posterDogs);
 //    	});
 		
-	}	
-	
+	}
 }

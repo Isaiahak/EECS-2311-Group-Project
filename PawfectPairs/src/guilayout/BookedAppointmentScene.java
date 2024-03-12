@@ -21,7 +21,6 @@ public class BookedAppointmentScene extends PrimaryScene {
     AppointmentManager userAppointments;
     ArrayList <Appointment> appointments = new ArrayList<>();
     Appointment currentAppointment;
-
     private static BookedAppointmentScene instance;
 
     public static BookedAppointmentScene getInstance() {
@@ -38,7 +37,6 @@ public class BookedAppointmentScene extends PrimaryScene {
     @Override
     public void start(Stage stage) {
     	initailizePrimaryScene();
-    	
         user = AppData.getInstance().getUser();
 
         VBox root = new VBox();
@@ -49,11 +47,6 @@ public class BookedAppointmentScene extends PrimaryScene {
 
         Label appointmentsLabel = Components.largeLabel("Your Booked Appointments", Pos.CENTER);
 
-        // Get user appointments from the database
-        
-        //DB Call
-        //TreeMap<Integer, Date> userAppointments = Database.getUserAppointments(user.getUserID());
-        
         //Local Object
         userAppointments = CalendarScene.getInstance().getUserAppointments();
         if (userAppointments!=null) {

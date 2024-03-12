@@ -18,6 +18,7 @@ public class EnergyLevel extends Attribute {
 		// TODO Auto-generated method stub
 		return names;
 	}
+
 	@Override 
 	public int getType() {
 		return type; 

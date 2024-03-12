@@ -26,17 +26,12 @@ public class Components{
 	/*
 	 * GUI components contained here to streamline GUI process and create more modular, thematic GUI parts
 	 */
-	
-//	public static int screenHeight = 1024;
-//	public static int screenWidth = 1280; 
-	
+
 	public static int screenHeight =  (int) Screen.getPrimary().getVisualBounds().getHeight();
-	public static int screenWidth =  (int) Screen.getPrimary().getVisualBounds().getWidth(); 
-	
+	public static int screenWidth =  (int) Screen.getPrimary().getVisualBounds().getWidth();
 	private static int fontSm = 20;
 	private static int fontMd = 30;
-	private static int fontLg = 50; 
-	
+	private static int fontLg = 50;
 	private static String font = "Verdana";
 	
 	
@@ -56,8 +51,8 @@ public class Components{
 	}
 	
 
-	public static HBox navTab(UserProfile userScene,LikedDogScene likedDog, DogProfileScene dogProfile, SponsoredDogsScene sponsoredDogs, BookedAppointmentScene appointmentScene,Stage stage,  String currentScene, AppData appData) { //create a navigation tab: settings, schedule, messages, etc
-
+	public static HBox navTab(UserProfile userScene,LikedDogScene likedDog, DogProfileScene dogProfile, SponsoredDogsScene sponsoredDogs, BookedAppointmentScene appointmentScene,Stage stage,  String currentScene, AppData appData) {
+		//create a navigation tab: settings, schedule, messages, etc
 		// settings hBox
         HBox navTab = new HBox();
         navTab.setStyle("-fx-background-color: #f5f5f5;");
@@ -338,10 +333,11 @@ public class Components{
 		return label;
 	}
 	
-	public static GridPane createTags(Hashtable<Integer, Tag> hashtable) { // non highlightable tags
+	public static GridPane createTags(Hashtable<Integer, Tag> hashtable) {
+		// non highlightable tags
 		GridPane gridPane = new GridPane();
-		gridPane.setHgap(10); // Set horizontal gap
-        gridPane.setVgap(10); // Set vertical gap
+		gridPane.setHgap(10);
+        gridPane.setVgap(10);
 		int row = 0;
         int col = 0;
         
@@ -374,9 +370,7 @@ public class Components{
 	
 	public static HBox generateStars(int num) {
 		int j = 0;
-		
 		HBox stars = new HBox();
-		
 		for (int i = 0; i < 10; i ++) {
 			//generate a star
 			Label star = new Label("★");
@@ -384,8 +378,6 @@ public class Components{
 				"-fx-text-fill: #d9d8d7;" + // Background color
 				"-fx-padding: 10px;" + // Padding
 				"-fx-font-size: 50px"); // Text alignment;);
-			
-			
 			if(j < num) {
 				//color it
 				star.setStyle(
@@ -394,11 +386,9 @@ public class Components{
 				"-fx-font-size: 50px");
 				j++;
 			}
-			
 			stars.getChildren().add(star);
 			stars.setAlignment(Pos.CENTER);
 		}
-		
 		return stars; 
 	}
 	
@@ -408,7 +398,7 @@ public class Components{
 		label.setWrapText(true);
 		label.maxWidth(50);
 		ObservableList<Node> labels = gridPane.getChildren();
-		
+
 		String defaultStyle = 
 				"-fx-background-color: #e1fcf6;" + // Background color
 		        "-fx-padding: 10px;" + // Padding
@@ -427,12 +417,9 @@ public class Components{
 		
 		for (Attribute attribute : userAttributeList) {
 			if(attribute.getWeight() == weight) {
-				
 				label.setStyle(highLightedStyle);
 			}
-			
 		}
-
 
 		label.setOnMouseClicked(event -> {
             if (label.getStyle().equals(defaultStyle)) {
@@ -447,62 +434,51 @@ public class Components{
             	}
 			}
         });
-		
-		
 		return label;
 	}
 	
 	public static Button calendarCell() {
-		
-		
 		Button cell = new Button();
 		cell.setFont(Font.font(font, fontSm));
 		cell.setPrefSize(80, 80);
-		
+
 		String def = "-fx-background-color: #d1d1d1; -fx-text-fill: #0f0f0f; -fx-alignment: top-right;";
 		String high = "-fx-background-color: #e0e0e0; -fx-text-fill: #0f0f0f; -fx-alignment: top-right;";
 		cell.setStyle(def);
-		
+
 		return cell;
-		
 	}
 	
 	public static GridPane createAttribute(ArrayList<Attribute> userAttributeList, int attributeType, HashMap<Integer,ArrayList<Attribute>> allAttributes ) {
-
 		GridPane gridPane = new GridPane();
 		String[] names = allAttributes.get(attributeType).get(0).getNames();
-		
 		for(int j = 0; j < names.length; j++) {
 			// Add the label to the grid
 			Label label = attributeLabel(names[j], gridPane, userAttributeList, attributeType, j,allAttributes );
             gridPane.add(label, j,0);
-            
 		} 
 		return gridPane;
 	}
-	
-	//Sidney, Edson and Connor were here :) 
-		public static HBox appointmentView(Dog dog, Date date, Stage primaryStage, Hashtable<Integer,Poster> poster) {
-	        ImageView img = Components.imageView(200, 200);
-	        img.setImage(new Image(dog.getImagePath()));
 
-	        Label primaryInfoLabel = Components.mediumLabel(dog.getName() + ", " + dog.getAge() + " years, " + dog.getSex(), Pos.CENTER);
-	        Label appointmentDate = Components.mediumLabel("Appointment Date: " + date.toString(),Pos.CENTER);
+	public static HBox appointmentView(Dog dog, Date date, Stage primaryStage, Hashtable<Integer,Poster> poster) {
+		ImageView img = Components.imageView(200, 200);
+		img.setImage(new Image(dog.getImagePath()));
 
-	        Hyperlink rescheduleLink = hyperlinkToReschedule(dog, primaryStage, poster);
-	        
-	        Hyperlink cancelLink = hyperlinkToCancelAppointment(dog, primaryStage,poster);
+		Label primaryInfoLabel = Components.mediumLabel(dog.getName() + ", " + dog.getAge() + " years, " + dog.getSex(), Pos.CENTER);
+		Label appointmentDate = Components.mediumLabel("Appointment Date: " + date.toString(),Pos.CENTER);
 
-	        VBox info = new VBox(primaryInfoLabel, appointmentDate, rescheduleLink, cancelLink);
-	        HBox HBox = new HBox(img, info);
-	        HBox.setAlignment(Pos.CENTER);
-	        HBox.setSpacing(50);
+		Hyperlink rescheduleLink = hyperlinkToReschedule(dog, primaryStage, poster);
 
-	        return HBox;
-	    }
-		
-	
-	
+		Hyperlink cancelLink = hyperlinkToCancelAppointment(dog, primaryStage,poster);
+
+		VBox info = new VBox(primaryInfoLabel, appointmentDate, rescheduleLink, cancelLink);
+		HBox HBox = new HBox(img, info);
+		HBox.setAlignment(Pos.CENTER);
+		HBox.setSpacing(50);
+
+		return HBox;
+	}
+
 	public static HBox likedDogView(Dog dog, Stage primaryStage, Hashtable<Integer,Poster> poster) {
 
 		ImageView img = Components.imageView(200, 200);
@@ -527,12 +503,10 @@ public class Components{
 		HBox HBox = new HBox(img, info);
 		HBox.setAlignment(Pos.CENTER);
 		HBox.setSpacing(50);
-		
-		
+
 		return HBox;
-		
-		
 	}
+
 	public static Hyperlink hyperLinkToSponsor(Dog dog, Stage primaryStage) {
 		Hyperlink sponsorLink = Components.hyperlink();
 		sponsorLink.setText("Sponsor " + dog.getName() + "!");
@@ -545,7 +519,6 @@ public class Components{
 				e.printStackTrace();
 			}
         });
-		
 		return sponsorLink;
 	}
 	
@@ -571,16 +544,8 @@ public class Components{
 		
 		
 		Hyperlink appointmentLink = Components.hyperlink();
-		appointmentLink.setText("Cancel");//Database.getPosterById(dog.getPosterId())
-		
-		//Poster poster = Database.getPosterById(dog.getPosterId());
-		
-		
-		//PosterProfileScene posterProfile = PosterProfileScene.getInstance();
-		//Dog selectedDog = Database.getADog(dog.getId());
+		appointmentLink.setText("Cancel");
 		CalendarScene appointmentPage = CalendarScene.getInstance();
-		
-	
 		appointmentLink.setOnAction(event -> {
         	try {
         		
@@ -589,14 +554,8 @@ public class Components{
         	        	userManager.removeAppointment(appointment);
         	        	BookedAppointmentScene bookedPage = BookedAppointmentScene.getInstance();
                 		bookedPage.start(primaryStage);
-        	        	
         	        }
         		}
-        		//Database.deleteAppointment(poster.getUniqueId(),dog.getId());
-        		
-        		//BookedAppointmentScene bookedPage = BookedAppointmentScene.getInstance();
-        		//bookedPage.start(primaryStage);
-        		
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -604,38 +563,24 @@ public class Components{
 		
 		return appointmentLink;
 	}
+
 	public static Hyperlink hyperlinkToReschedule(Dog dog, Stage primaryStage, Hashtable<Integer,Poster> poster) {
 		AppointmentManager userManager = CalendarScene.getInstance().getUserAppointments();
 		ArrayList<Appointment> userAppointments = userManager.getUserAppointments();
-		
 		Hyperlink appointmentLink = Components.hyperlink();
-		appointmentLink.setText("Reschedule");//Database.getPosterById(dog.getPosterId())
-		
-		//Poster poster = Database.getPosterById(dog.getPosterId());
+		appointmentLink.setText("Reschedule");
 		Poster selectedPoster = poster.get(dog.getPosterId());
-		
-		//PosterProfileScene posterProfile = PosterProfileScene.getInstance();
-		
-		//Dog selectedDog = Database.getADog(dog.getId()); //need to change to local Call
 		CalendarScene appointmentPage = CalendarScene.getInstance();
-		
-	
+
 		appointmentLink.setOnAction(event -> {
         	try {
-        		
         		for (Appointment appointment : userAppointments) {
         	        if (appointment.getDogID() == dog.getId()) {
         	        	userManager.removeAppointment(appointment);
         	        	appointmentPage.setCurrentPosterDog(selectedPoster,dog);
                 		appointmentPage.start(primaryStage);
-        	        	
         	        }
         		}
-        		//Database.deleteAppointment(poster.getUniqueId(),dog.getId());
-        		//appointmentPage.setCurrentPosterDog(poster,dog);
-        		//appointmentPage.updateMeetWithLabel(poster, selectedDog);
-        		//appointmentPage.start(primaryStage);
-        		
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -643,19 +588,13 @@ public class Components{
 		
 		return appointmentLink;
 	}
-	
-	
+
 	public static Hyperlink hyperlinkToAppointment(Dog dog, Stage primaryStage, Hashtable<Integer,Poster> poster ) {
 		Hyperlink appointmentLink = Components.hyperlink();
-		appointmentLink.setText("Meet me!");//Database.getPosterById(dog.getPosterId())
-		
-		//Poster poster = Database.getPosterById(dog.getPosterId());
+		appointmentLink.setText("Meet me!");
 		Poster selectedPoster = poster.get(dog.getPosterId());
-		//PosterProfileScene posterProfile = PosterProfileScene.getInstance();
-		//Dog selectedDog = Database.getADog(dog.getId());
 		CalendarScene appointmentPage = CalendarScene.getInstance();
-		
-	
+
 		appointmentLink.setOnAction(event -> {
         	try {
         		appointmentPage.setCurrentPosterDog(selectedPoster,dog);
@@ -671,34 +610,13 @@ public class Components{
 	}
 	
 	public static HBox posterDogView(Dog dog) {
-
 		ImageView img = Components.imageView(200, 200);
 		img.setImage(new Image(dog.getImagePath()));
-		
-		Label primaryInfoLabel = Components.mediumLabel(dog.getName() + ", " + dog.getAge() + " years, " + dog.getSex(),Pos.CENTER); 
-//		Hyperlink posterLink = Components.hyperlink();
-		
-//		posterLink.setText(dog.getPoster().getDisplayName());
-		
-		
-		VBox info = new VBox(
-				primaryInfoLabel
-//				posterLink
-				);
+		Label primaryInfoLabel = Components.mediumLabel(dog.getName() + ", " + dog.getAge() + " years, " + dog.getSex(),Pos.CENTER);
+		VBox info = new VBox(primaryInfoLabel);
 		HBox ret = new HBox(img, info);
 		ret.setSpacing(50);
-//		ret.setAlignment(Pos.CENTER);
-		
-		return ret ;
-//		posterLink.setOnAction(event -> { // implement later
-//        	try {
-//				posterProfile.start(primaryStage);
-//			} catch (Exception e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-//        });
-		
+		return ret;
 	}
 
 	public static HBox sponsoredDogView(Dog d, Stage stage, Hashtable<Integer, Poster> poster, AppData appdata, SponsoredDogsScene page) {
@@ -713,7 +631,6 @@ public class Components{
 //		Button editButton = new Button("Edit Donation :D"); // to be implemented
 		cancelButton.setOnAction(event -> { 
         	//System.out.println("before removal "+appdata.getUser().getWallet().getRecurringPaymentsDogsList().toString());
-
         	appdata.getUser().getWallet().removeRecurringPayment(d.getId());
         	//System.out.println("after removal "+ appdata.getUser().getWallet().getRecurringPaymentsDogsList().toString());
         	// hacky way to reload page :)
@@ -730,10 +647,6 @@ public class Components{
 		HBox.getChildren().addAll(img, info);
 		HBox.setAlignment(Pos.CENTER);
 		HBox.setSpacing(50);
-		
-		
-		
 		return HBox;
 	}
-
 }

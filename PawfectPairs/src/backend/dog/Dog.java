@@ -34,7 +34,7 @@ public class Dog  implements Comparable<Dog>{
 	        setSize(new Size(dogSize));
 	        setEnergyLevel(new EnergyLevel(dogEnergyLevel));
 	    }
-	   
+
 	    public Dog(String name, int id, int age, int energyLevel, int size, int sex, int posterId, boolean adopted, String imagePath, String biography) {
 	        this.name = name;
 	        this.imagePath = imagePath; 
@@ -49,7 +49,7 @@ public class Dog  implements Comparable<Dog>{
 	        this.biography = biography;
 
 	    }
-	    
+
 	    public Dog(Dog dog) { //copy constructor (for ideal dog)
 	    	this.name = dog.getName();
 	        this.id = dog.getId();
@@ -69,130 +69,121 @@ public class Dog  implements Comparable<Dog>{
 	        setTags(tags);
 	    	
 	    }
-	    
-//	    public Dog(String name, int id, int age, int energyLevel, int size, int sex, int posterId, boolean adopted) {
-//	        this.name = name;
-//	        this.id = id;
-//	       
-//	        setAge(new Age(age));
-//	        setSex(new Sex(sex));
-//	        setSize(new Size(size));
-//	        setEnergyLevel(new EnergyLevel(energyLevel));
-//
-//	        this.posterId = posterId;
-//	        this.adopted = adopted;
-//	    }
-	    
+
 	    public Dog(String name, int id, int age, int energyLevel, int size, int sex) {// ideal dog constructor
 	        this.name = name;
 	        this.id = id;
-	       
 	        setAge(new Age(age));
 	        setSex(new Sex(sex));
 	        setSize(new Size(size));
 	        setEnergyLevel(new EnergyLevel(energyLevel));
-	        
+	    }
 
-	    } 
-	    
 	    public int calculateScore(Hashtable<Integer, Tag> tags) {
-	    	/*
-	    	 * score calculates the sum of intersecting tag elements between user's preferences and dog instance
-	    	 */
-	    	
 	    	int scoreCalc = 0 ;
-	    	Set<Integer> currDogTags = this.getTags().keySet(); 
-	    	
+	    	Set<Integer> currDogTags = this.getTags().keySet();
 	    	for(int key : currDogTags) {
 	    		if(tags.containsKey(key)) {
 	    			scoreCalc++;
 	    		}
 	    	}
-	    	
 	    	this.score = scoreCalc;
-	    	
 	    	return scoreCalc;
 	    }
-	    
+
 	    public void setOldScore(int score) {
 	    	this.oldScore = score; 
 	    }
-	    
+
 	    public int getOldScore() {
 	    	return this.getOldScore();
 	    }
-	    
+
 	    public int getScore() {return this.score;}
-	    
+
 	    public String getImagePath() {
 	    	return this.imagePath;
 	    }
-	   
+
 	    public Hashtable<Integer, Tag> getTags() {
 	        return tags;
 	    }
-	   
+
 	    public void setTags(Hashtable<Integer, Tag> tags) {
 	        this.tags = tags;
 	    }
+
 	    public String getName() {
 	        return name;
 	    }
+
 	    public void setName(String name) {
 	        this.name = name;
 	    }
+
 	    public int getId() {
 	        return id;
 	    }
+
 	    public void setId(int id) {
 	        this.id = id;
 	    }
+
 	    public Age getAge() {
 	        return age;
 	    }
+
 	    public void setAge(Age age) {
 	        this.age = age;
 	    }
+
 	    public EnergyLevel getEnergyLevel() {
 	    	
 	        return energyLevel;
 	    }
+
 	    public void setEnergyLevel(EnergyLevel energyLevel) {
 	        this.energyLevel = energyLevel;
 	    }
+
 	    public Size getSize() {
 	    	
 	        return size;
 	    }
+
 	    public void setSize(Size size) {
 	        this.size = size;
 	    }
-	    
+
 	    public Sex getSex() {
 	        return sex;
 	    }
-	    
+
 	    public void setSex(Sex sex) {
 	        this.sex = sex;
 	    }
-	   
-	    public int getPosterId() {
+
+		public int getPosterId() {
 			// TODO Auto-generated method stub
 			return this.posterId;
 		}
-	   
+
 	    public boolean getAdopted() {
 			return adopted;
 		}
+
 		public void setAdopted(boolean adopted) {
 			this.adopted = adopted;
 		}
+
 		public void setPosterId(int posterId) {
 			this.posterId = posterId;
 		}
+
 		public String getBiography() {
 			return this.biography;
 		}
+
 		@Override
 	    public String toString() {
 	        StringBuilder stringBuilder = new StringBuilder();
@@ -210,52 +201,17 @@ public class Dog  implements Comparable<Dog>{
 //	        }
 	        return stringBuilder.toString();
 	    }
-		
-//		    public boolean arePreferencesEqual(Dog d) { // check if tags and attributes are the same 	
-//		    	
-//		    	Hashtable<Integer,Tag> currDogTags = this.getTags(); 
-//		    	Hashtable<Integer,Tag> otherDogTags = d.getTags();
-//		    	Set<Integer >otherDogKeys = otherDogTags.keySet();
-//		    	Set<Integer >currDogKeys = currDogTags.keySet();
-//		    	
-//		    	if(currDogKeys.size() != otherDogKeys.size()) return false;
-//		    	
-//			    	
-//		    	for(int key : otherDogKeys) {
-//		    		if(!currDogTags.containsKey(key)) {
-//		    			return false;
-//		    		}
-//		    	}
-//		    	
-//		    	for(int key : currDogKeys) {
-//		    		if(!otherDogTags.containsKey(key)) {
-//		    			return false;
-//		    		}
-//		    	}
-//		    	
-//		    	
-//		    	if(this.age.getWeight() != d.age.getWeight() || this.sex.getWeight() != d.sex.getWeight()  // check if attrubutes have changed 
-//		    			|| this.size.getWeight() != d.size.getWeight() || this.energyLevel.getWeight() != d.energyLevel.getWeight()) {
-//		    		return false;
-//		    	}
-//		    	
-//	    		return true;
-//		    }
-		
-		 @Override 
-		    public boolean equals(Object o) { // for checking if two dogs are the same
-		    	
-		    	if(this.getId() == ((Dog) o).getId()) return true;
-		    	
-		    	return false;
-		    	
+
+		@Override
+		public boolean equals(Object o) { // for checking if two dogs are the same
+			if(this.getId() == ((Dog) o).getId())
+				return true;
+			return false;
 		    }
 
 		@Override
 		public int compareTo(Dog o) { // for priorityqueue
-
-		        return Integer.compare(o.score,this.score);
-
+			return Integer.compare(o.score,this.score);
 		}
 }
 

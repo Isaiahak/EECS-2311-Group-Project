@@ -24,22 +24,13 @@ public class AppData {
 	private PriorityQueue<Dog> sortedDogProfiles;
 	private static AppData instance;
 	private AppointmentManager appointmentManager;
-	
 	private HashMap<Integer, ArrayList<Attribute>> allAttributes;
 
 
-
-//	//Wallet Methods
 	public void initializeWallet (int userid, String password) {
 		this.user.setWallet(Database.getWallet(userid, password));
-		
 		this.user.getWallet().makeRecurringPayments(posterProfiles);
 	}
-//	public Wallet getWallet () {
-//		return this.user.getWallet();
-//	}
-//	//
-
 
 	public AppointmentManager getAppointmentManager() {
 		return appointmentManager;
@@ -56,7 +47,6 @@ public class AppData {
 	public Hashtable<Integer,Poster> getPosterProfiles(){
 		return posterProfiles;
 	}
-
 
 	public void setSortedDogProfiles(PriorityQueue sortedDogProfiles) {
 		this.sortedDogProfiles = sortedDogProfiles;
@@ -102,10 +92,7 @@ public class AppData {
 	public Hashtable<Integer, Poster> getPosters(){
 		return posterProfiles;
 	}
-	
-	
-	
-	// calculate dog scores
+
 	public void updateDogScores() {
 
 	// perform check on if the user's preferences have changed before updating scores	
@@ -192,7 +179,6 @@ public class AppData {
 		
 	}
 
-	
 	public void onStart(String username, String pass) {
 		getInstance(); 	
 		
@@ -216,5 +202,4 @@ public class AppData {
 		
 
 	}
-	
 }

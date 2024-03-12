@@ -7,9 +7,7 @@ public abstract class Attribute implements Comparable<Attribute>{
     protected int weight;
     private String name;
     protected static int type;
-    
     private static HashMap<Integer, Attribute> allAttributes = new HashMap<Integer, Attribute>(); 
-    
 
     public int compareTo(Attribute o) {
         // if 'weight' is the same, return 0,
@@ -45,8 +43,7 @@ public abstract class Attribute implements Comparable<Attribute>{
     public void setName(String name) {
         this.name = name;
     }
-    
-    
+
     @Override
     public boolean equals(Object att) {
     	
@@ -55,36 +52,6 @@ public abstract class Attribute implements Comparable<Attribute>{
     	
     	return false;
     }
-    
-    
-//    public static void initializeAttributes() {
-//		Attribute.allAttributes.clear();
-//		
-//		Age age = new Age(0);
-//		Size size = new Size(0);
-//		Sex sex = new Sex(0);
-//		EnergyLevel energyLevel = new EnergyLevel(0);
-//
-//		Attribute.allAttributes.put(age.getType(), age);
-//		Attribute.allAttributes.put(size.getType(), size );
-//		Attribute.allAttributes.put(sex.getType(), sex);
-//		Attribute.allAttributes.put(energyLevel.getType(), energyLevel);
-//		
-//		
-//		
-//	}
-//	
-//	public static Attribute getAttributeByTypeAndWeight(int type, int weight) {
-//		Attribute att = Attribute.allAttributes.get(type);
-//		att.setWeight(weight);
-//		
-//		System.out.println(att.getName());
-//		
-//		return att; 
-//	}
-	
-    
-    
 }
 
 

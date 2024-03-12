@@ -31,51 +31,14 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;  
 
 public class PosterProfileScene extends PrimaryScene {
-
 	AppData appData;
-	
-
     private Hyperlink posterinfoLink;
 	private static PosterProfileScene instance;
-
 	Poster currentPoster;
-	public void setCurrentPoster(Poster poster) {
-		this.currentPoster = poster; // set current poster
-	}
-	
-	//methods to add back
-	public int getCurrentPoster() {
-		return this.currentPoster.getUniqueId();
-	}
 
-	public int getScore() {
-		// TODO Auto-generated method stub
-		return currentPoster.getScore();
-	}
-
-	public String getDisplayName() {
-		// TODO Auto-generated method stub
-		return currentPoster.getDisplayName();
-	}
-	//end of methods to add back 
-	
-	public static PosterProfileScene getInstance() {
-		if (instance == null) {
-			instance = new PosterProfileScene();		
-		}
-		return instance;
-	}
-	private PosterProfileScene() {
-
-	}
 	public static void main(String[] args) {
 		launch(); // launch THIS class
 	}
-
-
-
-
-
 
 	@Override  
 	public void start(Stage primaryStage) throws Exception {  
@@ -85,35 +48,22 @@ public class PosterProfileScene extends PrimaryScene {
 		User user = appData.getUser();
 		DogProfileScene dogProfileScene = DogProfileScene.getInstance();
 		UserProfile userProfile = UserProfile.getInstance();
-
-		// find a way to set the posters dogs so we dont have to do a db call, this is because we would then be required to update the db and then pull which is just not necessary
-		ArrayList<Dog> posterDogsList = Database.getPosterDogs(currentPoster.getUniqueId()); // too lazy to fix other method names, so this is what its gonna be called lol
-
-
-
-
+		ArrayList<Dog> posterDogsList =  appData.getDogProfiles().get(currentPoster.getPosterID());
 
 		HBox navTab = Components.navTab(userProfile, LikedDogScene.getInstance(), dogProfileScene, sponsoredDogsScene, BookedAppointmentScene.getInstance(), primaryStage,"posterProfile",appData);
 
 		navTab.setAlignment(Pos.CENTER);
 
-
 		VBox root = new VBox();
-
-
-
 		Label name = Components.largeLabel(currentPoster.getDisplayName(), Pos.CENTER); 
 		name.setAlignment(Pos.CENTER);
 		VBox PosterInfo = new VBox();
 		PosterInfo.setAlignment(Pos.CENTER);
 
 		HBox stars = Components.generateStars(currentPoster.getScore());
-	
-		
 		Label email = Components.mediumLabel("Email 📧:  "+ currentPoster.getEmail(), Pos.CENTER);
 		Label phone = Components.mediumLabel("Phone ☎:  "+ currentPoster.getPhone(), Pos.CENTER);
-		
-		// generate stars and display name 
+
 		PosterInfo.getChildren().addAll(
 				name, 
 				email,
@@ -124,7 +74,6 @@ public class PosterProfileScene extends PrimaryScene {
 		VBox posterProfileDogsDisplay = new VBox();
 		posterProfileDogsDisplay.setSpacing(50);
 
-		// poster's dogs display
 		for(Dog d : posterDogsList) {
 			posterProfileDogsDisplay.getChildren().add(Components.posterDogView(d));
 		}
@@ -143,8 +92,6 @@ public class PosterProfileScene extends PrimaryScene {
 		scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
 		scrollPane.setFitToWidth(true);
 
-		
-		
 		//POSTER INFO PAGE
 		//add the stuff here
 		//POSTER INFO PAGE
@@ -152,16 +99,35 @@ public class PosterProfileScene extends PrimaryScene {
 		Scene scene = new Scene(scrollPane, Components.screenWidth, Components.screenHeight);
 		primaryStage.setScene(scene);
 		primaryStage.show();
+	}
 
-		//		primaryStage.setOnCloseRequest(event -> {
-		//		    System.out.println("Window is closing. Perform cleanup if needed.");
-		//		    
-		//		    Database.onApplicationClose(user, posterDogs);
-		//		});
-		//	        
-		//	  System.out.println(currentPoster.getScore());
+	public void setCurrentPoster(Poster poster) {
+		this.currentPoster = poster;
+	}
 
-	}  
+	public int getCurrentPoster() {
+		return this.currentPoster.getUniqueId();
+	}
 
+	public int getScore() {
+		// TODO Auto-generated method stub
+		return currentPoster.getScore();
+	}
+
+	public String getDisplayName() {
+		// TODO Auto-generated method stub
+		return currentPoster.getDisplayName();
+	}
+	//end of methods to add back
+
+	public static PosterProfileScene getInstance() {
+		if (instance == null) {
+			instance = new PosterProfileScene();
+		}
+		return instance;
+	}
+	private PosterProfileScene() {
+
+	}
 }
 

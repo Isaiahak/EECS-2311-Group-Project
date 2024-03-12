@@ -40,7 +40,6 @@ public class PrimaryScene extends Application{
         this.sponsoredDogsScene = SponsoredDogsScene.getInstance();
         this.user = appData.getUser();
         this.bookedAppointmentsScene = BookedAppointmentScene.getInstance();
-//        this.wallet= appData.getWallet();
     	this.wallet = user.getWallet();
 
     }
