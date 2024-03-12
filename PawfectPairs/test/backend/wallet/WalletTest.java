@@ -5,6 +5,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import backend.dog.Dog;
 import backend.poster.Poster;
@@ -73,8 +74,58 @@ class WalletTest {
 		RecurringPayment r1 =new RecurringPayment(amountToDonate, daysBetweenPayments, dog.getId(), dog.getPosterId());
 		
 		wallet.addRecurringPayment(r1);
-		assertEquals(wallet.getRecurringPayments().containsKey(dog.getId()), null);
+		
+		assertTrue(wallet.getRecurringPayments().containsKey(dog.getId()));
 	}
+	
+
+	@Test
+	public void recurringPayments2(){
+		int amountToDonate =1;
+		int newAmount=5;
+		int daysBetweenPayments=7;	
+		RecurringPayment r1 =new RecurringPayment(amountToDonate, daysBetweenPayments, dog.getId(), dog.getPosterId());
+		wallet.addRecurringPayment(r1);
+		
+		RecurringPayment r2 =new RecurringPayment(amountToDonate, daysBetweenPayments, dog2.getId(), dog2.getPosterId());
+		
+		wallet.addRecurringPayment(r2);
+		
+		
+		RecurringPayment r1SameDog =new RecurringPayment(newAmount, daysBetweenPayments, dog.getId(), dog.getPosterId());
+wallet.addRecurringPayment(r1SameDog);
+assertTrue(wallet.getRecurringPayments().containsKey(dog.getId()));
+		assertTrue(wallet.getRecurringPayments().containsKey(dog2.getId()));
+		//assertEquals(wallet.getRecurringPayments().get(dog).getPaymentAmount(),newAmount);
+		
+		
+
+	}
+	
+//	@Test
+//	public void integrationTest(){
+//		int amountToDonate =1;
+//		int newAmount=5;
+//		int daysBetweenPayments=7;	
+//		RecurringPayment r1 =new RecurringPayment(amountToDonate, daysBetweenPayments, dog.getId(), dog.getPosterId());
+//		wallet.addRecurringPayment(r1);
+//		
+//		RecurringPayment r2 =new RecurringPayment(amountToDonate, daysBetweenPayments, dog2.getId(), dog2.getPosterId());
+//		
+//		wallet.addRecurringPayment(r2);
+//		
+//		
+//		RecurringPayment r1SameDog =new RecurringPayment(newAmount, daysBetweenPayments, dog.getId(), dog.getPosterId());
+//wallet.addRecurringPayment(r1SameDog);
+//assertTrue(wallet.getRecurringPayments().containsKey(dog.getId()));
+//assertTrue(wallet.getRecurringPayments().containsKey(dog2.getId()));
+//		assertEquals(wallet.getRecurringPayments().get(dog).getPaymentAmount(),newAmount);
+//		
+//		
+//
+//	}
+//	
+	
 	
 	
 	

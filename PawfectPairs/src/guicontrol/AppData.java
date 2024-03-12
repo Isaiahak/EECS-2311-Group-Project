@@ -26,24 +26,14 @@ public class AppData {
 	private PriorityQueue<Dog> sortedDogProfiles;
 	private static AppData instance;
 	private AppointmentManager appointmentManager;
-	
 	private ArrayList<Appointment> otherUsersAppointments;
-	
 	private HashMap<Integer, ArrayList<Attribute>> allAttributes;
 
 
-
-//	//Wallet Methods
 	public void initializeWallet (int userid, String password) {
 		this.user.setWallet(Database.getWallet(userid, password));
-		
 		this.user.getWallet().makeRecurringPayments(posterProfiles);
 	}
-//	public Wallet getWallet () {
-//		return this.user.getWallet();
-//	}
-//	//
-
 
 	public AppointmentManager getAppointmentManager() {
 		return appointmentManager;
@@ -60,7 +50,6 @@ public class AppData {
 	public Hashtable<Integer,Poster> getPosterProfiles(){
 		return posterProfiles;
 	}
-
 
 	public void setSortedDogProfiles(PriorityQueue sortedDogProfiles) {
 		this.sortedDogProfiles = sortedDogProfiles;
@@ -106,10 +95,7 @@ public class AppData {
 	public Hashtable<Integer, Poster> getPosters(){
 		return posterProfiles;
 	}
-	
-	
-	
-	// calculate dog scores
+
 	public void updateDogScores() {
 
 	// perform check on if the user's preferences have changed before updating scores	
@@ -117,13 +103,13 @@ public class AppData {
 				UserProfile.getInstance().getOldAgePreferences(),
 				UserProfile.getInstance().getOldSizePreferences(),
 				UserProfile.getInstance().getOldEnergyLevelPreferences()) == false){
-			ArrayList<Dog> likedDogs = Database.getUsersDogs(user.getUserID(),"userdogs");
+			ArrayList<Dog> likedDogs = Database.getUsersLikedOrPassedDogs(user.getUserID(),"userdogs");
 			for (Dog d : user.getLikedDogs()) {
 				if(likedDogs.contains(d) == false)
 					Database.addUserDog(d.getId(), user.getUserID(),"userdogs");
 			}
 
-			ArrayList<Dog> passedDogs = Database.getUsersDogs(user.getUserID(),"userpasseddogs");
+			ArrayList<Dog> passedDogs = Database.getUsersLikedOrPassedDogs(user.getUserID(),"userpasseddogs");
 			for (Dog d : user.getPassedDogs()) {
 				if(passedDogs.contains(d) == false)
 					Database.addUserDog(d.getId(), user.getUserID(),"userpasseddogs");
@@ -199,7 +185,6 @@ public class AppData {
 		this.otherUsersAppointments = Database.getOtherUserAppointments(user.getUserID()); 
 	}
 
-	
 	public void onStart(String username, String pass) {
 		getInstance(); 	
 		
@@ -238,6 +223,4 @@ public class AppData {
 		}
 		return false;
 	}
-	
-	
 }

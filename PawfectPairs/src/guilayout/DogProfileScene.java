@@ -13,33 +13,23 @@ import javafx.stage.Stage;
 public class DogProfileScene extends PrimaryScene{
 
 	private static DogProfileScene instance;
+	private ImageView petImageView;
+	private Label sizeLabel;
+	private Label energyLabel;
+	private Label primaryInfoLabel;
+	private Label biographyText;
+	private Hyperlink posterLink;
+	private StackPane tagsPane;
+	private Stage stage;
+	private OutOfDogsScene outOfDogs;
+	private Wallet wallet;
+
 	public static DogProfileScene getInstance() {
 		if (instance == null) {
 			instance = new DogProfileScene();		
 		}
 		return instance;
 	}
-
-    private ImageView petImageView;
-    private Label sizeLabel;
-    private Label energyLabel;
-    private Label primaryInfoLabel; 
-    private Label biographyText;
-    private Hyperlink posterLink;
-	private StackPane tagsPane;
-	private Stage stage;
-	private OutOfDogsScene outOfDogs;
-//    private Button donate = Components.button("Sponsor");
-//    DonateScene donatePage = DonateScene.getInstance();//ADDED DONATE PAGE
-
-
-
-//    private int l = 1080; 
-//    private int w = 1920; 
-
-//    private Label bioLabel;
-//    private Label tagsLabel;
-    private Wallet wallet;
 
     public static void main(String[] args) {
         launch(args);
@@ -48,22 +38,13 @@ public class DogProfileScene extends PrimaryScene{
     @Override
     public void start(Stage primaryStage) {
     	initailizePrimaryScene();
-    	//wallet=appData.getWallet();
-    	//root is v box
 		VBox root = new VBox();
 		root.setSpacing(10);
 		root.setAlignment(Pos.CENTER);
-//    	wallet=user.getWallet();
-
-
         primaryStage.setTitle("Pawfect Pairs");
         PosterProfileScene posterProfile = PosterProfileScene.getInstance();
         outOfDogs = OutOfDogsScene.getInstance();
-
-
-
         HBox primaryControlTab = new HBox();
-        
         petImageView = Components.imageView(500,500);
 
         Button passButton = Components.button("╳");
@@ -100,23 +81,18 @@ public class DogProfileScene extends PrimaryScene{
         primaryControlTab.setSpacing(20);
         primaryControlTab.setAlignment(Pos.CENTER);
         primaryInfoLabel = Components.largeLabel(); // Name, Age, Sex
-		sizeLabel =  Components.mediumLabel(); // Attributes 
+		sizeLabel =  Components.mediumLabel();
 		energyLabel = Components.mediumLabel();
-
-		//		  Initialize layout
-        // attributes hBox
         HBox secondaryInfo = new HBox(); 
         secondaryInfo.setAlignment(Pos.CENTER);
         secondaryInfo.setSpacing(10); 
         secondaryInfo.getChildren().addAll(sizeLabel, energyLabel);
-        // bio textBox
+
+
         biographyText = Components.smallLabel(); 
         biographyText.setPrefWidth(900);
-        // tags box - TO BE IMPLEMENTED -
-        //BUTTON FOR WALLET / DONATE TO OR SPONSOR AN ANIMAL
-        // nav tab
         HBox navTab = Components.navTab(userProfileScene, likedDogsScene, DogProfileScene.getInstance(),sponsoredDogsScene, BookedAppointmentScene.getInstance(),primaryStage, "dogProfiles", appData);
-        // poster link
+
         posterLink = Components.hyperlink();
         posterLink.setOnAction(event -> {
         	try {
@@ -125,14 +101,12 @@ public class DogProfileScene extends PrimaryScene{
 				e.printStackTrace();
 			}
         });
-        // add dog tags
+
+
 		tagsPane = new StackPane();
         stage = primaryStage;
-        
-         // add to root vbox
-
 		root.getChildren().addAll(navTab, primaryControlTab, primaryInfoLabel, posterLink, secondaryInfo, biographyText, tagsPane);
-		// Display the initial pet profile
+
 		displayCurrentPetProfile();
 		StackPane stackPane = new StackPane(root);
 		stackPane.setAlignment(Pos.CENTER);
@@ -142,8 +116,6 @@ public class DogProfileScene extends PrimaryScene{
 		Scene scene = new Scene(scrollPane, Components.screenWidth, Components.screenHeight);
 
 		primaryStage.setScene(scene);
-	      
-	//  primaryStage.setMaximized(true);
 		if(allDogs.size() == 0){
 			outOfDogs.start(stage);
 		}
@@ -157,7 +129,6 @@ public class DogProfileScene extends PrimaryScene{
     	    Database.onApplicationClose(user, allDogs, appData.getAppointmentManager());
     	});
 		}
-	
 
 	public void displayCurrentPetProfile() {
 
@@ -197,17 +168,13 @@ public class DogProfileScene extends PrimaryScene{
 		}
 	}
 
-
 	public void changeProfile() {
 		 allDogs.remove();
-
 	}
 
 	public Dog getCurrentProfile() {
-
 		return this.allDogs.peek();
 	}
-
 }
 
 

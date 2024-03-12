@@ -52,7 +52,4 @@ public boolean appointmentExists(Appointment appointment) {
     return false;
 	
 }
-
-
-
 }
