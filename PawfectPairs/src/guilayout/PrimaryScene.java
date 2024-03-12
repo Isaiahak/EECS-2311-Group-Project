@@ -14,15 +14,15 @@ import javafx.stage.Stage;
 public class PrimaryScene extends Application{
 
     protected AppData appData;
-    protected PriorityQueue<Dog> posterDogs;
+    protected PriorityQueue<Dog> allDogs;
     protected Hashtable<Integer,Poster> posterList;
-    protected UserProfile userProfile;
-    protected LikedDogScene likedDog;
+    protected UserProfile userProfileScene;
+    protected LikedDogScene likedDogsScene;
     protected DogProfileScene dogProfileScene;
-    protected SponsoredDogsScene sponsoredDog; 
+    protected SponsoredDogsScene sponsoredDogsScene; 
     protected User user;
     protected Wallet wallet;
-	protected BookedAppointmentScene bookedAppointment;
+	protected BookedAppointmentScene bookedAppointmentsScene;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -32,16 +32,16 @@ public class PrimaryScene extends Application{
     
     public void initailizePrimaryScene() {
     	this.appData = AppData.getInstance();
-        this.posterDogs = appData.getSortedDogProfiles();
+        this.allDogs = appData.getSortedDogProfiles();
         this.posterList = appData.getPosters();
-        this.userProfile = UserProfile.getInstance();
-        this.likedDog = LikedDogScene.getInstance();
+        this.userProfileScene = UserProfile.getInstance();
+        this.likedDogsScene = LikedDogScene.getInstance();
         this.dogProfileScene = DogProfileScene.getInstance();
-        this.sponsoredDog = SponsoredDogsScene.getInstance();
+        this.sponsoredDogsScene = SponsoredDogsScene.getInstance();
         this.user = appData.getUser();
-        this.bookedAppointment = BookedAppointmentScene.getInstance();
+        this.bookedAppointmentsScene = BookedAppointmentScene.getInstance();
 //        this.wallet= appData.getWallet();
-    	this.wallet=user.getWallet();
+    	this.wallet = user.getWallet();
 
     }
 }

@@ -15,7 +15,7 @@ import javafx.stage.Stage;
 import java.util.ArrayList;
 import java.util.PriorityQueue;
 
-public class BookedAppointmentScene extends Application {
+public class BookedAppointmentScene extends PrimaryScene {
 
     User user;
     AppointmentManager userAppointments;
@@ -37,7 +37,7 @@ public class BookedAppointmentScene extends Application {
 
     @Override
     public void start(Stage stage) {
-    	//initailizePrimaryScene();
+    	initailizePrimaryScene();
     	
         user = AppData.getInstance().getUser();
 
@@ -45,7 +45,7 @@ public class BookedAppointmentScene extends Application {
         root.setAlignment(javafx.geometry.Pos.CENTER);
         root.setSpacing(20);
 
-        HBox navTab = Components.navTab(UserProfile.getInstance(), LikedDogScene.getInstance(), DogProfileScene.getInstance(), SponsoredDogsScene.getInstance(), BookedAppointmentScene.getInstance(), stage, "appointments", AppData.getInstance());
+        HBox navTab = Components.navTab(userProfileScene, likedDogsScene, dogProfileScene, sponsoredDogsScene, bookedAppointmentsScene, stage, "appointments", appData);
 
         Label appointmentsLabel = Components.largeLabel("Your Booked Appointments", Pos.CENTER);
 
@@ -55,7 +55,7 @@ public class BookedAppointmentScene extends Application {
         //TreeMap<Integer, Date> userAppointments = Database.getUserAppointments(user.getUserID());
         
         //Local Object
-        userAppointments = AppointmentScene.getInstance().getUserAppointments();
+        userAppointments = CalendarScene.getInstance().getUserAppointments();
         if (userAppointments!=null) {
         appointments = userAppointments.getUserAppointments();
         }

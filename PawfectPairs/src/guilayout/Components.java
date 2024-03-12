@@ -452,6 +452,21 @@ public class Components{
 		return label;
 	}
 	
+	public static Button calendarCell() {
+		
+		
+		Button cell = new Button();
+		cell.setFont(Font.font(font, fontSm));
+		cell.setPrefSize(80, 80);
+		
+		String def = "-fx-background-color: #d1d1d1; -fx-text-fill: #0f0f0f; -fx-alignment: top-right;";
+		String high = "-fx-background-color: #e0e0e0; -fx-text-fill: #0f0f0f; -fx-alignment: top-right;";
+		cell.setStyle(def);
+		
+		return cell;
+		
+	}
+	
 	public static GridPane createAttribute(ArrayList<Attribute> userAttributeList, int attributeType, HashMap<Integer,ArrayList<Attribute>> allAttributes ) {
 
 		GridPane gridPane = new GridPane();
@@ -551,7 +566,7 @@ public class Components{
 	}
 	
 	public static Hyperlink hyperlinkToCancelAppointment(Dog dog, Stage primaryStage, Hashtable<Integer,Poster> poster) {
-		AppointmentManager userManager = AppointmentScene.getInstance().getUserAppointments();
+		AppointmentManager userManager = CalendarScene.getInstance().getUserAppointments();
 		ArrayList<Appointment> userAppointments = userManager.getUserAppointments();
 		
 		
@@ -563,7 +578,7 @@ public class Components{
 		
 		//PosterProfileScene posterProfile = PosterProfileScene.getInstance();
 		//Dog selectedDog = Database.getADog(dog.getId());
-		AppointmentScene appointmentPage = AppointmentScene.getInstance();
+		CalendarScene appointmentPage = CalendarScene.getInstance();
 		
 	
 		appointmentLink.setOnAction(event -> {
@@ -590,7 +605,7 @@ public class Components{
 		return appointmentLink;
 	}
 	public static Hyperlink hyperlinkToReschedule(Dog dog, Stage primaryStage, Hashtable<Integer,Poster> poster) {
-		AppointmentManager userManager = AppointmentScene.getInstance().getUserAppointments();
+		AppointmentManager userManager = CalendarScene.getInstance().getUserAppointments();
 		ArrayList<Appointment> userAppointments = userManager.getUserAppointments();
 		
 		Hyperlink appointmentLink = Components.hyperlink();
@@ -602,7 +617,7 @@ public class Components{
 		//PosterProfileScene posterProfile = PosterProfileScene.getInstance();
 		
 		//Dog selectedDog = Database.getADog(dog.getId()); //need to change to local Call
-		AppointmentScene appointmentPage = AppointmentScene.getInstance();
+		CalendarScene appointmentPage = CalendarScene.getInstance();
 		
 	
 		appointmentLink.setOnAction(event -> {
@@ -638,7 +653,7 @@ public class Components{
 		Poster selectedPoster = poster.get(dog.getPosterId());
 		//PosterProfileScene posterProfile = PosterProfileScene.getInstance();
 		//Dog selectedDog = Database.getADog(dog.getId());
-		AppointmentScene appointmentPage = AppointmentScene.getInstance();
+		CalendarScene appointmentPage = CalendarScene.getInstance();
 		
 	
 		appointmentLink.setOnAction(event -> {

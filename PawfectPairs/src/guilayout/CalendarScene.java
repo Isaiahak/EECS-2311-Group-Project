@@ -25,15 +25,21 @@ import backend.poster.Poster;
 import backend.user.User;
 import guicontrol.AppData;
 
-public class AppointmentScene extends Application {
+public class CalendarScene extends PrimaryScene {
 
     private static final int DAYS_IN_WEEK = 7;
     private static final int WEEKS_IN_MONTH = 6;
 
     private LocalDate currentDate = LocalDate.now();
-    private static AppointmentScene instance;
+    private LocalDate todaysDate = LocalDate.now();
+    private static CalendarScene instance;
     private Label meetWithLabel = new Label();
     private Label successLabel = new Label();
+    private Button oldSelectedButton = new Button(); 
+    
+    private String def = "-fx-background-color: #d1d1d1; -fx-text-fill: #0f0f0f; -fx-alignment: top-right;";
+	private String high = "-fx-background-color: #ccffd1; -fx-text-fill: #0f0f0f; -fx-alignment: top-right;";
+    
     Poster currentPoster; 
     Dog currentDog;
     Date appointment;
@@ -42,19 +48,21 @@ public class AppointmentScene extends Application {
     ArrayList <Appointment> appointments = new ArrayList<>();
     Appointment currentAppointment;
 
-    private AppointmentScene() {
+    private CalendarScene(){
     }
 
     // Method to get the single instance of AppointmentScene
-    public static AppointmentScene getInstance() {
+    public static CalendarScene getInstance() {
         if (instance == null) {
-            instance = new AppointmentScene();
+            instance = new CalendarScene();
         }
         return instance;
     }
 
     @Override
     public void start(Stage stage) {
+    	initailizePrimaryScene();
+    	
         stage.setTitle("Calendar");
         //meetWithLabel.setText("Meet with " + currentDog.getName() + " and " + currentPoster.getDisplayName());
         meetWithLabel.setAlignment(Pos.CENTER);
@@ -66,8 +74,7 @@ public class AppointmentScene extends Application {
         root.setAlignment(Pos.CENTER);
         root.setSpacing(10);
         root.setPadding(new Insets(10));
-
-        HBox navTab = Components.navTab(UserProfile.getInstance(), LikedDogScene.getInstance(), DogProfileScene.getInstance(), SponsoredDogsScene.getInstance(), BookedAppointmentScene.getInstance(), stage, "appointments", AppData.getInstance());
+        HBox navTab = Components.navTab(userProfileScene, likedDogsScene, dogProfileScene, sponsoredDogsScene, bookedAppointmentsScene, stage, "appointments", AppData.getInstance());
         // Title label to display the current month and year
         Button titleLabel = new Button(getFormattedTitle());
         titleLabel.setDisable(true);
@@ -77,9 +84,8 @@ public class AppointmentScene extends Application {
         calendarGrid.setHgap(5);
         calendarGrid.setVgap(5);
 
-        
-        //testing new code
-        
+
+        // this can prob be a function 
         LocalDate firstDayOfMonth = currentDate.withDayOfMonth(1);
         int dayOfWeek = firstDayOfMonth.getDayOfWeek().getValue(); // 1=Monday, ..., 7=Sunday
 
@@ -87,7 +93,9 @@ public class AppointmentScene extends Application {
         for (int row = 0; row < WEEKS_IN_MONTH; row++) {
             for (int col = 0; col < DAYS_IN_WEEK; col++) {
                 int dayOfMonth = row * DAYS_IN_WEEK + col + 1;
-                Button dayButton = new Button();
+                
+                Button dayButton = Components.calendarCell();
+
                 if (dayOfMonth > 0 && dayOfMonth <= currentDate.lengthOfMonth()) {
                     // Calculate the LocalDate for the current button
                     LocalDate buttonDate = firstDayOfMonth.plusDays((row * DAYS_IN_WEEK) + col - dayOfWeek + 1);
@@ -95,8 +103,16 @@ public class AppointmentScene extends Application {
                     // Format the LocalDate as desired (e.g., "MM/dd/yyyy")
                     String buttonText = buttonDate.format(DateTimeFormatter.ofPattern("MM/dd/yyyy"));
                     
+
+                    
                     dayButton.setText(buttonText);
-                    dayButton.setOnAction(event -> handleDayButtonClick(buttonDate));
+                    dayButton.setOnAction(event -> {
+                    	handleDayButtonClick(buttonDate);
+                    	if(dayButton.getStyle().equals(def)) {
+            				oldSelectedButton.setStyle(def);
+            				oldSelectedButton = dayButton; 
+            				dayButton.setStyle(high);
+            			}});
                 } else {
                     dayButton.setDisable(true);
                 }
@@ -115,9 +131,11 @@ public class AppointmentScene extends Application {
 
         Button prevMonthButton = new Button("Previous");
         prevMonthButton.setOnAction(event -> {
+        	if(!currentDate.minusMonths(1).isBefore(firstDayOfMonth)) {
             currentDate = currentDate.minusMonths(1);
             updateCalendar(calendarGrid);
             titleLabel.setText(getFormattedTitle());
+            }
         });
 
         Button nextMonthButton = new Button("Next");
@@ -132,7 +150,7 @@ public class AppointmentScene extends Application {
 
         updateCalendar(calendarGrid);
 
-        Scene scene = new Scene(root, 600, 400);
+        Scene scene = new Scene(root, Components.screenWidth, Components.screenHeight);
         stage.setScene(scene);
         stage.show();
         
@@ -177,13 +195,19 @@ public class AppointmentScene extends Application {
         for (int row = 0; row < WEEKS_IN_MONTH; row++) {
             for (int col = 0; col < DAYS_IN_WEEK; col++) {
                 int dayOfMonth = row * DAYS_IN_WEEK + col - dayOfWeek + 2;
-                Button dayButton = new Button();
+                Button dayButton = Components.calendarCell();
                 if (dayOfMonth > 0 && dayOfMonth <= currentDate.lengthOfMonth()) {
                     // Calculate the LocalDate for the current button
                     LocalDate buttonDate = firstDayOfMonth.plusDays((row * DAYS_IN_WEEK) + col - dayOfWeek + 1);
                     
                     dayButton.setText(String.valueOf(dayOfMonth));
-                    dayButton.setOnAction(event -> handleDayButtonClick(buttonDate));
+                    dayButton.setOnAction(event -> {
+                    	handleDayButtonClick(buttonDate);
+                    	if(dayButton.getStyle().equals(def)) {
+            				oldSelectedButton.setStyle(def);
+            				oldSelectedButton = dayButton; 
+            				dayButton.setStyle(high);
+            			}});
                 } else {
                     dayButton.setDisable(true);
                 }

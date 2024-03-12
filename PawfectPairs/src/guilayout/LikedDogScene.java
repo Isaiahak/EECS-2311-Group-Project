@@ -36,7 +36,7 @@ public class LikedDogScene extends PrimaryScene{
     	root.setSpacing(20);
     	
 
-    	HBox navTab = Components.navTab(userProfile, LikedDogScene.getInstance(), dogProfileScene, sponsoredDog, BookedAppointmentScene.getInstance(),stage,"likedDogs", appData);
+    	HBox navTab = Components.navTab(userProfileScene, LikedDogScene.getInstance(), dogProfileScene, sponsoredDogsScene, BookedAppointmentScene.getInstance(),stage,"likedDogs", appData);
 		VBox likedDogsDisplay = new VBox();
 	    	
     	for(Dog d : likedDogs) {

@@ -52,7 +52,7 @@ public class DonateScene extends PrimaryScene {
 	@Override
 	public void start(Stage stage) {
 		initailizePrimaryScene();
-		HBox navTab = Components.navTab(userProfile, likedDog, dogProfileScene, sponsoredDog, bookedAppointment, stage,"likeddogs", appData);
+		HBox navTab = Components.navTab(userProfileScene, likedDogsScene, dogProfileScene, sponsoredDogsScene, bookedAppointmentsScene, stage,"likeddogs", appData);
 
 
 		//wallet=appData.getWallet();
@@ -259,6 +259,16 @@ public class DonateScene extends PrimaryScene {
 	}
 
 	private void makePayment(AppData appdata, String duration) throws FundsTooLow {
+		if (!(howMuchMoney.getText()+"").matches("\\d+")) {
+			showAlert("Cannot enter non-numeric values ", "Please enter a number", AlertType.ERROR);
+			howMuchMoney.clear();
+        }
+		else if (Double.parseDouble(howMuchMoney.getText())<0)
+			{
+			showAlert("Cannot enter a negative number", "Please enter a non-negative number", AlertType.ERROR);
+			howMuchMoney.clear();
+			}
+		else {//do the payments otherwise
 		double amountToDonate = Double.parseDouble(howMuchMoney.getText()); 
 		Poster poster = appData.getPosterProfiles().get(currentDog.getPosterId());
 		int daysBetweenPayments = 0;
@@ -305,9 +315,9 @@ public class DonateScene extends PrimaryScene {
 
 
 		currentFunds.setText("Your current balance "+String.format("%.2f",  wallet.getBalance()));
-		System.out.println("poster"+poster.getDisplayName() +"'s balance is"+poster.getBalance());
+		//System.out.println("poster"+poster.getDisplayName() +"'s balance is"+poster.getBalance());//was for testing
 
-
+		}
 	}
 	private void showAlert(String title, String message, Alert.AlertType alertType) {
 		Alert alert = new Alert(alertType);

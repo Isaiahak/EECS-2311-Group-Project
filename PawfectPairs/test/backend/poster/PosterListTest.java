@@ -11,7 +11,7 @@ public class PosterListTest {
     @Test
     public void testAddPosterAndGetPoster() {
         PosterList posterList = new PosterList();
-        Poster poster = new Poster(0, "John", 1);
+        Poster poster = new Poster(0, "John", 1,"123-456","poster@email.com", 123.5);
         posterList.addPoster("John", poster);
         assertEquals(poster, posterList.getPoster("John"));
     }
@@ -21,7 +21,7 @@ public class PosterListTest {
         PosterList posterList = new PosterList();
         TreeMap<String, Poster> expectedMap = new TreeMap<>();
         assertEquals(expectedMap, posterList.getDogMap());
-        Poster poster = new Poster(0, "John", 1);
+        Poster poster = new Poster(0, "John", 1,"123-456","poster@email.com", 123.5);
         posterList.addPoster("John", poster);
         expectedMap.put("John", poster);
         assertEquals(expectedMap, posterList.getDogMap());
@@ -31,3 +31,4 @@ public class PosterListTest {
 
     
 }
+
