@@ -256,3 +256,5 @@ March 11, 2024
 - Ekaterina added constaints to calendar (prevent user from making appointmnet inthe past)
 - Isaiah updated the database methods (do pushes/pulls more frequently to optimize performance)
 - Isaiah debugged database bugs
+- Ekaterina udpated the calendar gui
+- Isaiah debugged the sorting algortim (changed DB calls, so we needed to change some data structures)
