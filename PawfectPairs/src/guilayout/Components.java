@@ -1,26 +1,16 @@
 package guilayout;
 
 import java.sql.Date;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Hashtable;
+import java.util.*;
 
 import backend.calendar.Appointment;
 import backend.calendar.AppointmentManager;
-import backend.database.Database;
 import backend.dog.Dog;
-import backend.dog.trait.Age;
 import backend.dog.trait.Attribute;
-import backend.dog.trait.EnergyLevel;
-import backend.dog.trait.Sex;
-import backend.dog.trait.Size;
 import backend.poster.Poster;
 import backend.tag.Tag;
-import backend.user.AttributePreferenceFactor;
 import backend.user.User;
 import guicontrol.AppData;
-import javafx.application.Application;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -119,17 +109,15 @@ public class Components{
         	
 	    	settingsButton.setOnAction(event -> {
 	    	appData.updateDogScores();
-			appData.CheckIfAttributePreferencesHaveBeenChanged();
 	    	userScene.start(stage);
 	        });
 	        likedDogButton.setOnAction(event -> {
 	        	appData.updateDogScores();
-				appData.CheckIfAttributePreferencesHaveBeenChanged();
 	        	likedDog.start(stage);
 	        });
 	        dogProfileButton.setOnAction(event -> {
 	        	appData.updateDogScores();
-				appData.CheckIfAttributePreferencesHaveBeenChanged();
+
 	        	dogProfile.start(stage);
 	        });
 	        appointmentsButton.setOnAction(event -> {
@@ -138,7 +126,6 @@ public class Components{
 		    });
 	        sponsoredDogButton.setOnAction(event -> {
 	        	appData.updateDogScores();
-				appData.CheckIfAttributePreferencesHaveBeenChanged();
 	        	likedDog.start(stage);
 	        });
 	        
@@ -445,19 +432,19 @@ public class Components{
 			}
 			
 		}
-		
-		label.setOnMouseClicked(event -> {	
+
+
+		label.setOnMouseClicked(event -> {
             if (label.getStyle().equals(defaultStyle)) {
             	label.setStyle(highLightedStyle);
-            	userAttributeList.add(allAttributes.get(attributeType).get(weight));
-				
+				if(!userAttributeList.contains(allAttributes.get(attributeType).get(weight))) {
+					userAttributeList.add(allAttributes.get(attributeType).get(weight));
+				}
             }else{
             	if(userAttributeList.size() >= 2) {
             		label.setStyle(defaultStyle);
-				userAttributeList.remove(allAttributes.get(attributeType).get(weight));
+					userAttributeList.remove(allAttributes.get(attributeType).get(weight));
             	}
-				
-				
 			}
         });
 		
@@ -481,6 +468,7 @@ public class Components{
 	}
 	
 	public static GridPane createAttribute(ArrayList<Attribute> userAttributeList, int attributeType, HashMap<Integer,ArrayList<Attribute>> allAttributes ) {
+
 		GridPane gridPane = new GridPane();
 		String[] names = allAttributes.get(attributeType).get(0).getNames();
 		
@@ -494,7 +482,7 @@ public class Components{
 	}
 	
 	//Sidney, Edson and Connor were here :) 
-		public static HBox appointmentView(Dog dog,Date date, Stage primaryStage,Hashtable<Integer,Poster> poster) {
+		public static HBox appointmentView(Dog dog, Date date, Stage primaryStage, Hashtable<Integer,Poster> poster) {
 	        ImageView img = Components.imageView(200, 200);
 	        img.setImage(new Image(dog.getImagePath()));
 
@@ -657,7 +645,7 @@ public class Components{
 	}
 	
 	
-	public static Hyperlink hyperlinkToAppointment(Dog dog, Stage primaryStage,Hashtable<Integer,Poster> poster ) {
+	public static Hyperlink hyperlinkToAppointment(Dog dog, Stage primaryStage, Hashtable<Integer,Poster> poster ) {
 		Hyperlink appointmentLink = Components.hyperlink();
 		appointmentLink.setText("Meet me!");//Database.getPosterById(dog.getPosterId())
 		
@@ -713,7 +701,7 @@ public class Components{
 		
 	}
 
-	public static HBox sponsoredDogView(Dog d, Stage stage, Hashtable<Integer, Poster> poster, AppData appdata,SponsoredDogsScene page) {
+	public static HBox sponsoredDogView(Dog d, Stage stage, Hashtable<Integer, Poster> poster, AppData appdata, SponsoredDogsScene page) {
 		ImageView img = Components.imageView(200, 200);
 		img.setImage(new Image(d.getImagePath()));
 		

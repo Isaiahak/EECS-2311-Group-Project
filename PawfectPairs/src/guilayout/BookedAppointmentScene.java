@@ -3,23 +3,17 @@ package guilayout;
 import backend.user.User;
 import backend.calendar.Appointment;
 import backend.calendar.AppointmentManager;
-import backend.database.Database;
 import backend.dog.Dog;
 import guicontrol.AppData;
 import javafx.application.Application;
-import javafx.collections.*;
 import javafx.geometry.*;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+
 import java.util.ArrayList;
-import java.util.TreeMap;
+import java.util.PriorityQueue;
 
 public class BookedAppointmentScene extends PrimaryScene {
 

@@ -1,9 +1,6 @@
 package backend.user;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Hashtable;
-import java.util.Set;
+import java.util.*;
 
 import backend.dog.Dog;
 import backend.dog.trait.*;
@@ -113,19 +110,19 @@ public class User {
 	}
 
 	public ArrayList<Attribute> getSizePreferences() {
-		return sizePreferences;
+		return this.sizePreferences;
 	}
 
 	public ArrayList<Attribute> getEnergyLevelPreferences() {
-		return energyLevelPreferences;
+		return this.energyLevelPreferences;
 	}
 
 	public ArrayList<Attribute> getSexPreferences() {
-		return sexPreferences;
+		return this.sexPreferences;
 	}
 
 	public ArrayList<Attribute> getAgePreferences() {
-		return agePreferences;
+		return this.agePreferences;
 	}
 
 	public void setTagPreferences(Hashtable<Integer,Tag> tagPreferences) {

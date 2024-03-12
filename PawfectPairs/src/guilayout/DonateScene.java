@@ -1,19 +1,13 @@
 package guilayout;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
+import java.util.PriorityQueue;
 
 import backend.dog.Dog;
 import backend.poster.Poster;
-import backend.user.User;
-import backend.poster.*;
 import backend.wallet.RecurringPayment;
-import backend.wallet.Wallet;
 import backend.wallet.Wallet.FundsTooLow;
 import guicontrol.AppData;
-import javafx.application.Application;
 import javafx.collections.FXCollections;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
@@ -23,9 +17,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.ScrollBar;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.control.ToggleButton;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -267,11 +259,49 @@ public class DonateScene extends PrimaryScene {
 	}
 
 	private void makePayment(AppData appdata, String duration) throws FundsTooLow {
-		if (!(howMuchMoney.getText()+"").matches("\\d+")) {
-			showAlert("Cannot enter non-numeric values ", "Please enter a number", AlertType.ERROR);
-			howMuchMoney.clear();
-        }
-		else if (Double.parseDouble(howMuchMoney.getText())<0)
+		String inputText = howMuchMoney.getText().trim();
+		boolean Numberwithdecimal = false;
+//		try
+//		{
+//			Double num = Double.parseDouble(inputText);
+//			Numberwithdecimal=true;
+//		}
+//		catch(java.lang.NumberFormatException e)
+//		
+//		{ 
+//			Numberwithdecimal=false;
+//		    System.out.println("Error parsing as Double: " + e.getMessage());
+//
+//			
+//		}
+		String whyFalse="";
+		int numofDecimalPoint=0;
+		 for (char c : inputText.toCharArray()) {
+		      if (Character.isDigit(c)) {
+		    	  Numberwithdecimal= true;
+		    	  whyFalse+="not a digit";
+		    	  
+		      }
+		      else if(c == '.') {
+		    	  Numberwithdecimal=true;
+		      numofDecimalPoint++;
+		      }
+		      
+		   }
+		 if (numofDecimalPoint>1) {
+			 Numberwithdecimal=false;
+	    	  whyFalse+="more than one .";
+
+			 }
+
+		//if (!inputText.matches("\\d+(\\.\\d+)?")) {
+		   if (!Numberwithdecimal)
+				   {showAlert("Cannot enter non-numeric values ", "Please enter a number", AlertType.ERROR);
+
+	    howMuchMoney.clear();
+	    howMuchMoney.setText("");}
+	
+		else if (Double.parseDouble(howMuchMoney.getText())<=0)
 			{
 			showAlert("Cannot enter a negative number", "Please enter a non-negative number", AlertType.ERROR);
 			howMuchMoney.clear();

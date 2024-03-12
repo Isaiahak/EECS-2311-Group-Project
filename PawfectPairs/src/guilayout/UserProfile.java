@@ -1,12 +1,7 @@
 package guilayout;
-import backend.dog.trait.Age;
+
 import backend.dog.trait.Attribute;
-import backend.dog.trait.EnergyLevel;
-import backend.dog.trait.Sex;
-import backend.dog.trait.Size;
-import backend.user.*;
 import backend.wallet.Wallet;
-import javafx.application.Application;
 import javafx.geometry.*;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -15,15 +10,10 @@ import javafx.stage.Stage;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Hashtable;
-import java.util.PriorityQueue;
-import java.util.TreeSet;
-
-import backend.database.Database;
-import backend.dog.Dog;
 import backend.tag.Tag;
-import guicontrol.AppData;
 
-public class UserProfile extends PrimaryScene{
+
+public class 	UserProfile extends PrimaryScene{
 	private ArrayList<Attribute> oldAgePreferences;
 	private ArrayList<Attribute> oldSexPreferences;
 	private ArrayList<Attribute> oldSizePreferences;
