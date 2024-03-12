@@ -57,4 +57,5 @@ Replace username with the username that you used to create the database you crea
 ![image](https://github.com/Isaiahak/EECS-2311-Group-Project/assets/97921328/4d0a26a9-8637-4c68-9cd5-6e03cd3bf756)
 
 In the database connection method,  (src>backend.database.Database.java) replace "password" with your postgresql password, "postgres" with your username, and "pawdb" with the dbname defined in the above command.
+
 Note: Please ensure to use finalter2db.sql
