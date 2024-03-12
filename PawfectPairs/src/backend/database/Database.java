@@ -3,6 +3,8 @@ package backend.database;
 import java.sql.*;
 import java.sql.Date;
 import java.util.*;
+import java.time.LocalDate;
+import java.time.ZoneId;
 
 import backend.calendar.Appointment;
 import backend.calendar.AppointmentManager;
@@ -62,6 +64,12 @@ public class Database {
 		}
 		catch (SQLException e) {
 			e.printStackTrace();
+      
+					preparedStatement.setInt(1, app.getUserID());
+					preparedStatement.setInt(2, app.getDogID());
+					preparedStatement.setInt(3, app.getPosterID());
+					preparedStatement.setDate(4, app.getDate());
+					int rowsAffected = preparedStatement.executeUpdate();
 
 		}
 	}
@@ -83,6 +91,7 @@ public class Database {
 					int posterID = resultSet.getInt("posterid");
 					Date date = resultSet.getDate("date");
 					appointments.add(new Appointment(posterID,dogID,date,userID));
+
 				}
 			}
 
@@ -117,50 +126,57 @@ public class Database {
 		return false;
 	}
 
-	public static boolean addBookedDate(int posterID, int dogID, Date date, int userID) {
 
-		Connection connection = databaseConnector.connect();
-		PreparedStatement preparedStatement = null ;
-
-
-		try {
-			 String sql = "INSERT INTO datesbooked (\"posterID\", \"dogID\", \"date\", \"userID\") VALUES (?, ?, ?,?)";
-
-			 connection = databaseConnector.connect();
-
-			 preparedStatement = connection.prepareStatement(sql);
-			 if (!(isDateExists(dogID, userID,connection)==true)) {
-				 preparedStatement.setInt(1, posterID);
-				 preparedStatement.setInt(2, dogID);
-				 preparedStatement.setDate(3, date);
-				 preparedStatement.setInt(4, userID );
-				 int rowsAffected = preparedStatement.executeUpdate();
-				 if (rowsAffected > 0) {
-					//System.out.println("Date added successfully!");
-					;
-					return true;
-				 }
-				 else {
-					//System.out.println("Failed to add Date.");
-					return false;
-				}
-			 }
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
+		
+		
+		public static ArrayList<Appointment> getOtherUserAppointments(int userId){
+			Connection connection = databaseConnector.connect();
+			ArrayList<Appointment> appointments = new ArrayList<>();
 			try {
-				if (preparedStatement != null) {
-					preparedStatement.close();
+			String query = "SELECT dogid,posterid,date FROM datesbooked WHERE NOT userid = ?";
+			PreparedStatement preparedStatement = connection.prepareStatement(query);
+				// Set the userID parameter
+				preparedStatement.setInt(1, userId);
+
+				// Execute the query
+				try (ResultSet resultSet = preparedStatement.executeQuery()) {
+					// Iterate over the result set and populate the TreeMap
+					while (resultSet.next()) {
+						int dogID = resultSet.getInt("dogid");
+						int posterID = resultSet.getInt("posterid");
+						Date date = resultSet.getDate("date");
+						appointments.add(new Appointment(posterID,dogID,date,userId));
+					}
 				}
-				if (connection != null) {
-					connection.close();
-				}
-			} catch (SQLException e) {
+
+
+			return appointments;
+			}catch (SQLException e) {
 				e.printStackTrace();
 			}
+			return null;
 		}
-		return false;
-	}
+		
+		public static ArrayList<Appointment> getUserAppointments(int userID) {
+			Connection connection = databaseConnector.connect();
+			ArrayList<Appointment> appointments = new ArrayList<>();
+			try {
+			String query = "SELECT dogid,posterid,date FROM datesbooked WHERE userid = ?";
+			PreparedStatement preparedStatement = connection.prepareStatement(query);
+				// Set the userID parameter
+				preparedStatement.setInt(1, userID);
+
+				// Execute the query
+				try (ResultSet resultSet = preparedStatement.executeQuery()) {
+					// Iterate over the result set and populate the TreeMap
+					while (resultSet.next()) {
+						int dogID = resultSet.getInt("dogid");
+						int posterID = resultSet.getInt("posterid");
+						Date date = resultSet.getDate("date");
+						appointments.add(new Appointment(posterID,dogID,date,userID));
+					}
+				}
+
 
 	/*
 	 * Dog Methods

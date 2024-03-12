@@ -1,8 +1,10 @@
 package backend.calendar;
 
 import java.sql.Date;
+import java.time.LocalDate;
+import java.time.ZoneId;
 
-public class Appointment {
+public class Appointment{
 	private int posterID;
 	private int dogID;
 	private Date date;
@@ -35,6 +37,9 @@ public class Appointment {
 	public Date getDate() {
 		return date;
 	}
+	public LocalDate getLocalDate() {
+		return this.date.toLocalDate();
+	}
 
 	public void setDate(Date date) {
 		this.date = date;
@@ -47,4 +52,18 @@ public class Appointment {
 	public void setUserID(int userID) {
 		this.userID = userID;
 	}
+
+	
+	
+	@Override
+	public boolean equals(Object o) {
+		if(this.dogID == ((Appointment) o).getDogID()) return true;
+		
+		return false;
+		
+	}
+	
+	
+
+
 }
