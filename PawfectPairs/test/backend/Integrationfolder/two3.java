@@ -6,7 +6,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class two {
+class two3 {
 
 	@BeforeAll
 	static void setUpBeforeClass() throws Exception {
@@ -24,9 +24,5 @@ class two {
 	void tearDown() throws Exception {
 	}
 
-	@Test
-	void test() {
-		fail("Not yet implemented");
-	}
 
 }
