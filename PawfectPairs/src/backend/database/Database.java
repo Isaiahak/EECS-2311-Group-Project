@@ -65,11 +65,6 @@ public class Database {
 		catch (SQLException e) {
 			e.printStackTrace();
       
-					preparedStatement.setInt(1, app.getUserID());
-					preparedStatement.setInt(2, app.getDogID());
-					preparedStatement.setInt(3, app.getPosterID());
-					preparedStatement.setDate(4, app.getDate());
-					int rowsAffected = preparedStatement.executeUpdate();
 
 		}
 	}
@@ -103,6 +98,7 @@ public class Database {
 		return null;
 
 	}
+	
 
 	public static boolean isDateExists(int  dogID,int userID, Connection connection) {
 
@@ -157,25 +153,6 @@ public class Database {
 			return null;
 		}
 		
-		public static ArrayList<Appointment> getUserAppointments(int userID) {
-			Connection connection = databaseConnector.connect();
-			ArrayList<Appointment> appointments = new ArrayList<>();
-			try {
-			String query = "SELECT dogid,posterid,date FROM datesbooked WHERE userid = ?";
-			PreparedStatement preparedStatement = connection.prepareStatement(query);
-				// Set the userID parameter
-				preparedStatement.setInt(1, userID);
-
-				// Execute the query
-				try (ResultSet resultSet = preparedStatement.executeQuery()) {
-					// Iterate over the result set and populate the TreeMap
-					while (resultSet.next()) {
-						int dogID = resultSet.getInt("dogid");
-						int posterID = resultSet.getInt("posterid");
-						Date date = resultSet.getDate("date");
-						appointments.add(new Appointment(posterID,dogID,date,userID));
-					}
-				}
 
 
 	/*
@@ -725,6 +702,7 @@ public class Database {
 	
 	return tags;
 }
+	// IN PROGRESS
 
 	public static boolean addUser(String username, String password, HashMap<Integer,ArrayList<Attribute>> allAttributes) {
 		Connection connection = null;
@@ -740,8 +718,12 @@ public class Database {
         	 int rowsAffected = preparedStatement.executeUpdate();
         	 if (rowsAffected > 0) {
                 System.out.println("User added successfully!");
-				sql = "SELECT userid FROM users WHERE username = " + username + " AND password = " + password + ";";
-                int userid = connection.prepareStatement(sql).getResultSet().getInt("userid");
+				sql = "SELECT userid FROM users WHERE username = " + username + " AND password = " + password + ";";       
+                Statement preppedStatement = connection.createStatement();
+                ResultSet resultSet = preppedStatement.executeQuery(sql);
+                
+                int userid = resultSet.getInt("userid");
+                
                 String sql2 = "INSERT INTO userattributepreferences (userid, attributetype, attributeid) VALUES ";
                 for(int type = 0; type < allAttributes.keySet().size(); type++) {
                 	for(int weight = 0; weight < allAttributes.get(type).size(); weight++) {
@@ -776,6 +758,8 @@ public class Database {
         }
         return false;
 	}
+	
+
 
 	public static void deleteUserAttributePreferences(int userId) {
 		try {
@@ -893,7 +877,6 @@ public class Database {
 				String sql2 = "INSERT INTO userpayments (userid, paymentamount,daysbetweenpayment,dogid,lastpaymentdate,posterid) VALUES (?,?,?,?,?,?)";
 				preparedStatement = connection.prepareStatement(sql2);
 				preparedStatement.setInt(1, user.getUserID());
-				preparedStatement.setDouble(2, p.getPaymentAmount());
 				preparedStatement.setInt(3, p.getDaysBetweenPayments());
 				preparedStatement.setInt(4, p.getDogId());
 				preparedStatement.setString(5, p.getLastPaymentDateToString());
@@ -981,7 +964,7 @@ class DatabaseConnector {
     public Connection connect() {
         try{
         	Class.forName("org.postgresql.Driver"); // Replace with your database driver
-        	Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5434/pawsome", "postgres", "321123");
+        	Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/thebestoneyet", "postgres", "doglover123");
 			//System.out.println( "Connected to the PostgreSQL server successfully.");
         	return connection;
         }

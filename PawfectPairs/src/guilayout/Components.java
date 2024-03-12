@@ -480,8 +480,8 @@ public class Components{
 		cell.setStyle(def);
 		
 		cell.getChildren().add(cellText);
-		
-
+		return cell;
+	}
 	
 	public static GridPane createAttribute(ArrayList<Attribute> userAttributeList, int attributeType, HashMap<Integer,ArrayList<Attribute>> allAttributes ) {
 		GridPane gridPane = new GridPane();
@@ -496,15 +496,12 @@ public class Components{
 	
 	//Sidney, Edson and Connor were here :) 
 		public static HBox appointmentView(Dog dog, Date localDate, Stage primaryStage, Hashtable<Integer,Poster> poster) {
-	        ImageView img = Components.imageView(200, 200);
-	        img.setImage(new Image(dog.getImagePath()));
+        ImageView img = Components.imageView(200, 200);
+        img.setImage(new Image(dog.getImagePath()));
 
-	        Label primaryInfoLabel = Components.mediumLabel(dog.getName() + ", " + dog.getAge() + " years, " + dog.getSex(), Pos.CENTER);
-	        Label appointmentDate = Components.mediumLabel("Appointment Date: " + localDate.toString(),Pos.CENTER);
+        Label primaryInfoLabel = Components.mediumLabel(dog.getName() + ", " + dog.getAge() + " years, " + dog.getSex(), Pos.CENTER);
+        Label appointmentDate = Components.mediumLabel("Appointment Date: " + localDate.toString(),Pos.CENTER);
 
-
-		Label primaryInfoLabel = Components.mediumLabel(dog.getName() + ", " + dog.getAge() + " years, " + dog.getSex(), Pos.CENTER);
-		Label appointmentDate = Components.mediumLabel("Appointment Date: " + date.toString(),Pos.CENTER);
 
 		Hyperlink rescheduleLink = hyperlinkToReschedule(dog, primaryStage, poster);
 
@@ -686,5 +683,6 @@ public class Components{
 		HBox.setAlignment(Pos.CENTER);
 		HBox.setSpacing(50);
 		return HBox;
+		
 	}
 }
