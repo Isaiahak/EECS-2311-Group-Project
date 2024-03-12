@@ -1,6 +1,8 @@
 package backend.calendar;
 
 import java.sql.Date;
+import java.time.LocalDate;
+import java.time.ZoneId;
 
 public class Appointment{
 	private int posterID;
@@ -32,6 +34,9 @@ public class Appointment{
 	}
 	public Date getDate() {
 		return date;
+	}
+	public LocalDate getLocalDate() {
+		return this.date.toLocalDate();
 	}
 	public void setDate(Date date) {
 		this.date = date;

@@ -92,7 +92,33 @@ public class Database {
 
 		
 		
+		public static ArrayList<Appointment> getOtherUserAppointments(int userId){
+			Connection connection = databaseConnector.connect();
+			ArrayList<Appointment> appointments = new ArrayList<>();
+			try {
+			String query = "SELECT dogid,posterid,date FROM datesbooked WHERE NOT userid = ?";
+			PreparedStatement preparedStatement = connection.prepareStatement(query);
+				// Set the userID parameter
+				preparedStatement.setInt(1, userId);
 
+				// Execute the query
+				try (ResultSet resultSet = preparedStatement.executeQuery()) {
+					// Iterate over the result set and populate the TreeMap
+					while (resultSet.next()) {
+						int dogID = resultSet.getInt("dogid");
+						int posterID = resultSet.getInt("posterid");
+						Date date = resultSet.getDate("date");
+						appointments.add(new Appointment(posterID,dogID,date,userId));
+					}
+				}
+
+
+			return appointments;
+			}catch (SQLException e) {
+				e.printStackTrace();
+			}
+			return null;
+		}
 		
 		public static ArrayList<Appointment> getUserAppointments(int userID) {
 			Connection connection = databaseConnector.connect();

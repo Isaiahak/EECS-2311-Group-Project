@@ -52,6 +52,8 @@ public class CalendarScene extends PrimaryScene {
     Appointment existingAppointment;
     Appointment currentAppointment;
     
+    ArrayList <Appointment> otherUsersAppointments;
+    
     private GridPane calendarGrid;
 
     private CalendarScene(){
@@ -75,6 +77,7 @@ public class CalendarScene extends PrimaryScene {
         
         user = appData.getUser();
         userAppointments = appData.getAppointmentManager();
+        otherUsersAppointments = appData.getOtherUsersAppointments();
 
         VBox root = new VBox();
         root.setAlignment(Pos.CENTER);
@@ -173,28 +176,34 @@ public class CalendarScene extends PrimaryScene {
                 dayButton = Components.calendarCell(Integer.toString(buttonText));
                 
                 if (dayOfMonth > 0 && dayOfMonth <= currentDate.lengthOfMonth() && buttonDate.isAfter(firstDayOfMonth.minusDays(1))) {
-                	StackPane dayButtonCopy = dayButton; 
-//                	LocalDate buttonDateCopy = buttonDate;
-                	
-                    dayButton.setOnMouseClicked(event -> {
-                    	successLabel.setText(buttonDate.toString());
-                    	currentSelectedDate = buttonDate; 
-                    	if(dayButtonCopy.getStyle().equals(defaultStyle)) {
-            				oldSelectedButton.setStyle(defaultStyle);
-            				oldSelectedButton = dayButtonCopy; 
-            				dayButtonCopy.setStyle(highlightedStyle);
-            			}});
-                    
-                    if(existingAppointment != null && buttonDate.equals(existingAppointment.getDate().toLocalDate())) {
-                    	Label existingAppointmentLabel = Components.tinyLabel("Date with " + currentDog.getName(),Pos.CENTER);
-                    	existingAppointmentLabel.setStyle("-fx-background-color: #82daf5; -fx-text-fill: #0f0f0f; -fx-alignment: top-right;");
-                    	StackPane.setAlignment(existingAppointmentLabel, Pos.CENTER);
-                    	dayButton.getChildren().add(existingAppointmentLabel);
-                    }
-                    
-//                    calendarGrid.getChildren().add(dayButton);
+                	if(!appData.isDateAlreadyBooked(currentDog.getId(), currentDog.getPosterId(), buttonDate)) {
+	                	StackPane dayButtonCopy = dayButton; 
+	//                	LocalDate buttonDateCopy = buttonDate;
+	                	
+	                    dayButton.setOnMouseClicked(event -> {
+	                    	successLabel.setText(buttonDate.toString());
+	                    	currentSelectedDate = buttonDate; 
+	                    	if(dayButtonCopy.getStyle().equals(defaultStyle)) {
+	            				oldSelectedButton.setStyle(defaultStyle);
+	            				oldSelectedButton = dayButtonCopy; 
+	            				dayButtonCopy.setStyle(highlightedStyle);
+	            			}});
+	                    
+	                    if(existingAppointment != null && buttonDate.equals(existingAppointment.getDate().toLocalDate())) {
+	                    	Label existingAppointmentLabel = Components.tinyLabel("Date with " + currentDog.getName(),Pos.CENTER);
+	                    	existingAppointmentLabel.setStyle("-fx-background-color: #82daf5; -fx-text-fill: #e0e0e0; -fx-alignment: top-right;");
+	                    	StackPane.setAlignment(existingAppointmentLabel, Pos.CENTER);
+	                    	dayButton.getChildren().add(existingAppointmentLabel);
+	                    } 
+
+                	}else {
+                		dayButton.setStyle(inactiveStyle);
+                		Label otherExistingAppointment = Components.tinyLabel(currentDog.getName() + " is busy",Pos.CENTER);
+                		otherExistingAppointment.setStyle("-fx-background-color: #e83562; -fx-text-fill: #e0e0e0; -fx-alignment: top-right;");
+                    	StackPane.setAlignment(otherExistingAppointment, Pos.CENTER);
+                    	dayButton.getChildren().add(otherExistingAppointment);
+                	}
                 }
-                
                 else {
                     dayButton.setStyle(inactiveStyle);
                 }
@@ -225,14 +234,6 @@ public class CalendarScene extends PrimaryScene {
     	existingAppointment = currentAppointment; 
     	successLabel.setText("Date added successfully!");
     	updateCalendar();
-    	
-        for(Appointment app : userAppointments.getUserAppointments()) {
-        	System.out.println(app.getDogID());
-        }
-
-        
-        
-        // Add your logic for handling the selected date (e.g., scheduling appointments)
     }
 
     public static void main(String[] args) {
