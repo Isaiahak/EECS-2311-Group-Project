@@ -1,5 +1,6 @@
 package guilayout;
 
+import backend.database.Database;
 import backend.dog.Dog;
 import backend.wallet.Wallet;
 import javafx.geometry.Pos;
@@ -150,11 +151,11 @@ public class DogProfileScene extends PrimaryScene{
 			primaryStage.show();
 		}
       
-//      primaryStage.setOnCloseRequest(event -> {
-//    	    System.out.println("Window is closing. Perform cleanup if needed.");
-//    	    
-//    	    Database.onApplicationClose(user, posterDogs, appData.getAppointmentManager());
-//    	});
+      primaryStage.setOnCloseRequest(event -> {
+    	    System.out.println("Window is closing. Perform cleanup if needed.");
+    	    
+    	    Database.onApplicationClose(user, allDogs, appData.getAppointmentManager());
+    	});
 		}
 	
 
