@@ -1,6 +1,7 @@
 package guilayout;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.*;
 
 import backend.calendar.Appointment;
@@ -18,6 +19,8 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
@@ -28,7 +31,10 @@ public class Components{
 	 */
 
 	public static int screenHeight =  (int) Screen.getPrimary().getVisualBounds().getHeight();
-	public static int screenWidth =  (int) Screen.getPrimary().getVisualBounds().getWidth();
+
+	public static int screenWidth =  (int) Screen.getPrimary().getVisualBounds().getWidth(); 
+	
+	private static int fontTn = 15;
 	private static int fontSm = 20;
 	private static int fontMd = 30;
 	private static int fontLg = 50;
@@ -181,6 +187,16 @@ public class Components{
 		Label label = new Label(text);
 		label.setAlignment(pos);
 		label.setFont(Font.font(font, fontSm));
+		label.setWrapText(true);
+
+		
+		return label;
+	}
+	
+	public static Label tinyLabel(String text, Pos pos) {
+		Label label = new Label(text);
+		label.setAlignment(pos);
+		label.setFont(Font.font(font, fontTn));
 		label.setWrapText(true);
 
 		
@@ -437,216 +453,242 @@ public class Components{
 		return label;
 	}
 	
-	public static Button calendarCell() {
-		Button cell = new Button();
-		cell.setFont(Font.font(font, fontSm));
-		cell.setPrefSize(80, 80);
+
+	public static Button calendarButton(String text) {
+		
+		Button button = new Button(text);
+		button.setFont(Font.font(font, fontMd));
+		
+		button.setStyle(
+				"-fx-background-color: #82daf5; -fx-text-fill: #ffffff; -fx-alignment: center;"
+				);
+		
+		return button;
+		
+	}
+	
+	public static StackPane calendarCell(String day) {
+		StackPane cell = new StackPane();
+		Label cellText = new Label();
+		cellText.setText(day);
+		cellText.setFont(Font.font(font, fontSm));
+		cell.setPrefSize(90, 90);
+		StackPane.setAlignment(cellText, Pos.TOP_RIGHT);
 
 		String def = "-fx-background-color: #d1d1d1; -fx-text-fill: #0f0f0f; -fx-alignment: top-right;";
 		String high = "-fx-background-color: #e0e0e0; -fx-text-fill: #0f0f0f; -fx-alignment: top-right;";
 		cell.setStyle(def);
 
+		cell.getChildren().add(cellText);
 		return cell;
 	}
-	
-	public static GridPane createAttribute(ArrayList<Attribute> userAttributeList, int attributeType, HashMap<Integer,ArrayList<Attribute>> allAttributes ) {
-		GridPane gridPane = new GridPane();
-		String[] names = allAttributes.get(attributeType).get(0).getNames();
-		for(int j = 0; j < names.length; j++) {
-			// Add the label to the grid
-			Label label = attributeLabel(names[j], gridPane, userAttributeList, attributeType, j,allAttributes );
-            gridPane.add(label, j,0);
-		} 
-		return gridPane;
-	}
 
-	public static HBox appointmentView(Dog dog, Date date, Stage primaryStage, Hashtable<Integer,Poster> poster) {
-		ImageView img = Components.imageView(200, 200);
-		img.setImage(new Image(dog.getImagePath()));
 
-		Label primaryInfoLabel = Components.mediumLabel(dog.getName() + ", " + dog.getAge() + " years, " + dog.getSex(), Pos.CENTER);
-		Label appointmentDate = Components.mediumLabel("Appointment Date: " + date.toString(),Pos.CENTER);
-
-		Hyperlink rescheduleLink = hyperlinkToReschedule(dog, primaryStage, poster);
-
-		Hyperlink cancelLink = hyperlinkToCancelAppointment(dog, primaryStage,poster);
-
-		VBox info = new VBox(primaryInfoLabel, appointmentDate, rescheduleLink, cancelLink);
-		HBox HBox = new HBox(img, info);
-		HBox.setAlignment(Pos.CENTER);
-		HBox.setSpacing(50);
-
-		return HBox;
-	}
-
-	public static HBox likedDogView(Dog dog, Stage primaryStage, Hashtable<Integer,Poster> poster) {
-
-		ImageView img = Components.imageView(200, 200);
-		img.setImage(new Image(dog.getImagePath()));
-		
-		Label primaryInfoLabel = Components.mediumLabel(dog.getName() + ", " + dog.getAge() + " years, " + dog.getSex(),Pos.CENTER); 
-		
-		Hyperlink posterLink = hyperlinkToPosterProfile(dog, primaryStage, poster);
-		
-		Hyperlink sponsorLink = hyperLinkToSponsor(dog, primaryStage);
-		
-		
-		Hyperlink appointmentLink = hyperlinkToAppointment(dog, primaryStage, poster);
-		
-		VBox info = new VBox(
-				primaryInfoLabel,
-				posterLink,
-				appointmentLink,
-				sponsorLink
-				);
-		
-		HBox HBox = new HBox(img, info);
-		HBox.setAlignment(Pos.CENTER);
-		HBox.setSpacing(50);
-
-		return HBox;
-	}
-
-	public static Hyperlink hyperLinkToSponsor(Dog dog, Stage primaryStage) {
-		Hyperlink sponsorLink = Components.hyperlink();
-		sponsorLink.setText("Sponsor " + dog.getName() + "!");
-		DonateScene donateScene = DonateScene.getInstance();
-		sponsorLink.setOnAction(event -> {
-        	try {
-        		donateScene.setCurrentDog(dog);
-        		donateScene.start(primaryStage);
-			} catch (Exception e) {
-				e.printStackTrace();
+		public static GridPane createAttribute (ArrayList < Attribute > userAttributeList,int attributeType, HashMap<
+		Integer, ArrayList < Attribute >> allAttributes ){
+			GridPane gridPane = new GridPane();
+			String[] names = allAttributes.get(attributeType).get(0).getNames();
+			for (int j = 0; j < names.length; j++) {
+				// Add the label to the grid
+				Label label = attributeLabel(names[j], gridPane, userAttributeList, attributeType, j, allAttributes);
+				gridPane.add(label, j, 0);
 			}
-        });
-		return sponsorLink;
-	}
-	
-	public static Hyperlink hyperlinkToPosterProfile(Dog dog, Stage primaryStage, Hashtable<Integer,Poster> poster) {
-		Hyperlink posterLink = Components.hyperlink();
-		posterLink.setText(poster.get(dog.getPosterId()).getDisplayName());
-		PosterProfileScene posterProfile = PosterProfileScene.getInstance();
-		posterLink.setOnAction(event -> {
-        	try {
-        		posterProfile.setCurrentPoster(poster.get(dog.getPosterId()));
-				posterProfile.start(primaryStage);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-        });
-		
-		return posterLink;
-	}
-	
-	public static Hyperlink hyperlinkToCancelAppointment(Dog dog, Stage primaryStage, Hashtable<Integer,Poster> poster) {
-		AppointmentManager userManager = CalendarScene.getInstance().getUserAppointments();
-		ArrayList<Appointment> userAppointments = userManager.getUserAppointments();
-		
-		
-		Hyperlink appointmentLink = Components.hyperlink();
-		appointmentLink.setText("Cancel");
-		CalendarScene appointmentPage = CalendarScene.getInstance();
-		appointmentLink.setOnAction(event -> {
-        	try {
-        		
-        		for (Appointment appointment : userAppointments) {
-        	        if (appointment.getDogID() == dog.getId()) {
-        	        	userManager.removeAppointment(appointment);
-        	        	BookedAppointmentScene bookedPage = BookedAppointmentScene.getInstance();
-                		bookedPage.start(primaryStage);
-        	        }
-        		}
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-        });
-		
-		return appointmentLink;
-	}
+			return gridPane;
+		}
 
-	public static Hyperlink hyperlinkToReschedule(Dog dog, Stage primaryStage, Hashtable<Integer,Poster> poster) {
-		AppointmentManager userManager = CalendarScene.getInstance().getUserAppointments();
-		ArrayList<Appointment> userAppointments = userManager.getUserAppointments();
-		Hyperlink appointmentLink = Components.hyperlink();
-		appointmentLink.setText("Reschedule");
-		Poster selectedPoster = poster.get(dog.getPosterId());
-		CalendarScene appointmentPage = CalendarScene.getInstance();
+		//Sidney, Edson and Connor were here :)
+		public static HBox appointmentView (Dog dog, Date localDate, Stage
+			primaryStage, Hashtable < Integer, Poster > poster){
+			ImageView img = Components.imageView(200, 200);
+			img.setImage(new Image(dog.getImagePath()));
 
-		appointmentLink.setOnAction(event -> {
-        	try {
-        		for (Appointment appointment : userAppointments) {
-        	        if (appointment.getDogID() == dog.getId()) {
-        	        	userManager.removeAppointment(appointment);
-        	        	appointmentPage.setCurrentPosterDog(selectedPoster,dog);
-                		appointmentPage.start(primaryStage);
-        	        }
-        		}
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-        });
-		
-		return appointmentLink;
-	}
+			Label primaryInfoLabel = Components.mediumLabel(dog.getName() + ", " + dog.getAge() + " years, " + dog.getSex(), Pos.CENTER);
+			Label appointmentDate = Components.mediumLabel("Appointment Date: " + localDate.toString(), Pos.CENTER);
 
-	public static Hyperlink hyperlinkToAppointment(Dog dog, Stage primaryStage, Hashtable<Integer,Poster> poster ) {
-		Hyperlink appointmentLink = Components.hyperlink();
-		appointmentLink.setText("Meet me!");
-		Poster selectedPoster = poster.get(dog.getPosterId());
-		CalendarScene appointmentPage = CalendarScene.getInstance();
+			Hyperlink rescheduleLink = hyperlinkToReschedule(dog, primaryStage, poster);
 
-		appointmentLink.setOnAction(event -> {
-        	try {
-        		appointmentPage.setCurrentPosterDog(selectedPoster,dog);
-        		//appointmentPage.updateMeetWithLabel(poster, selectedDog);
-        		appointmentPage.start(primaryStage);
-        		
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-        });
-		
-		return appointmentLink;
-	}
-	
-	public static HBox posterDogView(Dog dog) {
-		ImageView img = Components.imageView(200, 200);
-		img.setImage(new Image(dog.getImagePath()));
-		Label primaryInfoLabel = Components.mediumLabel(dog.getName() + ", " + dog.getAge() + " years, " + dog.getSex(),Pos.CENTER);
-		VBox info = new VBox(primaryInfoLabel);
-		HBox ret = new HBox(img, info);
-		ret.setSpacing(50);
-		return ret;
-	}
+			Hyperlink cancelLink = hyperlinkToCancelAppointment(dog, primaryStage, poster);
 
-	public static HBox sponsoredDogView(Dog d, Stage stage, Hashtable<Integer, Poster> poster, AppData appdata, SponsoredDogsScene page) {
-		ImageView img = Components.imageView(200, 200);
-		img.setImage(new Image(d.getImagePath()));
-		
-		Label primaryInfoLabel = Components.mediumLabel(d.getName() + ", " + d.getAge() + " years, " + d.getSex(),Pos.CENTER); 
-		
-		Hyperlink posterLink = hyperlinkToPosterProfile(d, stage, poster);
-		
-		Button cancelButton = button("Cancel Donation :(");
+			VBox info = new VBox(primaryInfoLabel, appointmentDate, rescheduleLink, cancelLink);
+			HBox HBox = new HBox(img, info);
+			HBox.setAlignment(Pos.CENTER);
+			HBox.setSpacing(50);
+
+			return HBox;
+		}
+
+		public static HBox likedDogView (Dog dog, Stage primaryStage, Hashtable < Integer, Poster > poster){
+
+			ImageView img = Components.imageView(200, 200);
+			img.setImage(new Image(dog.getImagePath()));
+
+			Label primaryInfoLabel = Components.mediumLabel(dog.getName() + ", " + dog.getAge() + " years, " + dog.getSex(), Pos.CENTER);
+
+			Hyperlink posterLink = hyperlinkToPosterProfile(dog, primaryStage, poster);
+
+			Hyperlink sponsorLink = hyperLinkToSponsor(dog, primaryStage);
+
+
+			Hyperlink appointmentLink = hyperlinkToAppointment(dog, primaryStage, poster);
+
+			VBox info = new VBox(
+					primaryInfoLabel,
+					posterLink,
+					appointmentLink,
+					sponsorLink
+			);
+
+			HBox HBox = new HBox(img, info);
+			HBox.setAlignment(Pos.CENTER);
+			HBox.setSpacing(50);
+
+			return HBox;
+		}
+
+		public static Hyperlink hyperLinkToSponsor (Dog dog, Stage primaryStage){
+			Hyperlink sponsorLink = Components.hyperlink();
+			sponsorLink.setText("Sponsor " + dog.getName() + "!");
+			DonateScene donateScene = DonateScene.getInstance();
+			sponsorLink.setOnAction(event -> {
+				try {
+					donateScene.setCurrentDog(dog);
+					donateScene.start(primaryStage);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			});
+			return sponsorLink;
+		}
+
+		public static Hyperlink hyperlinkToPosterProfile (Dog dog, Stage
+		primaryStage, Hashtable < Integer, Poster > poster){
+			Hyperlink posterLink = Components.hyperlink();
+			posterLink.setText(poster.get(dog.getPosterId()).getDisplayName());
+			PosterProfileScene posterProfile = PosterProfileScene.getInstance();
+			posterLink.setOnAction(event -> {
+				try {
+					posterProfile.setCurrentPoster(poster.get(dog.getPosterId()));
+					posterProfile.start(primaryStage);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			});
+
+			return posterLink;
+		}
+
+		public static Hyperlink hyperlinkToCancelAppointment (Dog dog, Stage
+		primaryStage, Hashtable < Integer, Poster > poster){
+			AppointmentManager userManager = AppData.getInstance().getAppointmentManager();
+			ArrayList<Appointment> userAppointments = userManager.getUserAppointments();
+
+
+			Hyperlink appointmentLink = Components.hyperlink();
+			appointmentLink.setText("Cancel");
+			CalendarScene appointmentPage = CalendarScene.getInstance();
+			appointmentLink.setOnAction(event -> {
+				try {
+
+					for (Appointment appointment : userAppointments) {
+						if (appointment.getDogID() == dog.getId()) {
+							userManager.removeAppointment(appointment);
+							BookedAppointmentScene bookedPage = BookedAppointmentScene.getInstance();
+							bookedPage.start(primaryStage);
+						}
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			});
+
+			return appointmentLink;
+		}
+
+		public static Hyperlink hyperlinkToReschedule (Dog dog, Stage primaryStage, Hashtable < Integer, Poster > poster)
+		{
+			AppointmentManager userManager = AppData.getInstance().getAppointmentManager();
+			ArrayList<Appointment> userAppointments = userManager.getUserAppointments();
+			Hyperlink appointmentLink = Components.hyperlink();
+			appointmentLink.setText("Reschedule");
+			Poster selectedPoster = poster.get(dog.getPosterId());
+			CalendarScene appointmentPage = CalendarScene.getInstance();
+
+			appointmentLink.setOnAction(event -> {
+				try {
+					for (Appointment appointment : userAppointments) {
+						if (appointment.getDogID() == dog.getId()) {
+							appointmentPage.setCurrentPosterDog(selectedPoster, dog);
+							appointmentPage.start(primaryStage);
+						}
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			});
+
+			return appointmentLink;
+		}
+
+		public static Hyperlink hyperlinkToAppointment (Dog dog, Stage
+		primaryStage, Hashtable < Integer, Poster > poster ){
+			Hyperlink appointmentLink = Components.hyperlink();
+			appointmentLink.setText("Meet me!");
+			Poster selectedPoster = poster.get(dog.getPosterId());
+			CalendarScene appointmentPage = CalendarScene.getInstance();
+
+			appointmentLink.setOnAction(event -> {
+				try {
+					appointmentPage.setCurrentPosterDog(selectedPoster, dog);
+					//appointmentPage.updateMeetWithLabel(poster, selectedDog);
+					appointmentPage.start(primaryStage);
+
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			});
+
+			return appointmentLink;
+		}
+
+		public static HBox posterDogView (Dog dog){
+			ImageView img = Components.imageView(200, 200);
+			img.setImage(new Image(dog.getImagePath()));
+			Label primaryInfoLabel = Components.mediumLabel(dog.getName() + ", " + dog.getAge() + " years, " + dog.getSex(), Pos.CENTER);
+			VBox info = new VBox(primaryInfoLabel);
+			HBox ret = new HBox(img, info);
+			ret.setSpacing(50);
+			return ret;
+		}
+
+		public static HBox sponsoredDogView (Dog d, Stage stage, Hashtable < Integer, Poster > poster, AppData
+		appdata, SponsoredDogsScene page){
+			ImageView img = Components.imageView(200, 200);
+			img.setImage(new Image(d.getImagePath()));
+
+			Label primaryInfoLabel = Components.mediumLabel(d.getName() + ", " + d.getAge() + " years, " + d.getSex(), Pos.CENTER);
+
+			Hyperlink posterLink = hyperlinkToPosterProfile(d, stage, poster);
+
+			Button cancelButton = button("Cancel Donation :(");
 //		Button editButton = new Button("Edit Donation :D"); // to be implemented
-		cancelButton.setOnAction(event -> { 
-        	//System.out.println("before removal "+appdata.getUser().getWallet().getRecurringPaymentsDogsList().toString());
-        	appdata.getUser().getWallet().removeRecurringPayment(d.getId());
-        	//System.out.println("after removal "+ appdata.getUser().getWallet().getRecurringPaymentsDogsList().toString());
-        	// hacky way to reload page :)
-        	page.start(stage);
-        	
-        });
-		
-		VBox info = new VBox(
-				primaryInfoLabel,
-				posterLink,
-				cancelButton
-				);
-		HBox HBox = new HBox();
-		HBox.getChildren().addAll(img, info);
-		HBox.setAlignment(Pos.CENTER);
-		HBox.setSpacing(50);
-		return HBox;
-	}
+			cancelButton.setOnAction(event -> {
+				//System.out.println("before removal "+appdata.getUser().getWallet().getRecurringPaymentsDogsList().toString());
+				appdata.getUser().getWallet().removeRecurringPayment(d.getId());
+				//System.out.println("after removal "+ appdata.getUser().getWallet().getRecurringPaymentsDogsList().toString());
+				// hacky way to reload page :)
+				page.start(stage);
+
+			});
+
+			VBox info = new VBox(
+					primaryInfoLabel,
+					posterLink,
+					cancelButton
+			);
+			HBox HBox = new HBox();
+			HBox.getChildren().addAll(img, info);
+			HBox.setAlignment(Pos.CENTER);
+			HBox.setSpacing(50);
+			return HBox;
+		}
 }

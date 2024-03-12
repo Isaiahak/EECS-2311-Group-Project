@@ -3,6 +3,8 @@ package backend.database;
 import java.sql.*;
 import java.sql.Date;
 import java.util.*;
+import java.time.LocalDate;
+import java.time.ZoneId;
 
 import backend.calendar.Appointment;
 import backend.calendar.AppointmentManager;
@@ -65,7 +67,6 @@ public class Database {
 		}
 		catch (SQLException e) {
 			e.printStackTrace();
-
 		}
 	}
 
@@ -86,6 +87,7 @@ public class Database {
 					int posterID = resultSet.getInt("posterid");
 					Date date = resultSet.getDate("date");
 					appointments.add(new Appointment(posterID,dogID,date,userID));
+
 				}
 			}
 
@@ -120,47 +122,33 @@ public class Database {
 		return false;
 	}
 
-	public static boolean addBookedDate(int posterID, int dogID, Date date, int userID) {
-
+	public static ArrayList<Appointment> getOtherUserAppointments(int userId){
 		Connection connection = databaseConnector.connect();
-		PreparedStatement preparedStatement = null ;
+		ArrayList<Appointment> appointments = new ArrayList<>();
+
 		try {
-			 String sql = "INSERT INTO datesbooked (posterID, dogID, date, userID) VALUES (?, ?, ?,?)";
+		String query = "SELECT dogid,posterid,date FROM datesbooked WHERE NOT userid = ?";
+		PreparedStatement preparedStatement = connection.prepareStatement(query);
+			// Set the userID parameter
+			preparedStatement.setInt(1, userId);
 
-			 connection = databaseConnector.connect();
-
-			 preparedStatement = connection.prepareStatement(sql);
-			 if (!(isDateExists(dogID, userID,connection)==true)) {
-				 preparedStatement.setInt(1, posterID);
-				 preparedStatement.setInt(2, dogID);
-				 preparedStatement.setDate(3, date);
-				 preparedStatement.setInt(4, userID );
-				 int rowsAffected = preparedStatement.executeUpdate();
-				 if (rowsAffected > 0) {
-					//System.out.println("Date added successfully!");
-					;
-					return true;
-				 }
-				 else {
-					//System.out.println("Failed to add Date.");
-					return false;
+			// Execute the query
+			try (ResultSet resultSet = preparedStatement.executeQuery()) {
+				// Iterate over the result set and populate the TreeMap
+				while (resultSet.next()) {
+					int dogID = resultSet.getInt("dogid");
+					int posterID = resultSet.getInt("posterid");
+					Date date = resultSet.getDate("date");
+					appointments.add(new Appointment(posterID,dogID,date,userId));
 				}
-			 }
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				if (preparedStatement != null) {
-					preparedStatement.close();
-				}
-				if (connection != null) {
-					connection.close();
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
 			}
+
+
+		return appointments;
+		}catch (SQLException e) {
+			e.printStackTrace();
 		}
-		return false;
+		return null;
 	}
 
 	/*

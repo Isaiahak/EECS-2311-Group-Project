@@ -1,7 +1,9 @@
 package guicontrol;
 
+import java.time.LocalDate;
 import java.util.*;
 
+import backend.calendar.Appointment;
 import backend.calendar.AppointmentManager;
 import backend.database.Database;
 import backend.dog.Dog;
@@ -24,6 +26,7 @@ public class AppData {
 	private PriorityQueue<Dog> sortedDogProfiles;
 	private static AppData instance;
 	private AppointmentManager appointmentManager;
+	private ArrayList<Appointment> otherUsersAppointments;
 	private HashMap<Integer, ArrayList<Attribute>> allAttributes;
 
 
@@ -169,6 +172,9 @@ public class AppData {
 		return this.allAttributes;
 		
 	}
+	private void setOtherUsersAppointments() {
+		this.otherUsersAppointments = Database.getOtherUserAppointments(user.getUserID()); 
+	}
 
 	public void onStart(String username, String pass) {
 		getInstance(); 	
@@ -189,8 +195,23 @@ public class AppData {
 
 		setAppointmentManager(new AppointmentManager(user.getUserID(), Database.getUserAppointments(user.getUserID())));
 		
-		
+		setOtherUsersAppointments();
 		
 
+	}
+
+
+	public ArrayList<Appointment> getOtherUsersAppointments() {
+		return this.otherUsersAppointments;
+	}
+	
+	public boolean isDateAlreadyBooked(int dogId, int posterId, LocalDate appDate) {
+		
+		for(Appointment otherApp: this.otherUsersAppointments ) {
+			if(otherApp.getPosterID() == posterId && otherApp.getDogID() == dogId && otherApp.getLocalDate().equals(appDate)) 
+				return true;
+
+		}
+		return false;
 	}
 }

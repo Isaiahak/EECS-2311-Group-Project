@@ -8,6 +8,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -33,12 +34,14 @@ public class CalendarScene extends PrimaryScene {
     private LocalDate currentDate = LocalDate.now();
     private LocalDate todaysDate = LocalDate.now();
     private static CalendarScene instance;
-    private Label meetWithLabel = new Label();
-    private Label successLabel = new Label();
-    private Button oldSelectedButton = new Button(); 
+    private Label meetWithLabel = Components.mediumLabel();
+    private Label successLabel = Components.mediumLabel();
+    private StackPane oldSelectedButton = new StackPane(); 
+    private LocalDate currentSelectedDate; 
     
-    private String def = "-fx-background-color: #d1d1d1; -fx-text-fill: #0f0f0f; -fx-alignment: top-right;";
-	private String high = "-fx-background-color: #ccffd1; -fx-text-fill: #0f0f0f; -fx-alignment: top-right;";
+    private String defaultStyle = "-fx-background-color: #d1d1d1; -fx-text-fill: #0f0f0f; -fx-alignment: top-right;";
+	private String highlightedStyle = "-fx-background-color: #ccffd1; -fx-text-fill: #0f0f0f; -fx-alignment: top-right;";
+	private String inactiveStyle = "-fx-background-color: #b5b5b5; -fx-text-fill: #0f0f0f; -fx-alignment: top-right;";
     
     Poster currentPoster; 
     Dog currentDog;
@@ -46,7 +49,12 @@ public class CalendarScene extends PrimaryScene {
     User user;
     AppointmentManager userAppointments;
     ArrayList <Appointment> appointments = new ArrayList<>();
+    Appointment existingAppointment;
     Appointment currentAppointment;
+    
+    ArrayList <Appointment> otherUsersAppointments;
+    
+    private GridPane calendarGrid;
 
     private CalendarScene(){
     }
@@ -67,88 +75,74 @@ public class CalendarScene extends PrimaryScene {
         //meetWithLabel.setText("Meet with " + currentDog.getName() + " and " + currentPoster.getDisplayName());
         meetWithLabel.setAlignment(Pos.CENTER);
         
-        user = AppData.getInstance().getUser();
-        userAppointments = AppData.getInstance().getAppointmentManager();
+        user = appData.getUser();
+        userAppointments = appData.getAppointmentManager();
+        otherUsersAppointments = appData.getOtherUsersAppointments();
 
         VBox root = new VBox();
         root.setAlignment(Pos.CENTER);
         root.setSpacing(10);
         root.setPadding(new Insets(10));
-        HBox navTab = Components.navTab(userProfileScene, likedDogsScene, dogProfileScene, sponsoredDogsScene, bookedAppointmentsScene, stage, "appointments", AppData.getInstance());
+        HBox navTab = Components.navTab(userProfileScene, likedDogsScene, dogProfileScene, sponsoredDogsScene, bookedAppointmentsScene, stage, "appointments", appData);
         // Title label to display the current month and year
-        Button titleLabel = new Button(getFormattedTitle());
+        Label titleLabel = Components.largeLabel(getFormattedTitle(), Pos.CENTER);
         titleLabel.setDisable(true);
 
-        GridPane calendarGrid = new GridPane();
+        calendarGrid = new GridPane();
         calendarGrid.setAlignment(Pos.CENTER);
         calendarGrid.setHgap(5);
         calendarGrid.setVgap(5);
 
-
-        // this can prob be a function 
-        LocalDate firstDayOfMonth = currentDate.withDayOfMonth(1);
-        int dayOfWeek = firstDayOfMonth.getDayOfWeek().getValue(); // 1=Monday, ..., 7=Sunday
-
-        // Add buttons for each day of the month
-        for (int row = 0; row < WEEKS_IN_MONTH; row++) {
-            for (int col = 0; col < DAYS_IN_WEEK; col++) {
-                int dayOfMonth = row * DAYS_IN_WEEK + col + 1;
-                
-                Button dayButton = Components.calendarCell();
-
-                if (dayOfMonth > 0 && dayOfMonth <= currentDate.lengthOfMonth()) {
-                    // Calculate the LocalDate for the current button
-                    LocalDate buttonDate = firstDayOfMonth.plusDays((row * DAYS_IN_WEEK) + col - dayOfWeek + 1);
-                    
-                    // Format the LocalDate as desired (e.g., "MM/dd/yyyy")
-                    String buttonText = buttonDate.format(DateTimeFormatter.ofPattern("MM/dd/yyyy"));
-                    
-
-                    
-                    dayButton.setText(buttonText);
-                    dayButton.setOnAction(event -> {
-                    	handleDayButtonClick(buttonDate);
-                    	if(dayButton.getStyle().equals(def)) {
-            				oldSelectedButton.setStyle(def);
-            				oldSelectedButton = dayButton; 
-            				dayButton.setStyle(high);
-            			}});
-                } else {
-                    dayButton.setDisable(true);
-                }
-                calendarGrid.add(dayButton, col, row);
-            }
+        for(Appointment app : userAppointments.getUserAppointments()) {
+        	
+        	if(app.getDogID() == currentDog.getId()) {
+//        		System.out.println(app.getDogID() + " curr: " + currentDog.getId() );
+        		
+        		
+        		
+        		existingAppointment = app; 
+        		
+        		break;
+        	}else {
+        		existingAppointment = null; 
+        	}
         }
-       /* // Add buttons for each day of the month
-        for (int row = 0; row < WEEKS_IN_MONTH; row++) {
-            for (int col = 0; col < DAYS_IN_WEEK; col++) {
-                int dayOfMonth = row * DAYS_IN_WEEK + col + 1;
-                Button dayButton = new Button(String.valueOf(dayOfMonth));
-                dayButton.setOnAction(event -> handleDayButtonClick(dayOfMonth));
-                calendarGrid.add(dayButton, col, row);
-            }
-        } */
 
-        Button prevMonthButton = new Button("Previous");
+        createCalendar();
+
+        Button prevMonthButton = Components.calendarButton("←");
         prevMonthButton.setOnAction(event -> {
-        	if(!currentDate.minusMonths(1).isBefore(firstDayOfMonth)) {
+        	if(!currentDate.minusMonths(1).isBefore(todaysDate)) {
             currentDate = currentDate.minusMonths(1);
-            updateCalendar(calendarGrid);
+            updateCalendar();
             titleLabel.setText(getFormattedTitle());
             }
         });
 
-        Button nextMonthButton = new Button("Next");
+        Button nextMonthButton = Components.calendarButton("→");
         nextMonthButton.setOnAction(event -> {
             currentDate = currentDate.plusMonths(1);
-            updateCalendar(calendarGrid);
+            updateCalendar();
             titleLabel.setText(getFormattedTitle());
         });
+        
+        
+        Button confirmationButton = Components.calendarButton("Confirm Appointment");
+        confirmationButton.setOnAction(event -> {
+        	handleConfirmButtonClick();
+            
+        });
+        
+        HBox navigation = new HBox(prevMonthButton, nextMonthButton);
+        navigation.setAlignment(Pos.CENTER);
+        navigation.setSpacing(50);
+        
         successLabel.setText("Waiting on a date");
+        
 
-        root.getChildren().addAll(navTab, titleLabel, calendarGrid, prevMonthButton, nextMonthButton,meetWithLabel,successLabel);
+        root.getChildren().addAll(navTab, titleLabel, calendarGrid, navigation, meetWithLabel, successLabel, confirmationButton);
 
-        updateCalendar(calendarGrid);
+        updateCalendar();
 
         Scene scene = new Scene(root, Components.screenWidth, Components.screenHeight);
         stage.setScene(scene);
@@ -160,94 +154,86 @@ public class CalendarScene extends PrimaryScene {
     private String getFormattedTitle() {
         return currentDate.getMonth().toString() + " " + currentDate.getYear();
     }
-
-    private void updateCalendar(GridPane calendarGrid) {
-        // Clear existing calendar
-       /* calendarGrid.getChildren().clear();
-
-        // Get the first day of the month
-        LocalDate firstDayOfMonth = currentDate.withDayOfMonth(1);
-        int dayOfWeek = firstDayOfMonth.getDayOfWeek().getValue(); // 1=Monday, ..., 7=Sunday
-
-        // Add buttons for each day of the month
-        for (int row = 0; row < WEEKS_IN_MONTH; row++) {
-            for (int col = 0; col < DAYS_IN_WEEK; col++) {
-                int dayOfMonth = row * DAYS_IN_WEEK + col - dayOfWeek + 2;
-                Button dayButton = new Button();
-                if (dayOfMonth > 0 && dayOfMonth <= currentDate.lengthOfMonth()) {
-                    dayButton.setText(String.valueOf(dayOfMonth));
-                    dayButton.setOnAction(event -> handleDayButtonClick(dayOfMonth));
-                } else {
-                    dayButton.setDisable(true);
-                }
-                calendarGrid.add(dayButton, col, row);
-            }
-        } */
-    	
-    	// Clear existing calendar
-        calendarGrid.getChildren().clear();
-
-        // Get the first day of the month
-        LocalDate firstDayOfMonth = currentDate.withDayOfMonth(1);
-        int dayOfWeek = firstDayOfMonth.getDayOfWeek().getValue(); // 1=Monday, ..., 7=Sunday
-
-        // Add buttons for each day of the month
-        for (int row = 0; row < WEEKS_IN_MONTH; row++) {
-            for (int col = 0; col < DAYS_IN_WEEK; col++) {
-                int dayOfMonth = row * DAYS_IN_WEEK + col - dayOfWeek + 2;
-                Button dayButton = Components.calendarCell();
-                if (dayOfMonth > 0 && dayOfMonth <= currentDate.lengthOfMonth()) {
-                    // Calculate the LocalDate for the current button
-                    LocalDate buttonDate = firstDayOfMonth.plusDays((row * DAYS_IN_WEEK) + col - dayOfWeek + 1);
-                    
-                    dayButton.setText(String.valueOf(dayOfMonth));
-                    dayButton.setOnAction(event -> {
-                    	handleDayButtonClick(buttonDate);
-                    	if(dayButton.getStyle().equals(def)) {
-            				oldSelectedButton.setStyle(def);
-            				oldSelectedButton = dayButton; 
-            				dayButton.setStyle(high);
-            			}});
-                } else {
-                    dayButton.setDisable(true);
-                }
-                calendarGrid.add(dayButton, col, row);
-            }
-        }
+    
+    private void updateCalendar() {
+    	calendarGrid.getChildren().clear();
+    	createCalendar();
     }
 
-   /* private void handleDayButtonClick(int dayOfMonth) {
-        System.out.println("Selected day: " + dayOfMonth);
-        System.out.println("Dog: "+ currentDog.getName());
-        System.out.println("Poster: "+ currentPoster.getDisplayName());
-        // Add your logic for handling the selected day (e.g., scheduling appointments)
-    }*/
+    private void createCalendar() {
+        // Clear existing calendar
+    	StackPane dayButton;
+
+        LocalDate firstDayOfMonth = currentDate.withDayOfMonth(1);
+        int dayOfWeek = firstDayOfMonth.getDayOfWeek().getValue(); // 1=Monday, ..., 7=Sunday
+
+        // Add buttons for each day of the month
+        for (int row = 0; row < WEEKS_IN_MONTH; row++) {
+            for (int col = 0; col < DAYS_IN_WEEK; col++) {
+                int dayOfMonth = row * DAYS_IN_WEEK + col + 1;
+                LocalDate buttonDate = firstDayOfMonth.plusDays((row * DAYS_IN_WEEK) + col - dayOfWeek + 1);
+                int buttonText = buttonDate.getDayOfMonth();
+                dayButton = Components.calendarCell(Integer.toString(buttonText));
+                
+                if (dayOfMonth > 0 && dayOfMonth <= currentDate.lengthOfMonth() && buttonDate.isAfter(firstDayOfMonth.minusDays(1))) {
+                	if(!appData.isDateAlreadyBooked(currentDog.getId(), currentDog.getPosterId(), buttonDate)) {
+	                	StackPane dayButtonCopy = dayButton; 
+	//                	LocalDate buttonDateCopy = buttonDate;
+	                	
+	                    dayButton.setOnMouseClicked(event -> {
+	                    	successLabel.setText(buttonDate.toString());
+	                    	currentSelectedDate = buttonDate; 
+	                    	if(dayButtonCopy.getStyle().equals(defaultStyle)) {
+	            				oldSelectedButton.setStyle(defaultStyle);
+	            				oldSelectedButton = dayButtonCopy; 
+	            				dayButtonCopy.setStyle(highlightedStyle);
+	            			}});
+	                    
+	                    if(existingAppointment != null && buttonDate.equals(existingAppointment.getDate().toLocalDate())) {
+	                    	Label existingAppointmentLabel = Components.tinyLabel("Date with " + currentDog.getName(),Pos.CENTER);
+	                    	existingAppointmentLabel.setStyle("-fx-background-color: #82daf5; -fx-text-fill: #e0e0e0; -fx-alignment: top-right;");
+	                    	StackPane.setAlignment(existingAppointmentLabel, Pos.CENTER);
+	                    	dayButton.getChildren().add(existingAppointmentLabel);
+	                    } 
+
+                	}else {
+                		dayButton.setStyle(inactiveStyle);
+                		Label otherExistingAppointment = Components.tinyLabel(currentDog.getName() + " is busy",Pos.CENTER);
+                		otherExistingAppointment.setStyle("-fx-background-color: #e83562; -fx-text-fill: #e0e0e0; -fx-alignment: top-right;");
+                    	StackPane.setAlignment(otherExistingAppointment, Pos.CENTER);
+                    	dayButton.getChildren().add(otherExistingAppointment);
+                	}
+                }
+                else {
+                    dayButton.setStyle(inactiveStyle);
+                }
+                
+//                calendarGrid.getChildren().add(dayButton);
+                calendarGrid.add(dayButton, col, row);
+                
+            }
+        }
+    	  
+    }
+
     
-    private void handleDayButtonClick(LocalDate date) {
-//        System.out.println("Selected date: " + date);
-//        System.out.println("Year: " + date.getYear());
-//        System.out.println("Month: " + date.getMonth());
-//        System.out.println("Day: " + date.getDayOfMonth());
-//        System.out.println("Dog: " + currentDog.getName());
-//        System.out.println("Poster: " + currentPoster.getDisplayName());
-        
-        java.util.Date utilDate = Date.from(date.atStartOfDay(ZoneId.systemDefault()).toInstant());
+    private void handleConfirmButtonClick() {
+        java.util.Date utilDate = Date.from(currentSelectedDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
         java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
+
         currentAppointment = new Appointment(currentPoster.getUniqueId(),currentDog.getId(), sqlDate,user.getUserID());
         
         //adding to the DB
-        if (!(userAppointments.appointmentExists(currentAppointment))) {
-        	//Database.addBookedDate(currentPoster.getUniqueId(), currentDog.getId(), sqlDate,user.getUserID());
-        	userAppointments.addAppointment(currentAppointment);
-        	successLabel.setText("Date added successfully!");
-        	
-        }
-        else {
-        	successLabel.setText("Unfortunately you cannot book another appointment as you have already booked an appointment");
+        if (currentAppointment != null && (userAppointments.appointmentExists(currentAppointment)) ) {
+        	System.out.println("removed");
+        	userAppointments.removeAppointment(currentAppointment);
         }
         
         
-        // Add your logic for handling the selected date (e.g., scheduling appointments)
+        userAppointments.addAppointment(currentAppointment);
+    	existingAppointment = currentAppointment; 
+    	successLabel.setText("Date added successfully!");
+    	updateCalendar();
     }
 
     public static void main(String[] args) {
@@ -263,13 +249,7 @@ public class CalendarScene extends PrimaryScene {
 		 //updateMeetWithLabel(poster, dog);
 	 }
 
-	public AppointmentManager getUserAppointments() {
-		return userAppointments;
-	}
 
-	public void setUserAppointments(AppointmentManager userAppointments) {
-		this.userAppointments = userAppointments;
-	}
 
 	public ArrayList<Appointment> getAppointments() {
 		return appointments;
@@ -286,6 +266,8 @@ public class CalendarScene extends PrimaryScene {
 	public void setCurrentAppointment(Appointment currentAppointment) {
 		this.currentAppointment = currentAppointment;
 	}
+	
+	
     
    /* public void updateMeetWithLabel(Poster poster, Dog dog) {
     	setCurrentPosterDog(poster,dog);
