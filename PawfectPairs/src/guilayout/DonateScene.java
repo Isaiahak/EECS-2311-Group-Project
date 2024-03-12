@@ -309,7 +309,7 @@ public class DonateScene extends PrimaryScene {
 	    howMuchMoney.clear();
 	    howMuchMoney.setText("");}
 	
-		else if (Double.parseDouble(howMuchMoney.getText())<0)
+		else if (Double.parseDouble(howMuchMoney.getText())<=0)
 			{
 			showAlert("Cannot enter a negative number", "Please enter a non-negative number", AlertType.ERROR);
 			howMuchMoney.clear();
