@@ -1,19 +1,13 @@
 package guilayout;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
+import java.util.PriorityQueue;
 
 import backend.dog.Dog;
 import backend.poster.Poster;
-import backend.user.User;
-import backend.poster.*;
 import backend.wallet.RecurringPayment;
-import backend.wallet.Wallet;
 import backend.wallet.Wallet.FundsTooLow;
 import guicontrol.AppData;
-import javafx.application.Application;
 import javafx.collections.FXCollections;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
@@ -23,9 +17,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.ScrollBar;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.control.ToggleButton;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;

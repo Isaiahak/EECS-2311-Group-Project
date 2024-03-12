@@ -1,6 +1,6 @@
 package guilayout;
-import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.PriorityQueue;
 
 import backend.dog.Dog;
 
@@ -14,7 +14,7 @@ import javafx.stage.Stage;
 public class PrimaryScene extends Application{
 
     protected AppData appData;
-    protected ArrayList<Dog> posterDogs;
+    protected PriorityQueue<Dog> posterDogs;
     protected Hashtable<Integer,Poster> posterList;
     protected UserProfile userProfile;
     protected LikedDogScene likedDog;

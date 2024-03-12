@@ -1,9 +1,5 @@
 package guilayout;
 
-import backend.user.User;
-import guicontrol.AppData;
-import javafx.application.Application;
-import javafx.collections.*;
 import javafx.geometry.*;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -11,9 +7,7 @@ import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import java.util.ArrayList;
 import java.util.PriorityQueue;
-import java.util.TreeSet;
 
-import backend.database.Database;
 import backend.dog.Dog;
 
 

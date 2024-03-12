@@ -42,7 +42,7 @@ public class OutOfDogsScene extends PrimaryScene{
 	public void start(Stage stage) {
 		initailizePrimaryScene();
 		appData = AppData.getInstance();
-		ArrayList<Dog> posterDogs = appData.getSortedDogProfiles();
+		PriorityQueue<Dog> posterDogs = appData.getSortedDogProfiles();
 		User user = appData.getUser();
 		
 		VBox root = new VBox();

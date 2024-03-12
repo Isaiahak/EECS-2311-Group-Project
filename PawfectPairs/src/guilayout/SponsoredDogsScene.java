@@ -1,10 +1,6 @@
 package guilayout;
 
-import backend.user.User;
 import backend.wallet.RecurringPayment;
-import guicontrol.AppData;
-import javafx.application.Application;
-import javafx.collections.*;
 import javafx.geometry.*;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -13,9 +9,7 @@ import javafx.stage.Stage;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.PriorityQueue;
-import java.util.TreeSet;
 
-import backend.database.Database;
 import backend.dog.Dog;
 
 
@@ -49,7 +43,7 @@ public class SponsoredDogsScene extends PrimaryScene{
 		VBox sponsoredDogsDisplay = new VBox();
 	    	
     	for(RecurringPayment pay : recurringPayments.values()) {
-    		ArrayList<Dog> dogs = appData.getDogProfiles().get(pay.getPosterId()); 
+    		ArrayList<Dog> dogs = appData.getDogProfiles().get(pay.getPosterId());
     		Dog d = findDogById(dogs, pay.getDogId());
     		
     		

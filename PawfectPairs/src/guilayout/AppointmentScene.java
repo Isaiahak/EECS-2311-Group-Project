@@ -16,10 +16,10 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.PriorityQueue;
 
 import backend.calendar.Appointment;
 import backend.calendar.AppointmentManager;
-import backend.database.Database;
 import backend.dog.Dog;
 import backend.poster.Poster;
 import backend.user.User;

@@ -80,7 +80,7 @@ public class LoginScene extends Application{
             	showAlert("Sign up Failed", "Please enter a valid username or password.");
             clearFields(userTextField, passwordField);
 
-            User user =Database.getUser(username, password);
+            User user = Database.getUser(username, password);
 
             appData.setAppointmentManager(new AppointmentManager(user.getUserID(),new ArrayList<>()));
 
