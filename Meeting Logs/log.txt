@@ -261,6 +261,7 @@ March 11, 2024
 - Ekaterina udpated the calendar gui
 - Isaiah debugged the sorting algortim (changed DB calls, so we needed to change some data structures)
 - Sidney has worked on JUnit Tests and Integration Testing
+- SIdney was troublshooting JUnit test for Integration
 - Edson has worked on fixing JUnit Tests with Sidney
 - Zainab worked on testing for Wallet and added alerts, and fixed boundaries
 - Zainab fixed canecelling recurring payments for wallet
