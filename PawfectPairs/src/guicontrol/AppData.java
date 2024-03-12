@@ -100,17 +100,8 @@ public class AppData {
 				UserProfile.getInstance().getOldAgePreferences(),
 				UserProfile.getInstance().getOldSizePreferences(),
 				UserProfile.getInstance().getOldEnergyLevelPreferences()) == false){
-			ArrayList<Dog> likedDogs = Database.getUsersLikedOrPassedDogs(user.getUserID(),"userdogs");
-			for (Dog d : user.getLikedDogs()) {
-				if(likedDogs.contains(d) == false)
-					Database.addUserDog(d.getId(), user.getUserID(),"userdogs");
-			}
-
-			ArrayList<Dog> passedDogs = Database.getUsersLikedOrPassedDogs(user.getUserID(),"userpasseddogs");
-			for (Dog d : user.getPassedDogs()) {
-				if(passedDogs.contains(d) == false)
-					Database.addUserDog(d.getId(), user.getUserID(),"userpasseddogs");
-			}
+			Database.addUserDog(user.getLikedDogs(), user.getUserID(),"userdogs");
+			Database.addUserDog(user.getPassedDogs(), user.getUserID(),"userpasseddogs");
 			Database.deletePreferenceTagsFromUser(user.getUserID());
 			Database.addPreferenceTagsToUser(user.getTagPreferences(), user.getUserID());
 			Database.deleteUserAttributePreferences(user.getUserID());
