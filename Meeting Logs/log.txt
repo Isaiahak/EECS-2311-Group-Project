@@ -266,3 +266,10 @@ March 11, 2024
 - Zainab worked on testing for Wallet and added alerts, and fixed boundaries
 - Zainab fixed canecelling recurring payments for wallet
 - Connor worked on JUnit Tests and Updating UML
+
+March 12, 2024
+- Ekaterina updated calendar GUI
+- Ekaterina added labels to show the user which dates they had alraedy booked
+- Ekaterina fixed several bugs in calendar (cancelling, reschduling, etc)
+- Ekaterina added a 'confirm' button, and allowed the user to rescheyle with a responsive GUI on the same page (instead of having to click 'reschedule')
+- Ekaterina added constraints to adding apppointmnets (now, the user can see which other users have bookked appointments with the same dog, and cvant book the same day)
