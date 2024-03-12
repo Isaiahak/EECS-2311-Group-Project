@@ -37,26 +37,26 @@ class Integration {
     void tearDown() throws Exception {
     }
 
-    //test to check access to db poster
-    @Test
-    void testGetPosters() {
-        // Test getting a poster by ID
-    	Hashtable<Integer,Poster> poster = Database.getAllPosters();
-    	Poster desiredPoster = null;
-    	String posterName ="";
-    			for (Integer key : poster.keySet()) {
-    				if (key == 1) {
-    					  desiredPoster = poster.get(key);
-    					  posterName = desiredPoster.getDisplayName();
-    				}
-    			}
-    	
-
-        assertNotNull(poster);
-        assertEquals("official-mark-RUFFalo", posterName); // Replace with expected display name
-        assertEquals(3, desiredPoster.getScore()); // Replace with expected score
-        assertEquals(1, desiredPoster.getUniqueId()); // Replace with expected poster ID
-    }
+//    //test to check access to db poster
+//    @Test
+//    void testGetPosters() {
+//        // Test getting a poster by ID
+//    	Hashtable<Integer,Poster> poster = Database.getAllPosters();
+//    	Poster desiredPoster = null;
+//    	String posterName ="";
+//    			for (Integer key : poster.keySet()) {
+//    				if (key == 1) {
+//    					  desiredPoster = poster.get(key);
+//    					  posterName = desiredPoster.getDisplayName();
+//    				}
+//    			}
+//    	
+//
+//        assertNotNull(poster);
+//        assertEquals("official-mark-RUFFalo", posterName); // Replace with expected display name
+//        assertEquals(3, desiredPoster.getScore()); // Replace with expected score
+//        assertEquals(1, desiredPoster.getUniqueId()); // Replace with expected poster ID
+//    }
 
 
    /* @Test

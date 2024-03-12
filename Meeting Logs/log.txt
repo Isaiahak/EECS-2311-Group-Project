@@ -248,6 +248,8 @@ March 10, 2024
 - Isaiagh debugged database issues
 - Isaiah implemented Calendar class into main 
 - Isaiah finished calendar class by adding database calls to it
+- Sidney worked on JUnit test for Calendar (Appointment and AppointmentManager Class)
+- Connor worked on creating the JUnit tests for Wallet
 
 March 11, 2024
 - Ekaterina made some minor updates to the wallet and calendar classes
@@ -258,3 +260,8 @@ March 11, 2024
 - Isaiah debugged database bugs
 - Ekaterina udpated the calendar gui
 - Isaiah debugged the sorting algortim (changed DB calls, so we needed to change some data structures)
+- Sidney has worked on JUnit Tests and Integration Testing
+- Edson has worked on fixing JUnit Tests with Sidney
+- Zainab worked on testing for Wallet and added alerts, and fixed boundaries
+- Zainab fixed canecelling recurring payments for wallet
+- Connor worked on JUnit Tests and Updating UML
