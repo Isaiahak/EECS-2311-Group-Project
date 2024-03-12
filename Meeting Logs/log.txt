@@ -249,6 +249,7 @@ March 10, 2024
 - Isaiah implemented Calendar class into main 
 - Isaiah finished calendar class by adding database calls to it
 - Sidney worked on JUnit test for Calendar (Appointment and AppointmentManager Class)
+- Connor worked on creating the JUnit tests for Wallet
 
 March 11, 2024
 - Ekaterina made some minor updates to the wallet and calendar classes
