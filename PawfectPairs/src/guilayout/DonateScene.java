@@ -267,10 +267,48 @@ public class DonateScene extends PrimaryScene {
 	}
 
 	private void makePayment(AppData appdata, String duration) throws FundsTooLow {
-		if (!(howMuchMoney.getText()+"").matches("\\d+")) {
-			showAlert("Cannot enter non-numeric values ", "Please enter a number", AlertType.ERROR);
-			howMuchMoney.clear();
-        }
+		String inputText = howMuchMoney.getText().trim();
+		boolean Numberwithdecimal = false;
+//		try
+//		{
+//			Double num = Double.parseDouble(inputText);
+//			Numberwithdecimal=true;
+//		}
+//		catch(java.lang.NumberFormatException e)
+//		
+//		{ 
+//			Numberwithdecimal=false;
+//		    System.out.println("Error parsing as Double: " + e.getMessage());
+//
+//			
+//		}
+		String whyFalse="";
+		int numofDecimalPoint=0;
+		 for (char c : inputText.toCharArray()) {
+		      if (Character.isDigit(c)) {
+		    	  Numberwithdecimal= true;
+		    	  whyFalse+="not a digit";
+		    	  
+		      }
+		      else if(c == '.') {
+		    	  Numberwithdecimal=true;
+		      numofDecimalPoint++;
+		      }
+		      
+		   }
+		 if (numofDecimalPoint>1) {
+			 Numberwithdecimal=false;
+	    	  whyFalse+="more than one .";
+
+			 }
+
+		//if (!inputText.matches("\\d+(\\.\\d+)?")) {
+		   if (!Numberwithdecimal)
+				   {showAlert("Cannot enter non-numeric values ", "Please enter a number", AlertType.ERROR);
+
+	    howMuchMoney.clear();
+	    howMuchMoney.setText("");}
+	
 		else if (Double.parseDouble(howMuchMoney.getText())<0)
 			{
 			showAlert("Cannot enter a negative number", "Please enter a non-negative number", AlertType.ERROR);

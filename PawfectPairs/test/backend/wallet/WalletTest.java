@@ -65,9 +65,11 @@ class WalletTest {
 	@Test
 	public void recurringPayments(){
 		int amountToDonate =1;
-		int daysBetweenPayments=7;
+		int daysBetweenPayments=7;	
+		RecurringPayment r1 =new RecurringPayment(amountToDonate, daysBetweenPayments, dog.getId(), dog.getPosterId());
 		
-		wallet.addRecurringPayment(new RecurringPayment(amountToDonate, daysBetweenPayments, dog.getId(), dog.getPosterId()));
+		wallet.addRecurringPayment(r1);
+		
 	}
 	
 }
