@@ -1134,8 +1134,8 @@ public static ArrayList<Attribute> getUsersPreferredAttributes(int userid, int a
        }
 	}
 	
-	public static void onApplicationClose(User user, ArrayList<Dog> doglist, AppointmentManager appman){
-		Database.updateAllAdoptedDogs(doglist); // sets dogs to be adopted
+	public static void onApplicationClose(User user, PriorityQueue<Dog> doglist, AppointmentManager appman){
+//		Database.updateAllAdoptedDogs(doglist); // sets dogs to be adopted
 		ArrayList<Dog> likedDogs = Database.getUsersDogs(user.getUserID(),"userdogs");
 		for (Dog d : user.getLikedDogs()) {
 			if(likedDogs.contains(d) == false) 
@@ -1155,9 +1155,11 @@ public static ArrayList<Attribute> getUsersPreferredAttributes(int userid, int a
 		Hashtable<Integer, Tag> tags = user.getTagPreferences();
 		int userId = user.getUserID();
 		// update user's preferred dog tags
+		
 		Database.deletePreferenceTagsFromUser(userId);
 		Database.addPreferenceTagsToUser(tags, userId);
 		// update user's ideal dog attributes
+		
 		Database.deleteAppointment(userId);
 		Database.setUserAppointments(appman);
 		Database.deleteUserAttributePreferences(userId);
@@ -1165,7 +1167,13 @@ public static ArrayList<Attribute> getUsersPreferredAttributes(int userid, int a
 		Database.addUserAttributePreferences(energyLevel, userId);
 		Database.addUserAttributePreferences(size, userId);
 		Database.addUserAttributePreferences(sex, userId);
-		updateRecurringPayments(user);
+		
+		
+		Database.deleteRecurringPayments(user);
+		
+		for(RecurringPayment p : user.getWallet().getRecurringPayments().values()) {
+		Database.addRecurringPayments(user, p);
+		}
 	}
 	
 	
@@ -1224,7 +1232,38 @@ public static ArrayList<Attribute> getUsersPreferredAttributes(int userid, int a
 		return wallet; 	
 	}
 	
-	public static Wallet updateRecurringPayments(User user) {
+	public static void addRecurringPayments(User user, RecurringPayment p) {
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		Wallet wallet = null;
+
+		try {
+			connection = databaseConnector.connect();
+			
+			
+				String sql2 = "INSERT INTO userpayments (userid, paymentamount,daysbetweenpayment,dogid,lastpaymentdate,posterid) VALUES (?,?,?,?,?,?)";
+				preparedStatement = connection.prepareStatement(sql2);
+				preparedStatement.setInt(1, user.getUserID());
+				preparedStatement.setDouble(2, p.getPaymentAmount());
+				preparedStatement.setInt(3, p.getDaysBetweenPayments());
+				preparedStatement.setInt(4, p.getDogId());
+				preparedStatement.setString(5, p.getLastPaymentDateToString());
+				preparedStatement.setInt(6, p.getPosterId());
+				
+				preparedStatement.executeUpdate();
+//			}
+			
+
+		} 
+		catch (SQLException e) {
+			
+			e.printStackTrace();
+
+		}
+
+	}
+	
+	public static void deleteRecurringPayments(User user) {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		Wallet wallet = null;
@@ -1235,7 +1274,7 @@ public static ArrayList<Attribute> getUsersPreferredAttributes(int userid, int a
 			//	        Statement statement = connection.createStatement ();
 			//	        ResultSet resultSet = statement.executeQuery ("SELECT * FROM users WHERE username = " + username + " AND userpassword  = " + password + ";") ;
 
-			String sql = "DELETE * FROM userpayments WHERE userid = ?";
+			String sql = "DELETE FROM userpayments WHERE userid = ?";
 
 			preparedStatement = connection.prepareStatement(sql);
 
@@ -1243,29 +1282,15 @@ public static ArrayList<Attribute> getUsersPreferredAttributes(int userid, int a
 
 
 			preparedStatement.executeUpdate();
-			//	public Wallet(double balance, boolean recurringPayment, int frequency, int userid,	Map<Integer, Double> posterWallets, int recurringAmount) {
 			
-			// add all paeyments 
-
-			for(RecurringPayment p : user.getWallet().getRecurringPayments().values()) {
-				String sql2 = "INSERT INTO userpayments (userid, paymentamount,daysbetweenpayment,dogid,lastpaymentdate,posterid) VALUES (?, ?,?,?,?,?) ";
-				preparedStatement = connection.prepareStatement(sql); 
-				preparedStatement.setInt(1, user.getUserID());
-				preparedStatement.setDouble(2, p.getPaymentAmount());
-				preparedStatement.setInt(3, p.getDaysBetweenPayments());
-				preparedStatement.setInt(4, p.getDogId());
-				preparedStatement.setString(5, p.getLastPaymentDateToString());
-				preparedStatement.setInt(6, p.getPosterId());
 			}
-			
 
-		} 
 		catch (SQLException e) {
+			
 			e.printStackTrace();
 
 		}
 
-		return wallet; 	
 	}
 	
 	
@@ -1627,7 +1652,7 @@ class DatabaseConnector {
         	Class.forName("org.postgresql.Driver"); // Replace with your database driver
         	
 
-        	Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5434/pawsome", "postgres", "321123");
+        	Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/thebestoneyet", "postgres", "doglover123");
 
 
 //        	System.out.println( "Connected to the PostgreSQL server successfully.");
