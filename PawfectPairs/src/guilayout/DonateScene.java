@@ -60,7 +60,7 @@ public class DonateScene extends PrimaryScene {
 	@Override
 	public void start(Stage stage) {
 		initailizePrimaryScene();
-		HBox navTab = Components.navTab(userProfile, likedDog, dogProfileScene, sponsoredDog, bookedAppointment, stage,"likeddogs", appData);
+		HBox navTab = Components.navTab(userProfileScene, likedDogsScene, dogProfileScene, sponsoredDogsScene, bookedAppointmentsScene, stage,"likeddogs", appData);
 
 
 		//wallet=appData.getWallet();

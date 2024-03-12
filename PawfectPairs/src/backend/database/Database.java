@@ -1122,7 +1122,7 @@ public static ArrayList<Attribute> getUsersPreferredAttributes(int userid, int a
         }
 	}
 
-	public static void deletePreferenceTagsFromUser(Hashtable<Integer, Tag> tags, int userId) {
+	public static void deletePreferenceTagsFromUser(int userId) {
 		try {
 			Connection connection = databaseConnector.connect();
 			Statement statement = connection.createStatement ();
@@ -1170,7 +1170,7 @@ public static ArrayList<Attribute> getUsersPreferredAttributes(int userid, int a
 		// update user's preferred dog tags
 		
 		
-		Database.deletePreferenceTagsFromUser(tags, userId);
+		Database.deletePreferenceTagsFromUser(userId);
 		Database.addPreferenceTagsToUser(tags, userId);
 //		
 		// update user's ideal dog attributes
@@ -1648,7 +1648,7 @@ class DatabaseConnector {
         	Class.forName("org.postgresql.Driver"); // Replace with your database driver
         	
 
-        	Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/pawitr2", "postgres", "1234");
+        	Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/thebestoneyet", "postgres", "doglover123");
 
 
 //        	System.out.println( "Connected to the PostgreSQL server successfully.");

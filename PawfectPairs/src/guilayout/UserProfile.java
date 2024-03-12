@@ -97,7 +97,7 @@ public class UserProfile extends PrimaryScene{
     	   	
     	// back button
 
-    	HBox navTab = Components.navTab(UserProfile.getInstance(), LikedDogScene.getInstance(), dogProfileScene, sponsoredDog, BookedAppointmentScene.getInstance(), primaryStage, "userProfile", appData);
+    	HBox navTab = Components.navTab(UserProfile.getInstance(), LikedDogScene.getInstance(), dogProfileScene, sponsoredDogsScene, BookedAppointmentScene.getInstance(), primaryStage, "userProfile", appData);
 
     	// set up preferences vbox
     	VBox preferences = new VBox();

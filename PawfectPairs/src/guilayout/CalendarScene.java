@@ -25,13 +25,14 @@ import backend.poster.Poster;
 import backend.user.User;
 import guicontrol.AppData;
 
-public class AppointmentScene extends Application {
+public class CalendarScene extends PrimaryScene {
 
     private static final int DAYS_IN_WEEK = 7;
     private static final int WEEKS_IN_MONTH = 6;
 
     private LocalDate currentDate = LocalDate.now();
-    private static AppointmentScene instance;
+    private LocalDate todaysDate = LocalDate.now();
+    private static CalendarScene instance;
     private Label meetWithLabel = new Label();
     private Label successLabel = new Label();
     Poster currentPoster; 
@@ -42,19 +43,21 @@ public class AppointmentScene extends Application {
     ArrayList <Appointment> appointments = new ArrayList<>();
     Appointment currentAppointment;
 
-    private AppointmentScene() {
+    private CalendarScene(){
     }
 
     // Method to get the single instance of AppointmentScene
-    public static AppointmentScene getInstance() {
+    public static CalendarScene getInstance() {
         if (instance == null) {
-            instance = new AppointmentScene();
+            instance = new CalendarScene();
         }
         return instance;
     }
 
     @Override
     public void start(Stage stage) {
+    	initailizePrimaryScene();
+    	
         stage.setTitle("Calendar");
         //meetWithLabel.setText("Meet with " + currentDog.getName() + " and " + currentPoster.getDisplayName());
         meetWithLabel.setAlignment(Pos.CENTER);
@@ -66,8 +69,7 @@ public class AppointmentScene extends Application {
         root.setAlignment(Pos.CENTER);
         root.setSpacing(10);
         root.setPadding(new Insets(10));
-
-        HBox navTab = Components.navTab(UserProfile.getInstance(), LikedDogScene.getInstance(), DogProfileScene.getInstance(), SponsoredDogsScene.getInstance(), BookedAppointmentScene.getInstance(), stage, "appointments", AppData.getInstance());
+        HBox navTab = Components.navTab(userProfileScene, likedDogsScene, dogProfileScene, sponsoredDogsScene, bookedAppointmentsScene, stage, "appointments", AppData.getInstance());
         // Title label to display the current month and year
         Button titleLabel = new Button(getFormattedTitle());
         titleLabel.setDisable(true);
@@ -78,7 +80,6 @@ public class AppointmentScene extends Application {
         calendarGrid.setVgap(5);
 
         
-        //testing new code
         
         LocalDate firstDayOfMonth = currentDate.withDayOfMonth(1);
         int dayOfWeek = firstDayOfMonth.getDayOfWeek().getValue(); // 1=Monday, ..., 7=Sunday
@@ -115,9 +116,11 @@ public class AppointmentScene extends Application {
 
         Button prevMonthButton = new Button("Previous");
         prevMonthButton.setOnAction(event -> {
+        	if(!currentDate.minusMonths(1).isBefore(firstDayOfMonth)) {
             currentDate = currentDate.minusMonths(1);
             updateCalendar(calendarGrid);
             titleLabel.setText(getFormattedTitle());
+            }
         });
 
         Button nextMonthButton = new Button("Next");
@@ -132,7 +135,7 @@ public class AppointmentScene extends Application {
 
         updateCalendar(calendarGrid);
 
-        Scene scene = new Scene(root, 600, 400);
+        Scene scene = new Scene(root, Components.screenWidth, Components.screenHeight);
         stage.setScene(scene);
         stage.show();
         
