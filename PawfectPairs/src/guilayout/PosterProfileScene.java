@@ -48,7 +48,7 @@ public class PosterProfileScene extends PrimaryScene {
 		User user = appData.getUser();
 		DogProfileScene dogProfileScene = DogProfileScene.getInstance();
 		UserProfile userProfile = UserProfile.getInstance();
-		ArrayList<Dog> posterDogsList =  appData.getDogProfiles().get(currentPoster.getPosterID());
+		ArrayList<Dog> posterDogsList =  appData.getDogProfiles().get(currentPoster.getUniqueId());
 
 		HBox navTab = Components.navTab(userProfile, LikedDogScene.getInstance(), dogProfileScene, sponsoredDogsScene, BookedAppointmentScene.getInstance(), primaryStage,"posterProfile",appData);
 
