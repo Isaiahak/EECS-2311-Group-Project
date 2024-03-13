@@ -482,7 +482,7 @@ public class Database {
 				 while(iterator.hasNext()){
 					 tagsList.add(iterator.next());
 				 }
-				StringBuilder query = new StringBuilder("INSERT INTO userattributepreferences (userid, tagid) VALUES ");
+				StringBuilder query = new StringBuilder("INSERT INTO usertagpreferences (userid, tagid) VALUES ");
 	        	 for(int i = 0; i < tagsList.size();i++) {
 					 if (i != 0){
 						 query.append(", ");
@@ -491,7 +491,6 @@ public class Database {
 			    }
 	
 				 query.append(";");
-				 System.out.println(query + "**************************************************");
 				 
 				 statement.addBatch(query.toString());
 				 statement.executeBatch();
