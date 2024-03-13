@@ -660,9 +660,10 @@ public class Database {
         	 int rowsAffected = preparedStatement.executeUpdate();
         	 if (rowsAffected > 0) {
                 System.out.println("User added successfully!");
-				sql = "SELECT userid FROM users WHERE username = " + username + " AND password = " + password + ";";
+				sql = "SELECT userid FROM users WHERE username = '" + username + "' AND userpassword = '" + password + "';";
                 Statement statement = connection.createStatement();
 				ResultSet result = statement.executeQuery(sql);
+				if (result.next()) {	
 				int userid = result.getInt("userid");
                 String sql2 = "INSERT INTO userattributepreferences (userid, attributetype, attributeid) VALUES ";
                 for(int type = 0; type < allAttributes.keySet().size(); type++) {
@@ -670,10 +671,12 @@ public class Database {
                 		sql2 += "(" + userid + "," + type + "," + weight +"),";
                 	}
                 }
+                
+        	
                 sql2 = sql2.substring( 0, sql2.length() - 1);
                 preparedStatement2 = connection.prepareStatement(sql2);
                 preparedStatement2.executeUpdate();
-                return true;
+                return true; }
             } else {
                 System.out.println("Failed to add User.");
                 return false;
@@ -880,7 +883,7 @@ class DatabaseConnector {
     public Connection connect() {
         try{
         	Class.forName("org.postgresql.Driver"); // Replace with your database driver
-        	Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5434/pawsome", "postgres", "321123");
+        	Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/thebestoneyet", "postgres", "doglover123");
 			//System.out.println( "Connected to the PostgreSQL server successfully.");
         	return connection;
         }
