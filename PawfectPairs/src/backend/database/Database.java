@@ -49,26 +49,27 @@ public class Database {
 	}
 
 	public static void setUserAppointments(AppointmentManager appointmentManager){
-		Connection connection = null;
-		try {
-			connection = databaseConnector.connect();
-			Statement statement = connection.createStatement();
-			StringBuilder query = new StringBuilder("INSERT INTO datesbooked (userid, dogid, posterid, date) VALUES ");
-			ArrayList<Appointment> appList = appointmentManager.getUserAppointments();
-			for(int i = 0; i < appList.size(); i++){
-				if(i != 0){
-					query.append(",");
+		if(appointmentManager.getUserAppointments().size() > 0) {
+			Connection connection = null;
+			try {
+				connection = databaseConnector.connect();
+				Statement statement = connection.createStatement();
+				StringBuilder query = new StringBuilder("INSERT INTO datesbooked (userid, dogid, posterid, date) VALUES ");
+				ArrayList<Appointment> appList = appointmentManager.getUserAppointments();
+				for(int i = 0; i < appList.size(); i++){
+					if(i != 0){
+						query.append(",");
+					}
+					query.append( "( " + appList.get(i).getUserID() +", " + appList.get(i).getDogID() + "," + appList.get(i).getPosterID()+ ", '" + appList.get(i).getDate() + "' )");
 				}
-				query.append( "( " + appList.get(i).getUserID() +", " + appList.get(i).getDogID() + "," + appList.get(i).getPosterID()+ ", '" + appList.get(i).getDate() + "' )");
+				query.append(";");
+				statement.addBatch(query.toString());
+				statement.executeBatch();
 			}
-			query.append(";");
-			statement.addBatch(query.toString());
-			statement.executeBatch();
-		}
-		catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
+			catch (SQLException e) {
+				e.printStackTrace();
+			}
+	}}
 
 	public static ArrayList<Appointment> getUserAppointments(int userID) {
 		Connection connection = databaseConnector.connect();
@@ -414,26 +415,29 @@ public class Database {
 	}
 
 	public static void addUserDog(ArrayList<Dog> dogList,int userID, String table){
-	
-			Connection connection = null;
-			PreparedStatement preparedStatement = null;
-	        try {
-	        	 connection = databaseConnector.connect();
-				 Statement statement = connection.createStatement();
-				 StringBuilder query = new StringBuilder("INSERT INTO " + table + " (dogid, userid) VALUES");
-				 for(int i = 0; i < dogList.size();i++) {
-					 if (i != 0){
-						 query.append(", ");
+	if(dogList.size() > 0) {
+				Connection connection = null;
+				PreparedStatement preparedStatement = null;
+		        try {
+		        	 connection = databaseConnector.connect();
+					 Statement statement = connection.createStatement();
+					 StringBuilder query = new StringBuilder("INSERT INTO " + table + " (dogid, userid) VALUES ");
+					 for(int i = 0; i < dogList.size();i++) {
+						 if (i != 0){
+							 query.append(", ");
+						 }
+						 query.append("( " +dogList.get(i).getId()+ ", " +userID+ ")");
 					 }
-					 query.append("( " +dogList.get(i).getId()+ ", " +userID+ ")");
-				 }
-				 query.append("ON CONFLICT (userid,dogid) DO NOTHING;");
-				 statement.addBatch(query.toString());
-				 statement.executeBatch();
-	        } 
-	        catch (SQLException e) {
-	            e.printStackTrace();
-	        }
+					 
+					 query.append(" ON CONFLICT (userid,dogid) DO NOTHING;");
+										 
+					 statement.addBatch(query.toString());
+					 statement.executeBatch();
+		        } 
+		        catch (SQLException e) {
+		            e.printStackTrace();
+		        }
+	}
 	}
 
 	/*
@@ -462,39 +466,117 @@ public class Database {
 	         return tags;
 		}
 
-	public static void addPreferenceTagsToUser(Hashtable<Integer,Tag> tags, int userId){
-		/*
-		 * Add tags to user preferences in database
-		 */
-		Connection connection = null;
-		PreparedStatement preparedStatement = null;
+	/*public static void addPreferenceTagsToUser(Hashtable<Integer,Tag> tags, int userId){
 		
-        try {
-        	 connection = databaseConnector.connect();
-			 Statement statement = connection.createStatement();
-			 Collection<Tag> tagList = tags.values();
-			 Iterator<Tag> iterator = tagList.iterator();
-			 ArrayList<Tag> tagsList = new ArrayList<>();
-			 while(iterator.hasNext()){
-				 tagsList.add(iterator.next());
-			 }
-			StringBuilder query = new StringBuilder("INSERT INTO usertagpreferences (userid, tagid) VALUES ");
-        	 for(int i = 0; i < tagsList.size();i++) {
-				 if (i != 0){
-					 query.append(", ");
+		if(tags.values().size() > 0) {
+			Connection connection = null;
+			PreparedStatement preparedStatement = null;
+			
+	        try {
+	        	 connection = databaseConnector.connect();
+				 Statement statement = connection.createStatement();
+				 Collection<Tag> tagList = tags.values();
+				 Iterator<Tag> iterator = tagList.iterator();
+				 ArrayList<Tag> tagsList = new ArrayList<>();
+				 while(iterator.hasNext()){
+					 tagsList.add(iterator.next());
 				 }
-				 query.append("( " + userId + ", " + tagsList.get(i).getTagId() +" )");
-		    }
-			 query.append(";");
-			 statement.addBatch(query.toString());
-			 statement.executeBatch();
-        }
-        catch (SQLException e) {
-            e.printStackTrace();
-          
-        }
+				StringBuilder query = new StringBuilder("INSERT INTO usertagpreferences (userid, tagid) VALUES ");
+	        	 for(int i = 0; i < tagsList.size();i++) {
+					 if (i != 0){
+						 query.append(", ");
+					 }
+					 query.append("( " + userId + ", " + tagsList.get(i).getTagId() +" )");
+			    }
+	
+				 query.append(";");
+				 
+				 statement.addBatch(query.toString());
+				 statement.executeBatch();
+	        }
+	        catch (SQLException e) {
+	            e.printStackTrace();
+	          
+	        }
+	}}*/
+	
+	public static void addPreferenceTagsToUser(Hashtable<Integer, Tag> tags, int userId) {
+	    /*
+	     * Add tags to user preferences in the database
+	     */
+	    if (tags.values().size() > 0) {
+	        Connection connection = null;
+	        PreparedStatement preparedStatement = null;
+
+	        try {
+	            connection = databaseConnector.connect();
+	            preparedStatement = connection.prepareStatement("INSERT INTO usertagpreferences (userid, tagid) VALUES (?, ?)");
+
+	            // Set auto-commit to false for batch processing
+	            connection.setAutoCommit(false);
+
+	            for (Tag tag : tags.values()) {
+	                // Check if the tagid exists in the tags table
+	                if (isTagExists(connection, tag.getTagId())) {
+	                    preparedStatement.setInt(1, userId);
+	                    preparedStatement.setInt(2, tag.getTagId());
+	                    preparedStatement.addBatch();
+	                }
+	            }
+
+	            // Execute the batch
+	            preparedStatement.executeBatch();
+
+	            // Commit the transaction
+	            connection.commit();
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	            try {
+	                if (connection != null) {
+	                    connection.rollback(); // Rollback the transaction in case of an error
+	                }
+	            } catch (SQLException ex) {
+	                ex.printStackTrace();
+	            }
+	        } finally {
+	            // Close resources
+	            try {
+	                if (preparedStatement != null) {
+	                    preparedStatement.close();
+	                }
+	                if (connection != null) {
+	                    connection.setAutoCommit(true); // Reset auto-commit to true
+	                    connection.close();
+	                }
+	            } catch (SQLException e) {
+	                e.printStackTrace();
+	            }
+	        }
+	    }
 	}
 
+	private static boolean isTagExists(Connection connection, int tagId) throws SQLException {
+	    PreparedStatement preparedStatement = null;
+	    ResultSet resultSet = null;
+	    boolean exists = false;
+
+	    try {
+	        preparedStatement = connection.prepareStatement("SELECT 1 FROM tags WHERE tagid = ?");
+	        preparedStatement.setInt(1, tagId);
+	        resultSet = preparedStatement.executeQuery();
+	        exists = resultSet.next(); // Check if the result set contains any rows
+	    } finally {
+	        // Close resources
+	        if (resultSet != null) {
+	            resultSet.close();
+	        }
+	        if (preparedStatement != null) {
+	            preparedStatement.close();
+	        }
+	    }
+
+	    return exists;
+	}
 	public static void deletePreferenceTagsFromUser(int userId) {
 		try {
 			Connection connection = databaseConnector.connect();
@@ -635,13 +717,16 @@ public class Database {
 		ResultSet resultSet = statement.executeQuery ("SELECT tags.tagid, tags.tagname FROM tags JOIN usertagpreferences ON tags.tagid = usertagpreferences.tagid WHERE usertagpreferences.userid = " + userId + ";");
 		
 		while (resultSet.next()) {	 
-			tags.put(resultSet.getInt("tagid"),new Tag(resultSet.getString("tagname")));
+			tags.put(resultSet.getInt("tagid"),new Tag(resultSet.getString("tagname"), resultSet.getInt("tagid")));
 		}
 	}
 	catch (SQLException e) {
 		e.printStackTrace();
 	}
 	
+	for(Tag t : tags.values()) {
+		System.out.println(t.getTagName() + t.getTagId());
+	}
 	
 	return tags;
 }
@@ -660,9 +745,10 @@ public class Database {
         	 int rowsAffected = preparedStatement.executeUpdate();
         	 if (rowsAffected > 0) {
                 System.out.println("User added successfully!");
-				sql = "SELECT userid FROM users WHERE username = " + username + " AND password = " + password + ";";
+				sql = "SELECT userid FROM users WHERE username = '" + username + "' AND userpassword = '" + password + "';";
                 Statement statement = connection.createStatement();
 				ResultSet result = statement.executeQuery(sql);
+				if (result.next()) {	
 				int userid = result.getInt("userid");
                 String sql2 = "INSERT INTO userattributepreferences (userid, attributetype, attributeid) VALUES ";
                 for(int type = 0; type < allAttributes.keySet().size(); type++) {
@@ -670,10 +756,12 @@ public class Database {
                 		sql2 += "(" + userid + "," + type + "," + weight +"),";
                 	}
                 }
+                
+        	
                 sql2 = sql2.substring( 0, sql2.length() - 1);
                 preparedStatement2 = connection.prepareStatement(sql2);
                 preparedStatement2.executeUpdate();
-                return true;
+                return true; }
             } else {
                 System.out.println("Failed to add User.");
                 return false;
@@ -788,7 +876,7 @@ public class Database {
 		return wallet; 	
 	}
 	
-	public static void addRecurringPayments(User user, ArrayList<RecurringPayment> p) {
+	/*public static void addRecurringPayments(User user, ArrayList<RecurringPayment> p) {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		Wallet wallet = null;
@@ -811,6 +899,66 @@ public class Database {
 			e.printStackTrace();
 
 		}
+
+	}*/
+	
+	public static void addRecurringPayments(User user, ArrayList<RecurringPayment> p) {
+	
+		
+		Connection connection = null;
+	    PreparedStatement preparedStatement = null;
+
+	    try {
+	        connection = databaseConnector.connect();
+	        preparedStatement = connection.prepareStatement(
+	            "INSERT INTO userpayments (userid, paymentamount, daysbetweenpayment, dogid, lastpaymentdate, posterid) VALUES (?, ?, ?, ?, ?, ?)"
+	        );
+
+	        // Set auto-commit to false for batch processing
+	        connection.setAutoCommit(false);
+
+	        for (RecurringPayment payment : p) {
+	            preparedStatement.setInt(1, user.getUserID());
+	            preparedStatement.setDouble(2, payment.getPaymentAmount());
+	            preparedStatement.setInt(3, payment.getDaysBetweenPayments());
+	            preparedStatement.setInt(4, payment.getDogId());
+	            preparedStatement.setString(5, payment.getLastPaymentDateToString());
+	            preparedStatement.setInt(6, payment.getPosterId());
+	            preparedStatement.addBatch();
+	        }
+
+	        // Execute the batch
+	        preparedStatement.executeBatch();
+
+	        // Commit the transaction
+	        connection.commit();
+	    } catch (SQLException e) {
+	        // Handle SQLException
+	        e.printStackTrace();
+	        try {
+	            if (connection != null) {
+	                // Rollback the transaction in case of an error
+	                connection.rollback();
+	            }
+	        } catch (SQLException ex) {
+	            ex.printStackTrace();
+	        }
+	    } finally {
+	        // Close resources
+	        try {
+	            if (preparedStatement != null) {
+	                preparedStatement.close();
+	            }
+	            if (connection != null) {
+	                connection.setAutoCommit(true); // Reset auto-commit to true
+	                connection.close();
+	            }
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    }
+		
+		
 
 	}
 	
@@ -880,7 +1028,8 @@ class DatabaseConnector {
     public Connection connect() {
         try{
         	Class.forName("org.postgresql.Driver"); // Replace with your database driver
-        	Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5434/pawsome", "postgres", "321123");
+//        	Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/finaldb", "postgres", "123");
+        	Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/thebestoneyet", "postgres", "doglover123");
 			//System.out.println( "Connected to the PostgreSQL server successfully.");
         	return connection;
         }

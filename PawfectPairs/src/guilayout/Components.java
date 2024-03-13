@@ -592,8 +592,10 @@ public class Components{
 					for (Appointment appointment : userAppointments) {
 						if (appointment.getDogID() == dog.getId()) {
 							userManager.removeAppointment(appointment);
+							CalendarScene.getInstance().setExistingAppointment(null);
 							BookedAppointmentScene bookedPage = BookedAppointmentScene.getInstance();
 							bookedPage.start(primaryStage);
+							break;
 						}
 					}
 				} catch (Exception e) {
