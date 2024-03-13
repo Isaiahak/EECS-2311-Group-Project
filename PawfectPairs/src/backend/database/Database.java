@@ -414,26 +414,31 @@ public class Database {
 	}
 
 	public static void addUserDog(ArrayList<Dog> dogList,int userID, String table){
-	
-			Connection connection = null;
-			PreparedStatement preparedStatement = null;
-	        try {
-	        	 connection = databaseConnector.connect();
-				 Statement statement = connection.createStatement();
-				 StringBuilder query = new StringBuilder("INSERT INTO " + table + " (dogid, userid) VALUES");
-				 for(int i = 0; i < dogList.size();i++) {
-					 if (i != 0){
-						 query.append(", ");
+	if(dogList.size() > 0) {
+				Connection connection = null;
+				PreparedStatement preparedStatement = null;
+		        try {
+		        	 connection = databaseConnector.connect();
+					 Statement statement = connection.createStatement();
+					 StringBuilder query = new StringBuilder("INSERT INTO " + table + " (dogid, userid) VALUES");
+					 for(int i = 0; i < dogList.size();i++) {
+						 if (i != 0){
+							 query.append(", ");
+						 }
+						 query.append("( " +dogList.get(i).getId()+ ", " +userID+ ")");
 					 }
-					 query.append("( " +dogList.get(i).getId()+ ", " +userID+ ")");
-				 }
-				 query.append(" ON CONFLICT (userid,dogid) DO NOTHING;");
-				 statement.addBatch(query.toString());
-				 statement.executeBatch();
-	        } 
-	        catch (SQLException e) {
-	            e.printStackTrace();
-	        }
+					 
+					 query.append(" ON CONFLICT (userid,dogid) DO NOTHING;");
+					 
+					 System.out.println(query + "***********************************");
+					 
+					 statement.addBatch(query.toString());
+					 statement.executeBatch();
+		        } 
+		        catch (SQLException e) {
+		            e.printStackTrace();
+		        }
+	}
 	}
 
 	/*
@@ -478,13 +483,14 @@ public class Database {
 			 while(iterator.hasNext()){
 				 tagsList.add(iterator.next());
 			 }
-			StringBuilder query = new StringBuilder("INSERT INTO usertagpreferences (userid, tagid) VALUES ");
+			StringBuilder query = new StringBuilder("INSERT INTO userattributepreferences (userid, tagid) VALUES ");
         	 for(int i = 0; i < tagsList.size();i++) {
 				 if (i != 0){
 					 query.append(", ");
 				 }
 				 query.append("( " + userId + ", " + tagsList.get(i).getTagId() +" )");
 		    }
+
 			 query.append(";");
 			 statement.addBatch(query.toString());
 			 statement.executeBatch();
