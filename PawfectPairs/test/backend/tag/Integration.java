@@ -11,13 +11,16 @@ import backend.dog.Dog;
 import backend.poster.Poster;
 
 import java.util.ArrayList;
+import java.util.Hashtable;
 
 import backend.tag.Tag;
 
 class Integration {
-    String url = "jdbc:postgresql://localhost:5432/pawdb";
+	
+	//User Must Change it to their parameters
+    /*String url = "jdbc:postgresql://localhost:5432/pawdb";
     String user1 = "postgres";
-    String password = "12345";
+    String password = "12345";*/
     @BeforeAll
     static void setUpBeforeClass() throws Exception {
     }
@@ -34,20 +37,29 @@ class Integration {
     void tearDown() throws Exception {
     }
 
-    //test to check access to db poster
-    @Test
-    void testGetPosterById() {
-        // Test getting a poster by ID
-        Poster poster = Database.getPosterById(1);
+//    //test to check access to db poster
+//    @Test
+//    void testGetPosters() {
+//        // Test getting a poster by ID
+//    	Hashtable<Integer,Poster> poster = Database.getAllPosters();
+//    	Poster desiredPoster = null;
+//    	String posterName ="";
+//    			for (Integer key : poster.keySet()) {
+//    				if (key == 1) {
+//    					  desiredPoster = poster.get(key);
+//    					  posterName = desiredPoster.getDisplayName();
+//    				}
+//    			}
+//    	
+//
+//        assertNotNull(poster);
+//        assertEquals("official-mark-RUFFalo", posterName); // Replace with expected display name
+//        assertEquals(3, desiredPoster.getScore()); // Replace with expected score
+//        assertEquals(1, desiredPoster.getUniqueId()); // Replace with expected poster ID
+//    }
 
-        assertNotNull(poster);
-        assertEquals("doglover123", poster.getDisplayName()); // Replace with expected display name
-        assertEquals(5, poster.getScore()); // Replace with expected score
-        assertEquals(1, poster.getUniqueId()); // Replace with expected poster ID
-    }
 
-
-    @Test
+   /* @Test
     void testGetAllDogs() {
         // Test getting all dogs
         ArrayList<Dog> dogs = Database.getAllDogs();
@@ -61,10 +73,10 @@ class Integration {
                 assertEquals("Charles",dogs.get(i).getName());
         }
 
-    }
-    
+    }*/    
     
 
 
 
 }
+
