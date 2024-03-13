@@ -420,7 +420,7 @@ public class Database {
 		        try {
 		        	 connection = databaseConnector.connect();
 					 Statement statement = connection.createStatement();
-					 StringBuilder query = new StringBuilder("INSERT INTO " + table + " (dogid, userid) VALUES");
+					 StringBuilder query = new StringBuilder("INSERT INTO " + table + " (dogid, userid) VALUES ");
 					 for(int i = 0; i < dogList.size();i++) {
 						 if (i != 0){
 							 query.append(", ");
@@ -429,9 +429,7 @@ public class Database {
 					 }
 					 
 					 query.append(" ON CONFLICT (userid,dogid) DO NOTHING;");
-					 
-					 System.out.println(query + "***********************************");
-					 
+										 
 					 statement.addBatch(query.toString());
 					 statement.executeBatch();
 		        } 
@@ -471,35 +469,38 @@ public class Database {
 		/*
 		 * Add tags to user preferences in database
 		 */
-		Connection connection = null;
-		PreparedStatement preparedStatement = null;
-		
-        try {
-        	 connection = databaseConnector.connect();
-			 Statement statement = connection.createStatement();
-			 Collection<Tag> tagList = tags.values();
-			 Iterator<Tag> iterator = tagList.iterator();
-			 ArrayList<Tag> tagsList = new ArrayList<>();
-			 while(iterator.hasNext()){
-				 tagsList.add(iterator.next());
-			 }
-			StringBuilder query = new StringBuilder("INSERT INTO userattributepreferences (userid, tagid) VALUES ");
-        	 for(int i = 0; i < tagsList.size();i++) {
-				 if (i != 0){
-					 query.append(", ");
+		if(tags.values().size() > 0) {
+			Connection connection = null;
+			PreparedStatement preparedStatement = null;
+			
+	        try {
+	        	 connection = databaseConnector.connect();
+				 Statement statement = connection.createStatement();
+				 Collection<Tag> tagList = tags.values();
+				 Iterator<Tag> iterator = tagList.iterator();
+				 ArrayList<Tag> tagsList = new ArrayList<>();
+				 while(iterator.hasNext()){
+					 tagsList.add(iterator.next());
 				 }
-				 query.append("( " + userId + ", " + tagsList.get(i).getTagId() +" )");
-		    }
-
-			 query.append(";");
-			 statement.addBatch(query.toString());
-			 statement.executeBatch();
-        }
-        catch (SQLException e) {
-            e.printStackTrace();
-          
-        }
-	}
+				StringBuilder query = new StringBuilder("INSERT INTO userattributepreferences (userid, tagid) VALUES ");
+	        	 for(int i = 0; i < tagsList.size();i++) {
+					 if (i != 0){
+						 query.append(", ");
+					 }
+					 query.append("( " + userId + ", " + tagsList.get(i).getTagId() +" )");
+			    }
+	
+				 query.append(";");
+				 System.out.println(query + "**************************************************");
+				 
+				 statement.addBatch(query.toString());
+				 statement.executeBatch();
+	        }
+	        catch (SQLException e) {
+	            e.printStackTrace();
+	          
+	        }
+	}}
 
 	public static void deletePreferenceTagsFromUser(int userId) {
 		try {
