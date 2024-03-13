@@ -797,7 +797,7 @@ public class Database {
 		return wallet; 	
 	}
 	
-	public static void addRecurringPayments(User user, ArrayList<RecurringPayment> p) {
+	/*public static void addRecurringPayments(User user, ArrayList<RecurringPayment> p) {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		Wallet wallet = null;
@@ -820,6 +820,66 @@ public class Database {
 			e.printStackTrace();
 
 		}
+
+	}*/
+	
+	public static void addRecurringPayments(User user, ArrayList<RecurringPayment> p) {
+	
+		
+		Connection connection = null;
+	    PreparedStatement preparedStatement = null;
+
+	    try {
+	        connection = databaseConnector.connect();
+	        preparedStatement = connection.prepareStatement(
+	            "INSERT INTO userpayments (userid, paymentamount, daysbetweenpayment, dogid, lastpaymentdate, posterid) VALUES (?, ?, ?, ?, ?, ?)"
+	        );
+
+	        // Set auto-commit to false for batch processing
+	        connection.setAutoCommit(false);
+
+	        for (RecurringPayment payment : p) {
+	            preparedStatement.setInt(1, user.getUserID());
+	            preparedStatement.setDouble(2, payment.getPaymentAmount());
+	            preparedStatement.setInt(3, payment.getDaysBetweenPayments());
+	            preparedStatement.setInt(4, payment.getDogId());
+	            preparedStatement.setString(5, payment.getLastPaymentDateToString());
+	            preparedStatement.setInt(6, payment.getPosterId());
+	            preparedStatement.addBatch();
+	        }
+
+	        // Execute the batch
+	        preparedStatement.executeBatch();
+
+	        // Commit the transaction
+	        connection.commit();
+	    } catch (SQLException e) {
+	        // Handle SQLException
+	        e.printStackTrace();
+	        try {
+	            if (connection != null) {
+	                // Rollback the transaction in case of an error
+	                connection.rollback();
+	            }
+	        } catch (SQLException ex) {
+	            ex.printStackTrace();
+	        }
+	    } finally {
+	        // Close resources
+	        try {
+	            if (preparedStatement != null) {
+	                preparedStatement.close();
+	            }
+	            if (connection != null) {
+	                connection.setAutoCommit(true); // Reset auto-commit to true
+	                connection.close();
+	            }
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    }
+		
+		
 
 	}
 	
@@ -889,6 +949,7 @@ class DatabaseConnector {
     public Connection connect() {
         try{
         	Class.forName("org.postgresql.Driver"); // Replace with your database driver
+        	//Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/finaldb", "postgres", "123");
         	Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/thebestoneyet", "postgres", "doglover123");
 			//System.out.println( "Connected to the PostgreSQL server successfully.");
         	return connection;
