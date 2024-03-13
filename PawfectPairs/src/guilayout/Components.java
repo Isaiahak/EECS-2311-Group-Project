@@ -594,6 +594,7 @@ public class Components{
 							userManager.removeAppointment(appointment);
 							BookedAppointmentScene bookedPage = BookedAppointmentScene.getInstance();
 							bookedPage.start(primaryStage);
+							break;
 						}
 					}
 				} catch (Exception e) {
