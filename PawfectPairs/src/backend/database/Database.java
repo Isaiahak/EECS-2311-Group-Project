@@ -716,13 +716,16 @@ public class Database {
 		ResultSet resultSet = statement.executeQuery ("SELECT tags.tagid, tags.tagname FROM tags JOIN usertagpreferences ON tags.tagid = usertagpreferences.tagid WHERE usertagpreferences.userid = " + userId + ";");
 		
 		while (resultSet.next()) {	 
-			tags.put(resultSet.getInt("tagid"),new Tag(resultSet.getString("tagname")));
+			tags.put(resultSet.getInt("tagid"),new Tag(resultSet.getString("tagname"), resultSet.getInt("tagid")));
 		}
 	}
 	catch (SQLException e) {
 		e.printStackTrace();
 	}
 	
+	for(Tag t : tags.values()) {
+		System.out.println(t.getTagName() + t.getTagId());
+	}
 	
 	return tags;
 }
@@ -1024,8 +1027,8 @@ class DatabaseConnector {
     public Connection connect() {
         try{
         	Class.forName("org.postgresql.Driver"); // Replace with your database driver
-        	Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/finaldb", "postgres", "123");
-        	//Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/thebestoneyet", "postgres", "doglover123");
+//        	Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/finaldb", "postgres", "123");
+        	Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/thebestoneyet", "postgres", "doglover123");
 			//System.out.println( "Connected to the PostgreSQL server successfully.");
         	return connection;
         }
