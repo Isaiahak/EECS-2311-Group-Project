@@ -427,7 +427,7 @@ public class Database {
 					 }
 					 query.append("( " +dogList.get(i).getId()+ ", " +userID+ ")");
 				 }
-				 query.append("ON CONFLICT (userid,dogid) DO NOTHING;");
+				 query.append(" ON CONFLICT (userid,dogid) DO NOTHING;");
 				 statement.addBatch(query.toString());
 				 statement.executeBatch();
 	        } 
