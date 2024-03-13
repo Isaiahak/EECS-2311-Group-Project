@@ -42,7 +42,7 @@ public class SponsoredDogsScene extends PrimaryScene{
 		VBox sponsoredDogsDisplay = new VBox();
 	    	
     	for(RecurringPayment pay : recurringPayments.values()) {
-    		ArrayList<Dog> dogs = appData.getDogProfiles().get(pay.getPosterId());
+    		ArrayList<Dog> dogs = appData.getUser().getLikedDogs();
     		Dog d = findDogById(dogs, pay.getDogId());
     		sponsoredDogsDisplay.getChildren().add(Components.sponsoredDogView(d, stage, appData.getPosters(), appData, sponsoredDogsScene));
     	}

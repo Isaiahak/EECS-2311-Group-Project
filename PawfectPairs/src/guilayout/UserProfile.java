@@ -13,7 +13,7 @@ import java.util.Hashtable;
 import backend.tag.Tag;
 
 
-public class 	UserProfile extends PrimaryScene{
+public class UserProfile extends PrimaryScene{
 	private ArrayList<Attribute> oldAgePreferences;
 	private ArrayList<Attribute> oldSexPreferences;
 	private ArrayList<Attribute> oldSizePreferences;

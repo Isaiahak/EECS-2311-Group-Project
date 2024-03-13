@@ -42,7 +42,7 @@ public class PosterProfileScene extends PrimaryScene {
 
 	@Override  
 	public void start(Stage primaryStage) throws Exception {  
-
+		initailizePrimaryScene();
 		appData = AppData.getInstance();
 		PriorityQueue<Dog> posterDogs = appData.getSortedDogProfiles();
 		User user = appData.getUser();

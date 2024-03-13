@@ -49,26 +49,27 @@ public class Database {
 	}
 
 	public static void setUserAppointments(AppointmentManager appointmentManager){
-		Connection connection = null;
-		try {
-			connection = databaseConnector.connect();
-			Statement statement = connection.createStatement();
-			StringBuilder query = new StringBuilder("INSERT INTO datesbooked (userid, dogid, posterid, date) VALUES ");
-			ArrayList<Appointment> appList = appointmentManager.getUserAppointments();
-			for(int i = 0; i < appList.size(); i++){
-				if(i != 0){
-					query.append(",");
+		if(appointmentManager.getUserAppointments().size() > 0) {
+			Connection connection = null;
+			try {
+				connection = databaseConnector.connect();
+				Statement statement = connection.createStatement();
+				StringBuilder query = new StringBuilder("INSERT INTO datesbooked (userid, dogid, posterid, date) VALUES ");
+				ArrayList<Appointment> appList = appointmentManager.getUserAppointments();
+				for(int i = 0; i < appList.size(); i++){
+					if(i != 0){
+						query.append(",");
+					}
+					query.append( "( " + appList.get(i).getUserID() +", " + appList.get(i).getDogID() + "," + appList.get(i).getPosterID()+ ", '" + appList.get(i).getDate() + "' )");
 				}
-				query.append( "( " + appList.get(i).getUserID() +", " + appList.get(i).getDogID() + "," + appList.get(i).getPosterID()+ ", '" + appList.get(i).getDate() + "' )");
+				query.append(";");
+				statement.addBatch(query.toString());
+				statement.executeBatch();
 			}
-			query.append(";");
-			statement.addBatch(query.toString());
-			statement.executeBatch();
-		}
-		catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
+			catch (SQLException e) {
+				e.printStackTrace();
+			}
+	}}
 
 	public static ArrayList<Appointment> getUserAppointments(int userID) {
 		Connection connection = databaseConnector.connect();

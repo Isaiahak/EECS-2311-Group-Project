@@ -170,7 +170,7 @@ public class DonateScene extends PrimaryScene {
 			daysBetweenPayments = 7;
 			break;
 
-		case "BiWeekly":
+		case "Biweekly":
 			daysBetweenPayments = 14;
 			break;
 

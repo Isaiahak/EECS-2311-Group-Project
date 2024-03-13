@@ -225,7 +225,6 @@ public class CalendarScene extends PrimaryScene {
         
         //adding to the DB
         if (currentAppointment != null && (userAppointments.appointmentExists(currentAppointment)) ) {
-        	System.out.println("removed");
         	userAppointments.removeAppointment(currentAppointment);
         }
         
@@ -266,6 +265,11 @@ public class CalendarScene extends PrimaryScene {
 	public void setCurrentAppointment(Appointment currentAppointment) {
 		this.currentAppointment = currentAppointment;
 	}
+	
+	public void setExistingAppointment(Appointment app) {
+		this.existingAppointment = app;
+	}
+	
 	
 	
     
