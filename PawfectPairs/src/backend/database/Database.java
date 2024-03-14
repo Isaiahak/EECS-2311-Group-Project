@@ -437,7 +437,7 @@ public class Database {
 		        catch (SQLException e) {
 		            e.printStackTrace();
 		        }
-	}
+		}
 	}
 
 	/*
@@ -875,91 +875,31 @@ public class Database {
 
 		return wallet; 	
 	}
-	
-	/*public static void addRecurringPayments(User user, ArrayList<RecurringPayment> p) {
-		Connection connection = null;
-		PreparedStatement preparedStatement = null;
-		Wallet wallet = null;
 
-		try {
-			connection = databaseConnector.connect();
-			Statement statement = connection.createStatement();
-			StringBuilder query = new StringBuilder("INSERT INTO userpayments (userid, paymentamount,daysbetweenpayment,dogid,lastpaymentdate,posterid) VALUES ");
-			for (int i = 0; i < p.size();i++){
-				if (i != 0)
-					query.append(", ");
-				query.append("(" + user.getUserID() +","+ p.get(i).getPaymentAmount() +"," + p.get(i).getDaysBetweenPayments() +"," + p.get(i).getDogId() +", '" + p.get(i).getLastPaymentDateToString() +"' ,"+ p.get(i).getPosterId()+")");
-			}
-			query.append(";");
-			statement.addBatch(query.toString());
-			statement.executeBatch();
-		} 
-		catch (SQLException e) {
-			
-			e.printStackTrace();
-
-		}
-
-	}*/
-	
 	public static void addRecurringPayments(User user, ArrayList<RecurringPayment> p) {
-	
-		
-		Connection connection = null;
-	    PreparedStatement preparedStatement = null;
+		if(p.size() > 0) {
 
-	    try {
-	        connection = databaseConnector.connect();
-	        preparedStatement = connection.prepareStatement(
-	            "INSERT INTO userpayments (userid, paymentamount, daysbetweenpayment, dogid, lastpaymentdate, posterid) VALUES (?, ?, ?, ?, ?, ?)"
-	        );
+			Connection connection = null;
+			PreparedStatement preparedStatement = null;
 
-	        // Set auto-commit to false for batch processing
-	        connection.setAutoCommit(false);
+			try {
+				connection = databaseConnector.connect();
+				Statement statement = connection.createStatement();
+				StringBuilder query = new StringBuilder("INSERT INTO userpayments (userid, paymentamount, daysbetweenpayment, dogid, lastpaymentdate, posterid) VALUES ");
+				for (int i = 0; i < p.size(); i++) {
+					if (i != 0) {
+						query.append(", ");
+					}
+					query.append("(" + user.getUserID() + ", " + p.get(i).getPaymentAmount() + ", " + p.get(i).getDaysBetweenPayments() + ", " + p.get(i).getDogId() + ", '" + p.get(i).getLastPaymentDateToString() + "', " + p.get(i).getPosterId() + ") ");
+				}
+				query.append(";");
 
-	        for (RecurringPayment payment : p) {
-	            preparedStatement.setInt(1, user.getUserID());
-	            preparedStatement.setDouble(2, payment.getPaymentAmount());
-	            preparedStatement.setInt(3, payment.getDaysBetweenPayments());
-	            preparedStatement.setInt(4, payment.getDogId());
-	            preparedStatement.setString(5, payment.getLastPaymentDateToString());
-	            preparedStatement.setInt(6, payment.getPosterId());
-	            preparedStatement.addBatch();
-	        }
-
-	        // Execute the batch
-	        preparedStatement.executeBatch();
-
-	        // Commit the transaction
-	        connection.commit();
-	    } catch (SQLException e) {
-	        // Handle SQLException
-	        e.printStackTrace();
-	        try {
-	            if (connection != null) {
-	                // Rollback the transaction in case of an error
-	                connection.rollback();
-	            }
-	        } catch (SQLException ex) {
-	            ex.printStackTrace();
-	        }
-	    } finally {
-	        // Close resources
-	        try {
-	            if (preparedStatement != null) {
-	                preparedStatement.close();
-	            }
-	            if (connection != null) {
-	                connection.setAutoCommit(true); // Reset auto-commit to true
-	                connection.close();
-	            }
-	        } catch (SQLException e) {
-	            e.printStackTrace();
-	        }
-	    }
-		
-		
-
+				statement.addBatch(query.toString());
+				statement.executeBatch();
+			} catch (SQLException e) {
+				// Handle SQLException
+			}
+		}
 	}
 	
 	public static void deleteRecurringPayments(User user) {
@@ -969,9 +909,6 @@ public class Database {
 
 		try {
 			connection = databaseConnector.connect();
-
-			//	        Statement statement = connection.createStatement ();
-			//	        ResultSet resultSet = statement.executeQuery ("SELECT * FROM users WHERE username = " + username + " AND userpassword  = " + password + ";") ;
 
 			String sql = "DELETE FROM userpayments WHERE userid = ?";
 
@@ -1028,8 +965,9 @@ class DatabaseConnector {
     public Connection connect() {
         try{
         	Class.forName("org.postgresql.Driver"); // Replace with your database driver
-//        	Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/finaldb", "postgres", "123");
-        	Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/thebestoneyet", "postgres", "doglover123");
+	       	//Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/finaldb", "postgres", "123");
+        	//Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/thebestoneyet", "postgres", "doglover123");
+			Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/pawitr2","postgres","1234");
 			//System.out.println( "Connected to the PostgreSQL server successfully.");
         	return connection;
         }
