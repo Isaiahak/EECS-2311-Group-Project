@@ -83,4 +83,9 @@ public class Wallet {
 		 
 		 return  this.recurringPayments.keySet();
 	}
+
+	public void setRecurringPayments(HashMap<Integer,RecurringPayment> map){
+		this.recurringPayments = map;
+
+	}
 }

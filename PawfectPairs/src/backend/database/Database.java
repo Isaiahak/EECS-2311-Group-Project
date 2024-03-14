@@ -928,6 +928,32 @@ public class Database {
 
 	}
 
+	public static HashMap<Integer, RecurringPayment> getRecurringPayment(int userid){
+		Connection connection = null;
+		HashMap<Integer,RecurringPayment> map = new HashMap<>();
+		try {
+			connection = databaseConnector.connect();
+			String query = "SELECT * FROM userpayments WHERE userid = ?";
+			PreparedStatement preparedStatement = connection.prepareStatement(query);
+			// Set the userID parameter
+			preparedStatement.setInt(1, userid);
+
+			// Execute the query
+			try (ResultSet resultSet = preparedStatement.executeQuery()) {
+				// Iterate over the result set and populate the TreeMap
+				while (resultSet.next()) {
+					RecurringPayment payment = new RecurringPayment(resultSet.getDouble("paymentamount"),resultSet.getInt("daysbetweenpayment"),resultSet.getInt("dogid"),resultSet.getInt("posterid"),resultSet.getString("lastpaymentdate"));
+					map.put(resultSet.getInt("dogid"),payment);
+				}
+			}
+
+
+			return map;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	return null;
+	}
 	/*
 	 * Cleanup Methods
 	 */
