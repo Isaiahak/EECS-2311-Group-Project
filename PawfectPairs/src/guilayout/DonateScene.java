@@ -69,7 +69,8 @@ public class DonateScene extends PrimaryScene {
 		donateButton.setOnAction(event -> {
 			try {
 
-				makePayment(appData, howOftenBox.getValue());
+				Components.makePayment(appData, howOftenBox.getValue(), howMuchMoney,howOftenBox, currentDog);
+				currentFunds.setText("Your current balance "+String.format("%.2f",  appData.getUser().getWallet().getBalance()));
 
 			} catch (FundsTooLow e) {
 				// TODO Auto-generated catch block
@@ -111,105 +112,31 @@ public class DonateScene extends PrimaryScene {
 		//    	});
 	}
 
-	private void makePayment(AppData appdata, String duration) throws FundsTooLow {
-		String inputText = howMuchMoney.getText().trim();
+
+	public static boolean checkInput (String inputText) {
 		boolean Numberwithdecimal = false;
-//		try
-//		{
-//			Double num = Double.parseDouble(inputText);
-//			Numberwithdecimal=true;
-//		}
-//		catch(java.lang.NumberFormatException e)
-//		
-//		{ 
-//			Numberwithdecimal=false;
-//		    System.out.println("Error parsing as Double: " + e.getMessage());
-//
-//			
-//		}
 		String whyFalse="";
 		int numofDecimalPoint=0;
-		 for (char c : inputText.toCharArray()) {
-		      if (Character.isDigit(c)) {
-		    	  Numberwithdecimal= true;
-		    	  whyFalse+="not a digit";
-		    	  
-		      }
-		      else if(c == '.') {
-		    	  Numberwithdecimal=true;
-		      numofDecimalPoint++;
-		      }
-		      
-		   }
-		 if (numofDecimalPoint>1) {
-			 Numberwithdecimal=false;
-	    	  whyFalse+="more than one .";
-
-			 }
-
-		//if (!inputText.matches("\\d+(\\.\\d+)?")) {
-		   if (!Numberwithdecimal)
-				   {showAlert("Cannot enter non-numeric values ", "Please enter a number", AlertType.ERROR);
-
-	    howMuchMoney.clear();
-	    howMuchMoney.setText("");}
-	
-		else if (Double.parseDouble(howMuchMoney.getText())<=0)
-			{
-			showAlert("Cannot enter a negative number", "Please enter a non-negative number", AlertType.ERROR);
-			howMuchMoney.clear();
-			}
-		else {//do the payments otherwise
-		double amountToDonate = Double.parseDouble(howMuchMoney.getText()); 
-		Poster poster = appData.getPosterProfiles().get(currentDog.getPosterId());
-		int daysBetweenPayments = 0;
-
-
-		switch(duration) {
-		case "Weekly":
-			daysBetweenPayments = 7;
-			break;
-
-		case "Biweekly":
-			daysBetweenPayments = 14;
-			break;
-
-		case "Monthly":
-			daysBetweenPayments = 30;
-			break;
-
-		default:
-			break;
-
-		}
-		if (amountToDonate>wallet.getBalance())
-			showAlert("Insufficient funds", "Your recurring payment did not go through", AlertType.ERROR);
-		else	{
-			if(!howOftenBox.getValue().equals("Once")) {
-				if(wallet.getRecurringPayments().containsKey(currentDog.getId()))
-					{
-					showAlert("Recurring Payment Updated", "Your existing recurring payment was updated for this dog", AlertType.INFORMATION);
-					wallet.removeRecurringPayment(currentDog.getId());
-					wallet.addRecurringPayment(new RecurringPayment(amountToDonate, daysBetweenPayments, currentDog.getId(), currentDog.getPosterId()));
-
-					}
-				else
-					wallet.addRecurringPayment(new RecurringPayment(amountToDonate, daysBetweenPayments, currentDog.getId(), currentDog.getPosterId()));
-					showAlert("Recurring Payment Created", "You have set up recurring payments for this dog", AlertType.INFORMATION);
+		for (char c : inputText.toCharArray()) {
+			if (Character.isDigit(c)) {
+				Numberwithdecimal= true;
+				whyFalse+="not a digit";
 
 			}
-			
-			wallet.donate(amountToDonate, poster);
-			showAlert("Payment went through",currentDog.getName()+" is thankful for you! ♥", AlertType.CONFIRMATION);
-		}
-		
-
-
-		currentFunds.setText("Your current balance "+String.format("%.2f",  wallet.getBalance()));
-		//System.out.println("poster"+poster.getDisplayName() +"'s balance is"+poster.getBalance());//was for testing
+			else if(c == '.') {
+				Numberwithdecimal=true;
+				numofDecimalPoint++;
+			}
 
 		}
+		if (numofDecimalPoint>1) {
+			Numberwithdecimal=false;
+			whyFalse+="more than one .";
+
+		}
+		return Numberwithdecimal;
 	}
+	
 
 	private void showAlert(String title, String message, Alert.AlertType alertType) {
 		Alert alert = new Alert(alertType);

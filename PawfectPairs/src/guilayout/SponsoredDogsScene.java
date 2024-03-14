@@ -1,9 +1,12 @@
 package guilayout;
 
 import backend.wallet.RecurringPayment;
+import backend.wallet.Wallet.FundsTooLow;
 import javafx.geometry.*;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import java.util.ArrayList;
@@ -57,8 +60,8 @@ public class SponsoredDogsScene extends PrimaryScene{
     			sponsoredDogsDisplay
     			);
 	    	
-
-	    	
+   
+    	
     	StackPane stackPane = new StackPane(root);
     	stackPane.setAlignment(javafx.geometry.Pos.CENTER);
     	
@@ -70,14 +73,11 @@ public class SponsoredDogsScene extends PrimaryScene{
 		stage.setScene(scene);
 		stage.setTitle("Pawfect Pairs");
 		stage.show();
+	//	VBox info= box.getBox();
 
-//		stage.setOnCloseRequest(event -> {
-//    	    System.out.println("Window is closing. Perform cleanup if needed.");
-//    	    
-//    	    Database.onApplicationClose(user, posterDogs);
-//    	});
 		
 	}	
+
 	
 	private Dog findDogById(ArrayList<Dog> list, int targetId) {
         for (Dog d : list) {
