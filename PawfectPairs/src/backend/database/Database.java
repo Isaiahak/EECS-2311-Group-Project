@@ -604,6 +604,43 @@ public class Database {
 	 * User Methods
 	 */
 
+	public static String usernameChecker(String username){
+		Connection connection = null;
+		String result = "";
+		try{
+			connection = databaseConnector.connect();
+			Statement statement = connection.createStatement();
+			String query = "SELECT username FROM users WHERE username = '" + username + "' ;";
+			ResultSet resultSet = statement.executeQuery(query);
+			if(resultSet.next()) {
+				result = resultSet.getString("username");
+			}
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return result;
+	}
+
+	public static String passwordChecker(String username, String password){
+		Connection connection = null;
+		String result = "";
+		try{
+			connection = databaseConnector.connect();
+			Statement statement = connection.createStatement();
+			String query = "SELECT username FROM users WHERE username = '" + username + "' AND userpassword = '" + password + "' ;";
+			ResultSet resultSet = statement.executeQuery(query);
+			if(resultSet.next()) {
+				result = resultSet.getString("username");
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+
 	public static User getUser(String username, String password) {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
@@ -720,7 +757,7 @@ public class Database {
 		PreparedStatement preparedStatement2 = null;
 		try {
 			connection = databaseConnector.connect();
-			String sql = "INSERT INTO users (username, userpassword, balance) VALUES (?, ?, ?)";
+			String sql = "INSERT INTO users (username, userpassword, balance) VALUES (?, ?, ?) ON CONFLICT (username) DO NOTHING; ";
 			preparedStatement = connection.prepareStatement(sql);
 			preparedStatement.setString(1, username);
 			preparedStatement.setString(2, password);

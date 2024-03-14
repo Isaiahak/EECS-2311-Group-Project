@@ -70,23 +70,34 @@ public class LoginScene extends Application{
         signUpButton.setOnAction(e -> {
             String username = userTextField.getText();
             String password = passwordField.getText();
-            if (Database.addUser(username, password, appData.getAllAttributes()) == false || password == "" && username == "")
-            	showAlert("Sign up Failed", "Please enter a valid username or password.");
+            boolean result = Database.addUser(username, password, appData.getAllAttributes());
+            if ( password == "" && username == "")
+                showAlert("Sign up failed","Empty username or password not allowed!");
+            else if (Database.usernameChecker(username) != username && result == false)
+                showAlert("Sign up failed","Username in use, try logging in!");
+            else {
+                User user = Database.getUser(username, password);
+                appData.setAppointmentManager(new AppointmentManager(user.getUserID(), new ArrayList<>()));
+            }
             clearFields(userTextField, passwordField);
-            User user = Database.getUser(username, password);
-            appData.setAppointmentManager(new AppointmentManager(user.getUserID(),new ArrayList<>()));
         });
 
         loginButton.setOnAction(e -> {
             String username = userTextField.getText();
             String password = passwordField.getText();
             appData.onStart(username, password);
-            if (Database.getUser(username, password) != null /*userlist.contains(userInfo)*/ ||  username != "" && password != "" ) {
-                System.out.println("Logging the user in!");
-                dogProfileScene.start(primaryStage);
+            if (username == "" && password == "" ) {
+                showAlert("Login failed","Empty username or password not allowed!");
+            }
+            else if (Database.usernameChecker(username).compareTo(username) != 0){
+                showAlert("Login failed","invalid username");
+            }
+            else if (Database.passwordChecker(username,password).compareTo(username) != 0){
+                showAlert("Login failed", "incorrect password");
             }
             else {
-                showAlert("Login Failed", "Invalid username or password.");
+                System.out.println("Logging the user in!");
+                dogProfileScene.start(primaryStage);
             }
             clearFields(userTextField, passwordField);
         });
