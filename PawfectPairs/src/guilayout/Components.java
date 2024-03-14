@@ -14,13 +14,14 @@ import backend.user.User;
 import backend.wallet.RecurringPayment;
 import backend.wallet.Wallet.FundsTooLow;
 import guicontrol.AppData;
-import javafx.animation.PauseTransition;
-import javafx.animation.TranslateTransition;
+import javafx.animation.*;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
@@ -60,8 +61,6 @@ public class Components{
 
 	public static Button button(String text) {
 		Button button = new Button(text);
-		//		button.setAlignment(pos);
-
 		button.setFont(Font.font(font, fontMd));
 
 		return button;
@@ -114,7 +113,7 @@ public class Components{
 
 
 		default:
-			break; // do nothing 
+			break; // do nothing
 		}
 
 		if(currentScene == "userProfile") { // if we are currently on userProfile, we should update dog scores when we change to a different page 

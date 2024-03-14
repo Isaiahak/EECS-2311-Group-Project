@@ -3,6 +3,7 @@ package guilayout;
 import backend.database.Database;
 import backend.dog.Dog;
 import backend.wallet.Wallet;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -30,6 +31,9 @@ public class DogProfileScene extends PrimaryScene{
 		}
 		return instance;
 	}
+	private DogProfileScene(){
+
+	}
 
     public static void main(String[] args) {
         launch(args);
@@ -37,98 +41,89 @@ public class DogProfileScene extends PrimaryScene{
 
     @Override
     public void start(Stage primaryStage) {
-    	initailizePrimaryScene();
-		VBox root = new VBox();
+		root = new VBox();
+		initailizePrimaryScene();
 		root.setSpacing(10);
 		root.setAlignment(Pos.CENTER);
-        primaryStage.setTitle("Pawfect Pairs");
-        PosterProfileScene posterProfile = PosterProfileScene.getInstance();
-        outOfDogs = OutOfDogsScene.getInstance();
-        HBox primaryControlTab = new HBox();
-        petImageView = Components.imageView(500,500);
+		root.setPadding(new Insets(0, 5, 5, 5));
+		primaryStage.setTitle("Pawfect Pairs");
+		PosterProfileScene posterProfile = PosterProfileScene.getInstance();
+		outOfDogs = OutOfDogsScene.getInstance();
+		HBox primaryControlTab = new HBox();
+		petImageView = Components.imageView(500, 500);
 
-        Button passButton = Components.button("╳");
-		passButton.setStyle("-fx-background-color: #0a0f40; -fx-text-fill: white; -fx-font-size: 60;");
-        passButton.setOnAction(event -> {
-            user.addPassedDogs(allDogs.peek());
-			if(allDogs.size() == 1) {
+		tagsPane = new StackPane();
+		stage = primaryStage;
+
+		StackPane stackPane = new StackPane(root);
+		stackPane.setAlignment(Pos.CENTER);
+		scene = new Scene(stackPane, Components.screenWidth, Components.screenHeight);
+
+		Button passButton = Components.button("╳");
+		passButton.setOnAction(event -> {
+			user.addPassedDogs(allDogs.peek());
+			if (allDogs.size() == 1) {
 				changeProfile();
 				outOfDogs.start(primaryStage);
-			}
-
-        	else {
+			} else {
 				changeProfile();
-	            displayCurrentPetProfile();
-        	}
-        });
+				displayCurrentPetProfile();
+			}
+		});
 
-        Button likeButton = Components.button("♥");
-		likeButton.setStyle("-fx-background-color: #db2a4d; -fx-text-fill: white; -fx-font-size: 60;");
-        likeButton.setOnAction(e -> {
+		Button likeButton = Components.button("♥");
+		likeButton.setOnAction(e -> {
 			allDogs.peek().setAdopted(true);
-            user.addLikedDogs(allDogs.peek());
-			if(allDogs.size() == 1) {
+			user.addLikedDogs(allDogs.peek());
+			if (allDogs.size() == 1) {
 				changeProfile();
 				outOfDogs.start(primaryStage);
+			} else {
+				changeProfile();
+				displayCurrentPetProfile();
 			}
-        	else {	
-	            changeProfile();
-	            displayCurrentPetProfile();
-        	}
-         });
+		});
 
-        primaryControlTab.getChildren().addAll(likeButton,petImageView,passButton);
-        primaryControlTab.setSpacing(20);
-        primaryControlTab.setAlignment(Pos.CENTER);
-        primaryInfoLabel = Components.largeLabel(); // Name, Age, Sex
-		sizeLabel =  Components.mediumLabel();
+		primaryControlTab.getChildren().addAll(likeButton, petImageView, passButton);
+		primaryControlTab.setSpacing(20);
+		primaryControlTab.setAlignment(Pos.CENTER);
+		primaryInfoLabel = Components.largeLabel(); // Name, Age, Sex
+		sizeLabel = Components.mediumLabel();
 		energyLabel = Components.mediumLabel();
-        HBox secondaryInfo = new HBox(); 
-        secondaryInfo.setAlignment(Pos.CENTER);
-        secondaryInfo.setSpacing(10); 
-        secondaryInfo.getChildren().addAll(sizeLabel, energyLabel);
+		HBox secondaryInfo = new HBox();
+		secondaryInfo.setAlignment(Pos.CENTER);
+		secondaryInfo.setSpacing(10);
+		secondaryInfo.getChildren().addAll(sizeLabel, energyLabel);
 
 
-        biographyText = Components.smallLabel(); 
-        biographyText.setPrefWidth(900);
-        HBox navTab = Components.navTab(userProfileScene, likedDogsScene, DogProfileScene.getInstance(),sponsoredDogsScene, BookedAppointmentScene.getInstance(),primaryStage, "dogProfiles", appData);
+		biographyText = Components.smallLabel();
+		biographyText.setPrefWidth(900);
+		HBox navTab = Components.navTab(userProfileScene, likedDogsScene, DogProfileScene.getInstance(), sponsoredDogsScene, BookedAppointmentScene.getInstance(), primaryStage, "dogProfiles", appData);
 
-        posterLink = Components.hyperlink();
-        posterLink.setOnAction(event -> {
-        	try {
+		posterLink = Components.hyperlink();
+		posterLink.setOnAction(event -> {
+			try {
 				posterProfile.start(primaryStage);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-        });
+		});
 
-
-		tagsPane = new StackPane();
-        stage = primaryStage;
 		root.getChildren().addAll(navTab, primaryControlTab, primaryInfoLabel, posterLink, secondaryInfo, biographyText, tagsPane);
-
 		displayCurrentPetProfile();
-		StackPane stackPane = new StackPane(root);
-		stackPane.setAlignment(Pos.CENTER);
-		ScrollPane scrollPane = new ScrollPane(stackPane);
-		scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-		scrollPane.setFitToWidth(true);
-		Scene scene = new Scene(scrollPane, Components.screenWidth, Components.screenHeight);
-
 		primaryStage.setScene(scene);
-		if(allDogs.size() == 0){
+		if (allDogs.size() == 0) {
 			outOfDogs.start(stage);
-		}
-		else{
+		} else {
 			primaryStage.show();
 		}
-      
-      primaryStage.setOnCloseRequest(event -> {
-    	    System.out.println("Window is closing. Perform cleanup if needed.");
-    	    
-    	    Database.onApplicationClose(user, allDogs, appData.getAppointmentManager());
-    	});
-		}
+
+		primaryStage.setOnCloseRequest(event -> {
+			System.out.println("Window is closing. Perform cleanup if needed.");
+
+			Database.onApplicationClose(user, allDogs, appData.getAppointmentManager());
+		});
+	}
 
 	public void displayCurrentPetProfile() {
 

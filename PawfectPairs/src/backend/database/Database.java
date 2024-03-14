@@ -928,7 +928,6 @@ public class Database {
 						query.append(", ");
 					}
 					query.append("(" + user.getUserID() + ", " + recurringPaymentsList.get(i).getPaymentAmount() + ", " + recurringPaymentsList.get(i).getDaysBetweenPayments() + ", " + recurringPaymentsList.get(i).getDogId() + ", '" + recurringPaymentsList.get(i).getLastPaymentDateToString() + "', " + recurringPaymentsList.get(i).getPosterId() + ") ");
-					System.out.println(query.toString());
 				}
 				query.append(";");
 

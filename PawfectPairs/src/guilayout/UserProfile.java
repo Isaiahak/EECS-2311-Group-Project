@@ -41,10 +41,10 @@ public class UserProfile extends PrimaryScene{
 
 	@Override
     public void start(Stage primaryStage) {
+		root = new VBox();
 		initailizePrimaryScene();
     	HashMap<Integer, Tag> tags = appData.getallTags();
     	HashMap<Integer,ArrayList<Attribute>> allAttributes = appData.getAllAttributes();
-    	VBox root = new VBox();
     	wallet=user.getWallet();
 
     	oldSexPreferences = user.getCopyOfSexPreferences(user.getSexPreferences());
@@ -102,13 +102,7 @@ public class UserProfile extends PrimaryScene{
 		energyLevelAttributesTitle,
 		energyLevelAttributeGrid
     	);
-    	
-    	root.getChildren().addAll(
-    			navTab,
-    			preferences,
-    			tagsGrid,
-    			attributes
-    			);
+
     	
     	root.setAlignment(javafx.geometry.Pos.CENTER);
     
@@ -129,6 +123,8 @@ public class UserProfile extends PrimaryScene{
     	ScrollPane scrollPane1 = new ScrollPane(container);
     	scrollPane1.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
 	    scrollPane1.setFitToWidth(true);
+
+		scene = new Scene(scrollPane1, Components.screenWidth, Components.screenHeight);
 
 		Button deposit = Components.button("Deposit funds into your wallet");
 		ScrollBar scrollBar = new ScrollBar();
@@ -167,8 +163,14 @@ public class UserProfile extends PrimaryScene{
 		allWalletUserComponents.setPadding(new javafx.geometry.Insets(20, 10, 20, 10));
 		
 		//END OF WALLET UI STUFF
-		container.getChildren().addAll(stackPane, allWalletUserComponents);
-    	Scene scene = new Scene(scrollPane1, Components.screenWidth, Components.screenHeight);
+		root.getChildren().addAll(
+				navTab,
+				preferences,
+				tagsGrid,
+				attributes,
+				allWalletUserComponents
+		);
+		container.getChildren().addAll(stackPane);
     	
 		primaryStage.setScene(scene);
 		primaryStage.setTitle("Pawfect Pairs");

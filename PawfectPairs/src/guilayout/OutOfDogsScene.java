@@ -36,12 +36,12 @@ public class OutOfDogsScene extends PrimaryScene{
 
 	@Override
 	public void start(Stage stage) {
+		root = new VBox();
 		initailizePrimaryScene();
 		appData = AppData.getInstance();
 		PriorityQueue<Dog> posterDogs = appData.getSortedDogProfiles();
 		User user = appData.getUser();
-		
-		VBox root = new VBox();
+
 		root.setSpacing(15);
 		root.setAlignment(Pos.TOP_CENTER);
 		Label pageLabel = Components.largeLabel("Out of Dogs!",Pos.TOP_CENTER);

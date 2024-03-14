@@ -27,10 +27,11 @@ public class LikedDogScene extends PrimaryScene{
 	
 	@Override
 	public void start(Stage stage){
+		root = new VBox();
 		initailizePrimaryScene();
 		ArrayList<Dog> likedDogs = user.getLikedDogs();
-		VBox root = new VBox();
 		root.setAlignment(javafx.geometry.Pos.CENTER);
+		VBox.setVgrow(root, Priority.ALWAYS);
     	root.setSpacing(20);
     	
 
@@ -58,12 +59,8 @@ public class LikedDogScene extends PrimaryScene{
     	
     	scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         scrollPane.setFitToWidth(true);
-    	
-    	
 
-        
-        
-    	Scene scene = new Scene(scrollPane, Components.screenWidth, Components.screenHeight);
+    	scene = new Scene(scrollPane, Components.screenWidth, Components.screenHeight);
     	
 		stage.setScene(scene);
 		stage.setTitle("Pawfect Pairs");
