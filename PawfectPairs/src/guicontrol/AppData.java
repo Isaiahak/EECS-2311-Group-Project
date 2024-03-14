@@ -196,7 +196,8 @@ public class AppData {
 		setAppointmentManager(new AppointmentManager(user.getUserID(), Database.getUserAppointments(user.getUserID())));
 		
 		setOtherUsersAppointments();
-		
+
+		this.user.getWallet().setRecurringPayments(Database.getRecurringPayment(user.getUserID()));
 
 	}
 
