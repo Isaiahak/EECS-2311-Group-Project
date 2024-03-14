@@ -47,7 +47,7 @@ public class SponsoredDogsScene extends PrimaryScene{
     	for(RecurringPayment pay : recurringPayments.values()) {
     		ArrayList<Dog> dogs = appData.getUser().getLikedDogs();
     		Dog d = findDogById(dogs, pay.getDogId());
-    		sponsoredDogsDisplay.getChildren().add(Components.sponsoredDogView(d, stage, appData.getPosters(), appData, sponsoredDogsScene, box));
+    		sponsoredDogsDisplay.getChildren().add(Components.sponsoredDogView(d, stage, appData.getPosters(), appData, sponsoredDogsScene));
     	}
     	sponsoredDogsDisplay.setAlignment(javafx.geometry.Pos.CENTER);
 

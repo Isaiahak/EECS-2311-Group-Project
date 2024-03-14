@@ -23,7 +23,6 @@ public class PrimaryScene extends Application{
     protected User user;
     protected Wallet wallet;
 	protected BookedAppointmentScene bookedAppointmentsScene;
-protected GiveVBox box;
     @Override
     public void start(Stage primaryStage) throws Exception {
         
@@ -41,7 +40,6 @@ protected GiveVBox box;
         this.user = appData.getUser();
         this.bookedAppointmentsScene = BookedAppointmentScene.getInstance();
     	this.wallet = user.getWallet();
-    	this.box= GiveVBox.getInstance();
     	
     }
 }

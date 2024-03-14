@@ -674,7 +674,7 @@ public class Components{
 	}
 
 	public static HBox sponsoredDogView (Dog d, Stage stage, Hashtable < Integer, Poster > poster, AppData
-			appdata, SponsoredDogsScene page, GiveVBox box){
+			appdata, SponsoredDogsScene page){
 		ImageView img = Components.imageView(200, 200);
 		img.setImage(new Image(d.getImagePath()));
 
@@ -745,7 +745,7 @@ public class Components{
 			//						}
 			appdata.getUser().getWallet().removeRecurringPayment(d.getId());
 			//	public RecurringPayment(double paymentAmount, int daysBetweenPayments, int dogId, int posterId, String lastPaymentDate) { // from db
-			box.setBox(info);
+			//box.setBox(info);
 			//box.setButton();
 			setIsClicked(true);
 			//DonateScene donateScene = new DonateScene();
