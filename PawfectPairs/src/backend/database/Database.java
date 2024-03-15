@@ -744,10 +744,6 @@ public class Database {
 			e.printStackTrace();
 		}
 
-		for (Tag t : tags.values()) {
-			System.out.println(t.getTagName() + t.getTagId());
-		}
-
 		return tags;
 	}
 
