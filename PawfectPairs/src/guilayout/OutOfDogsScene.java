@@ -36,22 +36,24 @@ public class OutOfDogsScene extends PrimaryScene{
 
 	@Override
 	public void start(Stage stage) {
-		root = new VBox();
-		initailizePrimaryScene();
+		VBox mainContainer = new VBox();
+		initailizePrimaryScene(stage);
 		appData = AppData.getInstance();
 		PriorityQueue<Dog> posterDogs = appData.getSortedDogProfiles();
 		User user = appData.getUser();
 
-		root.setSpacing(15);
-		root.setAlignment(Pos.TOP_CENTER);
+		mainContainer.setSpacing(15);
+		mainContainer.setAlignment(Pos.TOP_CENTER);
 		Label pageLabel = Components.largeLabel("Out of Dogs!",Pos.TOP_CENTER);
 		stage.setTitle("Pawfect Pairs");	
 
 		HBox navTab = Components.navTab(userProfileScene, likedDogsScene, dogProfileScene, sponsoredDogsScene, bookedAppointmentsScene, stage, "dogProfiles", appData);
-		root.getChildren().addAll(navTab,pageLabel);
+		mainContainer.getChildren().addAll(navTab,pageLabel);
 		StackPane stackPane = new StackPane(root);
 		stackPane.setAlignment(javafx.geometry.Pos.CENTER);
-		Scene scene = new Scene(stackPane, Components.screenWidth, Components.screenHeight);		 
+
+
+		root.getChildren().add(mainContainer);
 		
 		stage.setScene(scene);
 		stage.show();

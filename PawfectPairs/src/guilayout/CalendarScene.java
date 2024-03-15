@@ -38,10 +38,7 @@ public class CalendarScene extends PrimaryScene {
     private Label successLabel = Components.mediumLabel();
     private StackPane oldSelectedButton = new StackPane(); 
     private LocalDate currentSelectedDate; 
-    
-    private String defaultStyle = "-fx-background-color: #d1d1d1; -fx-text-fill: #0f0f0f; -fx-alignment: top-right;";
-	private String highlightedStyle = "-fx-background-color: #ccffd1; -fx-text-fill: #0f0f0f; -fx-alignment: top-right;";
-	private String inactiveStyle = "-fx-background-color: #b5b5b5; -fx-text-fill: #0f0f0f; -fx-alignment: top-right;";
+   
     
     Poster currentPoster; 
     Dog currentDog;
@@ -69,7 +66,7 @@ public class CalendarScene extends PrimaryScene {
 
     @Override
     public void start(Stage stage) {
-    	initailizePrimaryScene();
+    	initailizePrimaryScene(stage);
     	
         stage.setTitle("Calendar");
         //meetWithLabel.setText("Meet with " + currentDog.getName() + " and " + currentPoster.getDisplayName());
@@ -79,10 +76,10 @@ public class CalendarScene extends PrimaryScene {
         userAppointments = appData.getAppointmentManager();
         otherUsersAppointments = appData.getOtherUsersAppointments();
 
-        VBox root = new VBox();
-        root.setAlignment(Pos.CENTER);
-        root.setSpacing(10);
-        root.setPadding(new Insets(10));
+        VBox mainContainer = new VBox();
+        mainContainer.setAlignment(Pos.CENTER);
+        mainContainer.setSpacing(10);
+        mainContainer.setPadding(new Insets(10));
         HBox navTab = Components.navTab(userProfileScene, likedDogsScene, dogProfileScene, sponsoredDogsScene, bookedAppointmentsScene, stage, "appointments", appData);
         // Title label to display the current month and year
         Label titleLabel = Components.largeLabel(getFormattedTitle(), Pos.CENTER);
@@ -140,15 +137,13 @@ public class CalendarScene extends PrimaryScene {
         successLabel.setText("Waiting on a date");
         
 
-        root.getChildren().addAll(navTab, titleLabel, calendarGrid, navigation, meetWithLabel, successLabel, confirmationButton);
+        mainContainer.getChildren().addAll(navTab, titleLabel, calendarGrid, navigation, meetWithLabel, successLabel, confirmationButton);
 
         updateCalendar();
 
-        Scene scene = new Scene(root, Components.screenWidth, Components.screenHeight);
+        root.getChildren().add(mainContainer);
         stage.setScene(scene);
         stage.show();
-        
-	     root.setAlignment(Pos.CENTER);
     }
 
     private String getFormattedTitle() {
@@ -183,29 +178,29 @@ public class CalendarScene extends PrimaryScene {
 	                    dayButton.setOnMouseClicked(event -> {
 	                    	successLabel.setText(buttonDate.toString());
 	                    	currentSelectedDate = buttonDate; 
-	                    	if(dayButtonCopy.getStyle().equals(defaultStyle)) {
-	            				oldSelectedButton.setStyle(defaultStyle);
+	                    	if(dayButtonCopy.getId() == null) {
+	            				oldSelectedButton.setId("highlighted-calendar-cell");
 	            				oldSelectedButton = dayButtonCopy; 
-	            				dayButtonCopy.setStyle(highlightedStyle);
+	            				dayButtonCopy.setId(("highlighted-calendar-cell"));
 	            			}});
 	                    
 	                    if(existingAppointment != null && buttonDate.equals(existingAppointment.getDate().toLocalDate())) {
 	                    	Label existingAppointmentLabel = Components.tinyLabel("Date with " + currentDog.getName(),Pos.CENTER);
-	                    	existingAppointmentLabel.setStyle("-fx-background-color: #82daf5; -fx-text-fill: #e0e0e0; -fx-alignment: top-right;");
+	                    	existingAppointmentLabel.getStyleClass().add("your-booking");
 	                    	StackPane.setAlignment(existingAppointmentLabel, Pos.CENTER);
 	                    	dayButton.getChildren().add(existingAppointmentLabel);
 	                    } 
 
                 	}else {
-                		dayButton.setStyle(inactiveStyle);
+                		dayButton.setId("inactive-calendar-cell");
                 		Label otherExistingAppointment = Components.tinyLabel(currentDog.getName() + " is busy",Pos.CENTER);
-                		otherExistingAppointment.setStyle("-fx-background-color: #e83562; -fx-text-fill: #e0e0e0; -fx-alignment: top-right;");
+                		otherExistingAppointment.getStyleClass().add("busy");
                     	StackPane.setAlignment(otherExistingAppointment, Pos.CENTER);
                     	dayButton.getChildren().add(otherExistingAppointment);
                 	}
                 }
                 else {
-                    dayButton.setStyle(inactiveStyle);
+                	dayButton.setId("inactive-calendar-cell");
                 }
                 
 //                calendarGrid.getChildren().add(dayButton);

@@ -56,7 +56,7 @@ public class Components{
 	/*
 	 * Collecting lists of all tags and attributes to create dynamically updating GUI components
 	 */
-
+	
 	public static ArrayList<Attribute> allAttributes = new ArrayList<Attribute>();
 
 	public static Button button(String text) {
@@ -71,44 +71,42 @@ public class Components{
 		//create a navigation tab: settings, schedule, messages, etc
 		// settings hBox
 		HBox navTab = new HBox();
-		navTab.setStyle("-fx-background-color: #f5f5f5;");
-		navTab.setSpacing(20);
+		
+		navTab.getStyleClass().add("navbar-container");
+//		navTab.setStyle("-fx-background-color: #f5f5f5;");
+//		navTab.setSpacing(20);
 
-		Button settingsButton = Components.button("⚙ Settings ⚙");
-		Button dogProfileButton = Components.button("🐕 Dog Profiles 🐕");
-		Button likedDogButton = Components.button("♥ Liked Dogs  🐶");
-		Button appointmentsButton = Components.button("📅 Appointments 📅");
-		Button sponsoredDogButton = Components.button("💸 Sponsored Dogs  💸");
-
-
-		String defaultStyle = "-fx-background-color: #4CAF50; -fx-text-fill: white;";
-		String highlightedStyle = "-fx-background-color: #2ed934; -fx-text-fill: white;";
+		Label settingsButton = Components.mediumLabel("⚙ Settings ⚙", Pos.CENTER);
+		Label dogProfileButton = Components.mediumLabel("🐕 Dog Profiles 🐕", Pos.CENTER);
+		Label likedDogButton = Components.mediumLabel("♥ Liked Dogs  🐶", Pos.CENTER);
+		Label appointmentsButton = Components.mediumLabel("📅 Appointments 📅", Pos.CENTER);
+		Label sponsoredDogButton = Components.mediumLabel("💸 Sponsored Dogs  💸", Pos.CENTER);
 
 
-		settingsButton.setStyle(defaultStyle);
-		likedDogButton.setStyle(defaultStyle);
-		dogProfileButton.setStyle(defaultStyle);
-		appointmentsButton.setStyle(defaultStyle);
-		sponsoredDogButton.setStyle(defaultStyle);
-
-
-		// set hightlight on current page button  
+		
+		settingsButton.getStyleClass().add("nav-button");
+        dogProfileButton.getStyleClass().add("nav-button");
+        likedDogButton.getStyleClass().add("nav-button");
+        appointmentsButton.getStyleClass().add("nav-button");
+        sponsoredDogButton.getStyleClass().add("nav-button");
+		
+//		// set hightlight on current page button  
 		switch(currentScene) {
 		case "userProfile":
-			settingsButton.setStyle(highlightedStyle);
+			settingsButton.setId("highlighted-nav");
 			break;
 
 		case "likedDogs":
-			likedDogButton.setStyle(highlightedStyle);
+			likedDogButton.setId("highlighted-nav");
 			break;
 
 		case "dogProfiles":
-			dogProfileButton.setStyle(highlightedStyle);
+			dogProfileButton.setId("highlighted-nav");
 			break;
 		case "appointments":
-			appointmentsButton.setStyle(highlightedStyle);
+			appointmentsButton.setId("highlighted-nav");
 		case "sponsoredDogs":
-			sponsoredDogButton.setStyle(highlightedStyle);
+			sponsoredDogButton.setId("highlighted-nav");
 			break;
 
 
@@ -118,42 +116,42 @@ public class Components{
 
 		if(currentScene == "userProfile") { // if we are currently on userProfile, we should update dog scores when we change to a different page 
 
-			settingsButton.setOnAction(event -> {
+			settingsButton.setOnMouseClicked(event -> {
 				appData.updateDogScores();
 				userScene.start(stage);
 			});
-			likedDogButton.setOnAction(event -> {
+			likedDogButton.setOnMouseClicked(event -> {
 				appData.updateDogScores();
 				likedDog.start(stage);
 			});
-			dogProfileButton.setOnAction(event -> {
+			dogProfileButton.setOnMouseClicked(event -> {
 				appData.updateDogScores();
 
 				dogProfile.start(stage);
 			});
-			appointmentsButton.setOnAction(event -> {
+			appointmentsButton.setOnMouseClicked(event -> {
 				appData.updateDogScores();
 				appointmentScene.start(stage);
 			});
-			sponsoredDogButton.setOnAction(event -> {
+			sponsoredDogButton.setOnMouseClicked(event -> {
 				appData.updateDogScores();
 				likedDog.start(stage);
 			});
 
 		}else {
-			settingsButton.setOnAction(event -> {
+			settingsButton.setOnMouseClicked(event -> {
 				userScene.start(stage);
 			});
-			likedDogButton.setOnAction(event -> {
+			likedDogButton.setOnMouseClicked(event -> {
 				likedDog.start(stage);
 			});
-			dogProfileButton.setOnAction(event -> {
+			dogProfileButton.setOnMouseClicked(event -> {
 				dogProfile.start(stage);
 			});
-			appointmentsButton.setOnAction(event -> {
+			appointmentsButton.setOnMouseClicked(event -> {
 				appointmentScene.start(stage);
 			});
-			sponsoredDogButton.setOnAction(event -> {
+			sponsoredDogButton.setOnMouseClicked(event -> {
 				sponsoredDogs.start(stage);
 			});
 		}
@@ -169,7 +167,8 @@ public class Components{
 	public static Hyperlink hyperlink() {
 		Hyperlink hyperlink = new Hyperlink();
 
-		hyperlink.setFont(Font.font(font, fontMd));
+//		hyperlink.setFont(Font.font(font, fontMd));
+		hyperlink.getStyleClass().add("hyperlink");
 
 		return hyperlink;
 
@@ -178,7 +177,8 @@ public class Components{
 	public static Label largeLabel(String text, Pos pos) {
 		Label label = new Label(text);
 		label.setAlignment(pos);
-		label.setFont(Font.font(font, fontLg));
+//		label.setFont(Font.font(font, fontLg));
+		label.getStyleClass().addAll("label","large");
 
 
 		return label;
@@ -187,7 +187,7 @@ public class Components{
 	public static Label mediumLabel(String text, Pos pos) {
 		Label label = new Label(text);
 		label.setAlignment(pos);
-		label.setFont(Font.font(font, fontMd));
+		label.getStyleClass().addAll("label","medium");
 
 
 		return label;
@@ -196,7 +196,7 @@ public class Components{
 	public static Label smallLabel(String text, Pos pos) {
 		Label label = new Label(text);
 		label.setAlignment(pos);
-		label.setFont(Font.font(font, fontSm));
+		label.getStyleClass().addAll("label","small");
 		label.setWrapText(true);
 
 
@@ -206,7 +206,7 @@ public class Components{
 	public static Label tinyLabel(String text, Pos pos) {
 		Label label = new Label(text);
 		label.setAlignment(pos);
-		label.setFont(Font.font(font, fontTn));
+		label.getStyleClass().addAll("label","tiny");
 		label.setWrapText(true);
 
 
@@ -215,7 +215,7 @@ public class Components{
 
 	public static Label largeLabel() {
 		Label label = new Label();
-		label.setFont(Font.font(font, fontLg));
+		label.getStyleClass().addAll("label","large");
 
 
 		return label;
@@ -223,14 +223,13 @@ public class Components{
 
 	public static Label mediumLabel() {
 		Label label = new Label();
-		label.setFont(Font.font(font, fontMd));
-
+		label.getStyleClass().addAll("label","medium");
 		return label;
 	}
 
 	public static Label smallLabel() {
 		Label label = new Label();
-		label.setFont(Font.font(font, fontSm));
+		label.getStyleClass().addAll("label","small");
 		label.setWrapText(true);
 
 		return label;
@@ -251,43 +250,23 @@ public class Components{
 	public static Label tagLabel(String tag,Tag labelTag, User user) {
 		// tags in the user profile to change preferences
 		Label label = new Label(tag);
-		label.setFont(Font.font(font, fontSm));
+		label.getStyleClass().addAll("tag-label", "label", "modest");
 		label.setWrapText(true);
-
 		label.maxWidth(50);
-
-		String defaultStyle = 
-				"-fx-background-color: #e1fcf6;" + // Background color
-						"-fx-padding: 10px;" + // Padding
-						//		        "-fx-border-radius: 10px;" + // Border radius
-						"-fx-border-color: #e1fcf6;" + // Border color
-						//		        "-fx-border-width: 4px;"   +
-						"-fx-alignment: center;"; // Text alignment;
-
-		String highLightedStyle = 
-				"-fx-background-color: #98f5e1;" + // Background color
-						"-fx-padding: 10px;" + // Padding
-						//		        "-fx-border-radius: 10px;" + // Border radius
-						"-fx-border-color: #98f5e1;" + // Border color
-						//		        "-fx-border-width: 4px;"   +
-						"-fx-alignment: center;"; // Text alignment;
-
 
 		//function to be able to turn the label highlighted when loading them if in the dog tags list.
 
 
 		if(user.getTagPreferences().contains(labelTag) == true) {
 
-			label.setStyle(highLightedStyle);
+			label.setId("highlighted-tag-label");
 		}
-		else {
-			label.setStyle(defaultStyle);
-		}
+		
 
 		label.setOnMouseClicked(event -> {
 			// Toggle background color on click
-			if (label.getStyle().equals(defaultStyle)) {
-				label.setStyle(highLightedStyle); // highlight if not highlighted
+			if (label.getId() == null) {
+				label.setId("highlighted-tag-label"); // highlight if not highlighted
 				if(user.getTagPreferences().contains(labelTag) == false) {
 					user.getTagPreferences().put(labelTag.getTagId(),labelTag);
 				}
@@ -297,7 +276,7 @@ public class Components{
 				if(user.getTagPreferences().contains(labelTag) == true) {
 					user.getTagPreferences().remove(labelTag);
 				}
-				label.setStyle(defaultStyle);         	
+				label.setId(null);         	
 			}
 		});
 
@@ -311,6 +290,10 @@ public class Components{
 		int col = 0;
 
 		int maxRows = 5;
+		
+		gridPane.setHgap(10); 
+        gridPane.setVgap(10); 
+
 
 		int i = 0; // current index
 
@@ -338,22 +321,11 @@ public class Components{
 		// tags used to label dogs
 
 		Label label = new Label(tag);
-		label.setFont(Font.font(font, fontSm));
 		label.setWrapText(true);
 
 		label.maxWidth(100);
 
-		String defaultStyle = 
-				"-fx-background-color: #03adfc;" + // Background color
-						"-fx-padding: 10px;" + // Padding
-						"-fx-border-radius: 10px;" + // Border radius
-						"-fx-border-color: #03adfc;" + // Border color
-						"-fx-border-width: 4px;"   +
-						"-fx-text-fill: #ffffff;" + 
-						"-fx-alignment: center;"; // Text alignment;
-
-
-		label.setStyle(defaultStyle); /// this is for showing the tags on the dog's profile :D
+		label.getStyleClass().addAll("dog-tag-label", "small", "label");
 		label.setAlignment(Pos.CENTER);
 
 		return label;
@@ -400,16 +372,11 @@ public class Components{
 		for (int i = 0; i < 10; i ++) {
 			//generate a star
 			Label star = new Label("★");
-			star.setStyle(
-					"-fx-text-fill: #d9d8d7;" + // Background color
-							"-fx-padding: 10px;" + // Padding
-					"-fx-font-size: 50px"); // Text alignment;);
+			star.getStyleClass().add("star");
+					
 			if(j < num) {
 				//color it
-				star.setStyle(
-						"-fx-text-fill: #ffd952;" + 
-								"-fx-padding: 10px;" + // Padding
-						"-fx-font-size: 50px");
+				star.setId("star-active");
 				j++;
 			}
 			stars.getChildren().add(star);
@@ -425,37 +392,26 @@ public class Components{
 		label.maxWidth(50);
 		ObservableList<Node> labels = gridPane.getChildren();
 
-		String defaultStyle = 
-				"-fx-background-color: #e1fcf6;" + // Background color
-						"-fx-padding: 10px;" + // Padding
-						"-fx-border-radius: 10px;" + // Border radius
-						"-fx-alignment: center;"; // Text alignment;
-
-		String highLightedStyle = 
-				"-fx-background-color: #98f5e1;" + // Background color
-						"-fx-padding: 10px;" + // Padding
-						"-fx-border-radius: 10px;" + // Border radius
-						"-fx-alignment: center;"; // Text alignment;
-
+	
 		//function to be able to turn the label highlighted when loading them if dog attribute matches.
 
-		label.setStyle(defaultStyle);
+		label.getStyleClass().addAll("attribute-label", "label", "modest");
 
 		for (Attribute attribute : userAttributeList) {
 			if(attribute.getWeight() == weight) {
-				label.setStyle(highLightedStyle);
+				label.setId("highlighted-attribute-label");
 			}
 		}
 
 		label.setOnMouseClicked(event -> {
-			if (label.getStyle().equals(defaultStyle)) {
-				label.setStyle(highLightedStyle);
+			if (label.getId() == null) {
+				label.setId("highlighted-attribute-label");
 				if(!userAttributeList.contains(allAttributes.get(attributeType).get(weight))) {
 					userAttributeList.add(allAttributes.get(attributeType).get(weight));
 				}
 			}else{
 				if(userAttributeList.size() >= 2) {
-					label.setStyle(defaultStyle);
+					label.setId(null);
 					userAttributeList.remove(allAttributes.get(attributeType).get(weight));
 				}
 			}
@@ -467,11 +423,8 @@ public class Components{
 	public static Button calendarButton(String text) {
 
 		Button button = new Button(text);
-		button.setFont(Font.font(font, fontMd));
-
-		button.setStyle(
-				"-fx-background-color: #82daf5; -fx-text-fill: #ffffff; -fx-alignment: center;"
-				);
+		
+		button.getStyleClass().addAll("calendar-button", "medium");
 
 		return button;
 
@@ -481,13 +434,11 @@ public class Components{
 		StackPane cell = new StackPane();
 		Label cellText = new Label();
 		cellText.setText(day);
-		cellText.setFont(Font.font(font, fontSm));
-		cell.setPrefSize(90, 90);
+		cellText.getStyleClass().add("small");
+		cell.setPrefSize(95, 95);
 		StackPane.setAlignment(cellText, Pos.TOP_RIGHT);
 
-		String def = "-fx-background-color: #d1d1d1; -fx-text-fill: #0f0f0f; -fx-alignment: top-right;";
-		String high = "-fx-background-color: #e0e0e0; -fx-text-fill: #0f0f0f; -fx-alignment: top-right;";
-		cell.setStyle(def);
+		cell.getStyleClass().add("calendar-cell");
 
 		cell.getChildren().add(cellText);
 		return cell;

@@ -9,7 +9,10 @@ import backend.user.User;
 import backend.wallet.Wallet;
 import guicontrol.AppData;
 import javafx.application.Application;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -26,16 +29,34 @@ public class PrimaryScene extends Application{
     protected Wallet wallet;
 	protected BookedAppointmentScene bookedAppointmentsScene;
     protected Scene scene;
-    protected VBox root;
+    protected StackPane root;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
         
-
     }
     
-    public void initailizePrimaryScene() {
-        this.root.setStyle("-fx-background-color: linear-gradient(to bottom, #87FF83, #FFFFFF)");
+    public void initailizePrimaryScene(Stage primaryStage) {
+//    	String css = this.getClass().getResource("/style.css").toExternalForm();
+//    	primaryStage.getScene().getStylesheets().add(css);
+    	
+    	root = new StackPane();
+    	root.getStyleClass().add("root-container");
+    	
+    	ScrollPane scrollPane = new ScrollPane(root);
+    	scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+    	scrollPane.setFitToWidth(true);
+    	scrollPane.setFitToHeight(true);
+
+    	
+    	this.scene = new Scene(scrollPane, Components.screenWidth, Components.screenHeight);
+    	
+		root.setAlignment(Pos.CENTER);		
+		primaryStage.setScene(scene);
+		
+		String css = this.getClass().getResource("/style.css").toExternalForm();
+    	primaryStage.getScene().getStylesheets().add(css);
+    	
     	this.appData = AppData.getInstance();
         this.allDogs = appData.getSortedDogProfiles();
         this.posterList = appData.getPosters();

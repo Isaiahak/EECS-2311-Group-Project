@@ -33,12 +33,12 @@ public class SponsoredDogsScene extends PrimaryScene{
 	
 	@Override
 	public void start(Stage stage){
-		root = new VBox();
-		initailizePrimaryScene();
+		VBox mainContainer = new VBox();
+		initailizePrimaryScene(stage);
 		HashMap<Integer, RecurringPayment> recurringPayments = user.getWallet().getRecurringPayments();
-		root.setAlignment(javafx.geometry.Pos.CENTER);
-    	root.setSpacing(20);
-		VBox.setVgrow(root, Priority.ALWAYS);
+		mainContainer.setAlignment(javafx.geometry.Pos.CENTER);
+		mainContainer.setSpacing(20);
+		VBox.setVgrow(mainContainer, Priority.ALWAYS);
     	
     	HBox navTab = Components.navTab(userProfileScene, likedDogsScene, dogProfileScene, sponsoredDogsScene, bookedAppointmentsScene, stage,"sponsoredDogs", appData);
  
@@ -53,7 +53,7 @@ public class SponsoredDogsScene extends PrimaryScene{
     	Label sponsoredDogsLabel = Components.largeLabel("Dogs you've Sponsored", Pos.CENTER);
     	 
     	
-    	root.getChildren().addAll(
+    	mainContainer.getChildren().addAll(
     			navTab,
     			sponsoredDogsLabel,
     			sponsoredDogsDisplay
@@ -61,15 +61,10 @@ public class SponsoredDogsScene extends PrimaryScene{
 	    	
    
     	
-    	StackPane stackPane = new StackPane(root);
-    	stackPane.setAlignment(javafx.geometry.Pos.CENTER);
+   
     	
-    	ScrollPane scrollPane = new ScrollPane(stackPane);
+    	root.getChildren().add(mainContainer);
     	
-    	scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        scrollPane.setFitToWidth(true);
-
-    	scene = new Scene(scrollPane, Components.screenWidth, Components.screenHeight);
 		stage.setScene(scene);
 		stage.setTitle("Pawfect Pairs");
 		stage.show();

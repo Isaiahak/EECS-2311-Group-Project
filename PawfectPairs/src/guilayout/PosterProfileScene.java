@@ -42,7 +42,7 @@ public class PosterProfileScene extends PrimaryScene {
 
 	@Override  
 	public void start(Stage primaryStage) throws Exception {  
-		initailizePrimaryScene();
+		initailizePrimaryScene(primaryStage);
 		appData = AppData.getInstance();
 		PriorityQueue<Dog> posterDogs = appData.getSortedDogProfiles();
 		User user = appData.getUser();
@@ -54,7 +54,7 @@ public class PosterProfileScene extends PrimaryScene {
 
 		navTab.setAlignment(Pos.CENTER);
 
-		VBox root = new VBox();
+		VBox mainContainer = new VBox();
 		Label name = Components.largeLabel(currentPoster.getDisplayName(), Pos.CENTER); 
 		name.setAlignment(Pos.CENTER);
 		VBox PosterInfo = new VBox();
@@ -78,25 +78,15 @@ public class PosterProfileScene extends PrimaryScene {
 			posterProfileDogsDisplay.getChildren().add(Components.posterDogView(d));
 		}
 
-		root.getChildren().addAll(
+		mainContainer.getChildren().addAll(
 				navTab,
 				PosterInfo,
 				posterProfileDogsDisplay
 				);
-		root.setAlignment(Pos.CENTER);
+		mainContainer.setAlignment(Pos.CENTER);
 
-		StackPane base = new StackPane(root);  
-		base.setAlignment(Pos.CENTER);
-
-		ScrollPane scrollPane = new ScrollPane(base);
-		scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-		scrollPane.setFitToWidth(true);
-
-		//POSTER INFO PAGE
-		//add the stuff here
-		//POSTER INFO PAGE
+		root.getChildren().add(mainContainer);
 		
-		Scene scene = new Scene(scrollPane, Components.screenWidth, Components.screenHeight);
 		primaryStage.setScene(scene);
 		primaryStage.show();
 	}

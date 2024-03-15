@@ -1022,9 +1022,9 @@ class DatabaseConnector {
 	public Connection connect() {
 		try {
 			Class.forName("org.postgresql.Driver"); // Replace with your database driver
-			//Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/finaldb", "postgres", "123");
-			//Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/thebestoneyet", "postgres", "doglover123");
-			Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5434/pawsome", "postgres", "321123");
+			//Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/finaldb", "postgres", "123"); // zainab
+			Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/thebestoneyet", "postgres", "doglover123"); // katya
+//			Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5434/pawsome", "postgres", "321123"); // isaiah
 			//System.out.println( "Connected to the PostgreSQL server successfully.");
 			return connection;
 		} catch (ClassNotFoundException | SQLException e) {
