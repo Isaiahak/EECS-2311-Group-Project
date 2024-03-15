@@ -27,12 +27,12 @@ public class LikedDogScene extends PrimaryScene{
 	
 	@Override
 	public void start(Stage stage){
-		root = new VBox();
-		initailizePrimaryScene();
+		VBox mainContainer = new VBox();
+		initailizePrimaryScene(stage);
 		ArrayList<Dog> likedDogs = user.getLikedDogs();
-		root.setAlignment(javafx.geometry.Pos.CENTER);
+		mainContainer.setAlignment(javafx.geometry.Pos.CENTER);
 		VBox.setVgrow(root, Priority.ALWAYS);
-    	root.setSpacing(20);
+		mainContainer.setSpacing(20);
     	
 
     	HBox navTab = Components.navTab(userProfileScene, LikedDogScene.getInstance(), dogProfileScene, sponsoredDogsScene, BookedAppointmentScene.getInstance(),stage,"likedDogs", appData);
@@ -45,22 +45,16 @@ public class LikedDogScene extends PrimaryScene{
     	Label likedDogsLabel = Components.largeLabel("Dogs you've Liked", Pos.CENTER);
     	 
     	
-    	root.getChildren().addAll(
+    	mainContainer.getChildren().addAll(
     			navTab,
     			likedDogsLabel,
     			likedDogsDisplay
     			
     			);
 
-    	StackPane stackPane = new StackPane(root);
-    	stackPane.setAlignment(javafx.geometry.Pos.CENTER);
     	
-    	ScrollPane scrollPane = new ScrollPane(stackPane);
-    	
-    	scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        scrollPane.setFitToWidth(true);
-
-    	scene = new Scene(scrollPane, Components.screenWidth, Components.screenHeight);
+        
+    	root.getChildren().add(mainContainer);
     	
 		stage.setScene(scene);
 		stage.setTitle("Pawfect Pairs");

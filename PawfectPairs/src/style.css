@@ -1,0 +1,210 @@
+.root-container{
+	-fx-background-color: linear-gradient(to bottom, #FFFFFF, #d7d7d7);
+}
+
+.navbar-container{
+  -fx-position: fixed; 
+  -fx-top: 0; 
+}
+
+.nav-button {
+    -fx-background-color: #30DFC4;
+    -fx-text-fill: white;
+    -fx-width: 100%;
+    -fx-padding: 10px;
+}
+/*.nav-button:hover { BROKEN????
+    -fx-background-color: #83ECDC;
+}*/
+
+#highlighted-nav{
+	 -fx-background-color: #ACF2E7;
+}
+
+
+
+.like-button {
+	-fx-background-color: #db2a4d;
+	-fx-cursor: hand; 
+	 -fx-text-fill: white; 
+	 -fx-font-size: 60;
+	 -fx-background-radius: 50%; 
+}
+.like-button:hover {
+	-fx-background-color: linear-gradient(to right, #ff5f6d, #ffc371); /* Final gradient */
+   	-fx-animation: wave 1.5s infinite; /* Animation on hover */
+
+}
+
+@keyframes pulse {
+    0% {
+        -fx-background-color: linear-gradient(to right, #ff5f6d, #ffc371);
+    }
+    100% {
+        -fx-background-color: linear-gradient(to right, #ffc371, #ff5f6d);
+    }
+}
+
+.pass-button {
+	-fx-background-color: #0a0f40;
+	 -fx-text-fill: white; 
+	 -fx-font-size: 60;
+	 -fx-background-radius: 50%; 
+}
+
+.pass-button:hover{
+	-fx-background-color: rgb(15, 23, 96);
+}
+
+.label{
+    -fx-font-family: Verdana;
+    -fx-fill: rgb(0, 1, 45);
+    -fx-text-alignment: justify;
+    -fx-line-spacing: 1.5;
+}
+
+.tiny{
+	-fx-font-size: 15;
+}
+.small{
+	-fx-font-size: 20;
+}
+
+.modest{
+	-fx-font-size: 25;
+}
+
+.medium{
+	-fx-font-size: 30;
+}
+.large{
+	-fx-font-size: 50;
+}
+
+.hyperlink{
+	-fx-font-family: Poppins;
+	-fx-font-size: 30;
+	
+}
+
+
+/*TAGS AND ATTRIBUTES*/
+
+/*USER PROFILE*/
+
+.tag-label{
+-fx-background-color: #e1fcf6;
+-fx-padding: 10px;		
+-fx-background-radius: 10px; 
+-fx-padding: 5px 10px; 
+-fx-alignment: center; 
+}
+
+.tag-label:hover{
+	-fx-background-color: rgb(255, 128, 192);
+}
+
+#highlighted-tag-label{
+-fx-background-color: rgb(128, 255, 128);
+
+}
+
+#highlighted-tag-label:hover{
+-fx-background-color: rgb(128, 128, 192);
+
+}
+
+.attribute-label{
+-fx-background-color: #e1fcf6;
+-fx-padding: 10px;		
+-fx-background-radius: 10px; 
+-fx-padding: 5px 10px; 
+-fx-alignment: center; 
+}
+
+.attribute-label:hover{
+	-fx-background-color: rgb(255, 128, 192);
+}
+
+#highlighted-attribute-label{
+-fx-background-color: rgb(128, 255, 128);
+
+}
+
+#highlighted-attribute-label:hover{
+-fx-background-color: rgb(128, 128, 192);
+
+}
+
+
+/*DOG PROFILE*/
+
+.dog-tag-label{
+	-fx-background-color: #03adfc;
+	-fx-padding: 10px;	
+	-fx-background-radius: 10px; 
+	-fx-padding: 5px 10px; 
+	-fx-alignment: center; 
+}
+
+/*POSTER PROFILE*/
+
+.star{
+	-fx-text-fill: #d9d8d7;
+	-fx-padding: 10px;
+	-fx-font-size: 50px
+}
+
+#star-active{
+	-fx-text-fill:#ffd952;
+}
+
+/*CALENDAR*/
+.calendar-button{
+	-fx-background-color: #82daf5; 
+	-fx-text-fill: #ffffff; 
+	-fx-alignment: center;
+}
+
+.calendar-cell{
+	-fx-background-color: #d1d1d1; 
+	-fx-text-fill: #0f0f0f; 
+	-fx-alignment: top-right;
+}
+
+.calendar-cell:hover{
+	-fx-background-color: rgb(251, 251, 251); 
+	-fx-text-fill: #0f0f0f; 
+	-fx-alignment: top-right;
+}
+
+
+#inactive-calendar-cell{
+	-fx-background-color: #b5b5b5;
+}
+
+#highlighted-calendar-cell{
+	fx-background-color: #ccffd1;
+}
+
+.busy{
+	-fx-font-size: 10;
+	-fx-background-color: rgb(242, 64, 117);
+	-fx-padding: 5px;	
+	-fx-background-radius: 10px; 
+	-fx-padding: 5px 10px; 
+	-fx-alignment: center; 
+}
+
+.your-booking{
+	-fx-font-size: 10;
+	-fx-background-color: rgb(0, 255, 255);
+	-fx-padding: 5px;	
+	-fx-background-radius: 10px; 
+	-fx-padding: 5px 10px; 
+	-fx-alignment: center; 
+	
+}
+
+
+

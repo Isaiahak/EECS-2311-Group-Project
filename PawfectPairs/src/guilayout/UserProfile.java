@@ -41,8 +41,8 @@ public class UserProfile extends PrimaryScene{
 
 	@Override
     public void start(Stage primaryStage) {
-		root = new VBox();
-		initailizePrimaryScene();
+		VBox mainContainer = new VBox();
+		initailizePrimaryScene(primaryStage);
     	HashMap<Integer, Tag> tags = appData.getallTags();
     	HashMap<Integer,ArrayList<Attribute>> allAttributes = appData.getAllAttributes();
     	wallet=user.getWallet();
@@ -54,7 +54,7 @@ public class UserProfile extends PrimaryScene{
 		oldTagPreferences = user.getCopyOfTagPreferences(user.getTagPreferences());
 
 
-    	HBox navTab = Components.navTab(UserProfile.getInstance(), LikedDogScene.getInstance(), dogProfileScene, sponsoredDogsScene, BookedAppointmentScene.getInstance(), primaryStage, "userProfile", appData);
+    	HBox navTab = Components.navTab(userProfileScene, likedDogsScene, dogProfileScene, sponsoredDogsScene, bookedAppointmentsScene, primaryStage, "userProfile", appData);
 
     	VBox preferences = new VBox();
     	preferences.setAlignment(javafx.geometry.Pos.CENTER);
@@ -104,27 +104,25 @@ public class UserProfile extends PrimaryScene{
     	);
 
     	
-    	root.setAlignment(javafx.geometry.Pos.CENTER);
+    	mainContainer.setAlignment(javafx.geometry.Pos.CENTER);
     
-    	root.setSpacing(20);
-    
-    	StackPane stackPane = new StackPane(root);
-    	stackPane.setAlignment(javafx.geometry.Pos.CENTER);
+    	mainContainer.setSpacing(20);
     	
-    	ScrollPane scrollPane = new ScrollPane(stackPane);
-    	scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-	    scrollPane.setFitToWidth(true);
+
+    	
+    	
+//    	ScrollPane scrollPane = new ScrollPane(root);
+//    	scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+//	    scrollPane.setFitToWidth(true);
 
 
-    	VBox container = new VBox();
+//    	VBox container = new VBox();
 		//SPACE BETWEEN ATTRIBUTES AND WALLET
-		container.setSpacing(80);
+//		container.setSpacing(80);
 
-    	ScrollPane scrollPane1 = new ScrollPane(container);
-    	scrollPane1.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-	    scrollPane1.setFitToWidth(true);
-
-		scene = new Scene(scrollPane1, Components.screenWidth, Components.screenHeight);
+    	
+    	
+//		scene = new Scene(scrollPane1, Components.screenWidth, Components.screenHeight);
 
 		Button deposit = Components.button("Deposit funds into your wallet");
 		ScrollBar scrollBar = new ScrollBar();
@@ -163,14 +161,17 @@ public class UserProfile extends PrimaryScene{
 		allWalletUserComponents.setPadding(new javafx.geometry.Insets(20, 10, 20, 10));
 		
 		//END OF WALLET UI STUFF
-		root.getChildren().addAll(
+		mainContainer.getChildren().addAll(
 				navTab,
 				preferences,
 				tagsGrid,
 				attributes,
 				allWalletUserComponents
 		);
-		container.getChildren().addAll(stackPane);
+		
+    	
+		root.getChildren().add(mainContainer);
+//		root.getChildren().addAll(stackPane1);
     	
 		primaryStage.setScene(scene);
 		primaryStage.setTitle("Pawfect Pairs");

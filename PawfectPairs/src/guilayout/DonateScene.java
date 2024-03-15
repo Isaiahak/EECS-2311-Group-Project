@@ -43,11 +43,11 @@ public class DonateScene extends PrimaryScene {
 
 	@Override
 	public void start(Stage stage) {
-		initailizePrimaryScene();
+		VBox mainContainer = new VBox();
+		initailizePrimaryScene(stage);
 		HBox navTab = Components.navTab(userProfileScene, likedDogsScene, dogProfileScene, sponsoredDogsScene, bookedAppointmentsScene, stage,"likeddogs", appData);
-		VBox root = new VBox();
-		root.setSpacing(10);
-		root.setAlignment(Pos.CENTER);
+		mainContainer.setSpacing(10);
+		mainContainer.setAlignment(Pos.CENTER);
 		wallet=user.getWallet();
 		stage.setTitle("Pawfect Pairs");
 		user = appData.getUser();		
@@ -78,7 +78,7 @@ public class DonateScene extends PrimaryScene {
 			}
 		});
 
-		root.getChildren().addAll(
+		mainContainer.getChildren().addAll(
 				navTab,
 				dogLabel,
 				image,
@@ -90,16 +90,8 @@ public class DonateScene extends PrimaryScene {
 				donateButton
 				);
 
-		StackPane stackPane = new StackPane(root);
-		stackPane.setAlignment(javafx.geometry.Pos.CENTER);
-
-		ScrollPane scrollPane = new ScrollPane(stackPane);
-
-		scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-		scrollPane.setFitToWidth(true);
-
-		Scene scene = new Scene(scrollPane, Components.screenWidth, Components.screenHeight);
-
+		root.getChildren().add(mainContainer);
+		
 		stage.setScene(scene);
 		stage.setTitle("Pawfect Pairs");
 		//		stage.setMaximized(true);
