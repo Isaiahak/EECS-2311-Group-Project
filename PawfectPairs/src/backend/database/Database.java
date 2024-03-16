@@ -112,7 +112,6 @@ public class Database {
 			try (ResultSet resultSet = preparedStatement.executeQuery()) {
 				if (resultSet.next()) {
 					int count = resultSet.getInt(1);
-					System.out.println("Date and Poster found successfully!");
 					return count > 0;
 				}
 			}

@@ -1,21 +1,23 @@
+/*ROOT*/
+
 .root-container{
 	-fx-background-color: linear-gradient(to bottom, #FFFFFF, #d7d7d7);
 }
 
+
+/*NAV BAR*//*
 .navbar-container{
-  -fx-position: fixed; 
   -fx-top: 0; 
-}
+
+}*/
 
 .nav-button {
     -fx-background-color: #30DFC4;
     -fx-text-fill: white;
-    -fx-width: 100%;
-    -fx-padding: 10px;
 }
-/*.nav-button:hover { BROKEN????
+.nav-button:hover {
     -fx-background-color: #83ECDC;
-}*/
+}
 
 #highlighted-nav{
 	 -fx-background-color: #ACF2E7;
@@ -23,38 +25,7 @@
 
 
 
-.like-button {
-	-fx-background-color: #db2a4d;
-	-fx-cursor: hand; 
-	 -fx-text-fill: white; 
-	 -fx-font-size: 60;
-	 -fx-background-radius: 50%; 
-}
-.like-button:hover {
-	-fx-background-color: linear-gradient(to right, #ff5f6d, #ffc371); /* Final gradient */
-   	-fx-animation: wave 1.5s infinite; /* Animation on hover */
-
-}
-
-@keyframes pulse {
-    0% {
-        -fx-background-color: linear-gradient(to right, #ff5f6d, #ffc371);
-    }
-    100% {
-        -fx-background-color: linear-gradient(to right, #ffc371, #ff5f6d);
-    }
-}
-
-.pass-button {
-	-fx-background-color: #0a0f40;
-	 -fx-text-fill: white; 
-	 -fx-font-size: 60;
-	 -fx-background-radius: 50%; 
-}
-
-.pass-button:hover{
-	-fx-background-color: rgb(15, 23, 96);
-}
+/*GENERAL*/
 
 .label{
     -fx-font-family: Verdana;
@@ -145,6 +116,30 @@
 	-fx-background-radius: 10px; 
 	-fx-padding: 5px 10px; 
 	-fx-alignment: center; 
+}
+
+.like-button {
+	-fx-background-color: #db2a4d;
+	-fx-cursor: hand; 
+	 -fx-text-fill: white; 
+	 -fx-font-size: 60;
+	 -fx-background-radius: 50%; 
+}
+.like-button:hover {
+	-fx-background-color: linear-gradient(to right, #ff5f6d, #ffc371); /* Final gradient */
+
+}
+
+
+.pass-button {
+	-fx-background-color: #0a0f40;
+	 -fx-text-fill: white; 
+	 -fx-font-size: 60;
+	 -fx-background-radius: 50%; 
+}
+
+.pass-button:hover{
+	-fx-background-color: rgb(15, 23, 96);
 }
 
 /*POSTER PROFILE*/

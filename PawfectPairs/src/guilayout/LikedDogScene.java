@@ -27,15 +27,15 @@ public class LikedDogScene extends PrimaryScene{
 	
 	@Override
 	public void start(Stage stage){
-		VBox mainContainer = new VBox();
+		Components.updateCurrentScene("likedDogs");
+		
+		mainContainer = new VBox();
 		initailizePrimaryScene(stage);
 		ArrayList<Dog> likedDogs = user.getLikedDogs();
 		mainContainer.setAlignment(javafx.geometry.Pos.CENTER);
 		VBox.setVgrow(root, Priority.ALWAYS);
 		mainContainer.setSpacing(20);
     	
-
-    	HBox navTab = Components.navTab(userProfileScene, LikedDogScene.getInstance(), dogProfileScene, sponsoredDogsScene, BookedAppointmentScene.getInstance(),stage,"likedDogs", appData);
 		VBox likedDogsDisplay = new VBox();
 	    	
     	for(Dog d : likedDogs) {
@@ -46,7 +46,6 @@ public class LikedDogScene extends PrimaryScene{
     	 
     	
     	mainContainer.getChildren().addAll(
-    			navTab,
     			likedDogsLabel,
     			likedDogsDisplay
     			
@@ -54,7 +53,7 @@ public class LikedDogScene extends PrimaryScene{
 
     	
         
-    	root.getChildren().add(mainContainer);
+//    	root.getChildren().add(mainContainer);
     	
 		stage.setScene(scene);
 		stage.setTitle("Pawfect Pairs");

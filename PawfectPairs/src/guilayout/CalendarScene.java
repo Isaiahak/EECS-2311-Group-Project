@@ -66,6 +66,8 @@ public class CalendarScene extends PrimaryScene {
 
     @Override
     public void start(Stage stage) {
+    	Components.updateCurrentScene("none");
+    	
     	initailizePrimaryScene(stage);
     	
         stage.setTitle("Calendar");
@@ -76,11 +78,10 @@ public class CalendarScene extends PrimaryScene {
         userAppointments = appData.getAppointmentManager();
         otherUsersAppointments = appData.getOtherUsersAppointments();
 
-        VBox mainContainer = new VBox();
+        mainContainer = new VBox();
         mainContainer.setAlignment(Pos.CENTER);
         mainContainer.setSpacing(10);
         mainContainer.setPadding(new Insets(10));
-        HBox navTab = Components.navTab(userProfileScene, likedDogsScene, dogProfileScene, sponsoredDogsScene, bookedAppointmentsScene, stage, "appointments", appData);
         // Title label to display the current month and year
         Label titleLabel = Components.largeLabel(getFormattedTitle(), Pos.CENTER);
         titleLabel.setDisable(true);
@@ -137,11 +138,11 @@ public class CalendarScene extends PrimaryScene {
         successLabel.setText("Waiting on a date");
         
 
-        mainContainer.getChildren().addAll(navTab, titleLabel, calendarGrid, navigation, meetWithLabel, successLabel, confirmationButton);
+        mainContainer.getChildren().addAll(titleLabel, calendarGrid, navigation, meetWithLabel, successLabel, confirmationButton);
 
         updateCalendar();
 
-        root.getChildren().add(mainContainer);
+//        root.getChildren().add(mainContainer);
         stage.setScene(scene);
         stage.show();
     }

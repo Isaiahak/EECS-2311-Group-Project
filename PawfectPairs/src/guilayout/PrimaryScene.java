@@ -12,6 +12,7 @@ import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -29,7 +30,8 @@ public class PrimaryScene extends Application{
     protected Wallet wallet;
 	protected BookedAppointmentScene bookedAppointmentsScene;
     protected Scene scene;
-    protected StackPane root;
+    protected BorderPane root;
+    protected VBox mainContainer;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -40,18 +42,27 @@ public class PrimaryScene extends Application{
 //    	String css = this.getClass().getResource("/style.css").toExternalForm();
 //    	primaryStage.getScene().getStylesheets().add(css);
     	
-    	root = new StackPane();
+    	root = new BorderPane();
     	root.getStyleClass().add("root-container");
+    	root.setMinHeight(Components.screenHeight);
     	
-    	ScrollPane scrollPane = new ScrollPane(root);
+    	
+    	
+    	    	
+    	ScrollPane scrollPane = new ScrollPane(mainContainer);
     	scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
     	scrollPane.setFitToWidth(true);
     	scrollPane.setFitToHeight(true);
+    	
+    	root.setCenter(scrollPane);
+    	root.setRight(null);
+    	root.setLeft(null);
 
     	
-    	this.scene = new Scene(scrollPane, Components.screenWidth, Components.screenHeight);
+    	this.scene = new Scene(root, Components.screenWidth, Components.screenHeight);
     	
-		root.setAlignment(Pos.CENTER);		
+//		root.setAlignment(Pos.CENTER);	
+    	
 		primaryStage.setScene(scene);
 		
 		String css = this.getClass().getResource("/style.css").toExternalForm();
@@ -67,6 +78,8 @@ public class PrimaryScene extends Application{
         this.user = appData.getUser();
         this.bookedAppointmentsScene = BookedAppointmentScene.getInstance();
     	this.wallet = user.getWallet();
+    	
+    	root.setTop(Components.navTab(userProfileScene, likedDogsScene, dogProfileScene, sponsoredDogsScene, bookedAppointmentsScene, primaryStage, appData));
     	
     }
 

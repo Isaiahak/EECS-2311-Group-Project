@@ -41,7 +41,9 @@ public class UserProfile extends PrimaryScene{
 
 	@Override
     public void start(Stage primaryStage) {
-		VBox mainContainer = new VBox();
+		Components.updateCurrentScene("userProfile");
+		
+		mainContainer = new VBox();
 		initailizePrimaryScene(primaryStage);
     	HashMap<Integer, Tag> tags = appData.getallTags();
     	HashMap<Integer,ArrayList<Attribute>> allAttributes = appData.getAllAttributes();
@@ -52,9 +54,6 @@ public class UserProfile extends PrimaryScene{
 		oldEnergyLevelPreferences = user.getCopyOfEnergyLevelPreferences(user.getEnergyLevelPreferences());
 		oldSizePreferences = user.getCopyOfSizePreferences(user.getSizePreferences());
 		oldTagPreferences = user.getCopyOfTagPreferences(user.getTagPreferences());
-
-
-    	HBox navTab = Components.navTab(userProfileScene, likedDogsScene, dogProfileScene, sponsoredDogsScene, bookedAppointmentsScene, primaryStage, "userProfile", appData);
 
     	VBox preferences = new VBox();
     	preferences.setAlignment(javafx.geometry.Pos.CENTER);
@@ -162,7 +161,6 @@ public class UserProfile extends PrimaryScene{
 		
 		//END OF WALLET UI STUFF
 		mainContainer.getChildren().addAll(
-				navTab,
 				preferences,
 				tagsGrid,
 				attributes,
@@ -170,7 +168,7 @@ public class UserProfile extends PrimaryScene{
 		);
 		
     	
-		root.getChildren().add(mainContainer);
+//		root.getChildren().add(mainContainer);
 //		root.getChildren().addAll(stackPane1);
     	
 		primaryStage.setScene(scene);

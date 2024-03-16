@@ -33,14 +33,15 @@ public class SponsoredDogsScene extends PrimaryScene{
 	
 	@Override
 	public void start(Stage stage){
-		VBox mainContainer = new VBox();
+		Components.updateCurrentScene("sponsoredDogs");
+		
+		mainContainer = new VBox();
 		initailizePrimaryScene(stage);
 		HashMap<Integer, RecurringPayment> recurringPayments = user.getWallet().getRecurringPayments();
 		mainContainer.setAlignment(javafx.geometry.Pos.CENTER);
 		mainContainer.setSpacing(20);
 		VBox.setVgrow(mainContainer, Priority.ALWAYS);
-    	
-    	HBox navTab = Components.navTab(userProfileScene, likedDogsScene, dogProfileScene, sponsoredDogsScene, bookedAppointmentsScene, stage,"sponsoredDogs", appData);
+
  
 		VBox sponsoredDogsDisplay = new VBox();
 	    	
@@ -54,7 +55,6 @@ public class SponsoredDogsScene extends PrimaryScene{
     	 
     	
     	mainContainer.getChildren().addAll(
-    			navTab,
     			sponsoredDogsLabel,
     			sponsoredDogsDisplay
     			);
@@ -63,7 +63,7 @@ public class SponsoredDogsScene extends PrimaryScene{
     	
    
     	
-    	root.getChildren().add(mainContainer);
+//    	root.getChildren().add(mainContainer);
     	
 		stage.setScene(scene);
 		stage.setTitle("Pawfect Pairs");

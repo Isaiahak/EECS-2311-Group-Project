@@ -42,6 +42,7 @@ public class PosterProfileScene extends PrimaryScene {
 
 	@Override  
 	public void start(Stage primaryStage) throws Exception {  
+		Components.updateCurrentScene("posterProfile");
 		initailizePrimaryScene(primaryStage);
 		appData = AppData.getInstance();
 		PriorityQueue<Dog> posterDogs = appData.getSortedDogProfiles();
@@ -50,11 +51,8 @@ public class PosterProfileScene extends PrimaryScene {
 		UserProfile userProfile = UserProfile.getInstance();
 		ArrayList<Dog> posterDogsList =  appData.getDogProfiles().get(currentPoster.getUniqueId());
 
-		HBox navTab = Components.navTab(userProfile, LikedDogScene.getInstance(), dogProfileScene, sponsoredDogsScene, BookedAppointmentScene.getInstance(), primaryStage,"posterProfile",appData);
 
-		navTab.setAlignment(Pos.CENTER);
-
-		VBox mainContainer = new VBox();
+		mainContainer = new VBox();
 		Label name = Components.largeLabel(currentPoster.getDisplayName(), Pos.CENTER); 
 		name.setAlignment(Pos.CENTER);
 		VBox PosterInfo = new VBox();
@@ -79,13 +77,12 @@ public class PosterProfileScene extends PrimaryScene {
 		}
 
 		mainContainer.getChildren().addAll(
-				navTab,
 				PosterInfo,
 				posterProfileDogsDisplay
 				);
 		mainContainer.setAlignment(Pos.CENTER);
 
-		root.getChildren().add(mainContainer);
+//		root.getChildren().add(mainContainer);
 		
 		primaryStage.setScene(scene);
 		primaryStage.show();
