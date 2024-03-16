@@ -112,7 +112,6 @@ public class Database {
 			try (ResultSet resultSet = preparedStatement.executeQuery()) {
 				if (resultSet.next()) {
 					int count = resultSet.getInt(1);
-					System.out.println("Date and Poster found successfully!");
 					return count > 0;
 				}
 			}
@@ -742,10 +741,6 @@ public class Database {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}
-
-		for (Tag t : tags.values()) {
-			System.out.println(t.getTagName() + t.getTagId());
 		}
 
 		return tags;

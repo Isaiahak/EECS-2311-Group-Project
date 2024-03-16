@@ -76,19 +76,17 @@ public class Components{
 //		navTab.setStyle("-fx-background-color: #f5f5f5;");
 //		navTab.setSpacing(20);
 
-		Label settingsButton = Components.mediumLabel("⚙ Settings ⚙", Pos.CENTER);
-		Label dogProfileButton = Components.mediumLabel("🐕 Dog Profiles 🐕", Pos.CENTER);
-		Label likedDogButton = Components.mediumLabel("♥ Liked Dogs  🐶", Pos.CENTER);
-		Label appointmentsButton = Components.mediumLabel("📅 Appointments 📅", Pos.CENTER);
-		Label sponsoredDogButton = Components.mediumLabel("💸 Sponsored Dogs  💸", Pos.CENTER);
+		Label settingsButton = new Label("⚙ Settings ⚙");
+		Label dogProfileButton = new Label("🐕 Dog Profiles 🐕");
+		Label likedDogButton = new Label("♥ Liked Dogs  🐶");
+		Label appointmentsButton = new Label("📅 Appointments 📅");
+		Label sponsoredDogButton = new Label("💸 Sponsored Dogs  💸");
 
-
-		
-		settingsButton.getStyleClass().add("nav-button");
-        dogProfileButton.getStyleClass().add("nav-button");
-        likedDogButton.getStyleClass().add("nav-button");
-        appointmentsButton.getStyleClass().add("nav-button");
-        sponsoredDogButton.getStyleClass().add("nav-button");
+		settingsButton.getStyleClass().addAll("nav-button", "medium");
+        dogProfileButton.getStyleClass().addAll("nav-button", "medium");
+        likedDogButton.getStyleClass().addAll("nav-button", "medium");
+        appointmentsButton.getStyleClass().addAll("nav-button", "medium");
+        sponsoredDogButton.getStyleClass().addAll("nav-button", "medium");
 		
 //		// set hightlight on current page button  
 		switch(currentScene) {
