@@ -46,7 +46,7 @@ public class PrimaryScene extends Application{
     	root.getStyleClass().add("root-container");
     	root.setMinHeight(Components.screenHeight);
     	
-    	
+    	mainContainer = new VBox();
     	
     	    	
     	ScrollPane scrollPane = new ScrollPane(mainContainer);
@@ -55,8 +55,56 @@ public class PrimaryScene extends Application{
     	scrollPane.setFitToHeight(true);
     	
     	root.setCenter(scrollPane);
-    	root.setRight(null);
-    	root.setLeft(null);
+//    	root.setRight(null);
+//    	root.setLeft(null);
+
+    	
+    	this.scene = new Scene(root, Components.screenWidth, Components.screenHeight);
+    	
+//		root.setAlignment(Pos.CENTER);	
+    	
+		primaryStage.setScene(scene);
+		
+		String css = this.getClass().getResource("/style.css").toExternalForm();
+    	primaryStage.getScene().getStylesheets().add(css);
+    	
+    	this.appData = AppData.getInstance();
+        this.allDogs = appData.getSortedDogProfiles();
+        this.posterList = appData.getPosters();
+        this.userProfileScene = UserProfile.getInstance();
+        this.likedDogsScene = LikedDogScene.getInstance();
+        this.dogProfileScene = DogProfileScene.getInstance();
+        this.sponsoredDogsScene = SponsoredDogsScene.getInstance();
+        this.user = appData.getUser();
+        this.bookedAppointmentsScene = BookedAppointmentScene.getInstance();
+    	this.wallet = user.getWallet();
+    	
+    	root.setTop(Components.navTab(userProfileScene, likedDogsScene, dogProfileScene, sponsoredDogsScene, bookedAppointmentsScene, primaryStage, appData));
+    	
+    }
+    
+    public void initailizePrimaryScene(Stage primaryStage, String test) {
+//    	String css = this.getClass().getResource("/style.css").toExternalForm();
+//    	primaryStage.getScene().getStylesheets().add(css);
+    	
+    	System.out.println(test);
+    	
+    	
+    	root = new BorderPane();
+    	root.getStyleClass().add("root-container");
+    	root.setMinHeight(Components.screenHeight);
+    	
+    	
+    	mainContainer = new VBox();
+    	    	
+    	ScrollPane scrollPane = new ScrollPane(mainContainer);
+    	scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+    	scrollPane.setFitToWidth(true);
+    	scrollPane.setFitToHeight(true);
+    	
+    	root.setCenter(scrollPane);
+//    	root.setRight(null);
+//    	root.setLeft(null);
 
     	
     	this.scene = new Scene(root, Components.screenWidth, Components.screenHeight);

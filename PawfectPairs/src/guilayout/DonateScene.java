@@ -44,7 +44,7 @@ public class DonateScene extends PrimaryScene {
 	@Override
 	public void start(Stage stage) {
 		Components.updateCurrentScene("none");
-		 mainContainer = new VBox();
+//		 mainContainer = new VBox();
 		initailizePrimaryScene(stage);
 		mainContainer.setSpacing(10);
 		mainContainer.setAlignment(Pos.CENTER);

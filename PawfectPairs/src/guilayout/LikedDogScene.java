@@ -29,7 +29,7 @@ public class LikedDogScene extends PrimaryScene{
 	public void start(Stage stage){
 		Components.updateCurrentScene("likedDogs");
 		
-		mainContainer = new VBox();
+//		mainContainer = new VBox();
 		initailizePrimaryScene(stage);
 		ArrayList<Dog> likedDogs = user.getLikedDogs();
 		mainContainer.setAlignment(javafx.geometry.Pos.CENTER);

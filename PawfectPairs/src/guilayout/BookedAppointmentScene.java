@@ -38,7 +38,7 @@ public class BookedAppointmentScene extends PrimaryScene {
     @Override
     public void start(Stage stage) {
     	Components.updateCurrentScene("appointments");
-        mainContainer = new VBox();
+//        mainContainer = new VBox();
         initailizePrimaryScene(stage);
     	
         user = AppData.getInstance().getUser();

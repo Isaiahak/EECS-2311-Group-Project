@@ -35,7 +35,7 @@ public class SponsoredDogsScene extends PrimaryScene{
 	public void start(Stage stage){
 		Components.updateCurrentScene("sponsoredDogs");
 		
-		mainContainer = new VBox();
+//		mainContainer = new VBox();
 		initailizePrimaryScene(stage);
 		HashMap<Integer, RecurringPayment> recurringPayments = user.getWallet().getRecurringPayments();
 		mainContainer.setAlignment(javafx.geometry.Pos.CENTER);

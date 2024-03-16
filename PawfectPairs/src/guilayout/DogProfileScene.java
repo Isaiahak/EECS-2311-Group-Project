@@ -42,7 +42,7 @@ public class DogProfileScene extends PrimaryScene{
     @Override
     public void start(Stage primaryStage) {
     	Components.updateCurrentScene("dogProfiles");
-    	mainContainer = new VBox();
+//    	mainContainer = new VBox();
 		initailizePrimaryScene(primaryStage);
 		
 		mainContainer.setSpacing(20);

@@ -43,7 +43,7 @@ public class UserProfile extends PrimaryScene{
     public void start(Stage primaryStage) {
 		Components.updateCurrentScene("userProfile");
 		
-		mainContainer = new VBox();
+//		mainContainer = new VBox();
 		initailizePrimaryScene(primaryStage);
     	HashMap<Integer, Tag> tags = appData.getallTags();
     	HashMap<Integer,ArrayList<Attribute>> allAttributes = appData.getAllAttributes();
