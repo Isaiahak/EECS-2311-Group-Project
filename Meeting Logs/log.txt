@@ -282,3 +282,8 @@ March 15, 2024
 - Ekaterina updated the GUI again
 - Ekateirna added a stylesheet, and added it to every scene (and configured the gradle build file)
 - Ekaterina updated the primary scene and did a little bit of refactoring
+
+March 16, 2024
+- Ekateirna made some major GUI udpates (cenerteralized some of the elemtns in the primary scene, fixed navtab, updated the panes)
+- Ekateirna alos fixedf a visual bug where the wrong dog/poster was being shown
+- Ekaterina added some css styling and refactored a couoke of scenes
