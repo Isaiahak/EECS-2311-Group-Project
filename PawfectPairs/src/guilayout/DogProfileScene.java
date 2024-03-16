@@ -41,9 +41,11 @@ public class DogProfileScene extends PrimaryScene{
 
     @Override
     public void start(Stage primaryStage) {
-		VBox mainContainer = new VBox();
+    	Components.updateCurrentScene("dogProfiles");
+    	mainContainer = new VBox();
 		initailizePrimaryScene(primaryStage);
-		mainContainer.setSpacing(10);
+		
+		mainContainer.setSpacing(20);
 		mainContainer.setAlignment(Pos.CENTER);
 		mainContainer.setPadding(new Insets(0, 5, 5, 5));
 		primaryStage.setTitle("Pawfect Pairs");
@@ -55,17 +57,6 @@ public class DogProfileScene extends PrimaryScene{
 		tagsPane = new StackPane();
 		stage = primaryStage;
 		
-		
-		
-
-//		StackPane stackPane = new StackPane(root);
-//		stackPane.setAlignment(Pos.CENTER);
-//		scene = new Scene(stackPane, Components.screenWidth, Components.screenHeight);
-		
-//		primaryStage.setScene(scene);
-//		
-//		String css = this.getClass().getResource("/style.css").toExternalForm();
-//    	primaryStage.getScene().getStylesheets().add(css);
 
 		Button passButton = Components.button("❌");
 		passButton.getStyleClass().add("pass-button");
@@ -110,8 +101,6 @@ public class DogProfileScene extends PrimaryScene{
 
 		biographyText = Components.smallLabel();
 		biographyText.setPrefWidth(900);
-		
-		HBox navTab = Components.navTab(userProfileScene, likedDogsScene, dogProfileScene, sponsoredDogsScene, bookedAppointmentsScene, primaryStage, "dogProfiles", appData);
 
 		posterLink = Components.hyperlink();
 		posterLink.setOnAction(event -> {
@@ -122,9 +111,9 @@ public class DogProfileScene extends PrimaryScene{
 			}
 		});
 
-		mainContainer.getChildren().addAll(navTab, primaryControlTab, primaryInfoLabel, posterLink, secondaryInfo, biographyText, tagsPane);
+		mainContainer.getChildren().addAll(primaryControlTab, primaryInfoLabel, posterLink, secondaryInfo, biographyText, tagsPane);
 		displayCurrentPetProfile();
-		this.root.getChildren().add(mainContainer); // add root node to main stack pane (with styles)
+//		this.root.getChildren().add(mainContainer); // add root node to main stack pane (with styles)
     	       
 		if (allDogs.size() == 0) {
 			outOfDogs.start(stage);

@@ -5,18 +5,15 @@
 }
 
 
-
-/*NAV BAR*/
+/*NAV BAR*//*
 .navbar-container{
-  -fx-position: fixed; 
   -fx-top: 0; 
-}
+
+}*/
 
 .nav-button {
     -fx-background-color: #30DFC4;
     -fx-text-fill: white;
-    -fx-width: 100%;
-    -fx-padding: 10px;
 }
 .nav-button:hover {
     -fx-background-color: #83ECDC;
@@ -130,18 +127,9 @@
 }
 .like-button:hover {
 	-fx-background-color: linear-gradient(to right, #ff5f6d, #ffc371); /* Final gradient */
-   	-fx-animation: wave 1.5s infinite; /* Animation on hover */
 
 }
 
-@keyframes pulse {
-    0% {
-        -fx-background-color: linear-gradient(to right, #ff5f6d, #ffc371);
-    }
-    100% {
-        -fx-background-color: linear-gradient(to right, #ffc371, #ff5f6d);
-    }
-}
 
 .pass-button {
 	-fx-background-color: #0a0f40;

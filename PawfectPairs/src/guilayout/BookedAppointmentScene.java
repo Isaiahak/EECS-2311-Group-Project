@@ -37,15 +37,14 @@ public class BookedAppointmentScene extends PrimaryScene {
 
     @Override
     public void start(Stage stage) {
-        VBox mainContainer = new VBox();
+    	Components.updateCurrentScene("appointments");
+        mainContainer = new VBox();
         initailizePrimaryScene(stage);
     	
         user = AppData.getInstance().getUser();
         mainContainer.setAlignment(javafx.geometry.Pos.CENTER);
         mainContainer.setSpacing(20);
         VBox.setVgrow(root, Priority.ALWAYS);
-
-        HBox navTab = Components.navTab(userProfileScene, likedDogsScene, dogProfileScene, sponsoredDogsScene, bookedAppointmentsScene, stage, "appointments", appData);
 
         Label appointmentsLabel = Components.largeLabel("Your Booked Appointments", Pos.CENTER);
 
@@ -96,14 +95,13 @@ public class BookedAppointmentScene extends PrimaryScene {
         appointmentsDisplay.setAlignment(javafx.geometry.Pos.CENTER);
 
         mainContainer.getChildren().addAll(
-                navTab,
                 appointmentsLabel,
                 appointmentsDisplay
         );
 
 
 
-        root.getChildren().add(mainContainer);
+//        root.getChildren().add(mainContainer);
 
         stage.setScene(scene);
         stage.setTitle("Pawfect Pairs");

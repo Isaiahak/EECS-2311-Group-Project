@@ -38,6 +38,8 @@ public class Components{
 	/*
 	 * GUI components contained here to streamline GUI process and create more modular, thematic GUI parts
 	 */
+	
+	private static String currentScene = "";
 
 	public static int screenHeight =  (int) Screen.getPrimary().getVisualBounds().getHeight();
 
@@ -66,11 +68,16 @@ public class Components{
 		return button;
 	}
 
+	public static void updateCurrentScene(String newCurrentScene) {
+		currentScene = newCurrentScene;
+		
+	}
 
-	public static HBox navTab(UserProfile userScene,LikedDogScene likedDog, DogProfileScene dogProfile, SponsoredDogsScene sponsoredDogs, BookedAppointmentScene appointmentScene,Stage stage,  String currentScene, AppData appData) {
+	public static HBox navTab(UserProfile userScene,LikedDogScene likedDog, DogProfileScene dogProfile, SponsoredDogsScene sponsoredDogs, BookedAppointmentScene appointmentScene,Stage stage, AppData appData) {
 		//create a navigation tab: settings, schedule, messages, etc
 		// settings hBox
 		HBox navTab = new HBox();
+//		navTab.setStyle("-fx-padding:" + screenWidth/5 + ";");
 		
 		navTab.getStyleClass().add("navbar-container");
 //		navTab.setStyle("-fx-background-color: #f5f5f5;");
@@ -82,11 +89,17 @@ public class Components{
 		Label appointmentsButton = new Label("📅 Appointments 📅");
 		Label sponsoredDogButton = new Label("💸 Sponsored Dogs  💸");
 
+		String paddingStyle = "-fx-padding: 10 " + (screenWidth*0.03) + " 10 " + (screenWidth * 0.03) + ";";
 		settingsButton.getStyleClass().addAll("nav-button", "medium");
+		settingsButton.setStyle(paddingStyle);
         dogProfileButton.getStyleClass().addAll("nav-button", "medium");
+        dogProfileButton.setStyle(paddingStyle);
         likedDogButton.getStyleClass().addAll("nav-button", "medium");
+        likedDogButton.setStyle(paddingStyle);
         appointmentsButton.getStyleClass().addAll("nav-button", "medium");
+        appointmentsButton.setStyle(paddingStyle);
         sponsoredDogButton.getStyleClass().addAll("nav-button", "medium");
+        sponsoredDogButton.setStyle(paddingStyle);
 		
 //		// set hightlight on current page button  
 		switch(currentScene) {
