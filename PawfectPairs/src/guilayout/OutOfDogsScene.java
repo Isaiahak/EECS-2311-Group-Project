@@ -37,7 +37,7 @@ public class OutOfDogsScene extends PrimaryScene{
 	@Override
 	public void start(Stage stage) {
 		Components.updateCurrentScene("dogProfile");
-		mainContainer = new VBox();
+//		mainContainer = new VBox();
 		initailizePrimaryScene(stage);
 		appData = AppData.getInstance();
 		PriorityQueue<Dog> posterDogs = appData.getSortedDogProfiles();

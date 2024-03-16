@@ -43,16 +43,17 @@ public class PosterProfileScene extends PrimaryScene {
 	@Override  
 	public void start(Stage primaryStage) throws Exception {  
 		Components.updateCurrentScene("posterProfile");
-		initailizePrimaryScene(primaryStage);
+		
 		appData = AppData.getInstance();
 		PriorityQueue<Dog> posterDogs = appData.getSortedDogProfiles();
 		User user = appData.getUser();
 		DogProfileScene dogProfileScene = DogProfileScene.getInstance();
 		UserProfile userProfile = UserProfile.getInstance();
 		ArrayList<Dog> posterDogsList =  appData.getDogProfiles().get(currentPoster.getUniqueId());
+		
+		initailizePrimaryScene(primaryStage, currentPoster.getDisplayName());
 
-
-		mainContainer = new VBox();
+//		mainContainer = new VBox();
 		Label name = Components.largeLabel(currentPoster.getDisplayName(), Pos.CENTER); 
 		name.setAlignment(Pos.CENTER);
 		VBox PosterInfo = new VBox();

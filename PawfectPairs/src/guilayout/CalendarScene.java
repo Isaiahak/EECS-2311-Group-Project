@@ -78,7 +78,7 @@ public class CalendarScene extends PrimaryScene {
         userAppointments = appData.getAppointmentManager();
         otherUsersAppointments = appData.getOtherUsersAppointments();
 
-        mainContainer = new VBox();
+//        mainContainer = new VBox();
         mainContainer.setAlignment(Pos.CENTER);
         mainContainer.setSpacing(10);
         mainContainer.setPadding(new Insets(10));
