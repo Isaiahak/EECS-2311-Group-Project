@@ -42,9 +42,9 @@ public class UserProfile extends PrimaryScene{
 	@Override
     public void start(Stage primaryStage) {
 		Components.updateCurrentScene("userProfile");
-		
-//		mainContainer = new VBox();
+
 		initailizePrimaryScene(primaryStage);
+		
     	HashMap<Integer, Tag> tags = appData.getallTags();
     	HashMap<Integer,ArrayList<Attribute>> allAttributes = appData.getAllAttributes();
     	wallet=user.getWallet();
@@ -108,21 +108,6 @@ public class UserProfile extends PrimaryScene{
     	mainContainer.setSpacing(20);
     	
 
-    	
-    	
-//    	ScrollPane scrollPane = new ScrollPane(root);
-//    	scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-//	    scrollPane.setFitToWidth(true);
-
-
-//    	VBox container = new VBox();
-		//SPACE BETWEEN ATTRIBUTES AND WALLET
-//		container.setSpacing(80);
-
-    	
-    	
-//		scene = new Scene(scrollPane1, Components.screenWidth, Components.screenHeight);
-
 		Button deposit = Components.button("Deposit funds into your wallet");
 		ScrollBar scrollBar = new ScrollBar();
         //scrollBar.setStyle("-fx-pref-width: 1;");
@@ -167,11 +152,7 @@ public class UserProfile extends PrimaryScene{
 				allWalletUserComponents
 		);
 		
-    	
-//		root.getChildren().add(mainContainer);
-//		root.getChildren().addAll(stackPane1);
-    	
-		primaryStage.setScene(scene);
+
 		primaryStage.setTitle("Pawfect Pairs");
 		primaryStage.show();
 		

@@ -28,8 +28,6 @@ public class LikedDogScene extends PrimaryScene{
 	@Override
 	public void start(Stage stage){
 		Components.updateCurrentScene("likedDogs");
-		
-//		mainContainer = new VBox();
 		initailizePrimaryScene(stage);
 		ArrayList<Dog> likedDogs = user.getLikedDogs();
 		mainContainer.setAlignment(javafx.geometry.Pos.CENTER);
@@ -42,7 +40,7 @@ public class LikedDogScene extends PrimaryScene{
     		likedDogsDisplay.getChildren().add(Components.likedDogView(d, stage, appData.getPosters()));
     	}
     	likedDogsDisplay.setAlignment(javafx.geometry.Pos.CENTER);
-    	Label likedDogsLabel = Components.largeLabel("Dogs you've Liked", Pos.CENTER);
+    	Label likedDogsLabel = Components.largeLabel("Dogs you've Liked: " + likedDogs.size(), Pos.CENTER);
     	 
     	
     	mainContainer.getChildren().addAll(
@@ -52,10 +50,6 @@ public class LikedDogScene extends PrimaryScene{
     			);
 
     	
-        
-//    	root.getChildren().add(mainContainer);
-    	
-		stage.setScene(scene);
 		stage.setTitle("Pawfect Pairs");
 		stage.show();
 
