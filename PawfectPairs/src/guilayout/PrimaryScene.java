@@ -11,12 +11,14 @@ import guicontrol.AppData;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 public class PrimaryScene extends Application{
@@ -45,7 +47,6 @@ public class PrimaryScene extends Application{
 //    	primaryStage.getScene().getStylesheets().add(css);
     	
     	root = new BorderPane();
-    	
     	root.setMinHeight(Components.screenHeight);
     	
     	//this is where you would attach all the nodes/ scene
@@ -53,11 +54,21 @@ public class PrimaryScene extends Application{
     	mainContainer.setSpacing(30);
     	mainContainer.setAlignment(Pos.CENTER);
     	mainContainer.getStyleClass().add("root-container");
-    	mainContainer.setPadding(new Insets(20, 0, 50, 0)); 
+      
+      double paddingX = Components.screenWidth * 0.1; // 10% of screen width
+      double paddingY = Components.screenHeight * 0.1; // 10% of screen height
+      
+      // Calculate padding based on screen size (e.g., 10% of screen width and height)
+    	mainContainer.setPadding(new Insets(paddingY/20,paddingX, paddingY/2, paddingX));//based on screen size(top, right, bottom, left)
     	VBox.setVgrow(root, Priority.ALWAYS);
-    	    	
+      // Set VBox size to match screen resolution
+       mainContainer.setMaxSize(Components.screenWidth, Components.screenHeight);
+      
+      mainContainer.setMaxHeight(Components.screenHeight);
+
     	ScrollPane scrollPane = new ScrollPane(mainContainer);
     	scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+    	scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED); // Set vertical scrollbar policy to "as needed"
     	scrollPane.setFitToWidth(true);
     	scrollPane.setFitToHeight(true);
     	
@@ -99,13 +110,17 @@ public class PrimaryScene extends Application{
     	
     	root = new BorderPane();
     	root.getStyleClass().add("root-container");
-    	root.setMinHeight(Components.screenHeight);
-    	
+    //	root.setMinHeight(Components.screenHeight);
+    	root.setMaxHeight(Components.screenHeight);    //testing to see if this displays better than min	
     	
     	mainContainer = new VBox();
-    	    	
+        mainContainer.setMaxSize(Components.screenWidth, Components.screenHeight);
+
+		mainContainer.setPadding(new Insets(Components.screenHeight/40, Components.screenWidth/40, Components.screenHeight/30, Components.screenWidth/40));//based on screen size(top, right, bottom, left)
+
     	ScrollPane scrollPane = new ScrollPane(mainContainer);
     	scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+    	scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED); // Set vertical scrollbar policy to "as needed"
     	scrollPane.setFitToWidth(true);
     	scrollPane.setFitToHeight(true);
     	
