@@ -42,19 +42,11 @@ public class OutOfDogsScene extends PrimaryScene{
 		PriorityQueue<Dog> posterDogs = appData.getSortedDogProfiles();
 		User user = appData.getUser();
 
-		mainContainer.setSpacing(15);
-		mainContainer.setAlignment(Pos.TOP_CENTER);
 		Label pageLabel = Components.largeLabel("Out of Dogs!",Pos.TOP_CENTER);
-		stage.setTitle("Pawfect Pairs");	
 
 		mainContainer.getChildren().add(pageLabel);
 
 		stage.show();
 		
-//		stage.setOnCloseRequest(event -> {
-//    	    System.out.println("Window is closing. Perform cleanup if needed.");
-//    	    
-//    	    Database.onApplicationClose(user, posterDogs);
-//    	});
 	}
 }

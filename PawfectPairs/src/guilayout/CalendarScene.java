@@ -78,10 +78,6 @@ public class CalendarScene extends PrimaryScene {
         userAppointments = appData.getAppointmentManager();
         otherUsersAppointments = appData.getOtherUsersAppointments();
 
-//        mainContainer = new VBox();
-        mainContainer.setAlignment(Pos.CENTER);
-        mainContainer.setSpacing(10);
-        mainContainer.setPadding(new Insets(10));
         // Title label to display the current month and year
         Label titleLabel = Components.largeLabel(getFormattedTitle(), Pos.CENTER);
         titleLabel.setDisable(true);
@@ -142,8 +138,6 @@ public class CalendarScene extends PrimaryScene {
 
         updateCalendar();
 
-//        root.getChildren().add(mainContainer);
-        stage.setScene(scene);
         stage.show();
     }
 

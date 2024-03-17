@@ -41,22 +41,16 @@ public class BookedAppointmentScene extends PrimaryScene {
         initailizePrimaryScene(stage);
     	
         user = AppData.getInstance().getUser();
-        mainContainer.setAlignment(javafx.geometry.Pos.CENTER);
-        mainContainer.setSpacing(20);
-        VBox.setVgrow(root, Priority.ALWAYS);
 
         Label appointmentsLabel = Components.largeLabel("Your Booked Appointments", Pos.CENTER);
 
         appointments = appData.getAppointmentManager().getUserAppointments();
-
-        VBox appointmentsDisplay = new VBox();
-
         
+        mainContainer.getChildren().add(
+                appointmentsLabel
+        );
 
-        
-//        if (appointments!= null) {
         	for (Appointment selectedAppointment : appointments) {
-//                ArrayList<Dog> doglist = appData.getDogProfiles().get(selectedAppointment.getPosterID());
         		ArrayList<Dog> doglist = appData.getUser().getLikedDogs();
                 
                 Dog appointmentDog = null;
@@ -66,20 +60,10 @@ public class BookedAppointmentScene extends PrimaryScene {
                        appointmentDog = dog;
                     }
                 }
-        		//Katya and Isaiah, we might need to chenge this to get dog locally
-        		appointmentsDisplay.getChildren().add(Components.appointmentView(appointmentDog, selectedAppointment.getDate(), stage, appData.getPosters()));
+        		mainContainer.getChildren().add(Components.appointmentView(appointmentDog, selectedAppointment.getDate(), stage, appData.getPosters()));
         	}
 
-        
-        appointmentsDisplay.setAlignment(javafx.geometry.Pos.CENTER);
 
-        mainContainer.getChildren().addAll(
-                appointmentsLabel,
-                appointmentsDisplay
-        );
-
-
-        stage.setTitle("Pawfect Pairs");
         stage.show();
 
     }

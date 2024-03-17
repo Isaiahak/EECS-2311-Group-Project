@@ -35,33 +35,22 @@ public class SponsoredDogsScene extends PrimaryScene{
 	public void start(Stage stage){
 		Components.updateCurrentScene("sponsoredDogs");
 		initailizePrimaryScene(stage);
+		
 		HashMap<Integer, RecurringPayment> recurringPayments = user.getWallet().getRecurringPayments();
-		mainContainer.setAlignment(javafx.geometry.Pos.CENTER);
-		mainContainer.setSpacing(20);
-		VBox.setVgrow(mainContainer, Priority.ALWAYS);
-
- 
-		VBox sponsoredDogsDisplay = new VBox();
+		
+		Label sponsoredDogsLabel = Components.largeLabel("Dogs you've Sponsored", Pos.CENTER);
+		mainContainer.getChildren().add(
+    			sponsoredDogsLabel
+    			);
 	    	
     	for(RecurringPayment pay : recurringPayments.values()) {
     		ArrayList<Dog> dogs = appData.getUser().getLikedDogs();
     		Dog d = findDogById(dogs, pay.getDogId());
-    		sponsoredDogsDisplay.getChildren().add(Components.sponsoredDogView(d, stage, appData.getPosters(), appData, sponsoredDogsScene));
+    		mainContainer.getChildren().add(Components.sponsoredDogView(d, stage, appData.getPosters(), appData, sponsoredDogsScene));
     	}
-    	sponsoredDogsDisplay.setAlignment(javafx.geometry.Pos.CENTER);
-    	Label sponsoredDogsLabel = Components.largeLabel("Dogs you've Sponsored", Pos.CENTER);
-    	 
-    	
-    	mainContainer.getChildren().addAll(
-    			sponsoredDogsLabel,
-    			sponsoredDogsDisplay
-    			);
-	    	
-		stage.setTitle("Pawfect Pairs");
+
 		stage.show();
 
-
-		
 	}	
 
 	

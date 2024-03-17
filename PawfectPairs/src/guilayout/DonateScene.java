@@ -44,15 +44,12 @@ public class DonateScene extends PrimaryScene {
 	@Override
 	public void start(Stage stage) {
 		Components.updateCurrentScene("none");
-//		 mainContainer = new VBox();
 		initailizePrimaryScene(stage);
-		mainContainer.setSpacing(10);
-		mainContainer.setAlignment(Pos.CENTER);
+		
 		wallet=user.getWallet();
-		stage.setTitle("Pawfect Pairs");
 		user = appData.getUser();		
 
-		Label dogLabel = Components.largeLabel(currentDog.getName() + " is thankful for you ♥", Pos.CENTER); 
+		Label dogLabel = Components.largeLabel(currentDog.getName() + " appreciates you ♥", Pos.CENTER); 
 		ImageView image = Components.imageView(500,500); 
 		image.setImage(new Image(currentDog.getImagePath()));
 
@@ -73,7 +70,6 @@ public class DonateScene extends PrimaryScene {
 				currentFunds.setText("Your current balance "+String.format("%.2f",  appData.getUser().getWallet().getBalance()));
 
 			} catch (FundsTooLow e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		});
@@ -89,18 +85,8 @@ public class DonateScene extends PrimaryScene {
 				donateButton
 				);
 
-//		root.getChildren().add(mainContainer);
-		
-		stage.setScene(scene);
-		stage.setTitle("Pawfect Pairs");
-		//		stage.setMaximized(true);
 		stage.show();
 
-		//		stage.setOnCloseRequest(event -> {
-		//    	    System.out.println("Window is closing. Perform cleanup if needed.");
-		//
-		//    	    Database.onApplicationClose(user, posterDogs);
-		//    	});
 	}
 
 

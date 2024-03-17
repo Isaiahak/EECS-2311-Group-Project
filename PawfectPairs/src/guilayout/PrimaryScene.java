@@ -9,10 +9,12 @@ import backend.user.User;
 import backend.wallet.Wallet;
 import guicontrol.AppData;
 import javafx.application.Application;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -43,11 +45,16 @@ public class PrimaryScene extends Application{
 //    	primaryStage.getScene().getStylesheets().add(css);
     	
     	root = new BorderPane();
-    	root.getStyleClass().add("root-container");
+    	
     	root.setMinHeight(Components.screenHeight);
     	
+    	//this is where you would attach all the nodes/ scene
     	mainContainer = new VBox();
-    	
+    	mainContainer.setSpacing(30);
+    	mainContainer.setAlignment(Pos.CENTER);
+    	mainContainer.getStyleClass().add("root-container");
+    	mainContainer.setPadding(new Insets(20, 0, 50, 0)); 
+    	VBox.setVgrow(root, Priority.ALWAYS);
     	    	
     	ScrollPane scrollPane = new ScrollPane(mainContainer);
     	scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
@@ -60,9 +67,9 @@ public class PrimaryScene extends Application{
 
     	
     	this.scene = new Scene(root, Components.screenWidth, Components.screenHeight);
+
     	
-//		root.setAlignment(Pos.CENTER);	
-    	
+    	primaryStage.setTitle("Pawfect Pairs");
 		primaryStage.setScene(scene);
 		
 		String css = this.getClass().getResource("/style.css").toExternalForm();

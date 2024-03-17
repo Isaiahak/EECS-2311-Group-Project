@@ -103,10 +103,6 @@ public class UserProfile extends PrimaryScene{
     	);
 
     	
-    	mainContainer.setAlignment(javafx.geometry.Pos.CENTER);
-    
-    	mainContainer.setSpacing(20);
-    	
 
 		Button deposit = Components.button("Deposit funds into your wallet");
 		ScrollBar scrollBar = new ScrollBar();
@@ -151,15 +147,10 @@ public class UserProfile extends PrimaryScene{
 				attributes,
 				allWalletUserComponents
 		);
-		
 
-		primaryStage.setTitle("Pawfect Pairs");
 		primaryStage.show();
 		
-//		primaryStage.setOnCloseRequest(event -> {
-//    	    System.out.println("Window is closing. Perform cleanup if needed.");
-//    	    Database.onApplicationClose(user, posterDogs);
-//    	});
+
 	}
 
 	public ArrayList<Attribute> getOldEnergyLevelPreferences() {
