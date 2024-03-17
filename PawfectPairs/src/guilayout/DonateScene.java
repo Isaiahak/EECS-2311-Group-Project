@@ -8,7 +8,9 @@ import backend.wallet.RecurringPayment;
 import backend.wallet.Wallet.FundsTooLow;
 import guicontrol.AppData;
 import javafx.collections.FXCollections;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
 
@@ -23,6 +25,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 public class DonateScene extends PrimaryScene {
@@ -46,6 +49,7 @@ public class DonateScene extends PrimaryScene {
 		Components.updateCurrentScene("none");
 		initailizePrimaryScene(stage);
 		
+
 		wallet=user.getWallet();
 		user = appData.getUser();		
 

@@ -250,6 +250,9 @@ March 10, 2024
 - Isaiah finished calendar class by adding database calls to it
 - Sidney worked on JUnit test for Calendar (Appointment and AppointmentManager Class)
 - Connor worked on creating the JUnit tests for Wallet
+- Zainab merged all wallet changes and related UI pages/features into main, fixed any merge conflicts and adapted code to recent refactoring 
+- Zainab added all tables and necessary tables for poster info user story and wallet user story to the most up to date database
+- Zainab incorporated the wallet into AppData - made methods to initialize the local wallet objects from the database, modify and set the wallet (save local back to the database)
 
 March 11, 2024
 - Ekaterina made some minor updates to the wallet and calendar classes
@@ -263,8 +266,9 @@ March 11, 2024
 - Sidney has worked on JUnit Tests and Integration Testing
 - SIdney was troublshooting JUnit test for Integration
 - Edson has worked on fixing JUnit Tests with Sidney
-- Zainab worked on testing for Wallet and added alerts, and fixed boundaries
-- Zainab fixed canecelling recurring payments for wallet
+- Zainab worked on testing for Wallet (remade tests) and added alerts, and fixed boundaries for input
+- Zainab ensured the wallet balance is consistent throughout the app - fixed bug
+- Zainab fixed canecelling recurring payments for wallet and added constraint so user can't have multiple recurring payments set up for same dog
 - Connor worked on JUnit Tests and Updating UML
 
 March 12, 2024
@@ -278,7 +282,18 @@ March 13, 2024
 - Ekaterina debugged some changes that were pushed to main
 - Ekaterina fixed bugs that we were previously having (wallet not saving correctly, sponsored dogs page not displaying, etc)
 
+March 14, 2024 
+- Zainab added a feature where the user can edit/update their existing sponsorships
+- Zainab set up the cancel button so that it moves around the screen when its clicked for the first time, and cancels upon second click
+
 March 15, 2024
 - Ekaterina updated the GUI again
 - Ekateirna added a stylesheet, and added it to every scene (and configured the gradle build file)
 - Ekaterina updated the primary scene and did a little bit of refactoring
+
+March 16, 2024
+- Ekateirna made some major GUI udpates (cenerteralized some of the elemtns in the primary scene, fixed navtab, updated the panes)
+- Ekateirna alos fixedf a visual bug where the wrong dog/poster was being shown
+- Ekaterina added some css styling and refactored a couoke of scenes
+- Zainab set up adaptive (based on screen size) padding, spacing so that all components are shown on screens properly 
+- Zainab tried three new different ways to create button animations (in branch "weee" currently)
