@@ -53,7 +53,7 @@ public class PosterProfileScene extends PrimaryScene {
 		
 		initailizePrimaryScene(primaryStage, currentPoster.getDisplayName());
 
-//		mainContainer = new VBox();
+
 		Label name = Components.largeLabel(currentPoster.getDisplayName(), Pos.CENTER); 
 		name.setAlignment(Pos.CENTER);
 		VBox PosterInfo = new VBox();
@@ -81,9 +81,7 @@ public class PosterProfileScene extends PrimaryScene {
 				PosterInfo,
 				posterProfileDogsDisplay
 				);
-		mainContainer.setAlignment(Pos.CENTER);
 
-//		root.getChildren().add(mainContainer);
 		
 		primaryStage.setScene(scene);
 		primaryStage.show();

@@ -15,6 +15,7 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Screen;
@@ -46,18 +47,24 @@ public class PrimaryScene extends Application{
 //    	primaryStage.getScene().getStylesheets().add(css);
     	
     	root = new BorderPane();
-    	root.getStyleClass().add("root-container");
-    	//root.setMinHeight(Components.screenHeight);
-    	root.setMaxHeight(Components.screenHeight);
+    	root.setMinHeight(Components.screenHeight);
+    	
+    	//this is where you would attach all the nodes/ scene
     	mainContainer = new VBox();
-
-       // Set VBox size to match screen resolution
+    	mainContainer.setSpacing(30);
+    	mainContainer.setAlignment(Pos.CENTER);
+    	mainContainer.getStyleClass().add("root-container");
+      
+      double paddingX = Components.screenWidth * 0.1; // 10% of screen width
+      double paddingY = Components.screenHeight * 0.1; // 10% of screen height
+      
+      // Calculate padding based on screen size (e.g., 10% of screen width and height)
+    	mainContainer.setPadding(new Insets(paddingY/20,paddingX, paddingY/2, paddingX));//based on screen size(top, right, bottom, left)
+    	VBox.setVgrow(root, Priority.ALWAYS);
+      // Set VBox size to match screen resolution
        mainContainer.setMaxSize(Components.screenWidth, Components.screenHeight);
-       // Calculate padding based on screen size (e.g., 10% of screen width and height)
-       double paddingX = Components.screenWidth * 0.1; // 10% of screen width
-       double paddingY = Components.screenHeight * 0.1; // 10% of screen height
-
-		mainContainer.setPadding(new Insets(paddingY/20,paddingX, paddingY/2, paddingX));//based on screen size(top, right, bottom, left)
+      
+      mainContainer.setMaxHeight(Components.screenHeight);
 
     	ScrollPane scrollPane = new ScrollPane(mainContainer);
     	scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
@@ -71,9 +78,9 @@ public class PrimaryScene extends Application{
 
     	
     	this.scene = new Scene(root, Components.screenWidth, Components.screenHeight);
+
     	
-//		root.setAlignment(Pos.CENTER);	
-    	
+    	primaryStage.setTitle("Pawfect Pairs");
 		primaryStage.setScene(scene);
 		
 		String css = this.getClass().getResource("/style.css").toExternalForm();

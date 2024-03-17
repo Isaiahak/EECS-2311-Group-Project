@@ -178,7 +178,6 @@ public class Components{
 	public static Hyperlink hyperlink() {
 		Hyperlink hyperlink = new Hyperlink();
 
-//		hyperlink.setFont(Font.font(font, fontMd));
 		hyperlink.getStyleClass().add("hyperlink");
 
 		return hyperlink;
