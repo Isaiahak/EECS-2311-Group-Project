@@ -34,8 +34,6 @@ public class SponsoredDogsScene extends PrimaryScene{
 	@Override
 	public void start(Stage stage){
 		Components.updateCurrentScene("sponsoredDogs");
-		
-//		mainContainer = new VBox();
 		initailizePrimaryScene(stage);
 		HashMap<Integer, RecurringPayment> recurringPayments = user.getWallet().getRecurringPayments();
 		mainContainer.setAlignment(javafx.geometry.Pos.CENTER);
@@ -59,16 +57,9 @@ public class SponsoredDogsScene extends PrimaryScene{
     			sponsoredDogsDisplay
     			);
 	    	
-   
-    	
-   
-    	
-//    	root.getChildren().add(mainContainer);
-    	
-		stage.setScene(scene);
 		stage.setTitle("Pawfect Pairs");
 		stage.show();
-	//	VBox info= box.getBox();
+
 
 		
 	}	
