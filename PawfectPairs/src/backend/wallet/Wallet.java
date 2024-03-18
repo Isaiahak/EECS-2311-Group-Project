@@ -34,6 +34,7 @@ public class Wallet {
 	}
 	
 	public void donate (double amount, Poster poster){
+		
 		this.balance = this.balance-amount;
 		poster.depositDonation(amount);
 	}
@@ -41,7 +42,8 @@ public class Wallet {
 	public void makeRecurringPayments(Hashtable<Integer, Poster> posters){
 		for(RecurringPayment recurrPay : this.recurringPayments.values()) {
 			if(recurrPay.isTodayAPaymentDate()) {
-				donate(recurrPay.getPaymentAmount(), posters.get(recurrPay.getPosterId()));
+					donate(recurrPay.getPaymentAmount(), posters.get(recurrPay.getPosterId()));
+
 				recurrPay.setLastPaymentDateToToday(LocalDate.now());
 			}
 		}
@@ -49,6 +51,9 @@ public class Wallet {
 
 	public void deposit (double amount)
 	{
+		if (amount<=0)
+			throw new IllegalArgumentException();
+		else
 		this.balance += amount;
 	}
 
@@ -69,6 +74,8 @@ public class Wallet {
 		}
 
 	}
+	
+	
 
 	public void removeRecurringPayment(int dogid) {
 		//this.recurringPayments.remove(this.recurringPayments.get(dogid));

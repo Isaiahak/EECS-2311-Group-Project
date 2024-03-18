@@ -755,6 +755,30 @@ public class Components{
 		HBox.setSpacing(50);
 		return HBox;
 	}
+	
+	public static boolean checkInput (String inputText) {
+		boolean Numberwithdecimal = false;
+		String whyFalse="";
+		int numofDecimalPoint=0;
+		for (char c : inputText.toCharArray()) {
+			if (Character.isDigit(c)) {
+				Numberwithdecimal= true;
+				whyFalse+="not a digit";
+
+			}
+			else if(c == '.') {
+				Numberwithdecimal=true;
+				numofDecimalPoint++;
+			}
+
+		}
+		if (numofDecimalPoint>1) {
+			Numberwithdecimal=false;
+			whyFalse+="more than one .";
+
+		}
+		return Numberwithdecimal;
+	}
 	 public static void addBouncingButton(Button button, double durationSeconds) {
 
 	        TranslateTransition transition = new TranslateTransition(Duration.seconds(durationSeconds), button);
@@ -888,7 +912,7 @@ public class Components{
 	public static void makePayment(AppData appdata, String duration, TextField howMuchMoney, ComboBox<String> howOftenBox, Dog d) throws FundsTooLow {
 		String inputText = howMuchMoney.getText().trim();
 
-		Boolean valid=DonateScene.checkInput(inputText);
+		Boolean valid=checkInput(inputText);
 		if (!valid)
 		{showAlert("Cannot enter non-numeric values ", "Please enter a number", AlertType.ERROR);
 
