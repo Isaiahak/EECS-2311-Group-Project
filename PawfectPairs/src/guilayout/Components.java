@@ -20,7 +20,9 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
+import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
@@ -28,6 +30,10 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.CubicCurveTo;
+import javafx.scene.shape.MoveTo;
+import javafx.scene.shape.Path;
+import javafx.scene.shape.QuadCurveTo;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.stage.Screen;
@@ -38,7 +44,7 @@ public class Components{
 	/*
 	 * GUI components contained here to streamline GUI process and create more modular, thematic GUI parts
 	 */
-	
+
 	private static String currentScene = "";
 
 	public static int screenHeight =  (int) Screen.getPrimary().getVisualBounds().getHeight();
@@ -58,7 +64,7 @@ public class Components{
 	/*
 	 * Collecting lists of all tags and attributes to create dynamically updating GUI components
 	 */
-	
+
 	public static ArrayList<Attribute> allAttributes = new ArrayList<Attribute>();
 
 	public static Button button(String text) {
@@ -70,18 +76,18 @@ public class Components{
 
 	public static void updateCurrentScene(String newCurrentScene) {
 		currentScene = newCurrentScene;
-		
+
 	}
 
 	public static HBox navTab(UserProfile userScene,LikedDogScene likedDog, DogProfileScene dogProfile, SponsoredDogsScene sponsoredDogs, BookedAppointmentScene appointmentScene,Stage stage, AppData appData) {
 		//create a navigation tab: settings, schedule, messages, etc
 		// settings hBox
 		HBox navTab = new HBox();
-//		navTab.setStyle("-fx-padding:" + screenWidth/5 + ";");
-		
+		//		navTab.setStyle("-fx-padding:" + screenWidth/5 + ";");
+
 		navTab.getStyleClass().add("navbar-container");
-//		navTab.setStyle("-fx-background-color: #f5f5f5;");
-//		navTab.setSpacing(20);
+		//		navTab.setStyle("-fx-background-color: #f5f5f5;");
+		//		navTab.setSpacing(20);
 
 		Label settingsButton = new Label("⚙ Settings ⚙");
 		Label dogProfileButton = new Label("🐕 Dog Profiles 🐕");
@@ -92,16 +98,16 @@ public class Components{
 		String paddingStyle = "-fx-padding: 10 " + (screenWidth*0.03) + " 10 " + (screenWidth * 0.03) + ";";
 		settingsButton.getStyleClass().addAll("nav-button", "medium");
 		settingsButton.setStyle(paddingStyle);
-        dogProfileButton.getStyleClass().addAll("nav-button", "medium");
-        dogProfileButton.setStyle(paddingStyle);
-        likedDogButton.getStyleClass().addAll("nav-button", "medium");
-        likedDogButton.setStyle(paddingStyle);
-        appointmentsButton.getStyleClass().addAll("nav-button", "medium");
-        appointmentsButton.setStyle(paddingStyle);
-        sponsoredDogButton.getStyleClass().addAll("nav-button", "medium");
-        sponsoredDogButton.setStyle(paddingStyle);
-		
-//		// set hightlight on current page button  
+		dogProfileButton.getStyleClass().addAll("nav-button", "medium");
+		dogProfileButton.setStyle(paddingStyle);
+		likedDogButton.getStyleClass().addAll("nav-button", "medium");
+		likedDogButton.setStyle(paddingStyle);
+		appointmentsButton.getStyleClass().addAll("nav-button", "medium");
+		appointmentsButton.setStyle(paddingStyle);
+		sponsoredDogButton.getStyleClass().addAll("nav-button", "medium");
+		sponsoredDogButton.setStyle(paddingStyle);
+
+		//		// set hightlight on current page button  
 		switch(currentScene) {
 		case "userProfile":
 			settingsButton.setId("highlighted-nav");
@@ -178,6 +184,7 @@ public class Components{
 	public static Hyperlink hyperlink() {
 		Hyperlink hyperlink = new Hyperlink();
 
+
 		hyperlink.getStyleClass().add("hyperlink");
 
 		return hyperlink;
@@ -187,7 +194,7 @@ public class Components{
 	public static Label largeLabel(String text, Pos pos) {
 		Label label = new Label(text);
 		label.setAlignment(pos);
-//		label.setFont(Font.font(font, fontLg));
+		//		label.setFont(Font.font(font, fontLg));
 		label.getStyleClass().addAll("label","large");
 
 
@@ -271,7 +278,7 @@ public class Components{
 
 			label.setId("highlighted-tag-label");
 		}
-		
+
 
 		label.setOnMouseClicked(event -> {
 			// Toggle background color on click
@@ -300,9 +307,9 @@ public class Components{
 		int col = 0;
 
 		int maxRows = 5;
-		
+
 		gridPane.setHgap(10); 
-        gridPane.setVgap(10); 
+		gridPane.setVgap(10); 
 
 
 		int i = 0; // current index
@@ -383,7 +390,7 @@ public class Components{
 			//generate a star
 			Label star = new Label("★");
 			star.getStyleClass().add("star");
-					
+
 			if(j < num) {
 				//color it
 				star.setId("star-active");
@@ -402,7 +409,7 @@ public class Components{
 		label.maxWidth(50);
 		ObservableList<Node> labels = gridPane.getChildren();
 
-	
+
 		//function to be able to turn the label highlighted when loading them if dog attribute matches.
 
 		label.getStyleClass().addAll("attribute-label", "label", "modest");
@@ -433,7 +440,7 @@ public class Components{
 	public static Button calendarButton(String text) {
 
 		Button button = new Button(text);
-		
+
 		button.getStyleClass().addAll("calendar-button", "medium");
 
 		return button;
@@ -646,32 +653,45 @@ public class Components{
 		Button editButton = button("Edit Donation :D"); // to be implemented
 		SimpleIntegerProperty numClicks = new SimpleIntegerProperty(0);
 		editButton.setId("edit");
-
 		cancelButton.setOnAction(event -> {
-			numClicks.set(numClicks.get() + 1);
-			cancelButton.setTranslateX(150);
-			cancelButton.setTranslateY(150);
-			PauseTransition pauseTransition = new PauseTransition(Duration.seconds(1));
-	        
-	        // After the pause, move the button back to its original position
-	        pauseTransition.setOnFinished(e -> {
-	            TranslateTransition translateBack = new TranslateTransition(Duration.seconds(1), cancelButton);
-	            translateBack.setToX(0);
-	            translateBack.setToY(0);
-	            translateBack.play();
-	            
-	                });
-	        pauseTransition.play();
+			
+			
+			if (numClicks.get()>=1) {
 
-			if (numClicks.get()>1) {
-				 
 
-			        // Additional actions like removing the recurring payment and showing an alert
-		            appdata.getUser().getWallet().removeRecurringPayment(d.getId());
-		            page.start(stage);
-		            showAlert("You have successfully cancelled your sponsorship", "We're sorry to see you go :(", AlertType.CONFIRMATION);
-		   
+				// Additional actions like removing the recurring payment and showing an alert
+				appdata.getUser().getWallet().removeRecurringPayment(d.getId());
+				page.start(stage);
+				showAlert("You have successfully cancelled your sponsorship", "We're sorry to see you go :(", AlertType.CONFIRMATION);
+
 			}
+			else 
+			{
+				numClicks.set(numClicks.get()+1);
+				//slantMoveAnimation(cancelButton);
+				//bounce(cancelButton);
+				//addBouncingButton(cancelButton, 10);
+				
+				numClicks.set(numClicks.get() + 1);
+				cancelButton.setTranslateX(150);
+				cancelButton.setTranslateY(150);
+				PauseTransition pauseTransition = new PauseTransition(Duration.seconds(1));
+
+		        // After the pause, move the button back to its original position
+		        pauseTransition.setOnFinished(e -> {
+		            TranslateTransition translateBack = new TranslateTransition(Duration.seconds(1), cancelButton);
+		            translateBack.setToX(0);
+		            translateBack.setToY(0);
+		            translateBack.play();
+
+		                });
+		        pauseTransition.play();
+				 
+			}
+
+
+		 
+
 		});
 		VBox info = new VBox(
 				primaryInfoLabel,
@@ -735,7 +755,126 @@ public class Components{
 		HBox.setSpacing(50);
 		return HBox;
 	}
+	
+	public static boolean checkInput (String inputText) {
+		boolean Numberwithdecimal = false;
+		String whyFalse="";
+		int numofDecimalPoint=0;
+		for (char c : inputText.toCharArray()) {
+			if (Character.isDigit(c)) {
+				Numberwithdecimal= true;
+				whyFalse+="not a digit";
 
+			}
+			else if(c == '.') {
+				Numberwithdecimal=true;
+				numofDecimalPoint++;
+			}
+
+		}
+		if (numofDecimalPoint>1) {
+			Numberwithdecimal=false;
+			whyFalse+="more than one .";
+
+		}
+		return Numberwithdecimal;
+	}
+	 public static void addBouncingButton(Button button, double durationSeconds) {
+
+	        TranslateTransition transition = new TranslateTransition(Duration.seconds(durationSeconds), button);
+	        transition.setCycleCount(Animation.INDEFINITE);
+	        transition.setAutoReverse(true);
+	        transition.setInterpolator(Interpolator.EASE_BOTH);
+
+	        // Calculate the bounds of the container
+	        double maxX = Components.screenWidth - button.getWidth();
+	        double maxY = Components.screenHeight - button.getHeight();
+
+	        // Set the bounce boundaries based on the container bounds
+	        transition.setByX(maxX);
+	        transition.setByY(maxY);
+
+	        transition.play();
+	    }
+	public static void bounce (Button button) {
+//		// Create a curved path (arc)
+//		Path path = new Path();
+//		path.getElements().add(new MoveTo(50, 50)); // Starting point
+//		path.getElements().add(new CubicCurveTo(150, 0, 250, 150, 350, 50)); // Cubic curve
+
+		 
+        // Call the method to create the logo shape
+        Path path = createPath();		
+        
+		PathTransition pathTransition = new PathTransition();// Create a PathTransition
+		pathTransition.setDuration(Duration.seconds(8)); // Duration for one bounce cycle
+		pathTransition.setPath(path);
+		pathTransition.setNode(button);
+		// pathTransition.setCycleCount(PathTransition.INDEFINITE); // Indefinite bounce
+		pathTransition.setCycleCount(1);
+
+		// Set the position of the button back to (0, 0) at the end of the animation
+		pathTransition.setOnFinished(event -> {
+			button.setTranslateX(0);
+			button.setTranslateY(0);
+		});
+
+		// Start the animation
+		pathTransition.play();
+	}
+	
+	
+	public static Path createPath() {
+		  double startX = 0;
+	        double startY = 10 * Math.pow(startX, 4) - 5 * Math.pow(startX, 3) - 5 * Math.pow(startX, 2);
+
+	        double controlX1 = 1;
+	        double controlY1 = 10 * Math.pow(controlX1, 4) - 5 * Math.pow(controlX1, 3) - 5 * Math.pow(controlX1, 2);
+
+	        double controlX2 = -1;
+	        double controlY2 = 10 * Math.pow(controlX2, 4) - 5 * Math.pow(controlX2, 3) - 5 * Math.pow(controlX2, 2);
+
+	        double endX = -2;
+	        double endY = 10 * Math.pow(endX, 4) - 5 * Math.pow(endX, 3) - 5 * Math.pow(endX, 2);
+
+	        // Create a Path
+	        Path path = new Path();
+
+	        // Define the quartic curve using CubicCurveTo
+	        path.getElements().add(new MoveTo(startX, startY));
+	        path.getElements().add(new CubicCurveTo(
+	                // Control point 1
+	                controlX1, controlY1,
+	                // Control point 2
+	                controlX2, controlY2,
+	                // Ending point
+	                endX, endY
+	        ));
+		
+		return path;
+	}
+	public static void slantMoveAnimation(Button button) {
+		// Create Timeline for the animation
+		Timeline timeline = new Timeline();
+
+		// Define keyframes for the animation
+		timeline.getKeyFrames().addAll(
+				new KeyFrame(Duration.ZERO, new KeyValue(button.translateYProperty(), 0)),
+				new KeyFrame(Duration.ZERO, new KeyValue(button.translateXProperty(), 0)),
+				new KeyFrame(Duration.seconds(0.5), new KeyValue(button.translateXProperty(), -50)),
+
+				new KeyFrame(Duration.seconds(0.5), new KeyValue(button.translateYProperty(), -50)),
+				new KeyFrame(Duration.seconds(1), new KeyValue(button.translateYProperty(), 0)),
+				new KeyFrame(Duration.seconds(1), new KeyValue(button.translateXProperty(), 0))
+
+				);
+
+		/*  // Set cycle count to indefinite for continuous bouncing
+	        timeline.setCycleCount(Timeline.INDEFINITE);
+		 */
+		timeline.setCycleCount(3);
+
+	}
 	private static void moveButton(Button button) {
 		// Translate the button
 		button.setTranslateX(20);
@@ -769,11 +908,11 @@ public class Components{
 
 		alert.showAndWait();
 	}
-	
+
 	public static void makePayment(AppData appdata, String duration, TextField howMuchMoney, ComboBox<String> howOftenBox, Dog d) throws FundsTooLow {
 		String inputText = howMuchMoney.getText().trim();
 
-		Boolean valid=DonateScene.checkInput(inputText);
+		Boolean valid=checkInput(inputText);
 		if (!valid)
 		{showAlert("Cannot enter non-numeric values ", "Please enter a number", AlertType.ERROR);
 

@@ -94,29 +94,7 @@ public class DonateScene extends PrimaryScene {
 	}
 
 
-	public static boolean checkInput (String inputText) {
-		boolean Numberwithdecimal = false;
-		String whyFalse="";
-		int numofDecimalPoint=0;
-		for (char c : inputText.toCharArray()) {
-			if (Character.isDigit(c)) {
-				Numberwithdecimal= true;
-				whyFalse+="not a digit";
-
-			}
-			else if(c == '.') {
-				Numberwithdecimal=true;
-				numofDecimalPoint++;
-			}
-
-		}
-		if (numofDecimalPoint>1) {
-			Numberwithdecimal=false;
-			whyFalse+="more than one .";
-
-		}
-		return Numberwithdecimal;
-	}
+	
 	
 
 	private void showAlert(String title, String message, Alert.AlertType alertType) {
