@@ -5,6 +5,7 @@ import backend.wallet.Wallet;
 import javafx.geometry.*;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import java.util.ArrayList;
@@ -105,37 +106,54 @@ public class UserProfile extends PrimaryScene{
     	
 
 		Button deposit = Components.button("Deposit funds into your wallet");
+/*	//GETTING RID OF SCROLL BAR	
 		ScrollBar scrollBar = new ScrollBar();
         //scrollBar.setStyle("-fx-pref-width: 1;");
        scrollBar.setStyle("-fx-pref-height: 20;");
-
-        Label valueLabel =Components.mediumLabel();
-        valueLabel.setText("Selected Value: ");
         VBox scrollContainer = new VBox();   
         scrollContainer.setMargin(scrollBar, new Insets(20, 100, 20, 100));  // top, right, bottom, left
         scrollContainer.getChildren().addAll(scrollBar);
         // Set the range of the scroll bar
         scrollBar.setMin(0);
         scrollBar.setMax(SingleMaxWalletDepositLimit);//for now arbitrarily set max single deposit limit to 1000
-        
+*/        
         Label currentFunds =Components.mediumLabel();
         currentFunds.setText("Your current balance: "+ wallet.getBalance());
-        // Add listener to capture value changes
-        scrollBar.valueProperty().addListener((observable, oldValue, newValue) -> {
-            valueLabel.setText("Selected Value: " + String.format("%.2f", newValue));
-            ValueSelectedInScrollBar=Double.parseDouble(String.format("%.2f", newValue));
-        });
+        /*	//GETTING RID OF SCROLL BAR	
+//        // Add listener to capture value changes
+//        scrollBar.valueProperty().addListener((observable, oldValue, newValue) -> {
+//            valueLabel.setText("Selected Value: " + String.format("%.2f", newValue));
+//            ValueSelectedInScrollBar=Double.parseDouble(String.format("%.2f", newValue));
+//        });
+*/
+		TextField amount = new TextField();
 
         deposit.setOnAction(event -> {
-        				wallet.deposit(ValueSelectedInScrollBar);
+        	boolean isValid=Components.checkInput(amount.getText());
+        	if (!isValid)
+    		{Components.showAlert("Cannot enter non-numeric values ", "Please enter a number", AlertType.ERROR);
+amount.clear();
+    		amount.setText("");}
 
-        				currentFunds.setText("Your current balance "+ wallet.getBalance());
+    		else 
+    		{
+    			try {
+    				wallet.deposit(Double.parseDouble(amount.getText()));
+    				currentFunds.setText("Your current balance "+ wallet.getBalance());
 
+				} catch (IllegalArgumentException e) {
+					// TODO: handle exception
+					Components.showAlert("Cannot enter a negative number", "Please enter a non-negative number", AlertType.ERROR);
+	    			amount.clear();
+				}
+    			
+
+    		}
 
         	});
 		VBox allWalletUserComponents = new VBox();
 		allWalletUserComponents.setSpacing(30);
-		allWalletUserComponents.getChildren().addAll(deposit, scrollContainer, valueLabel, currentFunds);
+		allWalletUserComponents.getChildren().addAll( amount, currentFunds, deposit);
 		allWalletUserComponents.setAlignment(Pos.TOP_CENTER);
 		 // Set padding for the VBox (top, right, bottom, left)
 		allWalletUserComponents.setPadding(new javafx.geometry.Insets(20, 10, 20, 10));

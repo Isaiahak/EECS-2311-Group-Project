@@ -297,3 +297,6 @@ March 16, 2024
 - Ekaterina added some css styling and refactored a couoke of scenes
 - Zainab set up adaptive (based on screen size) padding, spacing so that all components are shown on screens properly 
 - Zainab tried three new different ways to create button animations (in branch "weee" currently)
+
+March 18,2024
+- Zainab moved some error handling for deposit to the backend, and changed UI for the deposit in the userprofile page
