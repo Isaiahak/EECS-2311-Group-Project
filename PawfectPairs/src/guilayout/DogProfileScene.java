@@ -45,9 +45,7 @@ public class DogProfileScene extends PrimaryScene{
 //    	mainContainer = new VBox();
 		initailizePrimaryScene(primaryStage);
 		
-		mainContainer.setSpacing(20);
-		mainContainer.setAlignment(Pos.CENTER);
-		mainContainer.setPadding(new Insets(0, 5, 5, 5));
+
 		primaryStage.setTitle("Pawfect Pairs");
 		PosterProfileScene posterProfile = PosterProfileScene.getInstance();
 		outOfDogs = OutOfDogsScene.getInstance();
