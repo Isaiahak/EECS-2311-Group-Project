@@ -102,12 +102,6 @@ public class PrimaryScene extends Application{
     }
     
     public void initailizePrimaryScene(Stage primaryStage, String test) {
-//    	String css = this.getClass().getResource("/style.css").toExternalForm();
-//    	primaryStage.getScene().getStylesheets().add(css);
-    	
-    	System.out.println(test);
-    	
-    	
     	root = new BorderPane();
     	root.getStyleClass().add("root-container");
     //	root.setMinHeight(Components.screenHeight);
@@ -116,8 +110,8 @@ public class PrimaryScene extends Application{
     	mainContainer = new VBox();
         mainContainer.setMaxSize(Components.screenWidth, Components.screenHeight);
 
-		mainContainer.setPadding(new Insets(Components.screenHeight/40, Components.screenWidth/40, Components.screenHeight/30, Components.screenWidth/40));//based on screen size(top, right, bottom, left)
-
+		mainContainer.setPadding(new Insets(Components.screenHeight/10, Components.screenWidth/40, Components.screenHeight/30, Components.screenWidth/40));//based on screen size(top, right, bottom, left)
+		
     	ScrollPane scrollPane = new ScrollPane(mainContainer);
     	scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
     	scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED); // Set vertical scrollbar policy to "as needed"
