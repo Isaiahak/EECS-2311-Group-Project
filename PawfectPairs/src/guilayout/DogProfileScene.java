@@ -9,6 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.*;
 import javafx.scene.layout.*;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 public class DogProfileScene extends PrimaryScene{
@@ -16,6 +17,8 @@ public class DogProfileScene extends PrimaryScene{
 	private static DogProfileScene instance;
 	private ImageView petImageView;
 	private Label sizeLabel;
+	private HBox sizeIcon;
+	private HBox energyIcon;
 	private Label energyLabel;
 	private Label primaryInfoLabel;
 	private Label biographyText;
@@ -42,15 +45,18 @@ public class DogProfileScene extends PrimaryScene{
     @Override
     public void start(Stage primaryStage) {
     	Components.updateCurrentScene("dogProfiles");
-//    	mainContainer = new VBox();
 		initailizePrimaryScene(primaryStage);
 		
-
-		primaryStage.setTitle("Pawfect Pairs");
 		PosterProfileScene posterProfile = PosterProfileScene.getInstance();
 		outOfDogs = OutOfDogsScene.getInstance();
 		HBox primaryControlTab = new HBox();
 		petImageView = Components.imageView(500, 500);
+		
+		Rectangle clip = new Rectangle(500, 500);
+		clip.setArcWidth(20); 
+        clip.setArcHeight(20);
+        petImageView.setClip(clip);
+        
 
 		tagsPane = new StackPane();
 		stage = primaryStage;
@@ -84,21 +90,28 @@ public class DogProfileScene extends PrimaryScene{
 		});
 
 		primaryControlTab.getChildren().addAll(likeButton, petImageView, passButton);
+		primaryControlTab.getStyleClass().add("dog-picture-container");
+		primaryControlTab.setPadding(new Insets(10));
 		primaryControlTab.setSpacing(20);
+		primaryControlTab.setPrefWidth(Components.screenWidth * 0.35);
 		primaryControlTab.setAlignment(Pos.CENTER);
+
 		
 		primaryInfoLabel = Components.largeLabel(); // Name, Age, Sex
+		sizeIcon =  new HBox();
+		energyIcon = new HBox();
 		sizeLabel = Components.mediumLabel();
 		energyLabel = Components.mediumLabel();
 		
 		HBox secondaryInfo = new HBox();
 		secondaryInfo.setAlignment(Pos.CENTER);
-		secondaryInfo.setSpacing(10);
-		secondaryInfo.getChildren().addAll(sizeLabel, energyLabel);
+		secondaryInfo.setSpacing(60);
+		secondaryInfo.getChildren().addAll(sizeLabel, sizeIcon, energyLabel, energyIcon);
 
 
 		biographyText = Components.smallLabel();
-		biographyText.setPrefWidth(900);
+		biographyText.setPrefWidth(Components.screenWidth * 0.6);
+		biographyText.setWrapText(true);
 
 		posterLink = Components.hyperlink();
 		posterLink.setOnAction(event -> {
@@ -111,8 +124,9 @@ public class DogProfileScene extends PrimaryScene{
 
 		mainContainer.getChildren().addAll(primaryControlTab, primaryInfoLabel, posterLink, secondaryInfo, biographyText, tagsPane);
 		displayCurrentPetProfile();
-//		this.root.getChildren().add(mainContainer); // add root node to main stack pane (with styles)
     	       
+		mainContainer.setSpacing(5);
+		
 		if (allDogs.size() == 0) {
 			outOfDogs.start(stage);
 		} else {
@@ -136,7 +150,12 @@ public class DogProfileScene extends PrimaryScene{
 			petImageView.setImage(new Image(currentProfile.getImagePath()));
 			primaryInfoLabel.setText(currentProfile.getName() + ", " + currentProfile.getAge() + " years, " + currentProfile.getSex());
 			sizeLabel.setText("Size: " + currentProfile.getSize());
+
+			Components.dogAttributeDisplay(sizeIcon, "🐕", currentProfile.getSize().getWeight());
+			
 			energyLabel.setText("Energy Level: " + currentProfile.getEnergyLevel());
+			Components.dogAttributeDisplay(energyIcon, "⚡", currentProfile.getEnergyLevel().getWeight());
+			
 			biographyText.setText(currentProfile.getBiography());
 
 			posterLink.setText(posterList.get(currentProfile.getPosterId()).getDisplayName());

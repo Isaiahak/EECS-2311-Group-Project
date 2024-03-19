@@ -853,6 +853,25 @@ public class Components{
 		
 		return path;
 	}
+	
+	public static void dogAttributeDisplay(HBox parent, String emoji, int weight) {
+		int j = 0;
+		parent.getChildren().clear();
+		for (int i = 0; i < 3; i ++) {
+			//generate a star
+			Label icon = new Label(emoji);
+			icon.getStyleClass().add("dog-attribute-label");
+
+			if(j < weight + 1) {
+				//color it
+				icon.setId("dog-attribute-label-active");
+				j++;
+			}
+			parent.getChildren().add(icon);
+			parent.setAlignment(Pos.CENTER);
+		}
+	}
+	
 	public static void slantMoveAnimation(Button button) {
 		// Create Timeline for the animation
 		Timeline timeline = new Timeline();
