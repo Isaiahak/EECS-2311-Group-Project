@@ -300,3 +300,5 @@ March 16, 2024
 
 March 18,2024
 - Zainab moved some error handling for deposit to the backend, and changed UI for the deposit in the userprofile page
+- Ekaterina updated the GUI for the dogproile page and some other general CSS Styling
+- Ekaterina made a dynamic icon label/scaling for the dog attributes displayed on the profile
