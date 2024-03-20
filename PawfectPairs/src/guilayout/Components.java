@@ -267,7 +267,7 @@ public class Components{
 	public static Label tagLabel(String tag,Tag labelTag, User user) {
 		// tags in the user profile to change preferences
 		Label label = new Label(tag);
-		label.getStyleClass().addAll("tag-label", "label", "modest");
+		label.getStyleClass().addAll("tag-label", "label", "small");
 		label.setWrapText(true);
 		label.maxWidth(50);
 
@@ -306,7 +306,7 @@ public class Components{
 		int row = 0;
 		int col = 0;
 
-		int maxRows = 5;
+		int maxRows = 6;
 
 		gridPane.setHgap(10); 
 		gridPane.setVgap(10); 
@@ -857,7 +857,7 @@ public class Components{
 	public static void dogAttributeDisplay(HBox parent, String emoji, int weight) {
 		int j = 0;
 		parent.getChildren().clear();
-		for (int i = 0; i < 3; i ++) {
+		for (int i = 0; i < 5; i ++) {
 			//generate a star
 			Label icon = new Label(emoji);
 			icon.getStyleClass().add("dog-attribute-label");
