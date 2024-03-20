@@ -161,7 +161,9 @@ Feb 24, 2024
         - modified parameters in the DB to match parameters in the constructors  
   - successfully made a copy of the DB
   - attempted to connect it to eclipse
-- Zainab and Connor finalized the test cases and the integration testing
+- Zainab and Connor finalized the test cases
+- Zainab did the integration testing and fixed gradle test to work with all testing files
+- Zainab ensured all previous test cases were consistent with the new changes done to constructors, classes and behaviours
 - Connor worked on some of the things that needed to be done that were on the list.
   - fixed the dog class so that it can update the image path and the biography
   - fixed some of the test cases to reflect the changes from the dog class
@@ -179,3 +181,127 @@ Feb 25, 2024
 -Isaiah and Ekaterina finalized the integration of the DB with the UI
 - Isaiah created the final database methods
 - Ekaterina debugged Isaiah's database methods 
+
+Feb 27, 2024 
+- Zainab worked on the "BREEDER/SHELTER INFO UI to show contact info" and "SHELTER CONTACT INFO
+Link to email/phone" stories 
+- Zainab began implementing backend of the wallet user stories
+
+Feb 28 2024
+- Ekaterina worked on making large database optimizations (removing redundant methods, refactoring alogritms/db calls)
+- Ekaterina transferred the entire system to initialize local objects from the DB, and update the DB from local obejects on close
+        - Updated methods in Database.java
+        - Changed attribute types to optimise performance
+        - Created optimized alogritms for DB calling (and some for matchmaking class)
+-Ekaterina planned out the matchmaking algortim and developed a method to calculate the score of a dog against user preferences (only tags for now)
+- Ekaterina added more dog photos :)
+
+Mar 1, 2024
+- Edson and Sidney started working on the design for the Calendar class 
+- Due to ongoing updates in the branches, Edson and Sidney have decided to work off a zip file from Deliverable 1
+
+Mar 2, 2024
+- Edson and Sidney worked on implementing the logic for the calendar including DB calls and the logic for the 2-page design
+- Edson and Sidney updated the DB with the new logic
+-  Due to ongoing updates in the branches, Edson and Sidney have decided to work off a zip file from Deliverable 1
+
+Mar 3, 2024
+- Edson and Sidney started working on the UI calendar page 
+-  Due to ongoing updates in the branches, Edson and Sidney have decided to work off a zip file from Deliverable 1
+- Zainab finallized UI for the Breeder/shelter/poster info stories 
+- Zainab worked on the database, adding schemas/tables to create associations posters and their funds as well as users and their funds
+    - created database getters and setters for both user and poster funds 
+    - created mock ui to test wallet methods 
+    - modified wallet methods to work without constant calls to the database
+-Ekaterina made large updates to the database class to further optimise performance
+- Ekatierina integrated the matchmaking class to efficiently sort dogs in an order which best match to the user
+- Ekaterina created several comparaotr methods and sorting algortims, as well as optimisations (for instance, ONYL update/sort when preferences are changed)
+- Ekaterina fixed the dog profile scene (for what feels like the millionth time) and fixed a null reference bug 
+
+Mar 4, 2024
+- Edson and Sidney finalized calendar page allowing users to book appointments with each dog
+- Due to ongoing updates in the branches, Edson and Sidney have decided to work off a zip file from Deliverable 1
+- Zainab finished ui for wallet settings and added to user settings 
+- Zainab began setting up UI for dog sponsoring, (she already set up backend for it)
+
+March 8 2024
+- Ekaterina created a program to generate a database of a set size, and used this database to test the dog sorting and DB call efficiency
+
+March 9, 2024 - 
+- Edson, Sidney and Connor added the second page in the UI called appointments allowing for user to see appointments and cancel and reschedule
+- Due to ongoing updates in the branches, Edson and Sidney have decided to work off a zip file from Deliverable 1
+- Ekaterina worked on implementing attribute functionality (intiially, we had it so that user could only pick one atribute, but we need user to be able to pick more than one to filter dogs by)
+- Ekaterina designed the new data tables for the attributes functionality
+- Ekaterina updated the DataBase.java methods to initialise the user with the new attributes, and update the attributes
+- Ekaterina refactored the entire program to incldue the new attribute changes (we moved attributes from being stored in a 'dummy' dog owned by a user, to just being in a user's preferences list)
+- Ekaterina is almost ifnished with GUI implementations for the attribute functionality, but still needs to do some debugging (and needs to implemetn attributes into sorting alogrithm)
+- Isaiah helped update and fix the attributes
+
+March 10, 2024
+- Ekaterina implemented Wallet class into main
+      - Ekaterina updated wallet class to support mutiple sponsorshipts
+      - Ekaterina restruvtured wallet class and refactored
+      - Ekaterina udpated the DB and GUI for the wallet/donations
+- Ekaterina finished integrating the dog attribute sorting
+- Ekaterina fixed the attributes in the gui and added some constraints
+- Ekaterina debugged Database issues
+- Isaiagh debugged database issues
+- Isaiah implemented Calendar class into main 
+- Isaiah finished calendar class by adding database calls to it
+- Sidney worked on JUnit test for Calendar (Appointment and AppointmentManager Class)
+- Connor worked on creating the JUnit tests for Wallet
+- Zainab merged all wallet changes and related UI pages/features into main, fixed any merge conflicts and adapted code to recent refactoring 
+- Zainab added all tables and necessary tables for poster info user story and wallet user story to the most up to date database
+- Zainab incorporated the wallet into AppData - made methods to initialize the local wallet objects from the database, modify and set the wallet (save local back to the database)
+
+March 11, 2024
+- Ekaterina made some minor updates to the wallet and calendar classes
+- Ekaterina made some renaming changes
+- Ekaterina helped debug database and dog sorting algorithm
+- Ekaterina added constaints to calendar (prevent user from making appointmnet inthe past)
+- Isaiah updated the database methods (do pushes/pulls more frequently to optimize performance)
+- Isaiah debugged database bugs
+- Ekaterina udpated the calendar gui
+- Isaiah debugged the sorting algortim (changed DB calls, so we needed to change some data structures)
+- Sidney has worked on JUnit Tests and Integration Testing
+- Sidney was troublshooting JUnit test for Integration
+- Edson has worked on fixing JUnit Tests with Sidney
+- Zainab worked on testing for Wallet (remade tests) and added alerts, and fixed boundaries for input
+- Zainab ensured the wallet balance is consistent throughout the app - fixed bug
+- Zainab fixed canecelling recurring payments for wallet and added constraint so user can't have multiple recurring payments set up for same dog
+- Connor worked on JUnit Tests and Updating UML
+
+March 12, 2024
+- Ekaterina updated calendar GUI
+- Ekaterina added labels to show the user which dates they had alraedy booked (and busy dates)
+- Ekaterina fixed several bugs in calendar (cancelling, reschduling, etc)
+- Ekaterina added a 'confirm' button, and allowed the user to rescheyle with a responsive GUI on the same page (instead of having to click 'reschedule')
+- Ekaterina added constraints to adding apppointmnets (now, the user can see which other users have bookked appointments with the same dog, and cvant book the same day)
+
+March 13, 2024
+- Ekaterina debugged some changes that were pushed to main
+- Ekaterina fixed bugs that we were previously having (wallet not saving correctly, sponsored dogs page not displaying, etc)
+
+March 14, 2024 
+- Zainab added a feature where the user can edit/update their existing sponsorships
+- Zainab set up the cancel button so that it moves around the screen when its clicked for the first time, and cancels upon second click
+
+March 15, 2024
+- Ekaterina updated the GUI again
+- Ekateirna added a stylesheet, and added it to every scene (and configured the gradle build file)
+- Ekaterina updated the primary scene and did a little bit of refactoring
+
+March 16, 2024
+- Ekateirna made some major GUI udpates (cenerteralized some of the elemtns in the primary scene, fixed navtab, updated the panes)
+- Ekateirna alos fixedf a visual bug where the wrong dog/poster was being shown
+- Ekaterina added some css styling and refactored a couoke of scenes
+- Zainab set up adaptive (based on screen size) padding, spacing so that all components are shown on screens properly 
+- Zainab tried three new different ways to create button animations (in branch "weee" currently)
+
+March 18,2024
+- Zainab moved some error handling for deposit to the backend, and changed UI for the deposit in the userprofile page
+- Ekaterina updated the GUI for the dogproile page and some other general CSS Styling
+- Ekaterina made a dynamic icon label/scaling for the dog attributes displayed on the profile
+
+March 19, 2024
+- Yuqian finished unit testing for all five classes in dog trait

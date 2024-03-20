@@ -1,0 +1,246 @@
+/*COLOR PALETTE*/
+/* lightest
+EDF2FB
+E2EAFC
+D7E3FC
+CCDBFD
+C1D3FE
+B6CCFE
+ABC4FF
+darkest */
+
+
+
+/*ROOT*/
+
+.root-container{
+	/*-fx-background-color: linear-gradient(to bottom, #FFFFFF, #d7d7d7);*/
+	-fx-background-color:  rgb(228, 228, 228);
+}
+
+
+/*NAV BAR*//*
+.navbar-container{
+  -fx-top: 0; 
+
+}*/
+
+.nav-button {
+    -fx-background-color: #B6CCFE;
+    -fx-text-fill: white;
+}
+.nav-button:hover {
+    -fx-background-color: #C1D3FE;
+}
+
+#highlighted-nav{
+	 -fx-background-color: #C1D3FE;
+}
+
+
+
+/*GENERAL*/
+
+.image{
+	-fx-background-radius: 10%;
+	 -fx-border-color: linear-gradient(to bottom right, #ff7f50, #87ceeb); /* Gradient border color */
+    -fx-border-width: 3px; /* Border width */
+    -fx-border-radius: 10px; /* Border radius */
+    -fx-border-style: solid; /* Border style */ 
+	
+	
+}
+.label{
+    -fx-font-family: Verdana;
+   
+    -fx-text-alignment: justify;
+    -fx-line-spacing: 1.5;
+}
+
+.tiny{
+	-fx-font-size: 15;
+}
+.small{
+	-fx-font-size: 20;
+}
+
+.modest{
+	-fx-font-size: 25;
+}
+
+.medium{
+	-fx-font-size: 30;
+}
+.large{
+	-fx-font-size: 50;
+}
+
+.hyperlink{
+	-fx-font-family: Poppins;
+	-fx-font-size: 30;
+	
+}
+
+
+/*TAGS AND ATTRIBUTES*/
+
+/*USER PROFILE*/
+
+.tag-label{
+-fx-background-color: #EDF2FB;
+-fx-padding: 15px;		
+-fx-background-radius: 10px; 
+-fx-alignment: center; 
+}
+
+.tag-label:hover{
+	-fx-background-color: #E2EAFC;
+}
+
+#highlighted-tag-label{
+-fx-background-color: #CCDBFD;
+
+}
+
+#highlighted-tag-label:hover{
+-fx-background-color: #D7E3FC;
+
+}
+
+.attribute-label{
+-fx-background-color: #EDF2FB;
+-fx-padding: 10px;		
+-fx-background-radius: 10px; 
+-fx-padding: 5px 10px; 
+-fx-alignment: center; 
+}
+
+.attribute-label:hover{
+	-fx-background-color: #E2EAFC;
+}
+
+#highlighted-attribute-label{
+-fx-background-color: #CCDBFD;
+
+}
+
+#highlighted-attribute-label:hover{
+-fx-background-color: #D7E3FC;
+
+}
+
+
+/*DOG PROFILE*/
+
+.dog-picture-container{
+	-fx-background-color:  rgb(239, 239, 239);
+	-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 30, 0, 0, 0);
+	-fx-background-radius: 10px; 
+	
+	/*-fx-background-color: linear-gradient(to bottom, #FFFFFF, #d7d7d7);*/
+	
+}
+
+.dog-tag-label{
+	-fx-background-color: #ABC4FF;
+	-fx-padding: 10px;	
+	-fx-background-radius: 10px; 
+	-fx-padding: 5px 10px; 
+	-fx-alignment: center; 
+}
+
+.like-button {
+	-fx-background-color: #D60040;
+	-fx-cursor: hand; 
+	 -fx-text-fill: white; 
+	 -fx-font-size: 80;
+	 -fx-background-radius: 50%; 
+}
+.like-button:hover {
+	-fx-background-color: linear-gradient(to right, #D60040, #FFA061); /* Final gradient */
+
+}
+
+
+.pass-button {
+	-fx-background-color: #00257A;
+	 -fx-text-fill: white; 
+	 -fx-font-size: 80;
+	 -fx-background-radius: 50%; 
+}
+
+.pass-button:hover{
+	-fx-background-color: #041D57;
+}
+
+.dog-attribute-label{
+	-fx-text-fill: rgb(199, 198, 197);
+	-fx-padding: 10px;
+	-fx-font-size: 50px
+}
+
+#dog-attribute-label-active{
+	-fx-text-fill:#30DFC4;
+}
+
+/*POSTER PROFILE*/
+
+.star{
+	-fx-text-fill: #d9d8d7;
+	-fx-padding: 10px;
+	-fx-font-size: 50px
+}
+
+#star-active{
+	-fx-text-fill:#ffd952;
+}
+
+/*CALENDAR*/
+.calendar-button{
+	-fx-background-color: #82daf5; 
+	-fx-text-fill: #ffffff; 
+	-fx-alignment: center;
+}
+
+.calendar-cell{
+	-fx-background-color: #d1d1d1; 
+	-fx-text-fill: #0f0f0f; 
+	-fx-alignment: top-right;
+}
+
+.calendar-cell:hover{
+	-fx-background-color: rgb(251, 251, 251); 
+	-fx-text-fill: #0f0f0f; 
+	-fx-alignment: top-right;
+}
+
+
+#inactive-calendar-cell{
+	-fx-background-color: #b5b5b5;
+}
+
+#highlighted-calendar-cell{
+	fx-background-color: #ccffd1;
+}
+
+.busy{
+	-fx-font-size: 10;
+	-fx-background-color: rgb(242, 64, 117);
+	-fx-padding: 5px;	
+	-fx-background-radius: 10px; 
+	-fx-padding: 5px 10px; 
+	-fx-alignment: center; 
+}
+
+.your-booking{
+	-fx-font-size: 10;
+	-fx-background-color: rgb(0, 255, 255);
+	-fx-padding: 5px;	
+	-fx-background-radius: 10px; 
+	-fx-padding: 5px 10px; 
+	-fx-alignment: center; 
+	
+}
+
+
+

@@ -1,56 +1,34 @@
 package backend.user;
 
-import java.util.ArrayList;
+import java.util.*;
 
-import backend.database.Database;
 import backend.dog.Dog;
-import backend.poster.Poster;
-
+import backend.dog.trait.*;
+import backend.tag.Tag;
+import backend.wallet.Wallet;
 
 
 public class User {
 	
-	private Dog preferredDog;
-	
+	private Hashtable<Integer,Tag> tagPreferences = new Hashtable<Integer,Tag>();
+	private ArrayList<Attribute> agePreferences = new ArrayList<Attribute>();
+	private ArrayList<Attribute> sizePreferences  = new ArrayList<Attribute>() ;
+	private ArrayList<Attribute> sexPreferences  = new ArrayList<Attribute>();
+	private ArrayList<Attribute> energyLevelPreferences  = new ArrayList<Attribute>();
 	private String username;
-	
 	private String email;
-	
 	private int userID;
-	
 	private String password;
-	
 	private Wallet wallet;
-	
 	private ArrayList<Dog> likedDogs = new ArrayList<Dog>();
-	
 	private ArrayList<Dog> passedDogs = new ArrayList<Dog>();
 	
-
-	
 	public User(String username, String password) {
-		super();
 		this.username = username;
 		this.password = password;
+
 	}
-	public User(String username, String email, String password) {
-		super();
-		this.username = username;
-		this.password = password;
-		this.email = email;
-	}
-	
-	/*
-	 * For adding and for removing attribute/tag preferences
-	 */
-	public Dog getDog() {
-		return preferredDog;
-	}
-	
-	public void setDog(Dog dog) {
-		this.preferredDog = dog;
-		
-	}
+
 	public int getUserID() {
 		return userID;
 	}
@@ -96,7 +74,6 @@ public class User {
 	}
 
 	public void addLikedDogs(Dog likedDog) {
-		System.out.println(",dog name liek: "+ likedDog.getName()+ ",dog id like: " + likedDog.getId());
 		likedDogs.add(likedDog);
 	}
 	
@@ -105,10 +82,127 @@ public class User {
 	}
 
 	public void addPassedDogs(Dog likedDog) {
-		System.out.println(",dog name pass: "+ likedDog.getName()+ ",dog id  pass: " + likedDog.getId());
 		passedDogs.add(likedDog);
 	}
+
+	public ArrayList<Attribute> getSizePreferences() {
+		return this.sizePreferences;
+	}
+
+	public ArrayList<Attribute> getEnergyLevelPreferences() {
+		return this.energyLevelPreferences;
+	}
+
+	public ArrayList<Attribute> getSexPreferences() {
+		return this.sexPreferences;
+	}
+
+	public ArrayList<Attribute> getAgePreferences() {
+		return this.agePreferences;
+	}
+
+	public void setTagPreferences(Hashtable<Integer,Tag> tagPreferences) {
+		this.tagPreferences = tagPreferences;
+	}
+
+	public void setSizePreferences(ArrayList<Attribute> sizePreferences) {
+		this.sizePreferences=sizePreferences;
+	}
+
+	public void setAgePreferences(ArrayList<Attribute> agePreferences) {
+		this.agePreferences=agePreferences;
+	}
+
+	public void setSexPreferences(ArrayList<Attribute> sexPreferences) {
+		this.sexPreferences=sexPreferences;
+	}
+
+	public void setEnergyLevelPreferences(ArrayList<Attribute> energyLevelPreferences) {
+		this.energyLevelPreferences=energyLevelPreferences;
+	}
+
+	public Hashtable<Integer, Tag> getTagPreferences() {
+		return tagPreferences;
+	}
 	
+	public boolean arePreferencesEqual(Hashtable<Integer, Tag> tags) {
+		
+    	Hashtable<Integer,Tag> currTags = this.getTagPreferences(); 
+    	Hashtable<Integer,Tag> oldTags = tags;
+    	Set<Integer >oldKeys = oldTags.keySet();
+    	Set<Integer >currKeys = currTags.keySet();
+    	
+    	if(currKeys.size() != oldKeys.size()) return false;
+    	
+	    	
+    	for(int key : oldKeys) {
+    		if(!currTags.containsKey(key)) {
+    			return false;
+    		}
+    	}
+    	
+    	for(int key : currKeys) {
+    		if(!oldTags.containsKey(key)) {
+    			return false;
+    		}
+    	}
+		return true;
+    }
+
+	public boolean areAttributesEqual(ArrayList<Attribute> sex, ArrayList<Attribute> age, ArrayList<Attribute> size, ArrayList<Attribute> energyLevel){
+		if(!this.agePreferences.equals(age) || !this.sexPreferences.equals(sex)  // check if attrubutes have changed
+				|| !this.sizePreferences.equals(size)|| !this.energyLevelPreferences.equals(energyLevel)) {
+			return false;
+		}
+		return true;
+	}
+
+	public ArrayList<Attribute> getCopyOfAgePreferences(ArrayList<Attribute> agePreferences){
+		ArrayList<Attribute> preferences = new ArrayList<>();
+		for(Attribute att : agePreferences){
+			preferences.add(new Age(att.getWeight()));
+		}
+		return preferences;
+	}
+
+	public ArrayList<Attribute> getCopyOfSizePreferences(ArrayList<Attribute> SizePreferences){
+		ArrayList<Attribute> preferences = new ArrayList<>();
+		for(Attribute att : SizePreferences){
+			preferences.add(new Age(att.getWeight()));
+		}
+		return preferences;
+	}
+
+	public ArrayList<Attribute> getCopyOfSexPreferences(ArrayList<Attribute> SexPreferences){
+		ArrayList<Attribute> preferences = new ArrayList<>();
+		for(Attribute att : SexPreferences){
+			preferences.add(new Age(att.getWeight()));
+		}
+		return preferences;
+	}
+
+	public ArrayList<Attribute> getCopyOfEnergyLevelPreferences(ArrayList<Attribute> EnergyLevelPreferences){
+		ArrayList<Attribute> preferences = new ArrayList<>();
+		for(Attribute att : EnergyLevelPreferences){
+			preferences.add(new Age(att.getWeight()));
+		}
+		return preferences;
+	}
+
+	public Hashtable<Integer,Tag> getCopyOfTagPreferences(Hashtable<Integer,Tag> TagPreferences){
+		Hashtable<Integer,Tag> preferences = new Hashtable<>();
+		Collection<Tag> tags = TagPreferences.values();
+		for(Tag tag : tags){
+			preferences.put(tag.getWeight(),(new Tag(tag.getTagName(),tag.getWeight())));
+		}
+		return preferences;
+	}
+
+	public ArrayList<Dog> getSponsoredDogs() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	@Override
 	public String toString() {
 		return "User [username=" + username + ", email=" + email + ", password="

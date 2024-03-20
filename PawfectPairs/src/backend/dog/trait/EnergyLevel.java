@@ -2,6 +2,7 @@ package backend.dog.trait;
 
 public class EnergyLevel extends Attribute {
 	private static final String[] names = {"Lazy","Moderate","Energetic"};
+	private static final int type = 2;
     public EnergyLevel(int weight){
     	setName(names[weight]);       	
     	this.weight = weight;
@@ -17,7 +18,11 @@ public class EnergyLevel extends Attribute {
 		// TODO Auto-generated method stub
 		return names;
 	}
-	
+
+	@Override 
+	public int getType() {
+		return type; 
+	}
 }
 
 

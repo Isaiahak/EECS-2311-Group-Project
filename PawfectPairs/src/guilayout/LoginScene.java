@@ -1,5 +1,6 @@
 package guilayout;
 
+import backend.calendar.AppointmentManager;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -20,7 +21,6 @@ public class LoginScene extends Application{
 	private User userInfo = new User("","");
 	private static LoginScene instance;
 	AppData appData;
-	
 	ArrayList<User> userlist = new ArrayList<User>();
 	
 	public static LoginScene getInstance() {
@@ -29,7 +29,6 @@ public class LoginScene extends Application{
 		}
 		return instance;
 	}
-	
 
     public static void main(String[] args) {
         launch(args);
@@ -37,6 +36,8 @@ public class LoginScene extends Application{
 
     @Override
     public void start(Stage primaryStage) {
+    	
+    	
     	DogProfileScene dogProfileScene = DogProfileScene.getInstance();
         primaryStage.setTitle("Login UI");
         int width = 900;
@@ -63,38 +64,47 @@ public class LoginScene extends Application{
         grid.add(signUpButton, 0, 2);
         grid.add(loginButton, 1, 2);
         
+        appData = AppData.getInstance();    
+        appData.initializeAttributes(); 
+                
         signUpButton.setOnAction(e -> {
             String username = userTextField.getText();
             String password = passwordField.getText();
-//            userInfo.setUsername(username);
-//            userInfo.setPassword(password);
-//            userlist.add(userInfo);
-            if (Database.addUser(username, password) == false || password == "" && username == "")
-            	showAlert("Sign up Failed", "Please enter a valid username or password.");
+            boolean result = Database.addUser(username, password, appData.getAllAttributes());
+            if ( password == "" && username == "")
+                showAlert("Sign up failed","Empty username or password not allowed!");
+            else if (Database.usernameChecker(username) != username && result == false)
+                showAlert("Sign up failed","Username in use, try logging in!");
+            else {
+                User user = Database.getUser(username, password);
+                appData.setAppointmentManager(new AppointmentManager(user.getUserID(), new ArrayList<>()));
+            }
             clearFields(userTextField, passwordField);
         });
+
         loginButton.setOnAction(e -> {
             String username = userTextField.getText();
             String password = passwordField.getText();
-
-            
-            if (Database.getUser(username, password) != null /*userlist.contains(userInfo)*/ ||  username != "" && password != "" ) {
-                appData = AppData.getInstance();    
-                appData.onStart(username, password);
+            appData.onStart(username, password);
+            if (username == "" && password == "" ) {
+                showAlert("Login failed","Empty username or password not allowed!");
+            }
+            else if (Database.usernameChecker(username).compareTo(username) != 0){
+                showAlert("Login failed","invalid username");
+            }
+            else if (Database.passwordChecker(username,password).compareTo(username) != 0){
+                showAlert("Login failed", "incorrect password");
+            }
+            else {
                 System.out.println("Logging the user in!");
                 dogProfileScene.start(primaryStage);
-            } else {
-                // Display an alert for unsuccessful login
-                showAlert("Login Failed", "Invalid username or password.");
             }
-
             clearFields(userTextField, passwordField);
         });
 
         Scene scene = new Scene(grid, width, height);
         primaryStage.setScene(scene);
         primaryStage.show();
- 
     }
 
     private void clearFields(TextField usernameField, PasswordField passwordField) {
@@ -109,9 +119,4 @@ public class LoginScene extends Application{
         alert.setContentText(message);
         alert.showAndWait();
     }
-    
-    public User sendUserInfo() {
-    return this.userInfo;
-    }
-
 }
