@@ -34,8 +34,8 @@ class SizeTest {
     // Test getType() method
     @Test
     public void testGetType() {
-        Size size = new Size(2); // Creating a new Size object with weight 2 (Large)
-        assertEquals(3, size.getType()); // Verifying that getType() returns the correct type
+        Size size = new Size(2); // Creating a new Size object with weight 2 (Large) 
+        assertEquals(3, size.getType()); // Verifying that getType() returns the correct type    
     }
 
 }
