@@ -9,7 +9,7 @@
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JavaFX"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/5"/>
-	<classpathentry kind="lib" path="C:/Users/Katya/Documents/University/Second Year/Winter/EECS 2311/EECS-2311-Group-Project/PawfectPairs/src/lib/postgresql-42.7.2.jar">
+	<classpathentry kind="lib" path="C:/Users/Sidney/JDBC/postgresql-42.7.2.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
