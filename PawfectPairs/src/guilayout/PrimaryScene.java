@@ -36,6 +36,7 @@ public class PrimaryScene extends Application{
     protected Scene scene;
     protected BorderPane root;
     protected VBox mainContainer;
+    protected ScrollPane scrollPane;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -66,7 +67,7 @@ public class PrimaryScene extends Application{
       
       mainContainer.setMaxHeight(Components.screenHeight);
 
-    	ScrollPane scrollPane = new ScrollPane(mainContainer);
+    	scrollPane = new ScrollPane(mainContainer);
     	scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
     	scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED); // Set vertical scrollbar policy to "as needed"
     	scrollPane.setFitToWidth(true);
@@ -112,11 +113,13 @@ public class PrimaryScene extends Application{
 
 		mainContainer.setPadding(new Insets(Components.screenHeight/10, Components.screenWidth/40, Components.screenHeight/30, Components.screenWidth/40));//based on screen size(top, right, bottom, left)
 		
-    	ScrollPane scrollPane = new ScrollPane(mainContainer);
+    	scrollPane = new ScrollPane(mainContainer);
     	scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
     	scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED); // Set vertical scrollbar policy to "as needed"
     	scrollPane.setFitToWidth(true);
     	scrollPane.setFitToHeight(true);
+    	
+    
     	
     	root.setCenter(scrollPane);
 //    	root.setRight(null);
