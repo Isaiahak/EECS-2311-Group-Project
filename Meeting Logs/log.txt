@@ -305,3 +305,11 @@ March 18,2024
 
 March 19, 2024
 - Yuqian finished unit testing for all five classes in dog trait
+
+March 20, 2024
+- Ekaterina update the database and added more attributes
+- Ekaterina updated the Attributes class and components class, as well as some styling to make sure tag label text is not cut off
+
+March 21, 2024
+- Yuqian worked on unit testing for RecurringPayment class
+- Yuiqan finished all unit testings for all the classes under calendar, wallet, and dog trait
