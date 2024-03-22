@@ -34,5 +34,20 @@ class EnergyLevelTest {
 	        EnergyLevel energyLevel = new EnergyLevel(2);
 	        assertEquals(2, energyLevel.getType());  // Checks if getType() returns the correct type
 	    }
+	    
+
+	    @Test
+	    public void testGetNameBoundaryValues() {
+	        // Test with weight 0
+	        EnergyLevel energyLevel1 = new EnergyLevel(0);
+	        assertEquals("Lazy", energyLevel1.getName());
+
+	        // Test with weight equal to the length of the names array - 1
+	        EnergyLevel energyLevel2 = new EnergyLevel(2);
+	        assertEquals("Energetic", energyLevel2.getName());
+	    }
+
+
+
 
 }

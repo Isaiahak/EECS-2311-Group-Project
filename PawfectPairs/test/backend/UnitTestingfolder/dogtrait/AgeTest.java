@@ -35,4 +35,26 @@ class AgeTest {
 	        assertEquals(0, age.getType()); // Assuming type 0 for all ages
 	    }
 
+	    @Test
+	    public void testGetNameBoundaryValues() {
+	        // Test with weight 0
+	        Age age1 = new Age(0);
+	        assertEquals("puppy 0 to 1", age1.getName());
+
+	        // Test with weight equal to the length of the names array - 1
+	        Age age2 = new Age(4);
+	        assertEquals("Senior 9 +", age2.getName());
+	    }
+
+	    @Test
+	    public void testGetTypeBoundaryValues() {
+	        // Test with weight 0
+	        Age age1 = new Age(0);
+	        assertEquals(0, age1.getType());
+
+	        // Test with weight equal to the length of the names array - 1
+	        Age age2 = new Age(4);
+	        assertEquals(0, age2.getType());
+	    }
+
 }
