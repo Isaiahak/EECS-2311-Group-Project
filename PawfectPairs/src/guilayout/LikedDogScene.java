@@ -102,9 +102,10 @@ public class LikedDogScene extends PrimaryScene{
 	public void increaseSmallerDogList(ArrayList<Dog> allDogs, ObservableList<Dog> currentList){
 		int additionalDogs =   (allDogs.size() - currentList.size() >  10 && allDogs.size() - currentList.size() > 0 )? 10 : allDogs.size() - currentList.size();
 		int originalSize = currentList.size();
-		for(int i = currentList.size(); i < originalSize + additionalDogs; i++) {
+		for(int i = currentList.size(); i < originalSize + additionalDogs ; i++) {
 			dogsDisplayed = currentList.size();
-			currentList.add(allDogs.get(i-1));
+			currentList.add(allDogs.get(i));
+			System.out.println(currentList.size());
 		}
 	}
 	
