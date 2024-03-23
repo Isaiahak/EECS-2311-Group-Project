@@ -24,7 +24,7 @@ public class MakingAccountTest {
     public void testLoginWithValidCredentials() {
         // Test logging in with valid credentials
         // Ensure that the login process succeeds
-        assertTrue(Database.usernameChecker("testUser") != "testUser");
+        assertTrue(Database.usernameChecker("testUser") == "testUser");
         assertTrue(Database.passwordChecker("testUser", "testPassword") != "testPassword");
     }
 
