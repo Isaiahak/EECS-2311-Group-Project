@@ -19,6 +19,8 @@ import guilayout.UserProfile;
 public class AppData {
 	
 	private User user;//comment
+	
+	private Hashtable<Integer, ArrayList<Dog>> allDogs; 
 
 	private Hashtable<Integer, ArrayList<Dog>> dogProfileHashtable; // posterid, dogs
 	private HashMap<Integer, Tag> allTags;
@@ -78,6 +80,11 @@ public class AppData {
 		this.dogProfileHashtable = Database.getAllDogs(user, this.posterProfiles.keySet());
 	}
 	
+	public void setAllDogs() {
+		
+		this.allDogs = Database.getAllDogsNoPreferences(user, this.posterProfiles.keySet());
+	}
+	
 	public HashMap<Integer,Tag> getallTags(){
 		return this.allTags;
 	}
@@ -130,7 +137,7 @@ public class AppData {
 	public void setPosterDogLists() {
 		// loop through dogProfiles and add to posters
 		for(Poster p : this.posterProfiles.values()) {
-			p.setDogList(this.dogProfileHashtable.get(p.getUniqueId()));
+			p.setDogList(this.allDogs.get(p.getUniqueId()));
 
 		}
 	}
@@ -187,10 +194,12 @@ public class AppData {
 		
 		setPosters();
 		
+		setAllDogs();
+		
 		setDogProfiles(); 
 		
 		setPosterDogLists();
-		
+			
 		initializeDogProfilesSorted();
 
 		setAppointmentManager(new AppointmentManager(user.getUserID(), Database.getUserAppointments(user.getUserID())));
@@ -201,6 +210,9 @@ public class AppData {
 
 	}
 
+	public Hashtable<Integer, ArrayList<Dog>> getAllDogs() {
+		return this.allDogs;
+	}
 
 	public ArrayList<Appointment> getOtherUsersAppointments() {
 		return this.otherUsersAppointments;

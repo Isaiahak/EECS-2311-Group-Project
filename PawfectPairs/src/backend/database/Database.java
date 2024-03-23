@@ -252,6 +252,69 @@ public class Database {
 		}
 		return dogProfiles;
 	}
+	
+	public static Hashtable<Integer, ArrayList<Dog>> getAllDogsNoPreferences(User user, Set<Integer> posterIds) {
+
+
+		Hashtable<Integer, ArrayList<Dog>> dogProfiles = new Hashtable<Integer, ArrayList<Dog>>();
+		for (Integer id : posterIds) {
+			ArrayList<Dog> queue = new ArrayList<Dog>();
+			dogProfiles.put(id, queue);// populate the outer hashtable with poster id's
+		}
+		Connection connection = databaseConnector.connect();
+		try {
+			Statement statement = connection.createStatement();
+			Statement statement2 = connection.createStatement();
+//		         ResultSet resultSet = statement.executeQuery ("SELECT * FROM dog WHERE dog.dogid NOT IN (SELECT userdogs.dogid FROM userdogs WHERE userdogs.userid = "+ user.getUserID() + " ) AND adopted = false;");
+			ResultSet resultSet = statement.executeQuery
+					("SELECT * FROM dog");
+			while (resultSet.next()) {
+				// only add a dog if adoption = false and its id is not negative (if negative, its a dummy dog)
+
+				String dogName = resultSet.getString("dogname");
+				int dogId = resultSet.getInt("dogid");
+				int ageId = resultSet.getInt("ageid");
+				int energyId = resultSet.getInt("energylevelid");
+				int sizeId = resultSet.getInt("sizeid");
+				int sexId = resultSet.getInt("sexid");
+				int posterId = resultSet.getInt("posterid");
+				boolean adoptedBool = resultSet.getBoolean("adopted");
+				String imagePath = resultSet.getString("imagePath");
+				String biography = resultSet.getString("biography");
+				Dog dog = new Dog(
+						dogName,
+						dogId,
+						ageId,
+						energyId,
+						sizeId,
+						sexId,
+						posterId,
+						adoptedBool,
+						imagePath,
+						biography
+				);
+
+
+				dog.setTags(getDogTags(dogId, statement2));
+
+
+				dog.calculateScore(user.getTagPreferences()); // initialise dog score
+//				    System.out.println("key set =" + dogProfiles.keySet().toString());
+
+//			    for(Dog d : queue) {
+//		        	 System.out.println(d.getName() + d.getPosterId());
+//		         }
+				dogProfiles.get(posterId).add(dog);
+			}
+
+			connection.close();
+
+		} catch (SQLException e) {
+			System.out.println("Connection failure.");
+			e.printStackTrace();
+		}
+		return dogProfiles;
+	}
 
 	public static void updateAllAdoptedDogs(ArrayList<Dog> doglist) {
 		for (Dog d : doglist) {

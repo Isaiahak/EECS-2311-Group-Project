@@ -14,6 +14,7 @@ import javafx.stage.Stage;
 
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.PriorityQueue;
 
 import backend.dog.Dog;
@@ -42,6 +43,7 @@ public class LikedDogScene extends PrimaryScene{
 		dogsDisplayed = 0;
 		
 		ArrayList<Dog> likedDogs = user.getLikedDogs();
+		Collections.reverse(likedDogs);
 		initializeSmallerDogList(likedDogs,smallerDogs);
 		
 		Label likedDogsLabel = Components.largeLabel("Dogs you've Liked: " + likedDogs.size(), Pos.CENTER);
