@@ -259,6 +259,12 @@ public class Components{
 		imageView.setFitWidth(w);
 
 		imageView.setPreserveRatio(true);
+		
+		Rectangle clip = new Rectangle(w, l);
+		clip.setArcWidth(w * 0.1); 
+        clip.setArcHeight(l * 0.1);
+        imageView.setClip(clip);
+        
 
 		return imageView;
 
@@ -356,7 +362,7 @@ public class Components{
 		int row = 0;
 		int col = 0;
 
-		int maxRows = 6;
+		int maxRows = 10;
 
 		int i = 0; // current index
 
