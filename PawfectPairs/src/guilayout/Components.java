@@ -523,8 +523,9 @@ public class Components{
 				);
 
 		HBox HBox = new HBox(img, info);
-		HBox.setAlignment(Pos.CENTER);
+		HBox.setAlignment(Pos.CENTER_LEFT);
 		HBox.setSpacing(50);
+		HBox.setLayoutX(0.35);
 
 		return HBox;
 	}
