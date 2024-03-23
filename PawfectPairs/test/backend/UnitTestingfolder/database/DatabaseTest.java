@@ -183,6 +183,14 @@ class DatabaseTest {
 
 	    }
 	    
+	    @Test
+	    public void testLikedDogs() {
+	    	ArrayList<Dog> dogList = Database.getUsersLikedOrPassedDogs(userTest.getUserID(), "userdogs");
+	        //System.out.print(dogList.size());
+	        assertNotNull(dogList);
+
+	    }
+	    
 	    
 	    
 	    
