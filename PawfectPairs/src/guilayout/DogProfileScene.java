@@ -51,12 +51,7 @@ public class DogProfileScene extends PrimaryScene{
 		outOfDogs = OutOfDogsScene.getInstance();
 		HBox primaryControlTab = new HBox();
 		petImageView = Components.imageView(500, 500);
-		
-		Rectangle clip = new Rectangle(500, 500);
-		clip.setArcWidth(20); 
-        clip.setArcHeight(20);
-        petImageView.setClip(clip);
-        
+	
 
 		tagsPane = new StackPane();
 		stage = primaryStage;
@@ -160,10 +155,12 @@ public class DogProfileScene extends PrimaryScene{
 
 			posterLink.setText(posterList.get(currentProfile.getPosterId()).getDisplayName());
 			PosterProfileScene posterProfile = PosterProfileScene.getInstance();
-			posterProfile.setCurrentPoster(posterList.get(currentProfile.getPosterId()));
+			
+			
 
 			posterLink.setOnAction(event -> {
 				try {
+					posterProfile.setCurrentPoster(posterList.get(currentProfile.getPosterId()));
 					posterProfile.start(stage);
 				} catch (Exception e) {
 					e.printStackTrace();

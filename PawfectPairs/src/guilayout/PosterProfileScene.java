@@ -45,11 +45,11 @@ public class PosterProfileScene extends PrimaryScene {
 		Components.updateCurrentScene("posterProfile");
 		
 		appData = AppData.getInstance();
-		PriorityQueue<Dog> posterDogs = appData.getSortedDogProfiles();
 		User user = appData.getUser();
 		DogProfileScene dogProfileScene = DogProfileScene.getInstance();
 		UserProfile userProfile = UserProfile.getInstance();
 		ArrayList<Dog> posterDogsList =  Database.getPosterDogs(currentPoster.getUniqueId());
+
 		
 		initailizePrimaryScene(primaryStage, currentPoster.getDisplayName());
 
