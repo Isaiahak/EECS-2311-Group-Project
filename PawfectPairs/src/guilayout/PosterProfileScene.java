@@ -49,7 +49,7 @@ public class PosterProfileScene extends PrimaryScene {
 		User user = appData.getUser();
 		DogProfileScene dogProfileScene = DogProfileScene.getInstance();
 		UserProfile userProfile = UserProfile.getInstance();
-		ArrayList<Dog> posterDogsList =  appData.getDogProfiles().get(currentPoster.getUniqueId());
+		ArrayList<Dog> posterDogsList =  Database.getPosterDogs(currentPoster.getUniqueId());
 		
 		initailizePrimaryScene(primaryStage, currentPoster.getDisplayName());
 
