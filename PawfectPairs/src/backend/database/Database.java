@@ -28,8 +28,22 @@ import static java.util.List.copyOf;
  */
 public class Database {
 
-	private static DatabaseConnector databaseConnector = new DatabaseConnector();
-
+	
+	public static Connection connect() {
+		try {
+			Class.forName("org.postgresql.Driver"); // Replace with your database driver
+//			Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/pawitr2", "postgres", "1234"); // zainab
+						Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/thebestoneyet", "postgres", "doglover123"); // katya
+//			Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5434/thebestoneyet", "postgres", "321123"); // isaiah
+			//System.out.println( "Connected to the PostgreSQL server successfully.");
+			return connection;
+		} catch (ClassNotFoundException | SQLException e) {
+			System.out.println("Connection failed");
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 	/*
 	 * Appointment Methods
 	 */
@@ -37,7 +51,7 @@ public class Database {
 		Connection connection = null;
 		PreparedStatement statement = null;
 		try {
-			connection = databaseConnector.connect();// Assuming you have a method to get the database connection
+			connection = Database.connect();// Assuming you have a method to get the database connection
 			String query = "DELETE FROM datesbooked WHERE userid = ?";
 			statement = connection.prepareStatement(query);
 			statement.setInt(1, userID);
@@ -51,7 +65,7 @@ public class Database {
 		if (appointmentManager.getUserAppointments().size() > 0) {
 			Connection connection = null;
 			try {
-				connection = databaseConnector.connect();
+				connection = Database.connect();
 				Statement statement = connection.createStatement();
 				StringBuilder query = new StringBuilder("INSERT INTO datesbooked (userid, dogid, posterid, date) VALUES ");
 				ArrayList<Appointment> appList = appointmentManager.getUserAppointments();
@@ -71,7 +85,7 @@ public class Database {
 	}
 
 	public static ArrayList<Appointment> getUserAppointments(int userID) {
-		Connection connection = databaseConnector.connect();
+		Connection connection = Database.connect();
 		ArrayList<Appointment> appointments = new ArrayList<>();
 		try {
 			String query = "SELECT dogid,posterid,date FROM datesbooked WHERE userid = ?";
@@ -105,7 +119,7 @@ public class Database {
 		PreparedStatement preparedStatement = null;
 		String query = "SELECT COUNT(*) FROM datesbooked WHERE \"dogID\" = ? AND \"userID\" = ?";
 		try {
-			connection = databaseConnector.connect();
+			connection = Database.connect();
 			preparedStatement = connection.prepareStatement(query);
 			preparedStatement.setInt(1, dogID);
 			preparedStatement.setInt(2, userID);
@@ -122,7 +136,7 @@ public class Database {
 	}
 
 	public static ArrayList<Appointment> getOtherUserAppointments(int userId) {
-		Connection connection = databaseConnector.connect();
+		Connection connection = Database.connect();
 		ArrayList<Appointment> appointments = new ArrayList<>();
 
 		try {
@@ -156,7 +170,7 @@ public class Database {
 	public static void setDogAdopted(Dog d) {
 		if (d.getAdopted() == true) {
 			try {
-				Connection connection = databaseConnector.connect();
+				Connection connection = Database.connect();
 				Statement statement = connection.createStatement();
 				statement.executeUpdate("UPDATE dog SET adopted = TRUE WHERE dogid = " + d.getId());
 				connection.close();
@@ -192,7 +206,7 @@ public class Database {
 			ArrayList<Dog> queue = new ArrayList<Dog>();
 			dogProfiles.put(id, queue);// populate the outer hashtable with poster id's
 		}
-		Connection connection = databaseConnector.connect();
+		Connection connection = Database.connect();
 		try {
 			Statement statement = connection.createStatement();
 			Statement statement2 = connection.createStatement();
@@ -261,7 +275,7 @@ public class Database {
 			ArrayList<Dog> queue = new ArrayList<Dog>();
 			dogProfiles.put(id, queue);// populate the outer hashtable with poster id's
 		}
-		Connection connection = databaseConnector.connect();
+		Connection connection = Database.connect();
 		try {
 			Statement statement = connection.createStatement();
 			Statement statement2 = connection.createStatement();
@@ -320,7 +334,7 @@ public class Database {
 		for (Dog d : doglist) {
 			if (d.getAdopted() == true) {
 				try {
-					Connection connection = databaseConnector.connect();
+					Connection connection = Database.connect();
 					Statement statement = connection.createStatement();
 					ResultSet resultSet = statement.executeQuery("UPDATE dog SET adopted = TRUE WHERE dogid = " + d.getId());
 					connection.close();
@@ -338,7 +352,7 @@ public class Database {
 	public static ArrayList<Dog> getUsersLikedOrPassedDogs(int userID, String table) {
 		ArrayList<Dog> list = new ArrayList<>();
 		try {
-			Connection connection = databaseConnector.connect();
+			Connection connection = Database.connect();
 			Statement statement = connection.createStatement();
 			ResultSet resultSet = statement.executeQuery("SELECT * FROM dog JOIN " + table + " ON dog.dogid = " + table + ".dogid WHERE " + table + ".userid = " + userID + ";");
 			while (resultSet.next()) {
@@ -380,7 +394,7 @@ public class Database {
 		PreparedStatement preparedStatement = null;
 
 		try {
-			connection = databaseConnector.connect();
+			connection = Database.connect();
 			preparedStatement = connection.prepareStatement("DELETE FROM userdogs WHERE dogid = " + dogID + "AND userid  =" + userID + ";");
 			preparedStatement.setInt(1, dogID);
 			preparedStatement.setInt(2, userID);
@@ -399,7 +413,7 @@ public class Database {
 	public static Hashtable<Integer, Poster> getAllPosters() {
 		Poster poster = null;
 		Hashtable<Integer, Poster> posters = new Hashtable<Integer, Poster>();
-		Connection connection = databaseConnector.connect();
+		Connection connection = Database.connect();
 		String sql = "SELECT * FROM poster";
 		try {
 			Statement preparedStatement = connection.createStatement();
@@ -426,7 +440,7 @@ public class Database {
 		ArrayList<Dog> dogProfiles = new ArrayList<>();
 
 		try {
-			Connection connection = databaseConnector.connect();
+			Connection connection = Database.connect();
 			Statement statement = connection.createStatement();
 			ResultSet resultSet = statement.executeQuery("SELECT * FROM dog WHERE dog.posterid = " + posterId + ";");
 			while (resultSet.next()) {
@@ -471,7 +485,7 @@ public class Database {
 			Connection connection = null;
 			PreparedStatement preparedStatement = null;
 			try {
-				connection = databaseConnector.connect();
+				connection = Database.connect();
 				Statement statement = connection.createStatement();
 				StringBuilder query = new StringBuilder("INSERT INTO " + table + " (dogid, userid) VALUES ");
 				for (int i = 0; i < dogList.size(); i++) {
@@ -500,7 +514,7 @@ public class Database {
 		HashMap<Integer, Tag> tags = new HashMap<Integer, Tag>();
 
 		try {
-			Connection connection = databaseConnector.connect();
+			Connection connection = Database.connect();
 			Statement statement = connection.createStatement();
 			ResultSet resultSet = statement.executeQuery("SELECT * FROM tags");
 			while (resultSet.next()) {
@@ -523,7 +537,7 @@ public class Database {
 			PreparedStatement preparedStatement = null;
 			
 	        try {
-	        	 connection = databaseConnector.connect();
+	        	 connection = Database.connect();
 				 Statement statement = connection.createStatement();
 				 Collection<Tag> tagList = tags.values();
 				 Iterator<Tag> iterator = tagList.iterator();
@@ -559,7 +573,7 @@ public class Database {
 			PreparedStatement preparedStatement = null;
 
 			try {
-				connection = databaseConnector.connect();
+				connection = Database.connect();
 				preparedStatement = connection.prepareStatement("INSERT INTO usertagpreferences (userid, tagid) VALUES (?, ?)");
 
 				// Set auto-commit to false for batch processing
@@ -630,7 +644,7 @@ public class Database {
 
 	public static void deletePreferenceTagsFromUser(int userId) {
 		try {
-			Connection connection = databaseConnector.connect();
+			Connection connection = Database.connect();
 			Statement statement = connection.createStatement();
 			PreparedStatement preppedStatement = connection.prepareStatement("DELETE FROM usertagpreferences WHERE userid = " + userId + ";");
 			preppedStatement.execute();
@@ -644,7 +658,7 @@ public class Database {
 	public static int getTagID(String tagname) {
 		int tagid = 0;
 		try {
-			Connection connection = databaseConnector.connect();
+			Connection connection = Database.connect();
 			Statement statement = connection.createStatement();
 			ResultSet resultSet = statement.executeQuery("SELECT tagid FROM tags WHERE tagname = '" + tagname + "'");
 			while (resultSet.next()) {
@@ -670,7 +684,7 @@ public class Database {
 		Connection connection = null;
 		String result = "";
 		try{
-			connection = databaseConnector.connect();
+			connection = Database.connect();
 			Statement statement = connection.createStatement();
 			String query = "SELECT username FROM users WHERE username = '" + username + "' ;";
 			ResultSet resultSet = statement.executeQuery(query);
@@ -689,7 +703,7 @@ public class Database {
 		Connection connection = null;
 		String result = "";
 		try{
-			connection = databaseConnector.connect();
+			connection = Database.connect();
 			Statement statement = connection.createStatement();
 			String query = "SELECT username FROM users WHERE username = '" + username + "' AND userpassword = '" + password + "' ;";
 			ResultSet resultSet = statement.executeQuery(query);
@@ -709,7 +723,7 @@ public class Database {
 		User user = null;
 
 		try {
-			connection = databaseConnector.connect();
+			connection = Database.connect();
 
 			String sql = "SELECT * FROM users WHERE username = ? AND userpassword = ?";
 
@@ -759,7 +773,7 @@ public class Database {
 		PreparedStatement preparedStatement = null;
 
 		try {
-			connection = databaseConnector.connect();
+			connection = Database.connect();
 			String sql = "SELECT * FROM userattributepreferences WHERE userid = " + userid + " AND attributetype = " + attType + ";";
 			preparedStatement = connection.prepareStatement(sql);
 
@@ -795,7 +809,7 @@ public class Database {
 		// get all tags in dogtag data table associated with the dog id
 //	
 		try {
-			connection = databaseConnector.connect();
+			connection = Database.connect();
 			Statement statement = connection.createStatement();
 			ResultSet resultSet = statement.executeQuery("SELECT tags.tagid, tags.tagname FROM tags JOIN usertagpreferences ON tags.tagid = usertagpreferences.tagid WHERE usertagpreferences.userid = " + userId + ";");
 
@@ -814,7 +828,7 @@ public class Database {
 		PreparedStatement preparedStatement = null;
 		PreparedStatement preparedStatement2 = null;
 		try {
-			connection = databaseConnector.connect();
+			connection = Database.connect();
 			String sql = "INSERT INTO users (username, userpassword, balance) VALUES (?, ?, ?) ON CONFLICT (username) DO NOTHING; ";
 			preparedStatement = connection.prepareStatement(sql);
 			preparedStatement.setString(1, username);
@@ -865,7 +879,7 @@ public class Database {
 
 	public static void deleteUserAttributePreferences(int userId) {
 		try {
-			Connection connection = databaseConnector.connect();
+			Connection connection = Database.connect();
 			Statement statement = connection.createStatement();
 			PreparedStatement preppedStatement = connection.prepareStatement("DELETE FROM userattributepreferences WHERE userid = " + userId + ";");
 			preppedStatement.executeUpdate();
@@ -880,7 +894,7 @@ public class Database {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		try {
-			connection = databaseConnector.connect();
+			connection = Database.connect();
 			Statement statement = connection.createStatement();
 			StringBuilder query = new StringBuilder("INSERT INTO userattributepreferences (userid, attributetype, attributeid) VALUES ");
 			for (int i = 0; i < atts.size(); i++) {
@@ -906,7 +920,7 @@ public class Database {
 		Wallet wallet = null;
 
 		try {
-			connection = databaseConnector.connect();
+			connection = Database.connect();
 
 			//	        Statement statement = connection.createStatement ();
 			//	        ResultSet resultSet = statement.executeQuery ("SELECT * FROM users WHERE username = " + username + " AND userpassword  = " + password + ";") ;
@@ -953,7 +967,7 @@ public class Database {
 		Connection connection = null;
 
 		try {
-			connection = databaseConnector.connect();
+			connection = Database.connect();
 			Statement statement = connection.createStatement();
 			String query = "UPDATE users SET balance = " + user.getWallet().getBalance() + " WHERE userid = " + user.getUserID() + ";";
 			statement.executeUpdate(query);
@@ -972,7 +986,7 @@ public class Database {
 			PreparedStatement preparedStatement = null;
 
 			try {
-				connection = databaseConnector.connect();
+				connection = Database.connect();
 				Statement statement = connection.createStatement();
 				Collection<RecurringPayment> recurringPayments = p.values();
 				ArrayList<RecurringPayment> recurringPaymentsList = new ArrayList<>();
@@ -1003,7 +1017,7 @@ public class Database {
 		Wallet wallet = null;
 
 		try {
-			connection = databaseConnector.connect();
+			connection = Database.connect();
 
 			String sql = "DELETE FROM userpayments WHERE userid = ?";
 
@@ -1026,7 +1040,7 @@ public class Database {
 		Connection connection = null;
 		HashMap<Integer,RecurringPayment> map = new HashMap<>();
 		try {
-			connection = databaseConnector.connect();
+			connection = Database.connect();
 			String query = "SELECT * FROM userpayments WHERE userid = ?";
 			PreparedStatement preparedStatement = connection.prepareStatement(query);
 			// Set the userID parameter
@@ -1075,20 +1089,3 @@ public class Database {
 	}
 }
 
-
-class DatabaseConnector {
-	public Connection connect() {
-		try {
-			Class.forName("org.postgresql.Driver"); // Replace with your database driver
-//			Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/pawitr2", "postgres", "1234"); // zainab
-			//			Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/thebestoneyet", "postgres", "doglover123"); // katya
-			Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5434/thebestoneyet", "postgres", "321123"); // isaiah
-			//System.out.println( "Connected to the PostgreSQL server successfully.");
-			return connection;
-		} catch (ClassNotFoundException | SQLException e) {
-			System.out.println("Connection failed");
-			e.printStackTrace();
-		}
-		return null;
-	}
-}
