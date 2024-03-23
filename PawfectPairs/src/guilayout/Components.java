@@ -344,11 +344,11 @@ public class Components{
 		// tags used to label dogs
 
 		Label label = new Label(tag);
-		label.setWrapText(true);
+//		label.setWrapText(true);
 
 		label.maxWidth(100);
 
-		label.getStyleClass().addAll("dog-tag-label", "small", "label");
+		label.getStyleClass().addAll("dog-tag-label", "tiny", "label");
 		label.setAlignment(Pos.CENTER);
 
 		return label;
@@ -372,7 +372,7 @@ public class Components{
 
 			// Add the label to the grid
 			gridPane.add(label, row, col);
-			GridPane.setHalignment(label, javafx.geometry.HPos.CENTER);
+//			GridPane.setHalignment(label, javafx.geometry.HPos.CENTER);
 
 			// Increment column and row counters
 			row++;
@@ -480,7 +480,6 @@ public class Components{
 		return gridPane;
 	}
 
-	//Sidney, Edson and Connor were here :)
 	public static HBox appointmentView (Dog dog, Date localDate, Stage
 			primaryStage, Hashtable < Integer, Poster > poster){
 		ImageView img = Components.imageView(200, 200);
@@ -525,7 +524,7 @@ public class Components{
 		HBox HBox = new HBox(img, info);
 		HBox.setAlignment(Pos.CENTER_LEFT);
 		HBox.setSpacing(50);
-		HBox.setLayoutX(0.35);
+		HBox.setLayoutX(0.5);
 
 		return HBox;
 	}
@@ -546,18 +545,20 @@ public class Components{
 	}
 
 	public static Hyperlink hyperlinkToPosterProfile (Dog dog, Stage
-			primaryStage, Hashtable < Integer, Poster > poster){
+		primaryStage, Hashtable < Integer, Poster > posterList){
+		
 		Hyperlink posterLink = Components.hyperlink();
-		posterLink.setText(poster.get(dog.getPosterId()).getDisplayName());
+		posterLink.setText(posterList.get(dog.getPosterId()).getDisplayName());
 		PosterProfileScene posterProfile = PosterProfileScene.getInstance();
 		posterLink.setOnAction(event -> {
 			try {
-				posterProfile.setCurrentPoster(poster.get(dog.getPosterId()));
+				posterProfile.setCurrentPoster(posterList.get(dog.getPosterId()));
 				posterProfile.start(primaryStage);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		});
+		
 
 		return posterLink;
 	}

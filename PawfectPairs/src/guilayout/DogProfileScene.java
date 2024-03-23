@@ -155,10 +155,12 @@ public class DogProfileScene extends PrimaryScene{
 
 			posterLink.setText(posterList.get(currentProfile.getPosterId()).getDisplayName());
 			PosterProfileScene posterProfile = PosterProfileScene.getInstance();
-			posterProfile.setCurrentPoster(posterList.get(currentProfile.getPosterId()));
+			
+			
 
 			posterLink.setOnAction(event -> {
 				try {
+					posterProfile.setCurrentPoster(posterList.get(currentProfile.getPosterId()));
 					posterProfile.start(stage);
 				} catch (Exception e) {
 					e.printStackTrace();
