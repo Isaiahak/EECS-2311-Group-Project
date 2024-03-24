@@ -17,49 +17,99 @@ import backend.dog.DogList;
 import backend.poster.Poster;
 import backend.poster.PosterList;
 
-class PosterTest {
-
+public class PosterTest {
+    private Poster poster;
+    
+    
+    
     @Test
-    void testConstructorAndGetters() {
-        Poster poster = new Poster(5, "John", 1,"123-456","poster@email.com", 123.5);
-        assertEquals(5, poster.getScore());
+    public void testGetScore() {
+    	poster = new Poster(100, "John", 1, "123456789", "john@example.com", 500.0);
+        assertEquals(100, poster.getScore());
+    }
+    
+    @Test
+    public void testSetScore() {
+    	poster = new Poster(100, "John", 1, "123456789", "john@example.com", 500.0);
+        poster.setScore(200);
+        assertEquals(200, poster.getScore());
+    }
+    
+    @Test
+    public void testGetDisplayName() {
+    	poster = new Poster(100, "John", 1, "123456789", "john@example.com", 500.0);
         assertEquals("John", poster.getDisplayName());
+    }
+    
+    @Test
+    public void testSetDisplayName() {
+    	poster = new Poster(100, "John", 1, "123456789", "john@example.com", 500.0);
+        poster.setDisplayName("Jane");
+        assertEquals("Jane", poster.getDisplayName());
+    }
+    
+    @Test
+    public void testGetUniqueId() {
+    	poster = new Poster(100, "John", 1, "123456789", "john@example.com", 500.0);
         assertEquals(1, poster.getUniqueId());
     }
-
+    
     @Test
-    void testSetters() {
-        Poster poster = new Poster(5, "John", 1,"123-456","poster@email.com", 123.5);
-        poster.setScore(10);
-        poster.setDisplayName("Doe");
+    public void testSetUniqueId() {
+    	poster = new Poster(100, "John", 1, "123456789", "john@example.com", 500.0);
         poster.setUniqueId(2);
-
-        assertEquals(10, poster.getScore());
-        assertEquals("Doe", poster.getDisplayName());
         assertEquals(2, poster.getUniqueId());
     }
-
+    
     @Test
-    void testToString() {
-        Poster poster = new Poster(5, "John", 1,"123-456","poster@email.com", 123.5);
-        String expected = "Poster [score=5, displayName=John, uniqueId=1]";
+    public void testGetPhone() {
+    	poster = new Poster(100, "John", 1, "123456789", "john@example.com", 500.0);
+        assertEquals("123456789", poster.getPhone());
+    }
+    
+    @Test
+    public void testGetEmail() {
+    	poster = new Poster(100, "John", 1, "123456789", "john@example.com", 500.0);
+        assertEquals("john@example.com", poster.getEmail());
+    }
+    
+    @Test
+    public void testDepositDonation() {
+    	poster = new Poster(100, "John", 1, "123456789", "john@example.com", 500.0);
+        poster.depositDonation(100.0);
+        assertEquals(600.0, poster.getBalance(), 0.01);
+    }
+    
+    @Test
+    public void testGetBalance() {
+    	poster = new Poster(100, "John", 1, "123456789", "john@example.com", 500.0);
+        assertEquals(500.0, poster.getBalance(), 0.01);
+    }
+    
+    @Test
+    public void testSetBalance() {
+    	poster = new Poster(100, "John", 1, "123456789", "john@example.com", 500.0);
+        poster.setBalance(700.0);
+        assertEquals(700.0, poster.getBalance(), 0.01);
+    }
+    
+    @Test
+    public void testToString() {
+    	poster = new Poster(100, "John", 1, "123456789", "john@example.com", 500.0);
+        String expected = "Poster [score=100, displayName=John, uniqueId=1]";
         assertEquals(expected, poster.toString());
     }
-
+    
     @Test
-    void testCompareTo() {
-        Poster poster1 = new Poster(5, "John", 1,"123-456","poster@email.com", 123.5);
-        Poster poster2 = new Poster(10, "Doe", 2,"123-456","poster@email.com", 123.5);
-
-        assertTrue(poster1.compareTo(poster2) < 0); // poster1 should be less than poster2
-
-        // Make two posters with the same uniqueId and displayName
-        Poster poster3 = new Poster(10, "Doe", 2,"123-456","poster@email.com", 123.5);
-        assertEquals(0, poster2.compareTo(poster3)); // poster2 and poster3 should be equal
-
-        // Make two posters with the same uniqueId and different displayName
-        Poster poster4 = new Poster(8, "Smith", 2,"123-456","poster@email.com", 123.5);
-        assertTrue(poster3.compareTo(poster4) < 0); // poster3 should be less than poster4
+    public void testCompareTo() {
+    	poster = new Poster(100, "John", 1, "123456789", "john@example.com", 500.0);
+        Poster poster2 = new Poster(200, "Jane", 2, "987654321", "jane@example.com", 300.0);
+        
+        assertTrue(poster.compareTo(poster2) < 0); // poster's uniqueId is less than poster2's uniqueId
+        
+        poster2.setUniqueId(1); // Setting poster2's uniqueId to the same as poster
+        
+        poster2.setScore(50); // Lower score than poster
+        assertTrue(poster.compareTo(poster2) > 0); // poster's score is greater than poster2's score
     }
 }
-
