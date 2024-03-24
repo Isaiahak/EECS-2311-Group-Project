@@ -1,6 +1,7 @@
 package test.backend.dog;
 
 import static org.junit.jupiter.api.Assertions.*;
+
 import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 
@@ -42,18 +43,6 @@ public class DogTest {
         dog.setId(2);
         assertEquals(2, dog.getId());
 
-//        assertEquals(3, dog.getAge());
-//        dog.setAge(4);
-//        assertEquals(4, dog.getAge());
-
-  
-//        
-//
-//        assertEquals("M", dog.getSex());
-//        dog.setSex("F");
-//        assertEquals("F", dog.getSex());
-//
-//        assertFalse(dog.getAdopted());
         dog.setAdopted(true);
         assertTrue(dog.getAdopted());
 
@@ -92,15 +81,10 @@ public class DogTest {
     @Test
     public void testSetInvalidSize() {
     	Poster pi = new Poster(0, "John", 1,"123-456","poster@email.com", 123.5);
-
-        // Expecting IllegalArgumentException when setting invalid size
         assertThrows(ArrayIndexOutOfBoundsException.class, () -> {
         	Dog dog = new Dog("Max", 1, 3, 0, 3, 0, pi.getUniqueId(), false,null,"bio");
         });
     }
-    
-
-  
 }
 
 
