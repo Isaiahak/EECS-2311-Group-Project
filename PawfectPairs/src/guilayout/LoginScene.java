@@ -36,8 +36,6 @@ public class LoginScene extends Application{
 
     @Override
     public void start(Stage primaryStage) {
-    	
-    	
     	DogProfileScene dogProfileScene = DogProfileScene.getInstance();
         primaryStage.setTitle("Login UI");
         int width = 900;
