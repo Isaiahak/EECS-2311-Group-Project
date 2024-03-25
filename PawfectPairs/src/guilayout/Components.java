@@ -6,6 +6,7 @@ import java.util.*;
 
 import backend.calendar.Appointment;
 import backend.calendar.AppointmentManager;
+import backend.database.Database;
 import backend.dog.Dog;
 import backend.dog.trait.Attribute;
 import backend.poster.Poster;
@@ -526,12 +527,13 @@ public class Components{
 			Hyperlink posterLink = hyperlinkToPosterProfile(dog, primaryStage, poster);
 			Hyperlink sponsorLink = hyperLinkToSponsor(dog, primaryStage);
 			Hyperlink appointmentLink = hyperlinkToAppointment(dog, primaryStage, poster);
-			
+			Hyperlink adoptionLink = hyperLinkToAdopt(dog,primaryStage);
 			 info = new VBox(
 						primaryInfoLabel,
 						posterLink,
 						appointmentLink,
-						sponsorLink
+						sponsorLink,
+						adoptionLink
 						);
 		}
 
@@ -652,6 +654,37 @@ public class Components{
 		});
 
 		return appointmentLink;
+	}
+	
+	//Adopt Hyperlink
+	public static Hyperlink hyperLinkToAdopt (Dog dog, Stage primaryStage){
+		
+		//when u close and reopen then adoption is not updated
+		Hyperlink adoptLink = Components.hyperlink();
+		adoptLink.setText("Adopt " + dog.getName() + "!");	
+		adoptLink.setOnAction(event -> {
+			try {
+				if (dog.getAdopted()==false)
+				{
+					
+					showAlert("Dog has been adopted", dog.getName() + " is thankful for you!", AlertType.INFORMATION);
+					dog.setAdopted(true);
+					//Database.setDogAdopted(dog);
+					LikedDogScene likedPage = LikedDogScene.getInstance();
+					likedPage.start(primaryStage);
+					//Database.deleteAppointment(fontLg)
+				}
+				else {
+					dog.setAdopted(false);	
+					
+					showAlert("Dog cannot be adopted", dog.getName() + " is already adopted", AlertType.ERROR);
+				
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		});
+		return adoptLink;
 	}
 
 	public static HBox posterDogView (Dog dog){

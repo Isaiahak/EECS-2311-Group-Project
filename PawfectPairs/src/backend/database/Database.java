@@ -33,7 +33,7 @@ public class Database {
 		try {
 			Class.forName("org.postgresql.Driver"); // Replace with your database driver
 //			Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/pawitr2", "postgres", "1234"); // zainab
-						Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/thebestoneyet", "postgres", "doglover123"); // katya
+						Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/finaldb2", "postgres", "123"); // katya
 //			Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5434/thebestoneyet", "postgres", "321123"); // isaiah
 			//System.out.println( "Connected to the PostgreSQL server successfully.");
 			return connection;
@@ -212,13 +212,14 @@ public class Database {
 			Statement statement2 = connection.createStatement();
 //		         ResultSet resultSet = statement.executeQuery ("SELECT * FROM dog WHERE dog.dogid NOT IN (SELECT userdogs.dogid FROM userdogs WHERE userdogs.userid = "+ user.getUserID() + " ) AND adopted = false;");
 			ResultSet resultSet = statement.executeQuery
-					("SELECT * FROM dog WHERE " +
+					("SELECT * FROM dog WHERE dog.adopted =  'FALSE' AND " +
 							"dog.dogid NOT IN (SELECT userdogs.dogid FROM userdogs WHERE userdogs.userid = " + user.getUserID() + " ) " +
 							"AND dog.dogid NOT IN (SELECT userpasseddogs.dogid FROM userpasseddogs WHERE userpasseddogs.userid = " + user.getUserID() + ")" +
 							"AND dog.ageid IN (SELECT userattributepreferences.attributeid FROM userattributepreferences WHERE userattributepreferences.userid = " + user.getUserID() + " AND userattributepreferences.attributetype = 0) " +
 							"AND dog.sizeid IN (SELECT userattributepreferences.attributeid FROM userattributepreferences WHERE userattributepreferences.userid = " + user.getUserID() + " AND userattributepreferences.attributetype = 3) " +
 							"AND dog.sexid IN (SELECT userattributepreferences.attributeid FROM userattributepreferences WHERE userattributepreferences.userid = " + user.getUserID() + " AND userattributepreferences.attributetype = 1) " +
-							"AND dog.energylevelid IN (SELECT userattributepreferences.attributeid FROM userattributepreferences WHERE userattributepreferences.userid = " + user.getUserID() + " AND userattributepreferences.attributetype = 2);");
+							"AND dog.energylevelid IN (SELECT userattributepreferences.attributeid FROM userattributepreferences WHERE userattributepreferences.userid = " + user.getUserID() + " AND userattributepreferences.attributetype = 2)"
+									);
 			while (resultSet.next()) {
 				// only add a dog if adoption = false and its id is not negative (if negative, its a dummy dog)
 
@@ -1177,6 +1178,16 @@ public class Database {
 		Database.deleteRecurringPayments(user);
 		Database.addRecurringPayments(user, user.getWallet().getRecurringPayments());
 		Database.updateWallet(user);
+		ArrayList<Dog> dogListUser = user.getLikedDogs();
+		for (Dog d : dogListUser) {
+			if (d.getAdopted()==true) {
+				Database.setDogAdopted(d);
+				Database.deleteAppointment(userId);
+				
+			}
+		}
+		
+		
 
 
 	}

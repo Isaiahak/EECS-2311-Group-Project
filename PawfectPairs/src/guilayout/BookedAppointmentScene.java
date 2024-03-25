@@ -56,9 +56,10 @@ public class BookedAppointmentScene extends PrimaryScene {
                 Dog appointmentDog = null;
                 
                 for(Dog dog : doglist){
-                    if( dog.getId() == selectedAppointment.getDogID()){
+                    if( dog.getId() == selectedAppointment.getDogID() && dog.getAdopted()!=true){
                        appointmentDog = dog;
                     }
+                    
                 }
         		mainContainer.getChildren().add(Components.appointmentView(appointmentDog, selectedAppointment.getDate(), stage, appData.getPosters()));
         	}

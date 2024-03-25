@@ -71,9 +71,11 @@ public class DogProfileScene extends PrimaryScene{
 		});
 
 		Button likeButton = Components.button("♥");
+		
+		//this has to be fixed just to show dogs that are not yet adopted!
 		likeButton.getStyleClass().add("like-button");
 		likeButton.setOnAction(e -> {
-			allDogs.peek().setAdopted(true);
+			//allDogs.peek().setAdopted(false);
 			user.addLikedDogs(allDogs.peek());
 			if (allDogs.size() == 1) {
 				changeProfile();
@@ -130,6 +132,8 @@ public class DogProfileScene extends PrimaryScene{
 
 		primaryStage.setOnCloseRequest(event -> {
 			System.out.println("Window is closing. Perform cleanup if needed.");
+			
+			
 
 			Database.onApplicationClose(user, allDogs, appData.getAppointmentManager());
 		});
