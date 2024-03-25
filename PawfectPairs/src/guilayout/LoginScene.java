@@ -15,10 +15,12 @@ import backend.database.Database;
 import backend.dog.Dog;
 import backend.user.User;
 import guicontrol.AppData;
+import guicontrol.Authenticator;
 
 
 public class LoginScene extends Application{
-	private User userInfo = new User("","");
+	private Authenticator authenticator = new Authenticator(); 
+
 	private static LoginScene instance;
 	AppData appData;
 	ArrayList<User> userlist = new ArrayList<User>();
@@ -37,7 +39,7 @@ public class LoginScene extends Application{
     @Override
     public void start(Stage primaryStage) {
     	DogProfileScene dogProfileScene = DogProfileScene.getInstance();
-        primaryStage.setTitle("Login UI");
+        primaryStage.setTitle("PawfectPairs");
         int width = 900;
 		int height = 900;
 
@@ -54,7 +56,14 @@ public class LoginScene extends Application{
 
         Button signUpButton = new Button("Sign Up");
         Button loginButton = new Button("Login");
-
+        
+        
+//        String css = this.getClass().getResource("/style.css").toExternalForm();
+//    	primaryStage.getScene().getStylesheets().add(css);
+        
+        signUpButton.getStyleClass().add("login-page-buttons");
+        loginButton.getStyleClass().add("login-page-buttons");
+        
         grid.add(userLabel, 0, 0);
         grid.add(userTextField, 1, 0);
         grid.add(passwordLabel, 0, 1);
