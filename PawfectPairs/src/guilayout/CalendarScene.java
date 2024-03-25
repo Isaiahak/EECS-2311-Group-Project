@@ -185,8 +185,7 @@ public class CalendarScene extends PrimaryScene {
 	                    	StackPane.setAlignment(existingAppointmentLabel, Pos.CENTER);
 	                    	dayButton.getChildren().add(existingAppointmentLabel);
 	                    } 
-	                    if (buttonDate.isBefore(currentDate))
-	                    	dayButton.setId("inactive-calendar-cell");
+	                   
 
                 	}else {
                 		dayButton.setId("inactive-calendar-cell");
@@ -220,11 +219,17 @@ public class CalendarScene extends PrimaryScene {
         	userAppointments.removeAppointment(currentAppointment);
         }
         
+        if(currentAppointment.getDate().after(Date.valueOf(currentDate))) {
         
         userAppointments.addAppointment(currentAppointment);
     	existingAppointment = currentAppointment; 
     	successLabel.setText("Date added successfully!");
-    	updateCalendar();
+    	updateCalendar();}
+        else 
+        {
+        	successLabel.setText("Date not added, please choose a future date");
+
+        }
     }
 
     public static void main(String[] args) {
