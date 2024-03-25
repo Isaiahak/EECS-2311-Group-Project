@@ -297,7 +297,7 @@ public class Components{
 
 			} else {
 				if(user.getTagPreferences().contains(labelTag) == true) {
-					user.getTagPreferences().remove(labelTag);
+					user.getTagPreferences().remove(labelTag.getTagId());
 				}
 				label.setId(null);         	
 			}

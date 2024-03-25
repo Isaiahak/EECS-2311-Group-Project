@@ -13,7 +13,7 @@ public class RecurringPayment {
 	int posterId;
 	int dogId; 
 
-	public RecurringPayment(double paymentAmount, int daysBetweenPayments, int dogId, int posterId) { // init first time
+		public RecurringPayment(double paymentAmount, int daysBetweenPayments, int dogId, int posterId) { // init first time
 		this.paymentAmount = paymentAmount;
 		this.daysBetweenPayments = daysBetweenPayments;
 		this.dogId = dogId;

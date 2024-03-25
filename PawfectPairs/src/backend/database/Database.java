@@ -33,8 +33,8 @@ public class Database {
 		try {
 			Class.forName("org.postgresql.Driver"); // Replace with your database driver
 //			Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/pawitr2", "postgres", "1234"); // zainab
-						Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/thebestoneyet", "postgres", "doglover123"); // katya
-//			Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5434/thebestoneyet", "postgres", "321123"); // isaiah
+	//					Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/thebestoneyet", "postgres", "doglover123"); // katya
+		Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5434/thebestoneyet", "postgres", "321123"); // isaiah
 			//System.out.println( "Connected to the PostgreSQL server successfully.");
 			return connection;
 		} catch (ClassNotFoundException | SQLException e) {
@@ -530,12 +530,12 @@ public class Database {
 		return tags;
 	}
 
-	/*public static void addPreferenceTagsToUser(Hashtable<Integer,Tag> tags, int userId){
-		
+	public static void addPreferenceTagsToUser(Hashtable<Integer,Tag> tags, int userId){
+
 		if(tags.values().size() > 0) {
 			Connection connection = null;
 			PreparedStatement preparedStatement = null;
-			
+
 	        try {
 	        	 connection = Database.connect();
 				 Statement statement = connection.createStatement();
@@ -552,72 +552,19 @@ public class Database {
 					 }
 					 query.append("( " + userId + ", " + tagsList.get(i).getTagId() +" )");
 			    }
-	
+
 				 query.append(";");
-				 
+
 				 statement.addBatch(query.toString());
 				 statement.executeBatch();
 	        }
 	        catch (SQLException e) {
 	            e.printStackTrace();
-	          
+
 	        }
-	}}*/
+	}}
 
-	public static void addPreferenceTagsToUser(Hashtable<Integer, Tag> tags, int userId) {
-		/*
-		 * Add tags to user preferences in the database
-		 */
-		if (tags.values().size() > 0) {
-			Connection connection = null;
-			PreparedStatement preparedStatement = null;
 
-			try {
-				connection = Database.connect();
-				preparedStatement = connection.prepareStatement("INSERT INTO usertagpreferences (userid, tagid) VALUES (?, ?)");
-
-				// Set auto-commit to false for batch processing
-				connection.setAutoCommit(false);
-
-				for (Tag tag : tags.values()) {
-					// Check if the tagid exists in the tags table
-					if (isTagExists(connection, tag.getTagId())) {
-						preparedStatement.setInt(1, userId);
-						preparedStatement.setInt(2, tag.getTagId());
-						preparedStatement.addBatch();
-					}
-				}
-
-				// Execute the batch
-				preparedStatement.executeBatch();
-
-				// Commit the transaction
-				connection.commit();
-			} catch (SQLException e) {
-				e.printStackTrace();
-				try {
-					if (connection != null) {
-						connection.rollback(); // Rollback the transaction in case of an error
-					}
-				} catch (SQLException ex) {
-					ex.printStackTrace();
-				}
-			} finally {
-				// Close resources
-				try {
-					if (preparedStatement != null) {
-						preparedStatement.close();
-					}
-					if (connection != null) {
-						connection.setAutoCommit(true); // Reset auto-commit to true
-						connection.close();
-					}
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-	}
 
 	private static boolean isTagExists(Connection connection, int tagId) throws SQLException {
 		PreparedStatement preparedStatement = null;
