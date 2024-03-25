@@ -15,6 +15,7 @@ public class User {
 	private ArrayList<Attribute> sizePreferences  = new ArrayList<Attribute>() ;
 	private ArrayList<Attribute> sexPreferences  = new ArrayList<Attribute>();
 	private ArrayList<Attribute> energyLevelPreferences  = new ArrayList<Attribute>();
+	private ArrayList<Integer> postersRatedByUser = new ArrayList<Integer>();
 	private String username;
 	private String email;
 	private int userID;
@@ -28,7 +29,14 @@ public class User {
 		this.password = password;
 
 	}
+	
+	public void addToPostersRatedByUser(int posterId) {
+		this.postersRatedByUser.add(posterId);
+	}
 
+	public ArrayList<Integer> getPostersRatedByUser(){
+		return this.postersRatedByUser; 
+	}
 	public int getUserID() {
 		return userID;
 	}
