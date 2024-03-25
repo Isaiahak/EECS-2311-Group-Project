@@ -313,3 +313,12 @@ March 20, 2024
 March 21, 2024
 - Yuqian worked on unit testing for RecurringPayment class
 - Yuiqan finished all unit testings for all the classes under calendar, wallet, and dog trait
+
+March 23, 2024
+- Ekaterina repopulated the database again (10,000 dogs) to test loads and database calls
+- Ekaterina made some minor GUI adjustments
+- Ekaterina fixed a bug associated with not correctly displaying a poster's dogs
+- Ekaterina made some adjustments to the gradle build file to support tests
+
+March 24, 2024
+-Ekaterina worked on her take home assignmetn and started some bug fixing/refactoring her assigned scene

@@ -185,6 +185,8 @@ public class CalendarScene extends PrimaryScene {
 	                    	StackPane.setAlignment(existingAppointmentLabel, Pos.CENTER);
 	                    	dayButton.getChildren().add(existingAppointmentLabel);
 	                    } 
+	                    if (buttonDate.isBefore(currentDate))
+	                    	dayButton.setId("inactive-calendar-cell");
 
                 	}else {
                 		dayButton.setId("inactive-calendar-cell");
