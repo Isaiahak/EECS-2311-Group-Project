@@ -319,3 +319,6 @@ March 23, 2024
 - Ekaterina made some minor GUI adjustments
 - Ekaterina fixed a bug associated with not correctly displaying a poster's dogs
 - Ekaterina made some adjustments to the gradle build file to support tests
+
+March 24, 2024
+-Ekaterina worked on her take home assignmetn and started some bug fixing/refactoring her assigned scene
