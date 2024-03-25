@@ -47,11 +47,10 @@ public class SponsoredDogsScene extends PrimaryScene{
 		mainContainer.getChildren().add(
     			sponsoredDogsLabel
     			);
-	    	
+		ArrayList<Dog> dogs = appData.getUser().getLikedDogs();
     	for(RecurringPayment pay : recurringPayments.values()) {
-    		ArrayList<Dog> dogs = appData.getUser().getLikedDogs();
     		Dog d = findDogById(dogs, pay.getDogId());
-    		mainContainer.getChildren().add(Components.sponsoredDogView(d, stage, appData.getPosters(), appData, sponsoredDogsScene));
+    		mainContainer.getChildren().add(Components.sponsoredDogView(d, stage, appData.getPosters(), appData, sponsoredDogsScene,pay.getPaymentAmount()));
     	}
 
 		stage.show();
