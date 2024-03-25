@@ -54,16 +54,5 @@ public class Appointment{
 	}
 
 	
-	
-	@Override
-	public boolean equals(Object o) {
-		if(this.dogID == ((Appointment) o).getDogID()) return true;
-		
-		return false;
-		
-	}
-	
-	
-
 
 }

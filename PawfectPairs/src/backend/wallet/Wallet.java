@@ -29,6 +29,7 @@ public class Wallet {
 	public int getUserid() {
 		return userid;
 	}
+
 	public void setUserid(int userid) {
 		this.userid = userid;
 	}
@@ -80,8 +81,8 @@ public class Wallet {
 	public void removeRecurringPayment(int dogid) {
 		//this.recurringPayments.remove(this.recurringPayments.get(dogid));
 		this.recurringPayments.remove(dogid);
-		
 	}
+
 	public HashMap<Integer, RecurringPayment> getRecurringPayments() {
 		return this.recurringPayments; 
 	}

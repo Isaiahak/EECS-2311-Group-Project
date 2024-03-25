@@ -93,10 +93,6 @@ public class DonateScene extends PrimaryScene {
 
 	}
 
-
-	
-	
-
 	private void showAlert(String title, String message, Alert.AlertType alertType) {
 		Alert alert = new Alert(alertType);
 		alert.setTitle(title);
