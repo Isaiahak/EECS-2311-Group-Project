@@ -26,6 +26,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
@@ -172,8 +173,6 @@ public class Components{
 				sponsoredDogs.start(stage);
 			});
 		}
-
-
 
 		navTab.getChildren().addAll(settingsButton, dogProfileButton, likedDogButton, sponsoredDogButton, appointmentsButton);
 
@@ -504,22 +503,39 @@ public class Components{
 
 		ImageView img = Components.imageView(200, 200);
 		img.setImage(new Image(dog.getImagePath()));
-
+		
 		Label primaryInfoLabel = Components.mediumLabel(dog.getName() + ", " + dog.getAge() + " years, " + dog.getSex(), Pos.CENTER);
 
-		Hyperlink posterLink = hyperlinkToPosterProfile(dog, primaryStage, poster);
+		VBox info = new VBox(); 
+		
+		if(dog.getAdopted() == true) {
+	        ColorAdjust colorAdjust = new ColorAdjust();
+	        colorAdjust.setSaturation(-1); // Set saturation to -1 to make it grayscale
+	        img.setEffect(colorAdjust);
+	        
+	        Label adoptedLabel = new Label("ADOPTED!"); 
+	        adoptedLabel.getStyleClass().add("moderate label");
+	        
+	        info = new VBox(
+					primaryInfoLabel,
+					adoptedLabel
+					);
+	       
+	        
+		}else {
+			Hyperlink posterLink = hyperlinkToPosterProfile(dog, primaryStage, poster);
+			Hyperlink sponsorLink = hyperLinkToSponsor(dog, primaryStage);
+			Hyperlink appointmentLink = hyperlinkToAppointment(dog, primaryStage, poster);
+			
+			 info = new VBox(
+						primaryInfoLabel,
+						posterLink,
+						appointmentLink,
+						sponsorLink
+						);
+		}
 
-		Hyperlink sponsorLink = hyperLinkToSponsor(dog, primaryStage);
 
-
-		Hyperlink appointmentLink = hyperlinkToAppointment(dog, primaryStage, poster);
-
-		VBox info = new VBox(
-				primaryInfoLabel,
-				posterLink,
-				appointmentLink,
-				sponsorLink
-				);
 
 		HBox HBox = new HBox(img, info);
 		HBox.setAlignment(Pos.CENTER_LEFT);

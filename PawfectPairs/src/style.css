@@ -19,12 +19,6 @@ darkest */
 }
 
 
-/*NAV BAR*//*
-.navbar-container{
-  -fx-top: 0; 
-
-}*/
-
 .nav-button {
     -fx-background-color: #B6CCFE;
     -fx-text-fill: white;
@@ -38,6 +32,14 @@ darkest */
 }
 
 
+/*LOGIN*/
+.login-page-buttons{
+	-fx-background-color: #ABC4FF;
+	-fx-padding: 10px;	
+	-fx-background-radius: 10px; 
+	-fx-padding: 5px 10px; 
+	-fx-alignment: center; 
+}
 
 /*GENERAL*/
 

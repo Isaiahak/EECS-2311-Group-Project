@@ -63,9 +63,9 @@ public class PrimaryScene extends Application{
     	mainContainer.setPadding(new Insets(paddingY/20,paddingX, paddingY/2, paddingX));//based on screen size(top, right, bottom, left)
     	VBox.setVgrow(root, Priority.ALWAYS);
       // Set VBox size to match screen resolution
-       mainContainer.setMaxSize(Components.screenWidth, Components.screenHeight);
+    	mainContainer.setMaxSize(Components.screenWidth, Components.screenHeight);
       
-      mainContainer.setMaxHeight(Components.screenHeight);
+     	mainContainer.setMaxHeight(Components.screenHeight);
 
     	scrollPane = new ScrollPane(mainContainer);
     	scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);

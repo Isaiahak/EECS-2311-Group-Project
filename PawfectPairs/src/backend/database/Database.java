@@ -1009,6 +1009,99 @@ public class Database {
 		}
 	return null;
 	}
+	
+	// delete posters rated (DB)
+	public static void deletePostersRatedByUser(User user) {
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		Wallet wallet = null;
+
+		try {
+			connection = Database.connect();
+
+			String sql = "DELETE FROM userpostersrated WHERE userid = ?";
+
+			preparedStatement = connection.prepareStatement(sql);
+
+			preparedStatement.setInt(1, user.getUserID());
+
+
+			preparedStatement.executeUpdate();
+
+		} catch (SQLException e) {
+
+			e.printStackTrace();
+
+		}
+	}
+	
+	// add posters rated ( local to DB)
+	public static void addPostersRatedByUser(User user) {
+		ArrayList<Integer> posters = user.getPostersRatedByUser();
+		if (posters.size() > 0) {
+
+			Connection connection = null;
+			PreparedStatement preparedStatement = null;
+
+			try {
+				connection = Database.connect();
+				Statement statement = connection.createStatement();
+	
+				StringBuilder query = new StringBuilder("INSERT INTO userpostersrated (userid, posterid) VALUES ");
+				for (int i = 0; i < posters.size(); i++) {
+					if (i != 0) {
+						query.append(", ");
+					}
+					query.append("(" + user.getUserID() + ", " + posters.get(i) + ") ");
+				}
+				query.append(";");
+
+				statement.addBatch(query.toString());
+				statement.executeBatch();
+			} catch (SQLException e) {
+			}
+		}
+		
+	}
+	
+	// upload posters rated by user (DB to local)
+	public static void setPostersRatedByUser(User user) {
+		Connection connection = null;
+		HashMap<Integer,RecurringPayment> map = new HashMap<>();
+		try {
+			connection = Database.connect();
+			String query = "SELECT * FROM userpostersrated WHERE userid = ?";
+			PreparedStatement preparedStatement = connection.prepareStatement(query);
+			// Set the userID parameter
+			preparedStatement.setInt(1, user.getUserID());
+
+			// Execute the query
+			try (ResultSet resultSet = preparedStatement.executeQuery()) {
+				// Iterate over the result set and populate the TreeMap
+				while (resultSet.next()) {
+					user.addToPostersRatedByUser(resultSet.getInt("posterid"));
+				}
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+	}
+	// update posters score (local to DB)
+	public static void updatePosterScore(int posterId, int newScore, int newNumberOfRatings) {
+			try {
+				Connection connection = Database.connect();
+				Statement statement = connection.createStatement();
+				statement.executeUpdate("UPDATE posters SET score = "+ newScore +" WHERE poster_id = " + posterId + ";" + "UPDATE posters SET numberofratings = "+ newNumberOfRatings +" WHERE poster_id = " );
+				connection.close();
+			} catch (SQLException e) {
+				System.out.println("Connection failure.");
+				e.printStackTrace();
+			}
+	
+	}
+
 	/*
 	 * Cleanup Methods
 	 */
