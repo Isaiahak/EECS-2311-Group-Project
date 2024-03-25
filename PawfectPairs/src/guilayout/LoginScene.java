@@ -36,7 +36,19 @@ public class LoginScene extends Application{
     public static void main(String[] args) {
         launch(args);
     }
-
+    public void validSignUpMethod (String username, String password) {
+   	 
+        boolean result = Database.addUser(username, password, appData.getAllAttributes());
+        if ( password == "" && username == "")
+            showAlert("Sign up failed","Empty username or password not allowed!");
+        else if (Database.usernameChecker(username) != username && result == false)
+            showAlert("Sign up failed","Username in use, try logging in!");
+        else {
+            User user = Database.getUser(username, password);
+            appData.setAppointmentManager(new AppointmentManager(user.getUserID(), new ArrayList<>()));
+        }
+   	
+   }
     @Override
     public void start(Stage primaryStage) {
     	DogProfileScene dogProfileScene = DogProfileScene.getInstance();
@@ -77,19 +89,14 @@ public class LoginScene extends Application{
         appData.initializeAttributes(); 
                 
         signUpButton.setOnAction(e -> {
-            String username = userTextField.getText();
+        	String username = userTextField.getText();
             String password = passwordField.getText();
-            boolean result = Database.addUser(username, password, appData.getAllAttributes());
-            if ( password == "" && username == "")
-                showAlert("Sign up failed","Empty username or password not allowed!");
-            else if (Database.usernameChecker(username) != username && result == false)
-                showAlert("Sign up failed","Username in use, try logging in!");
-            else {
-                User user = Database.getUser(username, password);
-                appData.setAppointmentManager(new AppointmentManager(user.getUserID(), new ArrayList<>()));
-            }
+            validSignUpMethod(username, password);
             clearFields(userTextField, passwordField);
+
         });
+        
+       
 
         changeUsernamePassword.setOnAction(e -> {// Create a text field
             TextField username = new TextField();
@@ -119,10 +126,19 @@ public class LoginScene extends Application{
                     resultAlert.setHeaderText("You entered:");
                     resultAlert.setContentText(inputText);
                     resultAlert.showAndWait();
-                    */
-                	 alert.setTitle("Changing your username and password");
-                     alert.setHeaderText("Now enter your new desired username and password:");
-                     alert.getDialogPane().setContent(textInputforPopUp);
+                    */                 
+                	Alert newValues = new Alert(Alert.AlertType.CONFIRMATION);
+
+                	newValues.setTitle("Changing your username and password");
+                	newValues.setHeaderText("Now enter your new desired username and password:");
+                	newValues.getDialogPane().setContent(textInputforPopUp);
+                	newValues.showAndWait().ifPresent(click -> {
+                		if (click==ButtonType.OK) {
+                			//check valid input
+                			
+                		}
+                		
+                	});
                 }
             });
         });
