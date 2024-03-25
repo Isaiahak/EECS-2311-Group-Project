@@ -151,6 +151,9 @@ amount.clear();
     		}
 
         	});
+        
+        Button signOutButton = new Button("sign out");
+        
 		VBox allWalletUserComponents = new VBox();
 		allWalletUserComponents.setSpacing(30);
 		allWalletUserComponents.getChildren().addAll( amount, currentFunds, deposit);
@@ -163,7 +166,8 @@ amount.clear();
 				preferences,
 				tagsGrid,
 				attributes,
-				allWalletUserComponents
+				allWalletUserComponents,
+				signOutButton
 		);
 
 		primaryStage.show();
