@@ -109,7 +109,7 @@ class AppointmentManagerTest {
         ArrayList<Appointment> userAppointments = new ArrayList<>();
         AppointmentManager appointmentManager = new AppointmentManager(1, userAppointments);
 
-        assertFalse(appointmentManager.appointmentExists(existingAppointment));
+       assertFalse(appointmentManager.appointmentExists(existingAppointment));
     }
 
     // check if appointmentExists() correctly handles checking existence of an appointment with null attributes
