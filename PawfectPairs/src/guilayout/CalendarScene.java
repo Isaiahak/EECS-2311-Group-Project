@@ -219,7 +219,7 @@ public class CalendarScene extends PrimaryScene {
         	userAppointments.removeAppointment(currentAppointment);
         }
         
-        if(currentAppointment.getDate().after(Date.valueOf(currentDate))) {
+        if(!checkIfBefore()) {
         
         userAppointments.addAppointment(currentAppointment);
     	existingAppointment = currentAppointment; 
@@ -232,6 +232,19 @@ public class CalendarScene extends PrimaryScene {
         }
     }
 
+    public boolean checkIfBefore () {
+        java.util.Date utilDate = Date.from(currentSelectedDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+
+   
+        java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
+
+    
+    	java.sql.Date nowSQL=Date.valueOf(LocalDate.now());
+        LocalDate nowLocal = LocalDate.now();
+        LocalDate appointmentDate = sqlDate.toLocalDate();
+        return sqlDate.before(nowSQL)&&appointmentDate.getMonthValue()==nowLocal.getMonthValue();
+        
+    }
     public static void main(String[] args) {
         launch(args);
     }
