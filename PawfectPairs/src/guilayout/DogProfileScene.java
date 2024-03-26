@@ -62,11 +62,7 @@ public class DogProfileScene extends PrimaryScene{
 
 		Button passButton = Components.button("❌");
 		passButton.getStyleClass().add("pass-button");
-		Timeline passTimeline = new Timeline(new KeyFrame(Duration.seconds(3), passEvent -> {
-			passButton.setText("❌");
-			// Re-enable the button
-			passButton.setDisable(false);
-
+		passButton.setOnAction(event -> {
 			user.addPassedDogs(allDogs.peek());
 			if (allDogs.size() == 1) {
 				changeProfile();
@@ -75,29 +71,14 @@ public class DogProfileScene extends PrimaryScene{
 				changeProfile();
 				displayCurrentPetProfile();
 			}
-		}));
-		passButton.setOnAction(event -> {
-			if (passButton.getText().equals("❌")) {
-				// Disable the button to prevent multiple clicks
-				//passButton.setDisable(true);
-
-				// Change the button's text to undo sign
-				passButton.setText("↩");
-
-
-				passTimeline.playFromStart();
-			} else {
-				passButton.setText("❌");
-				passTimeline.stop();
-			}
-
 		});
 
 		Button likeButton = Components.button("♥");
+		
+		//this has to be fixed just to show dogs that are not yet adopted!
 		likeButton.getStyleClass().add("like-button");
-		Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(3), event -> {
-			likeButton.setText("♥");
-			// Add your existing logic here
+		likeButton.setOnAction(e -> {
+
 			user.addLikedDogs(allDogs.peek());
 			if (allDogs.size() == 1) {
 				changeProfile();
@@ -106,21 +87,11 @@ public class DogProfileScene extends PrimaryScene{
 				changeProfile();
 				displayCurrentPetProfile();
 			}
-		}));
-		likeButton.setOnAction(e -> {
-			if (likeButton.getText().equals("♥")) {
-
-				// Change the button's text to undo sign
-				likeButton.setText("↩");
-
-				// Schedule the button's appearance change back to ♥ after 5 seconds
-				timeline.playFromStart();
-			} else {
-				// If the button is clicked while showing the undo sign, revert to ♥ immediately
-				likeButton.setText("♥");
-				timeline.stop();
-			}
 		});
+		
+		
+		
+		
 
 		primaryControlTab.getChildren().addAll(likeButton, petImageView, passButton);
 		primaryControlTab.getStyleClass().add("dog-picture-container");
