@@ -42,8 +42,15 @@ public class LikedDogScene extends PrimaryScene{
 		ObservableList<Dog> smallerDogs = FXCollections.observableArrayList();
 		dogsDisplayed = 0;
 		
-		ArrayList<Dog> likedDogs = user.getLikedDogs();
+		ArrayList<Dog> likedDogs1 = user.getLikedDogs();
+		ArrayList<Dog> likedDogs = new ArrayList<Dog>();
+		//deep copy 
+		for(Dog d : likedDogs1) {
+			likedDogs.add(new Dog(d));
+		}
+		
 		Collections.reverse(likedDogs);
+		
 		initializeSmallerDogList(likedDogs,smallerDogs);
 		
 		Label likedDogsLabel = Components.largeLabel("Dogs you've Liked: " + likedDogs.size(), Pos.CENTER);
