@@ -32,9 +32,11 @@ public class Database {
 	public static Connection connect() {
 		try {
 			Class.forName("org.postgresql.Driver"); // Replace with your database driver
+
 			Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/dbitr3", "postgres", "1234"); // zainab
 	//					Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/thebestoneyet", "postgres", "doglover123"); // katya
 	//	Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5434/thebestoneyet", "postgres", "321123"); // isaiah
+
 			//System.out.println( "Connected to the PostgreSQL server successfully.");
 			return connection;
 		} catch (ClassNotFoundException | SQLException e) {
@@ -944,7 +946,8 @@ public class Database {
 
 			String sql2 = "SELECT * FROM userpayments WHERE userid = " + userid;
 			preparedStatement = connection.prepareStatement(sql2);
-
+			resultSet = preparedStatement.executeQuery();
+			
 			while (resultSet.next()) {
 				wallet.addRecurringPayment(
 						new RecurringPayment(resultSet.getDouble("paymentamount"),
@@ -955,6 +958,7 @@ public class Database {
 						)
 				);
 			}
+			System.out.println(wallet.getRecurringPayments().values());
 		} catch (SQLException e) {
 			e.printStackTrace();
 

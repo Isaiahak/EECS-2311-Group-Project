@@ -73,7 +73,6 @@ public class DogProfileScene extends PrimaryScene{
 		Button likeButton = Components.button("♥");
 		likeButton.getStyleClass().add("like-button");
 		likeButton.setOnAction(e -> {
-			allDogs.peek().setAdopted(true);
 			user.addLikedDogs(allDogs.peek());
 			if (allDogs.size() == 1) {
 				changeProfile();

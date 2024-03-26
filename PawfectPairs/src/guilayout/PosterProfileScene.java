@@ -51,7 +51,7 @@ public class PosterProfileScene extends PrimaryScene {
 		ArrayList<Dog> posterDogsList =  Database.getPosterDogs(currentPoster.getUniqueId());
 
 		
-		initailizePrimaryScene(primaryStage, currentPoster.getDisplayName());
+		initailizePrimaryScene(primaryStage);
 
 
 		Label name = Components.largeLabel(currentPoster.getDisplayName(), Pos.CENTER); 
