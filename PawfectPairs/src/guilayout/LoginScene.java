@@ -112,7 +112,7 @@ public class LoginScene extends Application{
             
             if(authenticator.authenticateLogIn(username, password)) {
             	appData.onStart(username, password); 
-		appData.setOkToClose(true);
+            	appData.setOkToClose(true);
             	dogProfileScene.start(primaryStage);
             }
             clearFields(userTextField, passwordField);
