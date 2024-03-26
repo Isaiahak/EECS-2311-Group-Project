@@ -18,6 +18,14 @@ public class Appointment{
 		this.userID = userID;
 	}
 	
+	public Appointment(Appointment appointment) {
+		// TODO Auto-generated constructor stub
+		this.posterID = appointment.getPosterID();
+		this.dogID = appointment.getDogID();
+		this.date = appointment.getDate();
+		this.userID = appointment.getUserID();
+	}
+
 	public int getPosterID() {
 		return posterID;
 	}
