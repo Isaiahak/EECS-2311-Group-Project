@@ -1,6 +1,7 @@
 package guilayout;
 
 import javafx.application.Application;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -81,7 +82,7 @@ public class CalendarScene extends PrimaryScene {
 		for(Appointment app : userAppointments.getUserAppointments()) {
 
 			if(app.getDogID() == currentDog.getId()) {
-				if(existingAppointment==null ||!existingAppointment.contains(app))
+				if(existingAppointment==null ||existingAppointment.isEmpty()||!existingAppointment.contains(app))
 					existingAppointment.add(app); 
 
 				break;
@@ -96,7 +97,8 @@ public class CalendarScene extends PrimaryScene {
 
 		Button confirmationButton = Components.calendarButton("Confirm Appointment");
 		confirmationButton.setOnAction(event -> {
-			handleConfirmButtonClick();
+			
+				handleConfirmButtonClick();
 
 		});
 
@@ -133,21 +135,29 @@ public class CalendarScene extends PrimaryScene {
 				int buttonText = buttonDate.getDayOfMonth();
 				dayButton = Components.calendarCell(Integer.toString(buttonText));
 
-				if (cellNumber>0&& buttonDate.getMonth()==month&&buttonText<=month.length(leapMonth)&&buttonDate.isAfter(firstDayOfMonth.minusDays(1))){
-					System.out.println(month+" "+month.length(leapYear(buttonDate)));
+				if (!alreadyBookedByThisUser(buttonDate)&&cellNumber>0&& buttonDate.getMonth()==month&&buttonText<=month.length(leapMonth)&&buttonDate.isAfter(firstDayOfMonth.minusDays(1))){
+					//System.out.println(month+" "+month.length(leapYear(buttonDate)));
 					if(!appData.isDateAlreadyBooked(currentDog.getId(), currentDog.getPosterId(), buttonDate)) {
 						StackPane dayButtonCopy = dayButton; 
 
+						SimpleIntegerProperty numClicks = new SimpleIntegerProperty(0);
 						dayButton.setOnMouseClicked(event -> {
-							successLabel.setText(buttonDate.toString());
-							currentSelectedDate = buttonDate; 
-							if(dayButtonCopy.getId() == null) {
-								oldSelectedButton.setId("highlighted-calendar-cell");
-								oldSelectedButton = dayButtonCopy; 
-								dayButtonCopy.setId(("highlighted-calendar-cell"));
+							numClicks.set(numClicks.get()+1);
+
+							if( numClicks.get()<=1){
+								successLabel.setText(buttonDate.toString());
+								currentSelectedDate = buttonDate; 
+								if(dayButtonCopy.getId() == null) {
+									oldSelectedButton.setId("highlighted-calendar-cell");
+									oldSelectedButton = dayButtonCopy; 
+									dayButtonCopy.setId(("highlighted-calendar-cell"));
+								}
+								else {
+									successLabel.setText("Already booked");
+								}
+
 							}});
 
-						populateExistingAppointments ( buttonDate,  dayButton );
 					}
 					else {
 						dayButton.setId("inactive-calendar-cell");
@@ -160,6 +170,7 @@ public class CalendarScene extends PrimaryScene {
 				else {
 					dayButton.setId("inactive-calendar-cell");
 				}
+				populateExistingAppointments ( buttonDate,  dayButton );
 
 				calendarGrid.add(dayButton, col, row);
 
@@ -169,9 +180,9 @@ public class CalendarScene extends PrimaryScene {
 	} 
 
 	public void populateExistingAppointments (LocalDate buttonDate, StackPane dayButton ) {
-		if(existingAppointment==null)
-			return;
-		else if((!existingAppointment.isEmpty() && containsDate(buttonDate))) {
+		//System.out.println(containsDate(buttonDate) +"contains date");
+	//	System.out.println(buttonDate + " allready booked= " +alreadyBookedByThisUser(buttonDate));
+		if(alreadyBookedByThisUser(buttonDate)){
 			Label existingAppointmentLabel = Components.tinyLabel("Date with " + currentDog.getName(),Pos.CENTER);
 			existingAppointmentLabel.getStyleClass().add("your-booking");
 			StackPane.setAlignment(existingAppointmentLabel, Pos.CENTER);
@@ -179,11 +190,23 @@ public class CalendarScene extends PrimaryScene {
 		} 
 
 	}
+
+	public boolean alreadyBookedByThisUser(LocalDate buttonDate) {
+		if(existingAppointment==null||existingAppointment.isEmpty())
+			return false;
+		else if((!existingAppointment.isEmpty() && containsDate(buttonDate))) 
+			return true;
+		else return false;
+
+	}
 	public boolean containsDate (LocalDate buttonDate) {
 		boolean contains=false;
-		for (Appointment appointment : existingAppointment) {
-			if(appointment.getDate().toLocalDate()==buttonDate)
-				return true;
+		if (existingAppointment!=null&&!existingAppointment.isEmpty()) {
+			for (Appointment appointment : existingAppointment) {
+
+				if(appointment!=null&&appointment.getDate().toLocalDate().equals(buttonDate))
+					return true;
+			}
 		}
 		return contains;
 	}
@@ -191,134 +214,136 @@ public class CalendarScene extends PrimaryScene {
 	private void handleConfirmButtonClick() {
 		java.util.Date utilDate = Date.from(currentSelectedDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
 		java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
+		if (!alreadyBookedByThisUser(currentSelectedDate)&&!checkIfBefore()) {
+			currentAppointment = new Appointment(currentPoster.getUniqueId(),currentDog.getId(), sqlDate,user.getUserID());
 
-		currentAppointment = new Appointment(currentPoster.getUniqueId(),currentDog.getId(), sqlDate,user.getUserID());
+			//adding to the DB
+			if (currentAppointment != null && (userAppointments.appointmentExists(currentAppointment)) ) {
+				userAppointments.removeAppointment(currentAppointment);
+			}
 
-		//adding to the DB
-		if (currentAppointment != null && (userAppointments.appointmentExists(currentAppointment)) ) {
-			userAppointments.removeAppointment(currentAppointment);
+			if ((existingAppointment==null||existingAppointment.isEmpty()||!existingAppointment.contains(currentAppointment))&&
+					!userAppointments.contains(currentAppointment)) {
+				existingAppointment.add(currentAppointment); 
+				//System.out.println(existingAppointment.contains(currentAppointment)+" added to exist");
+				userAppointments.addAppointment(currentAppointment);
+				successLabel.setText("Date added successfully!");
+				updateCalendar();}
+
+			
+		}
+		else 
+		{
+			successLabel.setText("Date not added, please choose a valid date");
+
 		}
 
-		if(!checkIfBefore()) {
-			
-		
-
-		if ((existingAppointment==null||!existingAppointment.contains(currentAppointment))&&
-				!userAppointments.contains(currentAppointment)) {
-			existingAppointment.add(currentAppointment); 
-
-			userAppointments.addAppointment(currentAppointment);
-			successLabel.setText("Date added successfully!");
-			updateCalendar();}
 	}
-	else 
-	{
-		successLabel.setText("Date not added, please choose a future date");
+
+	public boolean checkIfBefore () {
+		java.util.Date utilDate = Date.from(currentSelectedDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+
+
+		java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
+
+
+		java.sql.Date nowSQL=Date.valueOf(LocalDate.now());
+		LocalDate nowLocal = LocalDate.now();
+		LocalDate appointmentDate = sqlDate.toLocalDate();
+		return sqlDate.before(nowSQL)&&appointmentDate.getMonthValue()==nowLocal.getMonthValue();
 
 	}
-}
+	public static void main(String[] args) {
+		launch(args);
+	}
+	public void setCurrentPosterDog(Poster poster, Dog dog) { //dog obbject is null why?
+		this.currentPoster = poster; // set current poster
 
-public boolean checkIfBefore () {
-	java.util.Date utilDate = Date.from(currentSelectedDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
-
-
-	java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
-
-
-	java.sql.Date nowSQL=Date.valueOf(LocalDate.now());
-	LocalDate nowLocal = LocalDate.now();
-	LocalDate appointmentDate = sqlDate.toLocalDate();
-	return sqlDate.before(nowSQL)&&appointmentDate.getMonthValue()==nowLocal.getMonthValue();
-
-}
-public static void main(String[] args) {
-	launch(args);
-}
-public void setCurrentPosterDog(Poster poster, Dog dog) { //dog obbject is null why?
-	this.currentPoster = poster; // set current poster
-
-	this.currentDog = dog;
-	meetWithLabel.setText("Meet with " + dog.getName() + " and " + poster.getDisplayName());
+		this.currentDog = dog;
+		meetWithLabel.setText("Meet with " + dog.getName() + " and " + poster.getDisplayName());
 
 
-}
+	}
 
-private String getFormattedTitle() {
-	return currentDate.getMonth().toString() + " " + currentDate.getYear();
-}
+	private String getFormattedTitle() {
+		return currentDate.getMonth().toString() + " " + currentDate.getYear();
+	}
 
-private HBox CreateNavigationButtons (Label titleLabel){
-	Button prevMonthButton = Components.calendarButton("←");
+	private HBox CreateNavigationButtons (Label titleLabel){
+		Button prevMonthButton = Components.calendarButton("←");
 
-	prevMonthButton.setOnAction(event -> {
-		if(!currentDate.minusMonths(1).isBefore(todaysDate)) {
+		prevMonthButton.setOnAction(event -> {
+			if(!currentDate.minusMonths(1).isBefore(todaysDate)) {
+				currentDate = currentDate.minusMonths(1);
+				month = currentDate.getMonth();
+				updateCalendar();
+				titleLabel.setText(getFormattedTitle());
+			}
+		});
 
-			currentDate = currentDate.minusMonths(1);
+		Button nextMonthButton = Components.calendarButton("→");
+
+		nextMonthButton.setOnAction(event -> {
+			currentDate = currentDate.plusMonths(1);
+			month = currentDate.getMonth();
 			updateCalendar();
 			titleLabel.setText(getFormattedTitle());
-		}
-	});
+		});
+		HBox navigation = new HBox(prevMonthButton, nextMonthButton);
+		navigation.setAlignment(Pos.CENTER);
+		navigation.setSpacing(50);
 
-	Button nextMonthButton = Components.calendarButton("→");
+		return navigation;
+	}
 
-	nextMonthButton.setOnAction(event -> {
-		currentDate = currentDate.plusMonths(1);
-		month = currentDate.getMonth();
-		updateCalendar();
-		titleLabel.setText(getFormattedTitle());
-	});
-	HBox navigation = new HBox(prevMonthButton, nextMonthButton);
-	navigation.setAlignment(Pos.CENTER);
-	navigation.setSpacing(50);
+	private void updateCalendar() {
+		calendarGrid.getChildren().clear();
+		createCalendar();
+	}
+	private void retrieveAppDataInfo () {
+		user = appData.getUser();
+		userAppointments = appData.getAppointmentManager();
+		otherUsersAppointments = appData.getOtherUsersAppointments();
 
-	return navigation;
-}
+	}
+	private void pageSetUp (Stage stage, Label titleLabel) {
+		stage.setTitle("Calendar");
+		meetWithLabel.setAlignment(Pos.CENTER);
 
-private void updateCalendar() {
-	calendarGrid.getChildren().clear();
-	createCalendar();
-}
-private void retrieveAppDataInfo () {
-	user = appData.getUser();
-	userAppointments = appData.getAppointmentManager();
-	otherUsersAppointments = appData.getOtherUsersAppointments();
+		// Title label to display the current month and year
+		titleLabel.setDisable(true);
 
-}
-private void pageSetUp (Stage stage, Label titleLabel) {
-	stage.setTitle("Calendar");
-	meetWithLabel.setAlignment(Pos.CENTER);
+		calendarGrid = new GridPane();
+		calendarGrid.setAlignment(Pos.CENTER);
+		calendarGrid.setHgap(5);
+		calendarGrid.setVgap(5);
 
-	// Title label to display the current month and year
-	titleLabel.setDisable(true);
-
-	calendarGrid = new GridPane();
-	calendarGrid.setAlignment(Pos.CENTER);
-	calendarGrid.setHgap(5);
-	calendarGrid.setVgap(5);
-
-}
+	}
 
 
 
-public ArrayList<Appointment> getAppointments() {
-	return appointments;
-}
+	public ArrayList<Appointment> getAppointments() {
+		return appointments;
+	}
 
-public void setAppointments(ArrayList<Appointment> appointments) {
-	this.appointments = appointments;
-}
+	public void setAppointments(ArrayList<Appointment> appointments) {
+		this.appointments = appointments;
+	}
 
-public Appointment getCurrentAppointment() {
-	return currentAppointment;
-}
+	public Appointment getCurrentAppointment() {
+		return currentAppointment;
+	}
 
-public void setCurrentAppointment(Appointment currentAppointment) {
-	this.currentAppointment = currentAppointment;
-}
+	public void setCurrentAppointment(Appointment currentAppointment) {
+		this.currentAppointment = currentAppointment;
+	}
 
-public void setExistingAppointment(Appointment app) {
-	this.existingAppointment.add(app);
-}
+	public void setExistingAppointment(ArrayList <Appointment> existingAppointment) {
+		this.existingAppointment=existingAppointment;
+	}
+	public ArrayList <Appointment> getExistingAppointment() {
+		return this.existingAppointment;
+	}
 
 
 
