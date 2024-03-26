@@ -1,6 +1,7 @@
 package guilayout;
 
 import backend.dog.trait.Attribute;
+import backend.database.Database;
 import backend.wallet.Wallet;
 import javafx.geometry.*;
 import javafx.scene.Scene;
@@ -8,13 +9,18 @@ import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
+
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Hashtable;
 import backend.tag.Tag;
 
+import static guilayout.Components.showAlert;
+
 
 public class UserProfile extends PrimaryScene{
+	private LoginScene loginScene;
 	private ArrayList<Attribute> oldAgePreferences;
 	private ArrayList<Attribute> oldSexPreferences;
 	private ArrayList<Attribute> oldSizePreferences;
@@ -31,147 +37,203 @@ public class UserProfile extends PrimaryScene{
 		}
 		return instance;
 	}
-	
+
 	private UserProfile() {
-		
+
 	}
 
 	public static void main(String[] args) {
-        launch(args);
-    }
+		launch(args);
+	}
 
 	@Override
-    public void start(Stage primaryStage) {
+	public void start(Stage primaryStage) {
 		Components.updateCurrentScene("userProfile");
 
 		initailizePrimaryScene(primaryStage);
-		
-    	HashMap<Integer, Tag> tags = appData.getallTags();
-    	HashMap<Integer,ArrayList<Attribute>> allAttributes = appData.getAllAttributes();
-    	wallet=user.getWallet();
 
-    	oldSexPreferences = user.getCopyOfSexPreferences(user.getSexPreferences());
+		HashMap<Integer, Tag> tags = appData.getallTags();
+		HashMap<Integer,ArrayList<Attribute>> allAttributes = appData.getAllAttributes();
+		wallet=user.getWallet();
+
+		oldSexPreferences = user.getCopyOfSexPreferences(user.getSexPreferences());
 		oldAgePreferences = user.getCopyOfAgePreferences(user.getAgePreferences());
 		oldEnergyLevelPreferences = user.getCopyOfEnergyLevelPreferences(user.getEnergyLevelPreferences());
 		oldSizePreferences = user.getCopyOfSizePreferences(user.getSizePreferences());
 		oldTagPreferences = user.getCopyOfTagPreferences(user.getTagPreferences());
 
-    	VBox preferences = new VBox();
-    	preferences.setAlignment(javafx.geometry.Pos.CENTER);
+		VBox preferences = new VBox();
+		preferences.setAlignment(javafx.geometry.Pos.CENTER);
 
-    	Label preferencesTitle = Components.mediumLabel("Tags", Pos.CENTER);
-    	
+		Label preferencesTitle = Components.mediumLabel("Tags", Pos.CENTER);
 
-    	preferences.getChildren().addAll(
-    			preferencesTitle
-    			);
 
-    	GridPane tagsGrid =  Components.createTags(tags,user);
-    	tagsGrid.setAlignment(javafx.geometry.Pos.CENTER);
-    	
-    	VBox attributes = new VBox();
-    	attributes.setAlignment(javafx.geometry.Pos.CENTER);
+		preferences.getChildren().addAll(
+				preferencesTitle
+				);
 
-    	Label attributesTitle = Components.mediumLabel("Attributes", Pos.CENTER);
-    	
-    	Label sexAttributesTitle = Components.smallLabel("Sex", Pos.BASELINE_LEFT);
-    	GridPane sexAttributeGrid = Components.createAttribute(user.getSexPreferences(), 1,allAttributes);
-    	sexAttributeGrid.setAlignment(javafx.geometry.Pos.CENTER);   	
-    	
-    	Label sizeAttributesTitle = Components.smallLabel("Size",  Pos.BASELINE_LEFT);
-    	GridPane sizeAttributeGrid = Components.createAttribute(user.getSizePreferences(), 3,allAttributes);
-    	sizeAttributeGrid.setAlignment(javafx.geometry.Pos.CENTER);   	
-    	  	
-    	Label energyLevelAttributesTitle = Components.smallLabel("EnergyLevel",  Pos.BASELINE_LEFT);
-    	GridPane energyLevelAttributeGrid = Components.createAttribute(user.getEnergyLevelPreferences(),2,allAttributes);
-    	energyLevelAttributeGrid.setAlignment(javafx.geometry.Pos.CENTER);   	 	
-    	
-    	Label ageAttributesTitle = Components.smallLabel("Age",  Pos.BASELINE_LEFT);
-    	GridPane ageAttributeGrid = Components.createAttribute(user.getAgePreferences(), 0,allAttributes);
-    	ageAttributeGrid.setAlignment(javafx.geometry.Pos.CENTER);   	
-    	
+		GridPane tagsGrid =  Components.createTags(tags,user);
+		tagsGrid.setAlignment(javafx.geometry.Pos.CENTER);
 
-    	attributes.getChildren().addAll(
-    	attributesTitle,
-    	sizeAttributesTitle,
-    	sizeAttributeGrid,
-    	sexAttributesTitle,
-		sexAttributeGrid,
-		ageAttributesTitle,
-		ageAttributeGrid,
-		energyLevelAttributesTitle,
-		energyLevelAttributeGrid
-    	);
+		VBox attributes = new VBox();
+		attributes.setAlignment(javafx.geometry.Pos.CENTER);
 
-    	
+		Label attributesTitle = Components.mediumLabel("Attributes", Pos.CENTER);
+
+		Label sexAttributesTitle = Components.smallLabel("Sex", Pos.BASELINE_LEFT);
+		GridPane sexAttributeGrid = Components.createAttribute(user.getSexPreferences(), 1,allAttributes);
+		sexAttributeGrid.setAlignment(javafx.geometry.Pos.CENTER);   	
+
+		Label sizeAttributesTitle = Components.smallLabel("Size",  Pos.BASELINE_LEFT);
+		GridPane sizeAttributeGrid = Components.createAttribute(user.getSizePreferences(), 3,allAttributes);
+		sizeAttributeGrid.setAlignment(javafx.geometry.Pos.CENTER);   	
+
+		Label energyLevelAttributesTitle = Components.smallLabel("EnergyLevel",  Pos.BASELINE_LEFT);
+		GridPane energyLevelAttributeGrid = Components.createAttribute(user.getEnergyLevelPreferences(),2,allAttributes);
+		energyLevelAttributeGrid.setAlignment(javafx.geometry.Pos.CENTER);   	 	
+
+		Label ageAttributesTitle = Components.smallLabel("Age",  Pos.BASELINE_LEFT);
+		GridPane ageAttributeGrid = Components.createAttribute(user.getAgePreferences(), 0,allAttributes);
+		ageAttributeGrid.setAlignment(javafx.geometry.Pos.CENTER);   	
+
+		
+		loginScene = LoginScene.getInstance();
+
+		
+		attributes.getChildren().addAll(
+				attributesTitle,
+				sizeAttributesTitle,
+				sizeAttributeGrid,
+				sexAttributesTitle,
+				sexAttributeGrid,
+				ageAttributesTitle,
+				ageAttributeGrid,
+				energyLevelAttributesTitle,
+				energyLevelAttributeGrid
+				);
+
+
 
 		Button deposit = Components.button("Deposit funds into your wallet");
-/*	//GETTING RID OF SCROLL BAR	
-		ScrollBar scrollBar = new ScrollBar();
-        //scrollBar.setStyle("-fx-pref-width: 1;");
-       scrollBar.setStyle("-fx-pref-height: 20;");
-        VBox scrollContainer = new VBox();   
-        scrollContainer.setMargin(scrollBar, new Insets(20, 100, 20, 100));  // top, right, bottom, left
-        scrollContainer.getChildren().addAll(scrollBar);
-        // Set the range of the scroll bar
-        scrollBar.setMin(0);
-        scrollBar.setMax(SingleMaxWalletDepositLimit);//for now arbitrarily set max single deposit limit to 1000
-*/        
-        Label currentFunds =Components.mediumLabel();
-        currentFunds.setText("Your current balance: "+ wallet.getBalance());
-        /*	//GETTING RID OF SCROLL BAR	
-//        // Add listener to capture value changes
-//        scrollBar.valueProperty().addListener((observable, oldValue, newValue) -> {
-//            valueLabel.setText("Selected Value: " + String.format("%.2f", newValue));
-//            ValueSelectedInScrollBar=Double.parseDouble(String.format("%.2f", newValue));
-//        });
-*/
+		
+		Label currentFunds =Components.mediumLabel();
+		currentFunds.setText("Your current balance: "+ wallet.getBalance());
+	
 		TextField amount = new TextField();
 
-        deposit.setOnAction(event -> {
-        	boolean isValid=Components.checkInput(amount.getText());
-        	if (!isValid)
-    		{Components.showAlert("Cannot enter non-numeric values ", "Please enter a number", AlertType.ERROR);
-amount.clear();
-    		amount.setText("");}
+		deposit.setOnAction(event -> {
+			boolean isValid=Components.checkInput(amount.getText());
+			if (!isValid)
+			{
+				showAlert("Cannot enter non-numeric values ", "Please enter a number", AlertType.ERROR);
+				amount.clear();
+				amount.setText("");}
 
-    		else 
-    		{
-    			try {
-    				wallet.deposit(Double.parseDouble(amount.getText()));
-    				currentFunds.setText("Your current balance "+ wallet.getBalance());
+			else 
+			{
+				try {
+					boolean result = (BigDecimal.valueOf(Double.valueOf(amount.getText())).scale() > 2);
+					if(!result) {
+						wallet.deposit(Double.parseDouble(amount.getText()));
+						currentFunds.setText("Your current balance "+ wallet.getBalance());
+					}
+					else{
+						showAlert("invalid dollar amount","please try entering a correct dollar amount.",Alert.AlertType.ERROR);
+					}
+
 
 				} catch (IllegalArgumentException e) {
 					// TODO: handle exception
-					Components.showAlert("Cannot enter a negative number", "Please enter a non-negative number", AlertType.ERROR);
-	    			amount.clear();
+					showAlert("Cannot enter a negative number", "Please enter a non-negative number", AlertType.ERROR);
+					amount.clear();
 				}
-    			
 
-    		}
 
-        	});
-        
-        Button signOutButton = new Button("sign out");
-        
+			}
+
+		});
+
+		Button signOutButton = new Button("sign out");
+		
+		//Sign out button
+				signOutButton.setOnMouseClicked(event -> {
+					Database.onApplicationClose(user, allDogs, appData.getAppointmentManager(), appData.getOkToClose());
+					appData.setOkToClose(false);//Prevent double saving with a null dog list
+					user.setUsername(null);
+					user.setPassword(null);
+					user.setLikedDogsToNull();
+					user.setPassedDogsToNull();
+					loginScene.start(primaryStage);
+				});
+
 		VBox allWalletUserComponents = new VBox();
 		allWalletUserComponents.setSpacing(30);
 		allWalletUserComponents.getChildren().addAll( amount, currentFunds, deposit);
 		allWalletUserComponents.setAlignment(Pos.TOP_CENTER);
-		 // Set padding for the VBox (top, right, bottom, left)
+		// Set padding for the VBox (top, right, bottom, left)
 		allWalletUserComponents.setPadding(new javafx.geometry.Insets(20, 10, 20, 10));
-		
+
+
+		Button changeUsernamePassword = new Button("Change username \nand password?");
+
+
+
+
+		changeUsernamePassword.setOnAction(e -> {// Create a text field
+			TextField username = new TextField();
+			username.setPromptText("Enter username");
+
+			TextField password = new TextField();
+			password.setPromptText("Enter password");
+
+			// Create a VBox to hold the text field
+			VBox textInputforPopUp = new VBox();
+			textInputforPopUp.getChildren().addAll(username, password);
+
+			// Create a new Alert
+			Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+			alert.setTitle("Changing your username and password");
+			alert.setHeaderText("Please enter your old username and password:");
+			alert.getDialogPane().setContent(textInputforPopUp);
+
+			// Show the alert and wait for the user response
+			alert.showAndWait().ifPresent(response -> {
+				if (response == ButtonType.OK) {
+					Alert newValues = new Alert(Alert.AlertType.CONFIRMATION);
+
+					newValues.setTitle("Changing your username and password");
+					newValues.setHeaderText("Now enter your new desired username and password:");
+					newValues.getDialogPane().setContent(textInputforPopUp);
+					newValues.showAndWait().ifPresent(click -> {
+
+						if (click==ButtonType.OK) {
+							
+							username.clear();
+							password.clear();
+							//check valid input
+							Alert resultAlert = new Alert(Alert.AlertType.INFORMATION);
+							resultAlert.setTitle("Input Text");
+							resultAlert.setHeaderText("You entered:");
+							resultAlert.setContentText(username + " " + password);
+							resultAlert.showAndWait();
+						}
+
+					});
+				}
+			});
+		});
+
 		//END OF WALLET UI STUFF
 		mainContainer.getChildren().addAll(
 				preferences,
 				tagsGrid,
 				attributes,
-				allWalletUserComponents,
+				allWalletUserComponents,changeUsernamePassword,
 				signOutButton
-		);
+				);
 
 		primaryStage.show();
-		
+
 
 	}
 

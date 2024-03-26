@@ -1,5 +1,6 @@
 package guilayout;
 
+import java.math.BigDecimal;
 import java.util.PriorityQueue;
 
 import backend.dog.Dog;
@@ -69,9 +70,14 @@ public class DonateScene extends PrimaryScene {
 
 		donateButton.setOnAction(event -> {
 			try {
-
-				Components.makePayment(appData, howOftenBox.getValue(), howMuchMoney,howOftenBox, currentDog);
-				currentFunds.setText("Your current balance "+String.format("%.2f",  appData.getUser().getWallet().getBalance()));
+				boolean result = (BigDecimal.valueOf(Double.valueOf(howMuchMoney.getText())).scale() > 2);
+				if(!result) {
+					Components.makePayment(appData, howOftenBox.getValue(), howMuchMoney, howOftenBox, currentDog);
+					currentFunds.setText("Your current balance " + String.format("%.2f", appData.getUser().getWallet().getBalance()));
+				}
+				else{
+					showAlert("invalid dollar amount","please try entering a correct dollar amount.",Alert.AlertType.ERROR);
+				}
 
 			} catch (FundsTooLow e) {
 				e.printStackTrace();
@@ -92,10 +98,6 @@ public class DonateScene extends PrimaryScene {
 		stage.show();
 
 	}
-
-
-	
-	
 
 	private void showAlert(String title, String message, Alert.AlertType alertType) {
 		Alert alert = new Alert(alertType);

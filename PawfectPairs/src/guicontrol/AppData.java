@@ -30,7 +30,15 @@ public class AppData {
 	private AppointmentManager appointmentManager;
 	private ArrayList<Appointment> otherUsersAppointments;
 	private HashMap<Integer, ArrayList<Attribute>> allAttributes;
-
+	private boolean okToClose;
+	
+	public void setOkToClose(boolean state) {
+		this.okToClose = state;
+	}
+	
+	public boolean getOkToClose() {
+		return this.okToClose;
+	}
 
 	public void initializeWallet (int userid, String password) {
 		this.user.setWallet(Database.getWallet(userid, password));
@@ -188,11 +196,11 @@ public class AppData {
 		
 		setUser(username, pass); // sets user, dog liked list, ideal dog attribtues
 		
-		initializeWallet(getUser().getUserID(), pass);
-		
 		setAllTags();
 		
 		setPosters();
+
+		initializeWallet(getUser().getUserID(), pass);
 		
 		setAllDogs();
 		

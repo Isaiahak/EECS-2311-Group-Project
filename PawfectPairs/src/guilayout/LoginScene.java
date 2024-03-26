@@ -3,9 +3,13 @@ package guilayout;
 import backend.calendar.AppointmentManager;
 import javafx.application.Application;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
@@ -19,7 +23,7 @@ import guicontrol.Authenticator;
 
 
 public class LoginScene extends Application{
-	private Authenticator authenticator = new Authenticator(); 
+	private Authenticator authenticator;
 
 	private static LoginScene instance;
 	AppData appData;
@@ -38,80 +42,88 @@ public class LoginScene extends Application{
 
     @Override
     public void start(Stage primaryStage) {
+    	
+    	Label message = Components.mediumLabel();
+    	
     	DogProfileScene dogProfileScene = DogProfileScene.getInstance();
         primaryStage.setTitle("PawfectPairs");
-        int width = 900;
-		int height = 900;
+        authenticator = new Authenticator(message);
+		VBox mainContainer = new VBox();
+		mainContainer.setSpacing(Components.screenHeight * 0.02);
+		HBox root = new HBox(mainContainer);
+		root.setAlignment(Pos.CENTER);
+		this.appData = appData.getInstance();
+		appData.initializeAttributes();
+		
+		
+		double paddingX = Components.screenWidth * 0.2; // 20% of screen width
+		double paddingY = Components.screenHeight * 0.2; // 20% of screen height
 
-        GridPane grid = new GridPane();
-        grid.setAlignment(javafx.geometry.Pos.CENTER);
-        grid.setHgap(10);
-        grid.setVgap(10);
-        grid.setPadding(new Insets(25, 25, 25, 25));
 
-        Label userLabel = new Label("Username:");
+     	mainContainer.setAlignment(Pos.CENTER);
+
+        Label userLabel = Components.mediumLabel("Username:", Pos.CENTER);
         TextField userTextField = new TextField();
-        Label passwordLabel = new Label("Password:");
+        HBox usernameFieldAndLabel = new HBox(userLabel, userTextField);
+        usernameFieldAndLabel.setSpacing(0.01 * Components.screenWidth);
+        usernameFieldAndLabel.setAlignment(Pos.CENTER);
+        
+        Label passwordLabel = Components.mediumLabel("Password:", Pos.CENTER);
         PasswordField passwordField = new PasswordField();
-
+        HBox passwordFieldAndLabel = new HBox(passwordLabel, passwordField);
+        passwordFieldAndLabel.setSpacing(0.01 * Components.screenWidth);
+        passwordFieldAndLabel.setAlignment(Pos.CENTER);
+        VBox textFields = new VBox(usernameFieldAndLabel,
+        		passwordFieldAndLabel);
+        
+        textFields.setAlignment(Pos.CENTER);
         Button signUpButton = new Button("Sign Up");
         Button loginButton = new Button("Login");
-        
-        
-//        String css = this.getClass().getResource("/style.css").toExternalForm();
-//    	primaryStage.getScene().getStylesheets().add(css);
+        HBox buttons = new HBox(signUpButton, loginButton);
+        buttons.setAlignment(Pos.CENTER);
+        buttons.setSpacing(0.05 * Components.screenWidth);
         
         signUpButton.getStyleClass().add("login-page-buttons");
         loginButton.getStyleClass().add("login-page-buttons");
-        
-        grid.add(userLabel, 0, 0);
-        grid.add(userTextField, 1, 0);
-        grid.add(passwordLabel, 0, 1);
-        grid.add(passwordField, 1, 1);
-        grid.add(signUpButton, 0, 2);
-        grid.add(loginButton, 1, 2);
-        
-        appData = AppData.getInstance();    
-        appData.initializeAttributes(); 
-                
+
+        mainContainer.getChildren().addAll(
+        		message,
+        		textFields,
+        		buttons
+
+        		);
+       
         signUpButton.setOnAction(e -> {
-            String username = userTextField.getText();
+        	String username = userTextField.getText();
             String password = passwordField.getText();
-            boolean result = Database.addUser(username, password, appData.getAllAttributes());
-            if ( password == "" && username == "")
-                showAlert("Sign up failed","Empty username or password not allowed!");
-            else if (Database.usernameChecker(username) != username && result == false)
-                showAlert("Sign up failed","Username in use, try logging in!");
-            else {
-                User user = Database.getUser(username, password);
-                appData.setAppointmentManager(new AppointmentManager(user.getUserID(), new ArrayList<>()));
-            }
-            clearFields(userTextField, passwordField);
+            
+            if(authenticator.authenticateSignUp(username, password)) {
+            	Database.addUser(username, password, appData.getAllAttributes());
+            	User user = Database.getUser(username, password);
+            	appData.setAppointmentManager(new AppointmentManager(user.getUserID(), new ArrayList<>()));
+            };
+        	
+        	clearFields(userTextField, passwordField);
         });
 
         loginButton.setOnAction(e -> {
             String username = userTextField.getText();
             String password = passwordField.getText();
-            appData.onStart(username, password);
-            if (username == "" && password == "" ) {
-                showAlert("Login failed","Empty username or password not allowed!");
-            }
-            else if (Database.usernameChecker(username).compareTo(username) != 0){
-                showAlert("Login failed","invalid username");
-            }
-            else if (Database.passwordChecker(username,password).compareTo(username) != 0){
-                showAlert("Login failed", "incorrect password");
-            }
-            else {
-                System.out.println("Logging the user in!");
-                dogProfileScene.start(primaryStage);
+            
+            if(authenticator.authenticateLogIn(username, password)) {
+            	appData.onStart(username, password); 
+            	appData.setOkToClose(true);
+            	dogProfileScene.start(primaryStage);
             }
             clearFields(userTextField, passwordField);
         });
 
-        Scene scene = new Scene(grid, width, height);
-        primaryStage.setScene(scene);
+        Scene scene = new Scene(root, Components.screenWidth, Components.screenHeight);
+        primaryStage.setScene(scene);        
+        String css = this.getClass().getResource("/style.css").toExternalForm();
+    	primaryStage.getScene().getStylesheets().add(css);
         primaryStage.show();
+            
     }
 
     private void clearFields(TextField usernameField, PasswordField passwordField) {
@@ -119,11 +131,4 @@ public class LoginScene extends Application{
         passwordField.clear();
     }
 
-    private void showAlert(String title, String message) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
-    }
 }

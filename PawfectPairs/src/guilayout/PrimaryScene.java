@@ -101,58 +101,5 @@ public class PrimaryScene extends Application{
     	root.setTop(Components.navTab(userProfileScene, likedDogsScene, dogProfileScene, sponsoredDogsScene, bookedAppointmentsScene, primaryStage, appData));
     	
     }
-    
-    public void initailizePrimaryScene(Stage primaryStage, String test) {
-    	root = new BorderPane();
-    	root.getStyleClass().add("root-container");
-    //	root.setMinHeight(Components.screenHeight);
-    	root.setMaxHeight(Components.screenHeight);    //testing to see if this displays better than min	
-    	
-    	mainContainer = new VBox();
-        mainContainer.setMaxSize(Components.screenWidth, Components.screenHeight);
-
-		mainContainer.setPadding(new Insets(Components.screenHeight/10, Components.screenWidth/40, Components.screenHeight/30, Components.screenWidth/40));//based on screen size(top, right, bottom, left)
-		
-    	scrollPane = new ScrollPane(mainContainer);
-    	scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-    	scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED); // Set vertical scrollbar policy to "as needed"
-    	scrollPane.setFitToWidth(true);
-    	scrollPane.setFitToHeight(true);
-    	
-    
-    	
-    	root.setCenter(scrollPane);
-//    	root.setRight(null);
-//    	root.setLeft(null);
-
-    	
-    	this.scene = new Scene(root, Components.screenWidth, Components.screenHeight);
-    	
-//		root.setAlignment(Pos.CENTER);	
-    	
-		primaryStage.setScene(scene);
-		
-		String css = this.getClass().getResource("/style.css").toExternalForm();
-    	primaryStage.getScene().getStylesheets().add(css);
-    	
-    	this.appData = AppData.getInstance();
-        this.allDogs = appData.getSortedDogProfiles();
-        this.posterList = appData.getPosters();
-        this.userProfileScene = UserProfile.getInstance();
-        this.likedDogsScene = LikedDogScene.getInstance();
-        this.dogProfileScene = DogProfileScene.getInstance();
-        this.sponsoredDogsScene = SponsoredDogsScene.getInstance();
-        this.user = appData.getUser();
-        this.bookedAppointmentsScene = BookedAppointmentScene.getInstance();
-    	this.wallet = user.getWallet();
-    	
-    	root.setTop(Components.navTab(userProfileScene, likedDogsScene, dogProfileScene, sponsoredDogsScene, bookedAppointmentsScene, primaryStage, appData));
-    	
-    }
-
-    public Scene getScene(){
-        return this.scene;
-    }
-
 
 }

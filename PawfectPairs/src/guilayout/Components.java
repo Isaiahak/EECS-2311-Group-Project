@@ -297,7 +297,7 @@ public class Components{
 
 			} else {
 				if(user.getTagPreferences().contains(labelTag) == true) {
-					user.getTagPreferences().remove(labelTag);
+					user.getTagPreferences().remove(labelTag.getTagId());
 				}
 				label.setId(null);         	
 			}
@@ -707,12 +707,12 @@ public class Components{
 	}
 
 	public static HBox sponsoredDogView (Dog d, Stage stage, Hashtable < Integer, Poster > poster, AppData
-			appdata, SponsoredDogsScene page){
+			appdata, SponsoredDogsScene page, Double paymentAmount){
 		ImageView img = Components.imageView(200, 200);
 		img.setImage(new Image(d.getImagePath()));
 
 		Label primaryInfoLabel = Components.mediumLabel(d.getName() + ", " + d.getAge() + " years, " + d.getSex(), Pos.CENTER);
-
+		Label sponsorshipAmount = Components.smallLabel("Sponsorship amount: " + paymentAmount,Pos.CENTER);
 		Hyperlink posterLink = hyperlinkToPosterProfile(d, stage, poster);
 
 		Button cancelButton = button("Cancel Donation :(");
@@ -761,6 +761,7 @@ public class Components{
 		});
 		VBox info = new VBox(
 				primaryInfoLabel,
+				sponsorshipAmount,
 				posterLink,
 				cancelButton, editButton
 				);

@@ -50,9 +50,13 @@ public class Dog  implements Comparable<Dog>{
 
 	    }
 
-	    public Dog(Dog dog) { //copy constructor (for ideal dog)
+	    public Dog(Dog dog) { 
 	    	this.name = dog.getName();
 	        this.id = dog.getId();
+	        this.imagePath = dog.getImagePath();
+	        this.posterId = dog.getPosterId();
+	        this.adopted = dog.getAdopted();
+	        this.biography = dog.getBiography();
 	       
 	        setAge(new Age(dog.getAge().getWeight()));
 	        setSex(new Sex(dog.getSex().getWeight()));

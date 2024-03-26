@@ -33,7 +33,9 @@ public class Database {
 		try {
 			Class.forName("org.postgresql.Driver"); // Replace with your database driver
 //			Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/pawitr2", "postgres", "1234"); // zainab
-						Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/finaldb2", "postgres", "123"); // katya
+
+			Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/thebestoneyet", "postgres", "123"); // connor (sorry katya)
+
 //			Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5434/thebestoneyet", "postgres", "321123"); // isaiah
 			//System.out.println( "Connected to the PostgreSQL server successfully.");
 			return connection;
@@ -1184,27 +1186,29 @@ public class Database {
 	/*
 	 * Cleanup Methods
 	 */
-	public static void onApplicationClose(User user, PriorityQueue<Dog> doglist, AppointmentManager appointmentManager) {
-//		Database.updateAllAdoptedDogs(doglist); // sets dogs to be adopted
-		Database.addUserDog(user.getLikedDogs(), user.getUserID(), "userdogs");
-		Database.addUserDog(user.getPassedDogs(), user.getUserID(), "userpasseddogs");
 
-		// TO DO: update user's attribute preferences and tag preferences :)
-		int userId = user.getUserID();
-		Database.deletePreferenceTagsFromUser(userId);
-		Database.addPreferenceTagsToUser(user.getTagPreferences(), userId);
-		Database.deleteAppointment(userId);
-		Database.setUserAppointments(appointmentManager);
-		Database.deleteUserAttributePreferences(userId);
-		Database.addUserAttributePreferences(user.getAgePreferences(), userId);
-		Database.addUserAttributePreferences(user.getSexPreferences(), userId);
-		Database.addUserAttributePreferences(user.getEnergyLevelPreferences(), userId);
-		Database.addUserAttributePreferences(user.getSizePreferences(), userId);
-		Database.deleteRecurringPayments(user);
-		Database.addRecurringPayments(user, user.getWallet().getRecurringPayments());
-		Database.updateWallet(user);
-		ArrayList<Dog> dogListUser = user.getLikedDogs();
-		for (Dog d : dogListUser) {
+	public static void onApplicationClose(User user, PriorityQueue<Dog> doglist, AppointmentManager appointmentManager, Boolean okToClose) {
+		if(okToClose==true) {
+//			Database.updateAllAdoptedDogs(doglist); // sets dogs to be adopted
+			Database.addUserDog(user.getLikedDogs(), user.getUserID(), "userdogs");
+			Database.addUserDog(user.getPassedDogs(), user.getUserID(), "userpasseddogs");
+
+			// TO DO: update user's attribute preferences and tag preferences :)
+			int userId = user.getUserID();
+			Database.deletePreferenceTagsFromUser(userId);
+			Database.addPreferenceTagsToUser(user.getTagPreferences(), userId);
+			Database.deleteAppointment(userId);
+			Database.setUserAppointments(appointmentManager);
+			Database.deleteUserAttributePreferences(userId);
+			Database.addUserAttributePreferences(user.getAgePreferences(), userId);
+			Database.addUserAttributePreferences(user.getSexPreferences(), userId);
+			Database.addUserAttributePreferences(user.getEnergyLevelPreferences(), userId);
+			Database.addUserAttributePreferences(user.getSizePreferences(), userId);
+			Database.deleteRecurringPayments(user);
+			Database.addRecurringPayments(user, user.getWallet().getRecurringPayments());
+			Database.updateWallet(user);
+      ArrayList<Dog> dogListUser = user.getLikedDogs();
+		  for (Dog d : dogListUser) {
 			if (d.getAdopted()==true) {
 				Database.setDogAdopted(d);
 				Database.deleteAppointment(userId);
@@ -1212,8 +1216,7 @@ public class Database {
 				
 			}
 		}
-		
-		
+
 
 
 	}

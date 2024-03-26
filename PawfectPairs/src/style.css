@@ -34,11 +34,23 @@ darkest */
 
 /*LOGIN*/
 .login-page-buttons{
-	-fx-background-color: #ABC4FF;
-	-fx-padding: 10px;	
+	-fx-background-color: #D7E3FC;
+	-fx-padding: 15px;		
 	-fx-background-radius: 10px; 
-	-fx-padding: 5px 10px; 
 	-fx-alignment: center; 
+	-fx-font-size: 15;
+}
+
+.login-page-buttons:hover{
+	-fx-background-color: #E2EAFC;
+
+}
+
+#red{
+	 -fx-text-fill: rgb(255, 100, 100);
+}
+#green{
+	 -fx-text-fill: rgb(32, 198, 9);
 }
 
 /*GENERAL*/

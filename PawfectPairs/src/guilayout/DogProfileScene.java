@@ -1,4 +1,4 @@
-package guilayout;
+	package guilayout;
 
 import backend.database.Database;
 import backend.dog.Dog;
@@ -75,7 +75,7 @@ public class DogProfileScene extends PrimaryScene{
 		//this has to be fixed just to show dogs that are not yet adopted!
 		likeButton.getStyleClass().add("like-button");
 		likeButton.setOnAction(e -> {
-			//allDogs.peek().setAdopted(false);
+
 			user.addLikedDogs(allDogs.peek());
 			if (allDogs.size() == 1) {
 				changeProfile();
@@ -135,7 +135,7 @@ public class DogProfileScene extends PrimaryScene{
 			
 			
 
-			Database.onApplicationClose(user, allDogs, appData.getAppointmentManager());
+			Database.onApplicationClose(user, allDogs, appData.getAppointmentManager(), appData.getOkToClose());
 		});
 	}
 
