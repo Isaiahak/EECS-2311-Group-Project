@@ -12,6 +12,11 @@ import backend.calendar.AppointmentManager;
 
 class AppointmentManagerTest {
 
+	// Existing appointments for testing appointmentExists method
+	private Appointment existingAppointment = new Appointment(1, 2, Date.valueOf("2024-03-10"), 3);
+    private Appointment differentAppointment = new Appointment(4, 5, Date.valueOf("2024-03-10"), 6);
+
+	
 	// check if getUserID() returns the correct userID
 	@Test
 	public void testGetUserID() {
@@ -90,5 +95,52 @@ class AppointmentManagerTest {
         Appointment differentAppointment = new Appointment(4, 5, Date.valueOf("2024-03-10"), 6);
         assertFalse(appointmentManager.appointmentExists(differentAppointment));
     }
+    
+    
+    //---
+
+    
+ 
+    
+
+    // check if appointmentExists() correctly handles checking existence of an appointment in an empty list
+    @Test
+    public void testAppointmentExists_EmptyList() {
+        ArrayList<Appointment> userAppointments = new ArrayList<>();
+        AppointmentManager appointmentManager = new AppointmentManager(1, userAppointments);
+
+       assertFalse(appointmentManager.appointmentExists(existingAppointment));
+    }
+
+    // check if appointmentExists() correctly handles checking existence of an appointment with null attributes
+    @Test
+    public void testAppointmentExists_NullAttributes() {
+        ArrayList<Appointment> userAppointments = new ArrayList<>();
+        AppointmentManager appointmentManager = new AppointmentManager(1, userAppointments);
+
+        Appointment nullAppointment = new Appointment(0, 0, null, 0);
+        assertFalse(appointmentManager.appointmentExists(nullAppointment));
+    }
+
+    // check if appointmentExists() correctly handles checking existence of an appointment with negative IDs
+    @Test
+    public void testAppointmentExists_NegativeIDs() {
+        ArrayList<Appointment> userAppointments = new ArrayList<>();
+        AppointmentManager appointmentManager = new AppointmentManager(1, userAppointments);
+
+        Appointment negativeAppointment = new Appointment(-1, -2, Date.valueOf("2024-03-10"), -3);
+        assertFalse(appointmentManager.appointmentExists(negativeAppointment));
+    }
+
+    // check if appointmentExists() correctly handles checking existence of an appointment with maximum possible IDs
+    @Test
+    public void testAppointmentExists_MaximumIDs() {
+        ArrayList<Appointment> userAppointments = new ArrayList<>();
+        AppointmentManager appointmentManager = new AppointmentManager(1, userAppointments);
+
+        Appointment maxAppointment = new Appointment(Integer.MAX_VALUE, Integer.MAX_VALUE, Date.valueOf("2024-03-10"), Integer.MAX_VALUE);
+        assertFalse(appointmentManager.appointmentExists(maxAppointment));
+    }
+
 
 }

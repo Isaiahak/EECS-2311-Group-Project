@@ -264,7 +264,7 @@ March 11, 2024
 - Ekaterina udpated the calendar gui
 - Isaiah debugged the sorting algortim (changed DB calls, so we needed to change some data structures)
 - Sidney has worked on JUnit Tests and Integration Testing
-- SIdney was troublshooting JUnit test for Integration
+- Sidney was troublshooting JUnit test for Integration
 - Edson has worked on fixing JUnit Tests with Sidney
 - Zainab worked on testing for Wallet (remade tests) and added alerts, and fixed boundaries for input
 - Zainab ensured the wallet balance is consistent throughout the app - fixed bug
@@ -297,3 +297,37 @@ March 16, 2024
 - Ekaterina added some css styling and refactored a couoke of scenes
 - Zainab set up adaptive (based on screen size) padding, spacing so that all components are shown on screens properly 
 - Zainab tried three new different ways to create button animations (in branch "weee" currently)
+
+March 18,2024
+- Zainab moved some error handling for deposit to the backend, and changed UI for the deposit in the userprofile page
+- Ekaterina updated the GUI for the dogproile page and some other general CSS Styling
+- Ekaterina made a dynamic icon label/scaling for the dog attributes displayed on the profile
+
+March 19, 2024
+- Yuqian finished unit testing for all five classes in dog trait
+
+March 20, 2024
+- Ekaterina update the database and added more attributes
+- Ekaterina updated the Attributes class and components class, as well as some styling to make sure tag label text is not cut off
+
+March 21, 2024
+- Yuqian worked on unit testing for RecurringPayment class
+- Yuiqan finished all unit testings for all the classes under calendar, wallet, and dog trait
+
+March 23, 2024
+- Ekaterina repopulated the database again (10,000 dogs) to test loads and database calls
+- Ekaterina made some minor GUI adjustments
+- Ekaterina fixed a bug associated with not correctly displaying a poster's dogs
+- Ekaterina made some adjustments to the gradle build file to support tests
+
+March 24, 2024
+-Ekaterina worked on her take home assignmetn and started some bug fixing/refactoring her assigned scene
+- Connor started working on the sign-out button.
+
+March 25, 2024
+- Ekaterina finished refactoring and debugging her takehome assignmeent (login scene) 
+- Ekaterina addeda the authetnicator class
+-Ekaterina added new tables to the DB to support poster scoring
+- Ekaterina implemented GUI for adopting dogs
+- Ekaterina added DB calls to update poster scores 
+- Connor finished the sign-out button.

@@ -1,35 +1,72 @@
+/*COLOR PALETTE*/
+/* lightest
+EDF2FB
+E2EAFC
+D7E3FC
+CCDBFD
+C1D3FE
+B6CCFE
+ABC4FF
+darkest */
+
+
+
 /*ROOT*/
 
 .root-container{
-	-fx-background-color: linear-gradient(to bottom, #FFFFFF, #d7d7d7);
+	/*-fx-background-color: linear-gradient(to bottom, #FFFFFF, #d7d7d7);*/
+	-fx-background-color:  rgb(228, 228, 228);
 }
 
 
-/*NAV BAR*//*
-.navbar-container{
-  -fx-top: 0; 
-
-}*/
-
 .nav-button {
-    -fx-background-color: #30DFC4;
+    -fx-background-color: #B6CCFE;
     -fx-text-fill: white;
 }
 .nav-button:hover {
-    -fx-background-color: #83ECDC;
+    -fx-background-color: #C1D3FE;
 }
 
 #highlighted-nav{
-	 -fx-background-color: #ACF2E7;
+	 -fx-background-color: #C1D3FE;
 }
 
 
+/*LOGIN*/
+.login-page-buttons{
+	-fx-background-color: #D7E3FC;
+	-fx-padding: 15px;		
+	-fx-background-radius: 10px; 
+	-fx-alignment: center; 
+	-fx-font-size: 15;
+}
+
+.login-page-buttons:hover{
+	-fx-background-color: #E2EAFC;
+
+}
+
+#red{
+	 -fx-text-fill: rgb(255, 100, 100);
+}
+#green{
+	 -fx-text-fill: rgb(32, 198, 9);
+}
 
 /*GENERAL*/
 
+.image{
+	-fx-background-radius: 10%;
+	 -fx-border-color: linear-gradient(to bottom right, #ff7f50, #87ceeb); /* Gradient border color */
+    -fx-border-width: 3px; /* Border width */
+    -fx-border-radius: 10px; /* Border radius */
+    -fx-border-style: solid; /* Border style */ 
+	
+	
+}
 .label{
     -fx-font-family: Verdana;
-    -fx-fill: rgb(0, 1, 45);
+   
     -fx-text-alignment: justify;
     -fx-line-spacing: 1.5;
 }
@@ -64,29 +101,28 @@
 /*USER PROFILE*/
 
 .tag-label{
--fx-background-color: #e1fcf6;
--fx-padding: 10px;		
+-fx-background-color: #EDF2FB;
+-fx-padding: 15px;		
 -fx-background-radius: 10px; 
--fx-padding: 5px 10px; 
 -fx-alignment: center; 
 }
 
 .tag-label:hover{
-	-fx-background-color: rgb(255, 128, 192);
+	-fx-background-color: #E2EAFC;
 }
 
 #highlighted-tag-label{
--fx-background-color: rgb(128, 255, 128);
+-fx-background-color: #CCDBFD;
 
 }
 
 #highlighted-tag-label:hover{
--fx-background-color: rgb(128, 128, 192);
+-fx-background-color: #D7E3FC;
 
 }
 
 .attribute-label{
--fx-background-color: #e1fcf6;
+-fx-background-color: #EDF2FB;
 -fx-padding: 10px;		
 -fx-background-radius: 10px; 
 -fx-padding: 5px 10px; 
@@ -94,24 +130,47 @@
 }
 
 .attribute-label:hover{
-	-fx-background-color: rgb(255, 128, 192);
+	-fx-background-color: #E2EAFC;
 }
 
 #highlighted-attribute-label{
--fx-background-color: rgb(128, 255, 128);
+-fx-background-color: #CCDBFD;
 
 }
 
 #highlighted-attribute-label:hover{
--fx-background-color: rgb(128, 128, 192);
+-fx-background-color: #D7E3FC;
+
+}
+
+.user-profile-page-buttons{
+	-fx-background-color: #D7E3FC;
+	-fx-padding: 15px;		
+	-fx-background-radius: 10px; 
+	-fx-alignment: center; 
+	-fx-font-size: 15;
+}
+
+.user-profile-page-button:hover{
+	-fx-background-color: #E2EAFC;
 
 }
 
 
+
 /*DOG PROFILE*/
 
+.dog-picture-container{
+	-fx-background-color:  rgb(239, 239, 239);
+	-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 30, 0, 0, 0);
+	-fx-background-radius: 10px; 
+	
+	/*-fx-background-color: linear-gradient(to bottom, #FFFFFF, #d7d7d7);*/
+	
+}
+
 .dog-tag-label{
-	-fx-background-color: #03adfc;
+	-fx-background-color: #ABC4FF;
 	-fx-padding: 10px;	
 	-fx-background-radius: 10px; 
 	-fx-padding: 5px 10px; 
@@ -119,27 +178,37 @@
 }
 
 .like-button {
-	-fx-background-color: #db2a4d;
+	-fx-background-color: #D60040;
 	-fx-cursor: hand; 
 	 -fx-text-fill: white; 
-	 -fx-font-size: 60;
+	 -fx-font-size: 80;
 	 -fx-background-radius: 50%; 
 }
 .like-button:hover {
-	-fx-background-color: linear-gradient(to right, #ff5f6d, #ffc371); /* Final gradient */
+	-fx-background-color: linear-gradient(to right, #D60040, #FFA061); /* Final gradient */
 
 }
 
 
 .pass-button {
-	-fx-background-color: #0a0f40;
+	-fx-background-color: #00257A;
 	 -fx-text-fill: white; 
-	 -fx-font-size: 60;
+	 -fx-font-size: 80;
 	 -fx-background-radius: 50%; 
 }
 
 .pass-button:hover{
-	-fx-background-color: rgb(15, 23, 96);
+	-fx-background-color: #041D57;
+}
+
+.dog-attribute-label{
+	-fx-text-fill: rgb(199, 198, 197);
+	-fx-padding: 10px;
+	-fx-font-size: 50px
+}
+
+#dog-attribute-label-active{
+	-fx-text-fill:#30DFC4;
 }
 
 /*POSTER PROFILE*/

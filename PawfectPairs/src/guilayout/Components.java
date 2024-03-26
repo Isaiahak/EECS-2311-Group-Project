@@ -6,6 +6,7 @@ import java.util.*;
 
 import backend.calendar.Appointment;
 import backend.calendar.AppointmentManager;
+import backend.database.Database;
 import backend.dog.Dog;
 import backend.dog.trait.Attribute;
 import backend.poster.Poster;
@@ -26,6 +27,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
@@ -173,8 +175,6 @@ public class Components{
 			});
 		}
 
-
-
 		navTab.getChildren().addAll(settingsButton, dogProfileButton, likedDogButton, sponsoredDogButton, appointmentsButton);
 
 		navTab.setAlignment(Pos.TOP_CENTER);
@@ -259,6 +259,12 @@ public class Components{
 		imageView.setFitWidth(w);
 
 		imageView.setPreserveRatio(true);
+		
+		Rectangle clip = new Rectangle(w, l);
+		clip.setArcWidth(w * 0.1); 
+        clip.setArcHeight(l * 0.1);
+        imageView.setClip(clip);
+        
 
 		return imageView;
 
@@ -267,7 +273,7 @@ public class Components{
 	public static Label tagLabel(String tag,Tag labelTag, User user) {
 		// tags in the user profile to change preferences
 		Label label = new Label(tag);
-		label.getStyleClass().addAll("tag-label", "label", "modest");
+		label.getStyleClass().addAll("tag-label", "label", "small");
 		label.setWrapText(true);
 		label.maxWidth(50);
 
@@ -291,7 +297,7 @@ public class Components{
 
 			} else {
 				if(user.getTagPreferences().contains(labelTag) == true) {
-					user.getTagPreferences().remove(labelTag);
+					user.getTagPreferences().remove(labelTag.getTagId());
 				}
 				label.setId(null);         	
 			}
@@ -306,7 +312,7 @@ public class Components{
 		int row = 0;
 		int col = 0;
 
-		int maxRows = 5;
+		int maxRows = 6;
 
 		gridPane.setHgap(10); 
 		gridPane.setVgap(10); 
@@ -338,11 +344,11 @@ public class Components{
 		// tags used to label dogs
 
 		Label label = new Label(tag);
-		label.setWrapText(true);
+//		label.setWrapText(true);
 
 		label.maxWidth(100);
 
-		label.getStyleClass().addAll("dog-tag-label", "small", "label");
+		label.getStyleClass().addAll("dog-tag-label", "tiny", "label");
 		label.setAlignment(Pos.CENTER);
 
 		return label;
@@ -356,7 +362,7 @@ public class Components{
 		int row = 0;
 		int col = 0;
 
-		int maxRows = 6;
+		int maxRows = 10;
 
 		int i = 0; // current index
 
@@ -366,7 +372,7 @@ public class Components{
 
 			// Add the label to the grid
 			gridPane.add(label, row, col);
-			GridPane.setHalignment(label, javafx.geometry.HPos.CENTER);
+//			GridPane.setHalignment(label, javafx.geometry.HPos.CENTER);
 
 			// Increment column and row counters
 			row++;
@@ -474,7 +480,6 @@ public class Components{
 		return gridPane;
 	}
 
-	//Sidney, Edson and Connor were here :)
 	public static HBox appointmentView (Dog dog, Date localDate, Stage
 			primaryStage, Hashtable < Integer, Poster > poster){
 		ImageView img = Components.imageView(200, 200);
@@ -499,26 +504,45 @@ public class Components{
 
 		ImageView img = Components.imageView(200, 200);
 		img.setImage(new Image(dog.getImagePath()));
-
+		
 		Label primaryInfoLabel = Components.mediumLabel(dog.getName() + ", " + dog.getAge() + " years, " + dog.getSex(), Pos.CENTER);
 
-		Hyperlink posterLink = hyperlinkToPosterProfile(dog, primaryStage, poster);
+		VBox info = new VBox(); 
+		
+		if(dog.getAdopted() == true) {
+	        ColorAdjust colorAdjust = new ColorAdjust();
+	        colorAdjust.setSaturation(-1); // Set saturation to -1 to make it grayscale
+	        img.setEffect(colorAdjust);
+	        
+	        Label adoptedLabel = new Label("ADOPTED!"); 
+	        adoptedLabel.getStyleClass().add("moderate label");
+	        
+	        info = new VBox(
+					primaryInfoLabel,
+					adoptedLabel
+					);
+	       
+	        
+		}else {
+			Hyperlink posterLink = hyperlinkToPosterProfile(dog, primaryStage, poster);
+			Hyperlink sponsorLink = hyperLinkToSponsor(dog, primaryStage);
+			Hyperlink appointmentLink = hyperlinkToAppointment(dog, primaryStage, poster);
+			Hyperlink adoptionLink = hyperLinkToAdopt(dog,primaryStage);
+			 info = new VBox(
+						primaryInfoLabel,
+						posterLink,
+						appointmentLink,
+						sponsorLink,
+						adoptionLink
+						);
+		}
 
-		Hyperlink sponsorLink = hyperLinkToSponsor(dog, primaryStage);
 
-
-		Hyperlink appointmentLink = hyperlinkToAppointment(dog, primaryStage, poster);
-
-		VBox info = new VBox(
-				primaryInfoLabel,
-				posterLink,
-				appointmentLink,
-				sponsorLink
-				);
 
 		HBox HBox = new HBox(img, info);
-		HBox.setAlignment(Pos.CENTER);
+		HBox.setAlignment(Pos.CENTER_LEFT);
 		HBox.setSpacing(50);
+		HBox.setLayoutX(0.5);
 
 		return HBox;
 	}
@@ -539,18 +563,20 @@ public class Components{
 	}
 
 	public static Hyperlink hyperlinkToPosterProfile (Dog dog, Stage
-			primaryStage, Hashtable < Integer, Poster > poster){
+		primaryStage, Hashtable < Integer, Poster > posterList){
+		
 		Hyperlink posterLink = Components.hyperlink();
-		posterLink.setText(poster.get(dog.getPosterId()).getDisplayName());
+		posterLink.setText(posterList.get(dog.getPosterId()).getDisplayName());
 		PosterProfileScene posterProfile = PosterProfileScene.getInstance();
 		posterLink.setOnAction(event -> {
 			try {
-				posterProfile.setCurrentPoster(poster.get(dog.getPosterId()));
+				posterProfile.setCurrentPoster(posterList.get(dog.getPosterId()));
 				posterProfile.start(primaryStage);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		});
+		
 
 		return posterLink;
 	}
@@ -570,7 +596,10 @@ public class Components{
 				for (Appointment appointment : userAppointments) {
 					if (appointment.getDogID() == dog.getId()) {
 						userManager.removeAppointment(appointment);
-						CalendarScene.getInstance().setExistingAppointment(null);
+						System.out.println(userManager.getUserAppointments().isEmpty());
+						ArrayList <Appointment> newExist= CalendarScene.getInstance().getExistingAppointment();
+						newExist.remove(appointment);
+						CalendarScene.getInstance().setExistingAppointment(newExist);
 						BookedAppointmentScene bookedPage = BookedAppointmentScene.getInstance();
 						bookedPage.start(primaryStage);
 						break;
@@ -629,6 +658,52 @@ public class Components{
 
 		return appointmentLink;
 	}
+	
+	//Adopt Hyperlink
+	public static Hyperlink hyperLinkToAdopt (Dog dog, Stage primaryStage){
+		
+		//when u close and reopen then adoption is not updated
+		Hyperlink adoptLink = Components.hyperlink();
+		adoptLink.setText("Adopt " + dog.getName() + "!");	
+		adoptLink.setOnAction(event -> {
+			try {
+				if (dog.getAdopted()==false)
+				{
+					
+					showAlert("Dog has been adopted", dog.getName() + " is thankful for you!", AlertType.INFORMATION);
+					AppointmentManager userManager = AppData.getInstance().getAppointmentManager();
+					ArrayList<Appointment> userAppointments = userManager.getUserAppointments();
+					for (Appointment appointment : userAppointments) {
+						if (appointment.getDogID() == dog.getId()) {
+							userManager.removeAppointment(appointment);
+							break;
+						}
+					}
+					AppData.getInstance().getUser().getWallet().removeRecurringPayment(dog.getId());
+					
+					ArrayList<Dog> likedDogList = AppData.getInstance().getUser().getLikedDogs();
+					for (Dog d:likedDogList) {
+						if (d.getId()==dog.getId()) {
+							d.setAdopted(true);
+						}
+					}
+					LikedDogScene likedPage = LikedDogScene.getInstance();
+					likedPage.start(primaryStage);
+					
+					
+				}
+				else {
+					dog.setAdopted(false);	
+					
+					showAlert("Dog cannot be adopted", dog.getName() + " is already adopted", AlertType.ERROR);
+				
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		});
+		return adoptLink;
+	}
 
 	public static HBox posterDogView (Dog dog){
 		ImageView img = Components.imageView(200, 200);
@@ -639,14 +714,65 @@ public class Components{
 		ret.setSpacing(50);
 		return ret;
 	}
+	
+	public static VBox scoreSlider(User user, Poster poster,Stage primaryStage) {
+	    Label valueLabel = new Label("0");
+	    valueLabel.setStyle("-fx-font-size: 20px;");
+
+	    Slider slider = new Slider(0, 10, 0);
+	    slider.setBlockIncrement(1);
+	    slider.setShowTickMarks(true);
+	    slider.setMajorTickUnit(1);
+	    slider.setMinorTickCount(0);
+	    slider.setSnapToTicks(true);
+	    slider.setStyle("-fx-padding: 10 0 0 0;");
+
+	    VBox slide = new VBox(10);
+
+	    Label scoreLabel = new Label("Your Score: ");
+	    scoreLabel.setStyle("-fx-font-size: 20px;");
+	    Label OutofLabel = new Label("/10");
+	    OutofLabel.setStyle("-fx-font-size: 20px;");
+	    HBox scoreBox = new HBox(scoreLabel, valueLabel, OutofLabel);
+
+	    slider.valueProperty().addListener((obs, oldVal, newVal) -> {
+	        valueLabel.setText(String.valueOf((int) newVal.doubleValue()));
+	    });
+
+	    Button saveButton = new Button("Set Score");
+	    saveButton.setOnAction(event -> {
+	    	ArrayList<Integer> postersRatedByUser = user.getPostersRatedByUser();
+	        int posterId = poster.getUniqueId();
+	        
+	        if (!postersRatedByUser.contains(posterId)) {
+	            int sliderValue = (int) slider.getValue();
+	            user.addToPostersRatedByUser(posterId);
+	            poster.setScore(((poster.getScore() * poster.getNumberofRatings()) + sliderValue) / (poster.getNumberofRatings() + 1));
+	            poster.setNumberofRatings(poster.getNumberofRatings() + 1);
+	            PosterProfileScene posterPage = PosterProfileScene.getInstance();
+	            try {
+	                posterPage.start(primaryStage);
+	            } catch (Exception e) {
+	                e.printStackTrace();
+	            }
+	        } else {
+	            showAlert("Unable to rate poster", poster.getDisplayName() + " has already been rated", AlertType.ERROR);
+	        }
+	    	
+	    });
+
+	    slide.getChildren().addAll(slider, scoreBox, saveButton);
+	    return slide;
+	}
+
 
 	public static HBox sponsoredDogView (Dog d, Stage stage, Hashtable < Integer, Poster > poster, AppData
-			appdata, SponsoredDogsScene page){
+			appdata, SponsoredDogsScene page, Double paymentAmount){
 		ImageView img = Components.imageView(200, 200);
 		img.setImage(new Image(d.getImagePath()));
 
 		Label primaryInfoLabel = Components.mediumLabel(d.getName() + ", " + d.getAge() + " years, " + d.getSex(), Pos.CENTER);
-
+		Label sponsorshipAmount = Components.smallLabel("Sponsorship amount: " + paymentAmount,Pos.CENTER);
 		Hyperlink posterLink = hyperlinkToPosterProfile(d, stage, poster);
 
 		Button cancelButton = button("Cancel Donation :(");
@@ -695,6 +821,7 @@ public class Components{
 		});
 		VBox info = new VBox(
 				primaryInfoLabel,
+				sponsorshipAmount,
 				posterLink,
 				cancelButton, editButton
 				);
@@ -853,6 +980,25 @@ public class Components{
 		
 		return path;
 	}
+	
+	public static void dogAttributeDisplay(HBox parent, String emoji, int weight) {
+		int j = 0;
+		parent.getChildren().clear();
+		for (int i = 0; i < 5; i ++) {
+			//generate a star
+			Label icon = new Label(emoji);
+			icon.getStyleClass().add("dog-attribute-label");
+
+			if(j < weight + 1) {
+				//color it
+				icon.setId("dog-attribute-label-active");
+				j++;
+			}
+			parent.getChildren().add(icon);
+			parent.setAlignment(Pos.CENTER);
+		}
+	}
+	
 	public static void slantMoveAnimation(Button button) {
 		// Create Timeline for the animation
 		Timeline timeline = new Timeline();
@@ -974,4 +1120,6 @@ public class Components{
 
 		}
 	}
+	
+	
 }

@@ -53,17 +53,18 @@ public class Appointment{
 		this.userID = userID;
 	}
 
-	
-	
-	@Override
-	public boolean equals(Object o) {
-		if(this.dogID == ((Appointment) o).getDogID()) return true;
-		
-		return false;
-		
-	}
-	
-	
+	public static boolean checkIfBefore (LocalDate currentSelectedDate) {
+		java.util.Date utilDate = Date.from(currentSelectedDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
 
+
+		java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
+
+
+		java.sql.Date nowSQL=Date.valueOf(LocalDate.now());
+		LocalDate nowLocal = LocalDate.now();
+		LocalDate appointmentDate = sqlDate.toLocalDate();
+		return sqlDate.before(nowSQL)&&appointmentDate.getMonthValue()==nowLocal.getMonthValue();
+
+	}
 
 }

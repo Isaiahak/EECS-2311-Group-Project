@@ -15,6 +15,7 @@ public class User {
 	private ArrayList<Attribute> sizePreferences  = new ArrayList<Attribute>() ;
 	private ArrayList<Attribute> sexPreferences  = new ArrayList<Attribute>();
 	private ArrayList<Attribute> energyLevelPreferences  = new ArrayList<Attribute>();
+	private ArrayList<Integer> postersRatedByUser = new ArrayList<Integer>();
 	private String username;
 	private String email;
 	private int userID;
@@ -23,12 +24,35 @@ public class User {
 	private ArrayList<Dog> likedDogs = new ArrayList<Dog>();
 	private ArrayList<Dog> passedDogs = new ArrayList<Dog>();
 	
+	
+	
+	
 	public User(String username, String password) {
 		this.username = username;
 		this.password = password;
 
 	}
+	
+	public void setLikedDogsToNull() {
+		this.likedDogs = null;
+	}
+	
+	public void setPassedDogsToNull() {
+		this.likedDogs = null;
+	}
+	
+	public void addToPostersRatedByUser(int posterId) {
+		this.postersRatedByUser.add(posterId);
+	}
+	
 
+	public ArrayList<Integer> getPostersRatedByUser(){
+		return this.postersRatedByUser; 
+	}
+	
+	public void setPosterRatedByUser (ArrayList<Integer> postersRatedByUser) {
+		this.postersRatedByUser=postersRatedByUser;
+	}
 	public int getUserID() {
 		return userID;
 	}
