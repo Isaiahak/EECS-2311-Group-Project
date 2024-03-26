@@ -1036,6 +1036,31 @@ public class Database {
 		}
 
 	}
+	
+	public static void deleteRecurringPaymentsForDog(Dog dog) {
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		Wallet wallet = null;
+
+		try {
+			connection = Database.connect();
+
+			String sql = "DELETE FROM userpayments WHERE dogid = ?";
+
+			preparedStatement = connection.prepareStatement(sql);
+
+			preparedStatement.setInt(1, dog.getId());
+
+
+			preparedStatement.executeUpdate();
+
+		} catch (SQLException e) {
+
+			e.printStackTrace();
+
+		}
+
+	}
 
 	public static HashMap<Integer, RecurringPayment> getRecurringPayment(int userid){
 		Connection connection = null;
@@ -1183,6 +1208,7 @@ public class Database {
 			if (d.getAdopted()==true) {
 				Database.setDogAdopted(d);
 				Database.deleteAppointment(userId);
+				Database.deleteRecurringPaymentsForDog(d);
 				
 			}
 		}
