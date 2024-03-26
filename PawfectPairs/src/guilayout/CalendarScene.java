@@ -136,7 +136,7 @@ public class CalendarScene extends PrimaryScene {
 				dayButton = Components.calendarCell(Integer.toString(buttonText));
 
 				if (!alreadyBookedByThisUser(buttonDate)&&cellNumber>0&& buttonDate.getMonth()==month&&
-						buttonText<=month.length(leapMonth)&&buttonDate.isAfter(firstDayOfMonth.minusDays(1))){
+						buttonText<=month.length(leapMonth)&&buttonDate.isAfter(firstDayOfMonth.minusDays(1))&&buttonDate.isAfter(todaysDate)){
 					if(!appData.isDateAlreadyBooked(currentDog.getId(), currentDog.getPosterId(), buttonDate)) {
 						StackPane dayButtonCopy = dayButton; 
 						activeButtonBehaviour ( dayButton,  dayButtonCopy,  buttonDate);
