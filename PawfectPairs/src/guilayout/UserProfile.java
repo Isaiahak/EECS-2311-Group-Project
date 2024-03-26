@@ -28,6 +28,7 @@ public class UserProfile extends PrimaryScene{
 	double SingleMaxWalletDepositLimit=1000;//in dollars
 	double ValueSelectedInScrollBar=0;
 	private static UserProfile instance;
+	private LoginScene loginScene;
 
 	public static UserProfile getInstance() {
 		if (instance == null) {
@@ -173,7 +174,17 @@ public class UserProfile extends PrimaryScene{
 		// Set padding for the VBox (top, right, bottom, left)
 		allWalletUserComponents.setPadding(new javafx.geometry.Insets(20, 10, 20, 10));
 
-
+		//Sign out button
+		signOutButton.setOnMouseClicked(event -> {
+			Database.onApplicationClose(user, allDogs, appData.getAppointmentManager(), appData.getOkToClose());
+			appData.setOkToClose(false);//Prevent double saving with a null dog list
+			user.setUsername(null);
+			user.setPassword(null);
+			user.setLikedDogsToNull();
+			user.setPassedDogsToNull();
+			loginScene.start(primaryStage);
+		});
+		
 		Button changeUsernamePassword = new Button("Change username \nand password?");
 
 
