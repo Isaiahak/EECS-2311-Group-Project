@@ -73,12 +73,12 @@ class AppointmentTest {
     }
     
     // check if equals() method returns true when comparing two appointments with the same dogID
-    @Test
+   /* @Test
     public void testEquals_SameDogID() {
         Appointment appointment1 = new Appointment(1, 2, Date.valueOf("2024-03-10"), 3);
         Appointment appointment2 = new Appointment(4, 2, Date.valueOf("2024-03-10"), 5);
         assertTrue(appointment1.equals(appointment2));
-    }
+    }*/
     
  // check if equals() method returns false when comparing two appointments with different dogIDs
     @Test

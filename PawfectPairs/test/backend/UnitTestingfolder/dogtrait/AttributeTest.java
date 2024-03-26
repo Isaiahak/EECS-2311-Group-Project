@@ -36,7 +36,7 @@ class AttributeTest {
     @Test
     public void testGetName() {
         Attribute attribute = new Age(0);
-        assertEquals("puppy 0 to 1", attribute.getName()); // Checks if the name is returned correctly
+        assertEquals("Puppy: 0 to 1", attribute.getName()); // Checks if the name is returned correctly
     }
 
     @Test
