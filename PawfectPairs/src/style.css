@@ -143,6 +143,20 @@ darkest */
 
 }
 
+.user-profile-page-buttons{
+	-fx-background-color: #D7E3FC;
+	-fx-padding: 15px;		
+	-fx-background-radius: 10px; 
+	-fx-alignment: center; 
+	-fx-font-size: 15;
+}
+
+.user-profile-page-button:hover{
+	-fx-background-color: #E2EAFC;
+
+}
+
+
 
 /*DOG PROFILE*/
 

@@ -28,7 +28,7 @@ public class Authenticator {
         return matcher.find();
 	}
 	
-	private boolean checkFieldsAreValid(String username, String password){
+	public boolean checkFieldsAreValid(String username, String password){
 		if(username.isEmpty() || username.equals("")) {
 			setLoginPageMessage("Username is empty.", "red");
 			System.out.println("empty user");

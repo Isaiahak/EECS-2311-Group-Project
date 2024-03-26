@@ -32,10 +32,10 @@ public class Database {
 	public static Connection connect() {
 		try {
 			Class.forName("org.postgresql.Driver"); // Replace with your database driver
-//			Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/pawitr2", "postgres", "1234"); // zainab
+			Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/dbitr3", "postgres", "1234"); // zainab
 
 		//	Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/thebestoneyet", "postgres", "123"); // connor (sorry katya)
-			Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/finaldb2", "postgres", "123"); // connor (sorry katya)
+		//	Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/finaldb2", "postgres", "123"); // connor (sorry katya)
 
 //			Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5434/thebestoneyet", "postgres", "321123"); // isaiah
 			//System.out.println( "Connected to the PostgreSQL server successfully.");
@@ -826,6 +826,47 @@ public class Database {
 
 		return tags;
 	}
+public static boolean updateUsernamePassword (String newUsername, String newPassword, int userid) {
+	Connection connection = null;
+	PreparedStatement preparedStatement = null;
+	PreparedStatement preparedStatement2 = null;
+	try {
+		connection = Database.connect();
+		String sql = "UPDATE users SET username=?, userpassword=?, userid=? WHERE userid = "+userid+"; ";
+		preparedStatement = connection.prepareStatement(sql);
+		preparedStatement.setString(1, newUsername);
+		preparedStatement.setString(2, newPassword);
+		preparedStatement.setInt(3, userid);
+		int rowsAffected = preparedStatement.executeUpdate();
+
+		if (rowsAffected > 0) {
+			System.out.println("User updated successfully!");
+			return true;
+
+		}
+		else {
+			System.out.println("Failed to update User.");
+			return false;
+		}
+	} catch (SQLException e) {
+		e.printStackTrace();
+
+	} finally {
+		try {
+			if (preparedStatement != null) {
+				preparedStatement.close();
+			}
+			if (connection != null) {
+				connection.close();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	return false;
+	}
+
+	
 
 	public static boolean addUser(String username, String password, HashMap<Integer, ArrayList<Attribute>> allAttributes) {
 		Connection connection = null;
