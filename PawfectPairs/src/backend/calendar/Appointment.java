@@ -75,4 +75,12 @@ public class Appointment{
 
 	}
 
+	@Override
+	public boolean equals(Object o) {
+		if(this.dogID == ((Appointment) o).getDogID()  && this.date.equals(((Appointment) o).getDate())) return true;
+		
+		return false;
+		
+	}
+	
 }

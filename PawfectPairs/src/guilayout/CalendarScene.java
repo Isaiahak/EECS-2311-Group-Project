@@ -206,8 +206,11 @@ public class CalendarScene extends PrimaryScene {
 		if (existingAppointment!=null&&!existingAppointment.isEmpty()) {
 			for (Appointment appointment : existingAppointment) {
 
-				if(appointment!=null&&appointment.getDate().toLocalDate().equals(buttonDate))
+				if(appointment!=null&&appointment.getDate().toLocalDate().equals(buttonDate)) {
+					System.out.println("contains true");
+
 					return true;
+				}
 			}
 		}
 		return contains;
