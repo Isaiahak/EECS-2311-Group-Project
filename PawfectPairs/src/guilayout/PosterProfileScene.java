@@ -61,7 +61,7 @@ public class PosterProfileScene extends PrimaryScene {
 		VBox PosterInfo = new VBox();
 		PosterInfo.setAlignment(Pos.CENTER);
 
-		HBox stars = Components.generateStars(currentPoster.getScore());
+		HBox stars = Components.generateStars((int)currentPoster.getScore());
 		Label score = Components.mediumLabel("Total Score: "+currentPoster.getScore() + "/10", Pos.CENTER);
 		Label email = Components.mediumLabel("Email 📧:  "+ currentPoster.getEmail(), Pos.CENTER);
 		Label phone = Components.mediumLabel("Phone ☎:  "+ currentPoster.getPhone(), Pos.CENTER);
@@ -103,7 +103,7 @@ public class PosterProfileScene extends PrimaryScene {
 		return this.currentPoster.getUniqueId();
 	}
 
-	public int getScore() {
+	public double getScore() {
 		// TODO Auto-generated method stub
 		return currentPoster.getScore();
 	}

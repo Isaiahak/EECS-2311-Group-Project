@@ -1235,7 +1235,7 @@ public static boolean updateUsernamePassword (String newUsername, String newPass
 		
 	}
 	// update posters score (local to DB)
-	public static void updatePosterScore(int posterId, int newScore, int newNumberOfRatings) {
+	public static void updatePosterScore(int posterId, double newScore, int newNumberOfRatings) {
 	    try {
 	        Connection connection = Database.connect();
 	        Statement statement = connection.createStatement();
