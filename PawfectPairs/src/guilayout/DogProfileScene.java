@@ -130,7 +130,7 @@ public class DogProfileScene extends PrimaryScene{
 		primaryStage.setOnCloseRequest(event -> {
 			System.out.println("Window is closing. Perform cleanup if needed.");
 
-			Database.onApplicationClose(user, allDogs, appData.getAppointmentManager());
+			Database.onApplicationClose(user, allDogs, appData.getAppointmentManager(), appData.getOkToClose());
 		});
 	}
 
