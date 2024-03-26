@@ -1,6 +1,9 @@
 package guilayout;
 
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Hashtable;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -30,6 +33,10 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.CubicCurveTo;
@@ -500,7 +507,8 @@ public class Components{
 		return HBox;
 	}
 
-	public static HBox likedDogView (Dog dog, Stage primaryStage, Hashtable < Integer, Poster > poster){
+	public static HBox likedDogView(Dog dog, Stage primaryStage, AppData appData) {
+        Hashtable<Integer, Poster> poster = appData.getPosters();
 
 		ImageView img = Components.imageView(200, 200);
 		img.setImage(new Image(dog.getImagePath()));
@@ -539,12 +547,25 @@ public class Components{
 
 
 
-		HBox HBox = new HBox(img, info);
-		HBox.setAlignment(Pos.CENTER_LEFT);
-		HBox.setSpacing(50);
-		HBox.setLayoutX(0.5);
+        Button unlikeButton = new Button("Unlike");
+        HBox HBox = new HBox(img, info);
+        if (!dog.getAdopted()) {
+            HBox.getChildren().add(unlikeButton);
+        }
 
-		return HBox;
+        HBox.setAlignment(Pos.CENTER_LEFT);
+        HBox.setSpacing(50);
+        HBox.setLayoutX(0.5);
+
+        unlikeButton.setOnAction(event -> {
+            // Remove the dog from the likedDogs list
+//		    user.unlikeDog(dog);
+            appData.getUser().getLikedDogs().remove(dog);
+            // Remove the entire likedDogView from the UI
+			((VBox) unlikeButton.getParent().getParent()).getChildren().remove(unlikeButton.getParent());
+        });
+
+        return HBox;
 	}
 
 	public static Hyperlink hyperLinkToSponsor (Dog dog, Stage primaryStage){
