@@ -135,36 +135,15 @@ public class CalendarScene extends PrimaryScene {
 				int buttonText = buttonDate.getDayOfMonth();
 				dayButton = Components.calendarCell(Integer.toString(buttonText));
 
-				if (!alreadyBookedByThisUser(buttonDate)&&cellNumber>0&& buttonDate.getMonth()==month&&buttonText<=month.length(leapMonth)&&buttonDate.isAfter(firstDayOfMonth.minusDays(1))){
-					//System.out.println(month+" "+month.length(leapYear(buttonDate)));
+				if (!alreadyBookedByThisUser(buttonDate)&&cellNumber>0&& buttonDate.getMonth()==month&&
+						buttonText<=month.length(leapMonth)&&buttonDate.isAfter(firstDayOfMonth.minusDays(1))){
 					if(!appData.isDateAlreadyBooked(currentDog.getId(), currentDog.getPosterId(), buttonDate)) {
 						StackPane dayButtonCopy = dayButton; 
-
-						SimpleIntegerProperty numClicks = new SimpleIntegerProperty(0);
-						dayButton.setOnMouseClicked(event -> {
-							numClicks.set(numClicks.get()+1);
-
-							if( numClicks.get()<=1){
-								successLabel.setText(buttonDate.toString());
-								currentSelectedDate = buttonDate; 
-								if(dayButtonCopy.getId() == null) {
-									oldSelectedButton.setId("highlighted-calendar-cell");
-									oldSelectedButton = dayButtonCopy; 
-									dayButtonCopy.setId(("highlighted-calendar-cell"));
-								}
-								else {
-									successLabel.setText("Already booked");
-								}
-
-							}});
+						activeButtonBehaviour ( dayButton,  dayButtonCopy,  buttonDate);
 
 					}
 					else {
-						dayButton.setId("inactive-calendar-cell");
-						Label otherExistingAppointment = Components.tinyLabel(currentDog.getName() + " is busy",Pos.CENTER);
-						otherExistingAppointment.getStyleClass().add("busy");
-						StackPane.setAlignment(otherExistingAppointment, Pos.CENTER);
-						dayButton.getChildren().add(otherExistingAppointment);
+						setBusyForOtherUserAppointments(dayButton);
 					}
 				}
 				else {
@@ -178,10 +157,33 @@ public class CalendarScene extends PrimaryScene {
 		}
 
 	} 
+	
+	private void activeButtonBehaviour (StackPane dayButton, StackPane dayButtonCopy, LocalDate buttonDate)  {
 
-	public void populateExistingAppointments (LocalDate buttonDate, StackPane dayButton ) {
-		//System.out.println(containsDate(buttonDate) +"contains date");
-	//	System.out.println(buttonDate + " allready booked= " +alreadyBookedByThisUser(buttonDate));
+		SimpleIntegerProperty numClicks = new SimpleIntegerProperty(0);
+		dayButton.setOnMouseClicked(event -> {
+			numClicks.set(numClicks.get()+1);
+			if( numClicks.get()<=1){
+				successLabel.setText(buttonDate.toString());
+				currentSelectedDate = buttonDate; 
+				if(dayButtonCopy.getId() == null) {
+					oldSelectedButton.setId("highlighted-calendar-cell");
+					oldSelectedButton = dayButtonCopy; 
+					dayButtonCopy.setId(("highlighted-calendar-cell"));
+				}
+				else 
+					successLabel.setText("Already booked");
+			}});
+	}
+	private void setBusyForOtherUserAppointments(StackPane dayButton) {
+		dayButton.setId("inactive-calendar-cell");
+		Label otherExistingAppointment = Components.tinyLabel(currentDog.getName() + " is busy",Pos.CENTER);
+		otherExistingAppointment.getStyleClass().add("busy");
+		StackPane.setAlignment(otherExistingAppointment, Pos.CENTER);
+		dayButton.getChildren().add(otherExistingAppointment);
+	}
+
+	private void populateExistingAppointments (LocalDate buttonDate, StackPane dayButton ) {
 		if(alreadyBookedByThisUser(buttonDate)){
 			Label existingAppointmentLabel = Components.tinyLabel("Date with " + currentDog.getName(),Pos.CENTER);
 			existingAppointmentLabel.getStyleClass().add("your-booking");
@@ -214,7 +216,7 @@ public class CalendarScene extends PrimaryScene {
 	private void handleConfirmButtonClick() {
 		java.util.Date utilDate = Date.from(currentSelectedDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
 		java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
-		if (!alreadyBookedByThisUser(currentSelectedDate)&&!checkIfBefore()) {
+		if (!alreadyBookedByThisUser(currentSelectedDate)&&!Appointment.checkIfBefore(currentSelectedDate)) {
 			currentAppointment = new Appointment(currentPoster.getUniqueId(),currentDog.getId(), sqlDate,user.getUserID());
 
 			//adding to the DB
@@ -240,19 +242,7 @@ public class CalendarScene extends PrimaryScene {
 
 	}
 
-	public boolean checkIfBefore () {
-		java.util.Date utilDate = Date.from(currentSelectedDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
-
-
-		java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
-
-
-		java.sql.Date nowSQL=Date.valueOf(LocalDate.now());
-		LocalDate nowLocal = LocalDate.now();
-		LocalDate appointmentDate = sqlDate.toLocalDate();
-		return sqlDate.before(nowSQL)&&appointmentDate.getMonthValue()==nowLocal.getMonthValue();
-
-	}
+	
 	public static void main(String[] args) {
 		launch(args);
 	}
