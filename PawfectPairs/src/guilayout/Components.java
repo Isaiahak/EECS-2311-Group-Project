@@ -594,7 +594,10 @@ public class Components{
 				for (Appointment appointment : userAppointments) {
 					if (appointment.getDogID() == dog.getId()) {
 						userManager.removeAppointment(appointment);
-						CalendarScene.getInstance().setExistingAppointment(null);
+						System.out.println(userManager.getUserAppointments().isEmpty());
+						ArrayList <Appointment> newExist= CalendarScene.getInstance().getExistingAppointment();
+						newExist.remove(appointment);
+						CalendarScene.getInstance().setExistingAppointment(newExist);
 						BookedAppointmentScene bookedPage = BookedAppointmentScene.getInstance();
 						bookedPage.start(primaryStage);
 						break;
