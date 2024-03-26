@@ -1,8 +1,10 @@
 package guilayout;
 
 import backend.dog.trait.Attribute;
+import backend.calendar.AppointmentManager;
 import backend.database.Database;
 import backend.wallet.Wallet;
+import guicontrol.Authenticator;
 import javafx.geometry.*;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -14,7 +16,10 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Hashtable;
+import java.util.Optional;
+
 import backend.tag.Tag;
+import backend.user.User;
 
 import static guilayout.Components.showAlert;
 
@@ -30,6 +35,7 @@ public class UserProfile extends PrimaryScene{
 	double SingleMaxWalletDepositLimit=1000;//in dollars
 	double ValueSelectedInScrollBar=0;
 	private static UserProfile instance;
+	private        Authenticator authenticator;
 
 	public static UserProfile getInstance() {
 		if (instance == null) {
@@ -48,6 +54,7 @@ public class UserProfile extends PrimaryScene{
 
 	@Override
 	public void start(Stage primaryStage) {
+
 		Components.updateCurrentScene("userProfile");
 
 		initailizePrimaryScene(primaryStage);
@@ -96,10 +103,10 @@ public class UserProfile extends PrimaryScene{
 		GridPane ageAttributeGrid = Components.createAttribute(user.getAgePreferences(), 0,allAttributes);
 		ageAttributeGrid.setAlignment(javafx.geometry.Pos.CENTER);   	
 
-		
+
 		loginScene = LoginScene.getInstance();
 
-		
+
 		attributes.getChildren().addAll(
 				attributesTitle,
 				sizeAttributesTitle,
@@ -115,10 +122,10 @@ public class UserProfile extends PrimaryScene{
 
 
 		Button deposit = Components.button("Deposit funds into your wallet");
-		
+
 		Label currentFunds =Components.mediumLabel();
 		currentFunds.setText("Your current balance: "+ wallet.getBalance());
-	
+
 		TextField amount = new TextField();
 
 		deposit.setOnAction(event -> {
@@ -154,17 +161,17 @@ public class UserProfile extends PrimaryScene{
 		});
 
 		Button signOutButton = new Button("sign out");
-		
+
 		//Sign out button
-				signOutButton.setOnMouseClicked(event -> {
-					Database.onApplicationClose(user, allDogs, appData.getAppointmentManager(), appData.getOkToClose());
-					appData.setOkToClose(false);//Prevent double saving with a null dog list
-					user.setUsername(null);
-					user.setPassword(null);
-					user.setLikedDogsToNull();
-					user.setPassedDogsToNull();
-					loginScene.start(primaryStage);
-				});
+		signOutButton.setOnMouseClicked(event -> {
+			Database.onApplicationClose(user, allDogs, appData.getAppointmentManager(), appData.getOkToClose());
+			appData.setOkToClose(false);//Prevent double saving with a null dog list
+			user.setUsername(null);
+			user.setPassword(null);
+			user.setLikedDogsToNull();
+			user.setPassedDogsToNull();
+			loginScene.start(primaryStage);
+		});
 
 		VBox allWalletUserComponents = new VBox();
 		allWalletUserComponents.setSpacing(30);
@@ -175,52 +182,26 @@ public class UserProfile extends PrimaryScene{
 
 
 		Button changeUsernamePassword = new Button("Change username \nand password?");
-
+		changeUsernamePassword.getStyleClass().add("user-profile-page-buttons");
+		deposit.getStyleClass().add("user-profile-page-buttonss");
 
 
 
 		changeUsernamePassword.setOnAction(e -> {// Create a text field
 			TextField username = new TextField();
-			username.setPromptText("Enter username");
 
 			TextField password = new TextField();
-			password.setPromptText("Enter password");
+			Label outcome=new Label();
+			Label placeholder = new Label();
 
-			// Create a VBox to hold the text field
-			VBox textInputforPopUp = new VBox();
-			textInputforPopUp.getChildren().addAll(username, password);
 
-			// Create a new Alert
 			Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-			alert.setTitle("Changing your username and password");
-			alert.setHeaderText("Please enter your old username and password:");
+			VBox textInputforPopUp = initialInputs( username, password, alert);
 			alert.getDialogPane().setContent(textInputforPopUp);
+			authenticator= new Authenticator(placeholder);
 
-			// Show the alert and wait for the user response
-			alert.showAndWait().ifPresent(response -> {
-				if (response == ButtonType.OK) {
-					Alert newValues = new Alert(Alert.AlertType.CONFIRMATION);
 
-					newValues.setTitle("Changing your username and password");
-					newValues.setHeaderText("Now enter your new desired username and password:");
-					newValues.getDialogPane().setContent(textInputforPopUp);
-					newValues.showAndWait().ifPresent(click -> {
-
-						if (click==ButtonType.OK) {
-							
-							username.clear();
-							password.clear();
-							//check valid input
-							Alert resultAlert = new Alert(Alert.AlertType.INFORMATION);
-							resultAlert.setTitle("Input Text");
-							resultAlert.setHeaderText("You entered:");
-							resultAlert.setContentText(username + " " + password);
-							resultAlert.showAndWait();
-						}
-
-					});
-				}
-			});
+			check ( username,  password, alert,  textInputforPopUp);
 		});
 
 		//END OF WALLET UI STUFF
@@ -232,11 +213,127 @@ public class UserProfile extends PrimaryScene{
 				signOutButton
 				);
 
+		String css = this.getClass().getResource("/style.css").toExternalForm();
+		primaryStage.getScene().getStylesheets().add(css);
 		primaryStage.show();
 
 
 	}
+	private void check(TextField username, TextField password, Alert alert, VBox textInputforPopUp) {
+		// Show the alert and wait for the user response
+	//	alert.getDialogPane().setContent(textInputforPopUp);
 
+		Optional<ButtonType> result = alert.showAndWait();
+
+		// Check if the user has made a choice
+		if (result.isPresent()) {
+			// Proceed if the user clicked OK
+			if (result.get() == ButtonType.OK) {
+				// Authenticate user input
+				if (authenticator.authenticateLogIn(username.getText(), password.getText())&&username.getText().equals(user.getUsername())) {
+					System.out.println("authentis" + authenticator.authenticateLogIn(username.getText(), password.getText()));
+					System.out.println("same user? "+username.getText().equals(user.getUsername()));
+					// If authentication is successful, proceed with success input
+					successInput(username, password, alert, textInputforPopUp);
+//					textInputforPopUp.getChildren().addAll(username, password);
+					//alert.getDialogPane().setContent(textInputforPopUp);
+				} else {
+					// If authentication fails, prompt for valid input
+					ResetFields(username, password);
+					alert.setTitle("The entered username and/or password was incorrect");
+					alert.setHeaderText("Please enter your valid username and password:");
+					alert.getDialogPane().setContent(textInputforPopUp);
+					// Recursively call check to handle new input
+					check(username, password, alert, textInputforPopUp);
+					
+				}
+			}
+		} else {
+			// If the user closes the dialog without choosing an option, close the alert
+			alert.close();
+		}
+	}
+	private void successInput(TextField username, TextField password, Alert alert, VBox textInputforPopUp) {
+	    // Set title and header for the alert
+	    alert.setTitle("Changing your username and password");
+	    alert.setHeaderText("Now enter your new desired username and password:");
+	    // Set content of the alert to the input fields
+	    alert.getDialogPane().setContent(textInputforPopUp);
+	    
+	    // Show the alert again to get new inputs
+	    Optional<ButtonType> result = alert.showAndWait();
+	    if (result.isPresent() && result.get() == ButtonType.OK) {
+	        // Process input if user clicks OK
+	    	//System.out.println("authentic sign up" + authenticator.authenticateLogIn(username.getText(), password.getText()));
+			System.out.println("same user? "+username.getText().equals(user.getUsername()));
+	        if (authenticator.checkFieldsAreValid(username.getText(), password.getText())) {
+	            // If authentication is successful, create a success dialog
+	            Alert resultAlert = new Alert(Alert.AlertType.INFORMATION);
+	            // Create UI elements for the success dialog
+	            Button showPassword = new Button("👁");
+	            Label loginInfo = new Label("Your new username and password are:\nusername: " + username.getText() + "\npassword: " +
+	                    hidePassword(password.getText()));
+	            resultAlert.setTitle("Change Successful");
+	            resultAlert.setHeaderText("Your username and password have been changed successfully ");
+	            HBox updatedLogin = new HBox();
+	            updatedLogin.getChildren().addAll(loginInfo, showPassword);
+	            resultAlert.getDialogPane().setContent(updatedLogin);
+	            // Toggle password visibility when button is clicked
+	            showPassword.setOnMouseClicked(event -> {
+	                if (loginInfo.getText().contains("*")) {
+	                    loginInfo.setText("Your new username and password are:\nusername: " + username.getText() + "\npassword: " + password.getText());
+	                } else {
+	                    loginInfo.setText("Your new username and password are:\nusername: " + username.getText() + "\npassword: " + hidePassword(password.getText()));
+	                }
+	            });
+	            // Show the success dialog
+	            resultAlert.showAndWait();
+	           //update username and password 
+	            Database.updateUsernamePassword(username.getText(), password.getText(), user.getUserID());
+	            user.setUsername(username.getText());
+	            user.setPassword(password.getText());
+	        } else {
+	            // If authentication fails, allow user to try again
+	            ResetFields(username, password);
+	            alert.setTitle("The entered username and/or password were invalid");
+	            alert.setHeaderText("Please enter valid options for username and password:");
+	            // Call successInput recursively to handle new input
+	            successInput(username, password, alert, textInputforPopUp);
+	        }
+	    } else {
+	        // If user cancels, close the alert
+	        alert.close();
+	    }
+	}
+	private String hidePassword (String pswd) {
+		StringBuilder toStars = new StringBuilder();
+		for(int i=0;i<pswd.length();i++)
+		{
+			toStars.append("*");
+
+		}
+		return toStars.toString();
+	}
+	private VBox initialInputs (TextField username,TextField password, Alert alert) {
+		username.setPromptText("Enter username");
+		password.setPromptText("Enter password");
+		// Create a VBox to hold the text field
+		VBox textInputforPopUp = new VBox();
+		textInputforPopUp.getChildren().addAll(username, password);
+
+		alert.setTitle("Changing your username and password");
+		alert.setHeaderText("Please enter your old username and password:");
+
+		return textInputforPopUp;
+	}
+
+	private void ResetFields (TextField username, TextField password) {
+
+		username.clear();
+		password.clear();
+		username.setPromptText("Enter username");
+		password.setPromptText("Enter password");
+	}
 	public ArrayList<Attribute> getOldEnergyLevelPreferences() {
 		return oldEnergyLevelPreferences;
 	}
