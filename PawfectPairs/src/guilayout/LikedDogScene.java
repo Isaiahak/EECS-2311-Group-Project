@@ -63,10 +63,10 @@ public class LikedDogScene extends PrimaryScene{
 					if(change.wasAdded()) {
 		                for (int i = dogsDisplayed; i < smallerDogs.size(); i++) {
 		                	if (i == 0) {
-		                		mainContainer.getChildren().add(Components.likedDogView(smallerDogs.get(i), stage, appData));
+		                		mainContainer.getChildren().add(Components.likedDogView(smallerDogs.get(i), stage, appData.getPosters()));
 		                	}
 		                	else {
-		                		mainContainer.getChildren().add(Components.likedDogView(smallerDogs.get(i-1), stage, appData));
+		                		mainContainer.getChildren().add(Components.likedDogView(smallerDogs.get(i-1), stage, appData.getPosters()));		           
 		                	} 	
 		                }
 					}
@@ -75,7 +75,7 @@ public class LikedDogScene extends PrimaryScene{
 		});
 		
     	for(Dog d : smallerDogs) {
-    		mainContainer.getChildren().add(Components.likedDogView(d, stage, appData));
+    		mainContainer.getChildren().add(Components.likedDogView(d, stage, appData.getPosters()));
     	}
     	
     	
