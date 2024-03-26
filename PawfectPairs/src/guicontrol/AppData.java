@@ -30,6 +30,14 @@ public class AppData {
 	private AppointmentManager appointmentManager;
 	private ArrayList<Appointment> otherUsersAppointments;
 	private HashMap<Integer, ArrayList<Attribute>> allAttributes;
+	private boolean okToClose;
+	
+	public void setOkToClose(boolean state) {
+		this.okToClose = state;
+	}
+	
+	public boolean getOkToClose() {
+		return this.okToClose;
 
 
 	public void initializeWallet (int userid, String password) {
