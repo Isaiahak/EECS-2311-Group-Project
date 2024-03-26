@@ -488,7 +488,7 @@ public class Components{
 	}
 
 	public static HBox appointmentView (Dog dog, Date localDate, Stage
-			primaryStage, Hashtable < Integer, Poster > poster){
+			primaryStage, Hashtable < Integer, Poster > poster, AppData appData){
 		ImageView img = Components.imageView(200, 200);
 		img.setImage(new Image(dog.getImagePath()));
 
@@ -497,7 +497,7 @@ public class Components{
 
 		Hyperlink rescheduleLink = hyperlinkToReschedule(dog, primaryStage, poster);
 
-		Hyperlink cancelLink = hyperlinkToCancelAppointment(dog, primaryStage, poster);
+		Hyperlink cancelLink = hyperlinkToCancelAppointment(dog, primaryStage, poster, appData);
 
 		VBox info = new VBox(primaryInfoLabel, appointmentDate, rescheduleLink, cancelLink);
 		HBox HBox = new HBox(img, info);
@@ -603,7 +603,7 @@ public class Components{
 	}
 
 	public static Hyperlink hyperlinkToCancelAppointment (Dog dog, Stage
-			primaryStage, Hashtable < Integer, Poster > poster){
+			primaryStage, Hashtable < Integer, Poster > poster, AppData appData){
 		AppointmentManager userManager = AppData.getInstance().getAppointmentManager();
 		ArrayList<Appointment> userAppointments = userManager.getUserAppointments();
 
@@ -621,6 +621,10 @@ public class Components{
 						ArrayList <Appointment> newExist= CalendarScene.getInstance().getExistingAppointment();
 						newExist.remove(appointment);
 						CalendarScene.getInstance().setExistingAppointment(newExist);
+						AppointmentManager RemoveApp= appData.getAppointmentManager();
+						RemoveApp.removeAppointment(appointment);
+						 appData.setAppointmentManager(RemoveApp);
+
 						BookedAppointmentScene bookedPage = BookedAppointmentScene.getInstance();
 						bookedPage.start(primaryStage);
 						break;

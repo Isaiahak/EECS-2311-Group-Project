@@ -58,9 +58,12 @@ public class PrimaryScene extends Application{
       
       double paddingX = Components.screenWidth * 0.1; // 10% of screen width
       double paddingY = Components.screenHeight * 0.1; // 10% of screen height
+      double spacingX = Components.screenWidth * 0.05; // 10% of screen width
+      double spacingY = Components.screenHeight * 0.05; // 10% of screen height
       
       // Calculate padding based on screen size (e.g., 10% of screen width and height)
-    	mainContainer.setPadding(new Insets(paddingY/20,paddingX, paddingY/2, paddingX));//based on screen size(top, right, bottom, left)
+    	mainContainer.setPadding(new Insets(spacingY/20,spacingX, spacingY/2, spacingX));//based on screen size(top, right, bottom, left)
+    //	mainContainer.setSpacing()
     	VBox.setVgrow(root, Priority.ALWAYS);
       // Set VBox size to match screen resolution
     	mainContainer.setMaxSize(Components.screenWidth, Components.screenHeight);
