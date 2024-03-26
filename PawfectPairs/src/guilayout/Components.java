@@ -601,7 +601,6 @@ public class Components{
 
 		return posterLink;
 	}
-
 	public static Hyperlink hyperlinkToCancelAppointment (Dog dog, Stage
 			primaryStage, Hashtable < Integer, Poster > poster, AppData appData){
 		AppointmentManager userManager = AppData.getInstance().getAppointmentManager();
@@ -616,15 +615,8 @@ public class Components{
 
 				for (Appointment appointment : userAppointments) {
 					if (appointment.getDogID() == dog.getId()) {
-						userManager.removeAppointment(appointment);
-						System.out.println(userManager.getUserAppointments().isEmpty());
-						ArrayList <Appointment> newExist= CalendarScene.getInstance().getExistingAppointment();
-						newExist.remove(appointment);
-						CalendarScene.getInstance().setExistingAppointment(newExist);
-						AppointmentManager RemoveApp= appData.getAppointmentManager();
-						RemoveApp.removeAppointment(appointment);
-						 appData.setAppointmentManager(RemoveApp);
-
+						
+						RemoveAppointmentFromUser(appointment, userAppointments, userManager,appData);
 						BookedAppointmentScene bookedPage = BookedAppointmentScene.getInstance();
 						bookedPage.start(primaryStage);
 						break;
@@ -637,6 +629,19 @@ public class Components{
 
 		return appointmentLink;
 	}
+	
+	
+private static void RemoveAppointmentFromUser (Appointment appointment, ArrayList<Appointment> userAppointments,AppointmentManager userManager, AppData appData ) {
+	userManager.removeAppointment(appointment);
+	System.out.println(userManager.getUserAppointments().isEmpty());
+	ArrayList <Appointment> newExist= CalendarScene.getInstance().getExistingAppointment();
+	newExist.remove(appointment);
+	CalendarScene.getInstance().setExistingAppointment(newExist);
+	AppointmentManager RemoveApp= appData.getAppointmentManager();
+	RemoveApp.removeAppointment(appointment);
+	 appData.setAppointmentManager(RemoveApp);
+	
+}
 
 	public static Hyperlink hyperlinkToReschedule (Dog dog, Stage primaryStage, Hashtable < Integer, Poster > poster)
 	{
