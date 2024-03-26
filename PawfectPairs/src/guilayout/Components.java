@@ -671,7 +671,6 @@ public class Components{
 				{
 					
 					showAlert("Dog has been adopted", dog.getName() + " is thankful for you!", AlertType.INFORMATION);
-					dog.setAdopted(true);
 					AppointmentManager userManager = AppData.getInstance().getAppointmentManager();
 					ArrayList<Appointment> userAppointments = userManager.getUserAppointments();
 					for (Appointment appointment : userAppointments) {
@@ -681,6 +680,13 @@ public class Components{
 						}
 					}
 					AppData.getInstance().getUser().getWallet().removeRecurringPayment(dog.getId());
+					
+					ArrayList<Dog> likedDogList = AppData.getInstance().getUser().getLikedDogs();
+					for (Dog d:likedDogList) {
+						if (d.getId()==dog.getId()) {
+							d.setAdopted(true);
+						}
+					}
 					LikedDogScene likedPage = LikedDogScene.getInstance();
 					likedPage.start(primaryStage);
 					
