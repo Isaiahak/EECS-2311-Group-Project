@@ -29,6 +29,14 @@ public class User {
 		this.password = password;
 
 	}
+
+	public void setLikedDogsToNull() {
+		this.likedDogs = null;
+	}
+	
+	public void setPassedDogsToNull() {
+		this.likedDogs = null;
+	}
 	
 	public void addToPostersRatedByUser(int posterId) {
 		this.postersRatedByUser.add(posterId);
