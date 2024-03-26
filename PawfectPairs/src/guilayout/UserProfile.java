@@ -8,10 +8,14 @@ import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
+
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Hashtable;
 import backend.tag.Tag;
+
+import static guilayout.Components.showAlert;
 
 
 public class UserProfile extends PrimaryScene{
@@ -131,19 +135,27 @@ public class UserProfile extends PrimaryScene{
         deposit.setOnAction(event -> {
         	boolean isValid=Components.checkInput(amount.getText());
         	if (!isValid)
-    		{Components.showAlert("Cannot enter non-numeric values ", "Please enter a number", AlertType.ERROR);
-amount.clear();
+    		{
+				showAlert("Cannot enter non-numeric values ", "Please enter a number", AlertType.ERROR);
+			amount.clear();
     		amount.setText("");}
 
     		else 
     		{
     			try {
-    				wallet.deposit(Double.parseDouble(amount.getText()));
-    				currentFunds.setText("Your current balance "+ wallet.getBalance());
+					boolean result = (BigDecimal.valueOf(Double.valueOf(amount.getText())).scale() > 2);
+					if(!result) {
+						wallet.deposit(Double.parseDouble(amount.getText()));
+						currentFunds.setText("Your current balance "+ wallet.getBalance());
+					}
+					else{
+						showAlert("invalid dollar amount","please try entering a correct dollar amount.",Alert.AlertType.ERROR);
+					}
+
 
 				} catch (IllegalArgumentException e) {
 					// TODO: handle exception
-					Components.showAlert("Cannot enter a negative number", "Please enter a non-negative number", AlertType.ERROR);
+					showAlert("Cannot enter a negative number", "Please enter a non-negative number", AlertType.ERROR);
 	    			amount.clear();
 				}
     			

@@ -39,8 +39,7 @@ public class RecurringPayment {
 	public boolean isTodayAPaymentDate() {
 		
 		LocalDate currentDate = LocalDate.now();
-		
-		if(lastPaymentDate.plusDays(daysBetweenPayments).equals(currentDate)) return true;
+		if(lastPaymentDate.plusDays(daysBetweenPayments).compareTo(currentDate) <= 0) return true;
 		
 		return false;
 	}

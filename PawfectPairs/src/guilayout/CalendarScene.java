@@ -185,8 +185,7 @@ public class CalendarScene extends PrimaryScene {
 	                    	StackPane.setAlignment(existingAppointmentLabel, Pos.CENTER);
 	                    	dayButton.getChildren().add(existingAppointmentLabel);
 	                    } 
-	                    if (buttonDate.isBefore(currentDate))
-	                    	dayButton.setId("inactive-calendar-cell");
+	                   
 
                 	}else {
                 		dayButton.setId("inactive-calendar-cell");
@@ -220,13 +219,32 @@ public class CalendarScene extends PrimaryScene {
         	userAppointments.removeAppointment(currentAppointment);
         }
         
+        if(!checkIfBefore()) {
         
         userAppointments.addAppointment(currentAppointment);
     	existingAppointment = currentAppointment; 
     	successLabel.setText("Date added successfully!");
-    	updateCalendar();
+    	updateCalendar();}
+        else 
+        {
+        	successLabel.setText("Date not added, please choose a future date");
+
+        }
     }
 
+    public boolean checkIfBefore () {
+        java.util.Date utilDate = Date.from(currentSelectedDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+
+   
+        java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
+
+    
+    	java.sql.Date nowSQL=Date.valueOf(LocalDate.now());
+        LocalDate nowLocal = LocalDate.now();
+        LocalDate appointmentDate = sqlDate.toLocalDate();
+        return sqlDate.before(nowSQL)&&appointmentDate.getMonthValue()==nowLocal.getMonthValue();
+        
+    }
     public static void main(String[] args) {
         launch(args);
     }

@@ -32,9 +32,11 @@ public class Database {
 	public static Connection connect() {
 		try {
 			Class.forName("org.postgresql.Driver"); // Replace with your database driver
-//			Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/pawitr2", "postgres", "1234"); // zainab
-						Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/thebestoneyet", "postgres", "doglover123"); // katya
-//		Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5434/thebestoneyet", "postgres", "321123"); // isaiah
+
+			Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/dbitr3", "postgres", "1234"); // zainab
+	//					Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/thebestoneyet", "postgres", "doglover123"); // katya
+	//	Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5434/thebestoneyet", "postgres", "321123"); // isaiah
+
 			//System.out.println( "Connected to the PostgreSQL server successfully.");
 			return connection;
 		} catch (ClassNotFoundException | SQLException e) {
@@ -530,12 +532,12 @@ public class Database {
 		return tags;
 	}
 
-	public static void addPreferenceTagsToUser(Hashtable<Integer,Tag> tags, int userId){
-
+	/*public static void addPreferenceTagsToUser(Hashtable<Integer,Tag> tags, int userId){
+		
 		if(tags.values().size() > 0) {
 			Connection connection = null;
 			PreparedStatement preparedStatement = null;
-
+			
 	        try {
 	        	 connection = Database.connect();
 				 Statement statement = connection.createStatement();
@@ -552,19 +554,72 @@ public class Database {
 					 }
 					 query.append("( " + userId + ", " + tagsList.get(i).getTagId() +" )");
 			    }
-
+	
 				 query.append(";");
-
+				 
 				 statement.addBatch(query.toString());
 				 statement.executeBatch();
 	        }
 	        catch (SQLException e) {
 	            e.printStackTrace();
-
+	          
 	        }
-	}}
+	}}*/
 
+	public static void addPreferenceTagsToUser(Hashtable<Integer, Tag> tags, int userId) {
+		/*
+		 * Add tags to user preferences in the database
+		 */
+		if (tags.values().size() > 0) {
+			Connection connection = null;
+			PreparedStatement preparedStatement = null;
 
+			try {
+				connection = Database.connect();
+				preparedStatement = connection.prepareStatement("INSERT INTO usertagpreferences (userid, tagid) VALUES (?, ?)");
+
+				// Set auto-commit to false for batch processing
+				connection.setAutoCommit(false);
+
+				for (Tag tag : tags.values()) {
+					// Check if the tagid exists in the tags table
+					if (isTagExists(connection, tag.getTagId())) {
+						preparedStatement.setInt(1, userId);
+						preparedStatement.setInt(2, tag.getTagId());
+						preparedStatement.addBatch();
+					}
+				}
+
+				// Execute the batch
+				preparedStatement.executeBatch();
+
+				// Commit the transaction
+				connection.commit();
+			} catch (SQLException e) {
+				e.printStackTrace();
+				try {
+					if (connection != null) {
+						connection.rollback(); // Rollback the transaction in case of an error
+					}
+				} catch (SQLException ex) {
+					ex.printStackTrace();
+				}
+			} finally {
+				// Close resources
+				try {
+					if (preparedStatement != null) {
+						preparedStatement.close();
+					}
+					if (connection != null) {
+						connection.setAutoCommit(true); // Reset auto-commit to true
+						connection.close();
+					}
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
 
 	private static boolean isTagExists(Connection connection, int tagId) throws SQLException {
 		PreparedStatement preparedStatement = null;
@@ -891,7 +946,8 @@ public class Database {
 
 			String sql2 = "SELECT * FROM userpayments WHERE userid = " + userid;
 			preparedStatement = connection.prepareStatement(sql2);
-
+			resultSet = preparedStatement.executeQuery();
+			
 			while (resultSet.next()) {
 				wallet.addRecurringPayment(
 						new RecurringPayment(resultSet.getDouble("paymentamount"),
@@ -902,6 +958,7 @@ public class Database {
 						)
 				);
 			}
+			System.out.println(wallet.getRecurringPayments().values());
 		} catch (SQLException e) {
 			e.printStackTrace();
 
@@ -1009,99 +1066,6 @@ public class Database {
 		}
 	return null;
 	}
-	
-	// delete posters rated (DB)
-	public static void deletePostersRatedByUser(User user) {
-		Connection connection = null;
-		PreparedStatement preparedStatement = null;
-		Wallet wallet = null;
-
-		try {
-			connection = Database.connect();
-
-			String sql = "DELETE FROM userpostersrated WHERE userid = ?";
-
-			preparedStatement = connection.prepareStatement(sql);
-
-			preparedStatement.setInt(1, user.getUserID());
-
-
-			preparedStatement.executeUpdate();
-
-		} catch (SQLException e) {
-
-			e.printStackTrace();
-
-		}
-	}
-	
-	// add posters rated ( local to DB)
-	public static void addPostersRatedByUser(User user) {
-		ArrayList<Integer> posters = user.getPostersRatedByUser();
-		if (posters.size() > 0) {
-
-			Connection connection = null;
-			PreparedStatement preparedStatement = null;
-
-			try {
-				connection = Database.connect();
-				Statement statement = connection.createStatement();
-	
-				StringBuilder query = new StringBuilder("INSERT INTO userpostersrated (userid, posterid) VALUES ");
-				for (int i = 0; i < posters.size(); i++) {
-					if (i != 0) {
-						query.append(", ");
-					}
-					query.append("(" + user.getUserID() + ", " + posters.get(i) + ") ");
-				}
-				query.append(";");
-
-				statement.addBatch(query.toString());
-				statement.executeBatch();
-			} catch (SQLException e) {
-			}
-		}
-		
-	}
-	
-	// upload posters rated by user (DB to local)
-	public static void setPostersRatedByUser(User user) {
-		Connection connection = null;
-		HashMap<Integer,RecurringPayment> map = new HashMap<>();
-		try {
-			connection = Database.connect();
-			String query = "SELECT * FROM userpostersrated WHERE userid = ?";
-			PreparedStatement preparedStatement = connection.prepareStatement(query);
-			// Set the userID parameter
-			preparedStatement.setInt(1, user.getUserID());
-
-			// Execute the query
-			try (ResultSet resultSet = preparedStatement.executeQuery()) {
-				// Iterate over the result set and populate the TreeMap
-				while (resultSet.next()) {
-					user.addToPostersRatedByUser(resultSet.getInt("posterid"));
-				}
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		
-	}
-	// update posters score (local to DB)
-	public static void updatePosterScore(int posterId, int newScore, int newNumberOfRatings) {
-			try {
-				Connection connection = Database.connect();
-				Statement statement = connection.createStatement();
-				statement.executeUpdate("UPDATE posters SET score = "+ newScore +" WHERE poster_id = " + posterId + ";" + "UPDATE posters SET numberofratings = "+ newNumberOfRatings +" WHERE poster_id = " );
-				connection.close();
-			} catch (SQLException e) {
-				System.out.println("Connection failure.");
-				e.printStackTrace();
-			}
-	
-	}
-
 	/*
 	 * Cleanup Methods
 	 */
