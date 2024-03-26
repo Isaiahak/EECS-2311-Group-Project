@@ -44,9 +44,14 @@ public class User {
 	public void addToPostersRatedByUser(int posterId) {
 		this.postersRatedByUser.add(posterId);
 	}
+	
 
 	public ArrayList<Integer> getPostersRatedByUser(){
 		return this.postersRatedByUser; 
+	}
+	
+	public void setPosterRatedByUser (ArrayList<Integer> postersRatedByUser) {
+		this.postersRatedByUser=postersRatedByUser;
 	}
 	public int getUserID() {
 		return userID;

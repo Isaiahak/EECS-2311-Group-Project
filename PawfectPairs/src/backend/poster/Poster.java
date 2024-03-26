@@ -12,7 +12,9 @@ public class Poster implements Comparable<Poster> {
 	private String email;
 	private ArrayList<Dog> dogList = new ArrayList<Dog>();
 	private double balance;
+	private int numberofratings = 0;
 
+	//not adding number of ratings to constructor as I was worried it would break other things
 	public Poster(int score, String displayName, int uniqueId, String phone, String email, double balance) {
 		this.score = score;
 		this.displayName = displayName;
@@ -20,6 +22,15 @@ public class Poster implements Comparable<Poster> {
 		this.phone = phone;
 		this.email = email;
 		this.setBalance(balance);
+	}
+	
+	public void setNumberofRatings (int ratingnum) {
+		this.numberofratings = ratingnum;
+		
+	}
+	
+	public int getNumberofRatings() {
+		return numberofratings;
 	}
 
 	public void setDogList(ArrayList<Dog> dogList) {
