@@ -38,7 +38,7 @@ public class AppData {
 	
 	public boolean getOkToClose() {
 		return this.okToClose;
-
+	}
 
 	public void initializeWallet (int userid, String password) {
 		this.user.setWallet(Database.getWallet(userid, password));
