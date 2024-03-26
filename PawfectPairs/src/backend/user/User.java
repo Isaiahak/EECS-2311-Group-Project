@@ -24,12 +24,15 @@ public class User {
 	private ArrayList<Dog> likedDogs = new ArrayList<Dog>();
 	private ArrayList<Dog> passedDogs = new ArrayList<Dog>();
 	
+	
+	
+	
 	public User(String username, String password) {
 		this.username = username;
 		this.password = password;
 
 	}
-
+	
 	public void setLikedDogsToNull() {
 		this.likedDogs = null;
 	}
