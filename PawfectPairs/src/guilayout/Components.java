@@ -714,6 +714,57 @@ public class Components{
 		ret.setSpacing(50);
 		return ret;
 	}
+	
+	public static VBox scoreSlider(User user, Poster poster,Stage primaryStage) {
+	    Label valueLabel = new Label("0");
+	    valueLabel.setStyle("-fx-font-size: 20px;");
+
+	    Slider slider = new Slider(0, 10, 0);
+	    slider.setBlockIncrement(1);
+	    slider.setShowTickMarks(true);
+	    slider.setMajorTickUnit(1);
+	    slider.setMinorTickCount(0);
+	    slider.setSnapToTicks(true);
+	    slider.setStyle("-fx-padding: 10 0 0 0;");
+
+	    VBox slide = new VBox(10);
+
+	    Label scoreLabel = new Label("Your Score: ");
+	    scoreLabel.setStyle("-fx-font-size: 20px;");
+	    Label OutofLabel = new Label("/10");
+	    OutofLabel.setStyle("-fx-font-size: 20px;");
+	    HBox scoreBox = new HBox(scoreLabel, valueLabel, OutofLabel);
+
+	    slider.valueProperty().addListener((obs, oldVal, newVal) -> {
+	        valueLabel.setText(String.valueOf((int) newVal.doubleValue()));
+	    });
+
+	    Button saveButton = new Button("Set Score");
+	    saveButton.setOnAction(event -> {
+	    	ArrayList<Integer> postersRatedByUser = user.getPostersRatedByUser();
+	        int posterId = poster.getUniqueId();
+	        
+	        if (!postersRatedByUser.contains(posterId)) {
+	            int sliderValue = (int) slider.getValue();
+	            user.addToPostersRatedByUser(posterId);
+	            poster.setScore(((poster.getScore() * poster.getNumberofRatings()) + sliderValue) / (poster.getNumberofRatings() + 1));
+	            poster.setNumberofRatings(poster.getNumberofRatings() + 1);
+	            PosterProfileScene posterPage = PosterProfileScene.getInstance();
+	            try {
+	                posterPage.start(primaryStage);
+	            } catch (Exception e) {
+	                e.printStackTrace();
+	            }
+	        } else {
+	            showAlert("Unable to rate poster", poster.getDisplayName() + " has already been rated", AlertType.ERROR);
+	        }
+	    	
+	    });
+
+	    slide.getChildren().addAll(slider, scoreBox, saveButton);
+	    return slide;
+	}
+
 
 	public static HBox sponsoredDogView (Dog d, Stage stage, Hashtable < Integer, Poster > poster, AppData
 			appdata, SponsoredDogsScene page, Double paymentAmount){
@@ -1069,4 +1120,6 @@ public class Components{
 
 		}
 	}
+	
+	
 }

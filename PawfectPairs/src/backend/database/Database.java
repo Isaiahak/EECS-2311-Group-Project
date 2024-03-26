@@ -15,6 +15,7 @@ import backend.tag.Tag;
 import backend.user.User;
 import backend.wallet.RecurringPayment;
 import backend.wallet.Wallet;
+import guicontrol.AppData;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -429,7 +430,9 @@ public class Database {
 				String phone = resultSet.getString("phone");
 				String email = resultSet.getString("email");
 				double balance = resultSet.getDouble("balance");
+				int numberofratings = resultSet.getInt("numberofratings");
 				poster = new Poster(score, displayName, posterId, phone, email, balance);
+				poster.setNumberofRatings(numberofratings);
 				posters.put(posterId, poster);
 			}
 		} catch (SQLException e) {
@@ -1118,32 +1121,52 @@ public class Database {
 	}
 	
 	// add posters rated ( local to DB)
-	public static void addPostersRatedByUser(User user) {
-		ArrayList<Integer> posters = user.getPostersRatedByUser();
-		if (posters.size() > 0) {
+	public static void addPosterRatedByUser(int userId, int posterId) {
+	    Connection connection = null;
+	    PreparedStatement preparedStatement = null;
 
-			Connection connection = null;
-			PreparedStatement preparedStatement = null;
+	    try {
+	        connection = Database.connect();
+	        
+	        // Check if the record already exists
+	        String checkQuery = "SELECT COUNT(*) FROM userpostersrated WHERE userid = ? AND posterid = ?";
+	        preparedStatement = connection.prepareStatement(checkQuery);
+	        preparedStatement.setInt(1, userId);
+	        preparedStatement.setInt(2, posterId);
+	        ResultSet resultSet = preparedStatement.executeQuery();
+	        resultSet.next();
+	        int count = resultSet.getInt(1);
+	        if (count > 0) {
+	            System.out.println("The record already exists.");
+	            return;
+	        }
 
-			try {
-				connection = Database.connect();
-				Statement statement = connection.createStatement();
-	
-				StringBuilder query = new StringBuilder("INSERT INTO userpostersrated (userid, posterid) VALUES ");
-				for (int i = 0; i < posters.size(); i++) {
-					if (i != 0) {
-						query.append(", ");
-					}
-					query.append("(" + user.getUserID() + ", " + posters.get(i) + ") ");
-				}
-				query.append(";");
-
-				statement.addBatch(query.toString());
-				statement.executeBatch();
-			} catch (SQLException e) {
-			}
-		}
-		
+	        // Insert the record if it doesn't already exist
+	        String insertQuery = "INSERT INTO userpostersrated (userid, posterid) VALUES (?, ?)";
+	        preparedStatement = connection.prepareStatement(insertQuery);
+	        preparedStatement.setInt(1, userId);
+	        preparedStatement.setInt(2, posterId);
+	        preparedStatement.executeUpdate();
+	    } catch (SQLException e) {
+	        System.out.println("Error adding poster rated by user.");
+	        e.printStackTrace();
+	    } finally {
+	        // Close resources in the finally block
+	        if (preparedStatement != null) {
+	            try {
+	                preparedStatement.close();
+	            } catch (SQLException e) {
+	                e.printStackTrace();
+	            }
+	        }
+	        if (connection != null) {
+	            try {
+	                connection.close();
+	            } catch (SQLException e) {
+	                e.printStackTrace();
+	            }
+	        }
+	    }
 	}
 	
 	// upload posters rated by user (DB to local)
@@ -1172,16 +1195,38 @@ public class Database {
 	}
 	// update posters score (local to DB)
 	public static void updatePosterScore(int posterId, int newScore, int newNumberOfRatings) {
-			try {
-				Connection connection = Database.connect();
-				Statement statement = connection.createStatement();
-				statement.executeUpdate("UPDATE posters SET score = "+ newScore +" WHERE poster_id = " + posterId + ";" + "UPDATE posters SET numberofratings = "+ newNumberOfRatings +" WHERE poster_id = " );
-				connection.close();
-			} catch (SQLException e) {
-				System.out.println("Connection failure.");
-				e.printStackTrace();
-			}
+	    try {
+	        Connection connection = Database.connect();
+	        Statement statement = connection.createStatement();
+	        statement.executeUpdate("UPDATE poster SET score = " + newScore + " WHERE poster_id = " + posterId + ";");
+	        statement.executeUpdate("UPDATE poster SET numberofratings = " + newNumberOfRatings + " WHERE poster_id = " + posterId + ";");
+	        connection.close();
+	    } catch (SQLException e) {
+	        System.out.println("Connection failure.");
+	        e.printStackTrace();
+	    }
+	}
 	
+	public static ArrayList <Integer> getPosterRatedbyUser(int userid){
+		ArrayList<Integer> ratedposterlist = new ArrayList<>();
+
+	    try {
+	        Connection connection = Database.connect();
+	        Statement statement = connection.createStatement();
+	        ResultSet resultSet = statement.executeQuery("SELECT posterid FROM userpostersrated WHERE userid = " + userid);
+
+	        while (resultSet.next()) {
+	            int posterId = resultSet.getInt("posterid");
+	            ratedposterlist.add(posterId);
+	        }
+
+	        connection.close();
+	    } catch (SQLException e) {
+	        System.out.println("Error retrieving posters rated by user.");
+	        e.printStackTrace();
+	    }
+	    return ratedposterlist;
+		
 	}
 
 	/*
@@ -1208,7 +1253,7 @@ public class Database {
 			Database.deleteRecurringPayments(user);
 			Database.addRecurringPayments(user, user.getWallet().getRecurringPayments());
 			Database.updateWallet(user);
-      ArrayList<Dog> dogListUser = user.getLikedDogs();
+			ArrayList<Dog> dogListUser = user.getLikedDogs();
 		  for (Dog d : dogListUser) {
 			if (d.getAdopted()==true) {
 				Database.setDogAdopted(d);
@@ -1217,6 +1262,18 @@ public class Database {
 				
 			}
 		}
+		  ArrayList<Integer> ratedPosters = user.getPostersRatedByUser();
+		  Hashtable<Integer, Poster> posterlist=AppData.getInstance().getPosters();
+		  for (Dog d : dogListUser) {
+			  if (ratedPosters.contains(d.getPosterId())) {
+				  Poster poster = posterlist.get(d.getPosterId());
+				  Database.updatePosterScore(d.getPosterId(), poster.getScore(), poster.getNumberofRatings());
+				  Database.addPosterRatedByUser(user.getUserID(),d.getPosterId());
+			  }
+		  }
+			
+			  
+		  
 
 
 
