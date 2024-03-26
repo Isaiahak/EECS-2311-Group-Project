@@ -13,10 +13,12 @@ import backend.user.User;
 import guicontrol.AppData;
 //import guicontrol.PosterProfileController;
 import javafx.application.Application;
+import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -31,24 +33,77 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;  
 
 public class PosterProfileScene extends PrimaryScene {
-
 	AppData appData;
-	
-
     private Hyperlink posterinfoLink;
 	private static PosterProfileScene instance;
-
 	Poster currentPoster;
-	public void setCurrentPoster(Poster poster) {
-		this.currentPoster = poster; // set current poster
+
+	public static void main(String[] args) {
+		launch(); // launch THIS class
 	}
-	
-	//methods to add back
+
+	@Override  
+	public void start(Stage primaryStage) throws Exception {  
+		Components.updateCurrentScene("posterProfile");
+		
+		appData = AppData.getInstance();
+		User user = appData.getUser();
+		DogProfileScene dogProfileScene = DogProfileScene.getInstance();
+		UserProfile userProfile = UserProfile.getInstance();
+		ArrayList<Dog> posterDogsList =  Database.getPosterDogs(currentPoster.getUniqueId());
+
+		
+		initailizePrimaryScene(primaryStage);
+
+
+		Label name = Components.largeLabel(currentPoster.getDisplayName(), Pos.CENTER); 
+		name.setAlignment(Pos.CENTER);
+		VBox PosterInfo = new VBox();
+		PosterInfo.setAlignment(Pos.CENTER);
+
+		HBox stars = Components.generateStars((int)currentPoster.getScore());
+		Label score = Components.mediumLabel("Total Score: "+currentPoster.getScore() + "/10", Pos.CENTER);
+		Label email = Components.mediumLabel("Email 📧:  "+ currentPoster.getEmail(), Pos.CENTER);
+		Label phone = Components.mediumLabel("Phone ☎:  "+ currentPoster.getPhone(), Pos.CENTER);
+		Label ratePoster = Components.mediumLabel("Rate this poster", Pos.CENTER);
+		ComboBox<String> howOftenBox = new ComboBox<>(FXCollections.observableArrayList("Once", "Weekly", "Biweekly", "Monthly"));
+		VBox slider = Components.scoreSlider (user, currentPoster, primaryStage); 
+		PosterInfo.getChildren().addAll(
+				name, 
+				email,
+				phone,
+				stars,
+				score,
+				ratePoster,
+				slider);
+
+
+		VBox posterProfileDogsDisplay = new VBox();
+		posterProfileDogsDisplay.setSpacing(50);
+
+		for(Dog d : posterDogsList) {
+			posterProfileDogsDisplay.getChildren().add(Components.posterDogView(d));
+		}
+
+		mainContainer.getChildren().addAll(
+				PosterInfo,
+				posterProfileDogsDisplay
+				);
+
+		
+		primaryStage.setScene(scene);
+		primaryStage.show();
+	}
+
+	public void setCurrentPoster(Poster poster) {
+		this.currentPoster = poster;
+	}
+
 	public int getCurrentPoster() {
 		return this.currentPoster.getUniqueId();
 	}
 
-	public int getScore() {
+	public double getScore() {
 		// TODO Auto-generated method stub
 		return currentPoster.getScore();
 	}
@@ -57,111 +112,16 @@ public class PosterProfileScene extends PrimaryScene {
 		// TODO Auto-generated method stub
 		return currentPoster.getDisplayName();
 	}
-	//end of methods to add back 
-	
+	//end of methods to add back
+
 	public static PosterProfileScene getInstance() {
 		if (instance == null) {
-			instance = new PosterProfileScene();		
+			instance = new PosterProfileScene();
 		}
 		return instance;
 	}
 	private PosterProfileScene() {
 
 	}
-	public static void main(String[] args) {
-		launch(); // launch THIS class
-	}
-
-
-
-
-
-
-	@Override  
-	public void start(Stage primaryStage) throws Exception {  
-
-		appData = AppData.getInstance();
-		PriorityQueue<Dog> posterDogs = appData.getSortedDogProfiles();
-		User user = appData.getUser();
-		DogProfileScene dogProfileScene = DogProfileScene.getInstance();
-		UserProfile userProfile = UserProfile.getInstance();
-
-		// find a way to set the posters dogs so we dont have to do a db call, this is because we would then be required to update the db and then pull which is just not necessary
-		ArrayList<Dog> posterDogsList = Database.getPosterDogs(currentPoster.getUniqueId()); // too lazy to fix other method names, so this is what its gonna be called lol
-
-
-
-
-
-		HBox navTab = Components.navTab(userProfile, LikedDogScene.getInstance(), dogProfileScene, sponsoredDogsScene, BookedAppointmentScene.getInstance(), primaryStage,"posterProfile",appData);
-
-		navTab.setAlignment(Pos.CENTER);
-
-
-		VBox root = new VBox();
-
-
-
-		Label name = Components.largeLabel(currentPoster.getDisplayName(), Pos.CENTER); 
-		name.setAlignment(Pos.CENTER);
-		VBox PosterInfo = new VBox();
-		PosterInfo.setAlignment(Pos.CENTER);
-
-		HBox stars = Components.generateStars(currentPoster.getScore());
-	
-		
-		Label email = Components.mediumLabel("Email 📧:  "+ currentPoster.getEmail(), Pos.CENTER);
-		Label phone = Components.mediumLabel("Phone ☎:  "+ currentPoster.getPhone(), Pos.CENTER);
-		
-		// generate stars and display name 
-		PosterInfo.getChildren().addAll(
-				name, 
-				email,
-				phone,
-				stars);
-
-
-		VBox posterProfileDogsDisplay = new VBox();
-		posterProfileDogsDisplay.setSpacing(50);
-
-		// poster's dogs display
-		for(Dog d : posterDogsList) {
-			posterProfileDogsDisplay.getChildren().add(Components.posterDogView(d));
-		}
-
-		root.getChildren().addAll(
-				navTab,
-				PosterInfo,
-				posterProfileDogsDisplay
-				);
-		root.setAlignment(Pos.CENTER);
-
-		StackPane base = new StackPane(root);  
-		base.setAlignment(Pos.CENTER);
-
-		ScrollPane scrollPane = new ScrollPane(base);
-		scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-		scrollPane.setFitToWidth(true);
-
-		
-		
-		//POSTER INFO PAGE
-		//add the stuff here
-		//POSTER INFO PAGE
-		
-		Scene scene = new Scene(scrollPane, Components.screenWidth, Components.screenHeight);
-		primaryStage.setScene(scene);
-		primaryStage.show();
-
-		//		primaryStage.setOnCloseRequest(event -> {
-		//		    System.out.println("Window is closing. Perform cleanup if needed.");
-		//		    
-		//		    Database.onApplicationClose(user, posterDogs);
-		//		});
-		//	        
-		//	  System.out.println(currentPoster.getScore());
-
-	}  
-
 }
 

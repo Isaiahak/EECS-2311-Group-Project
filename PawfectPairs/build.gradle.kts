@@ -36,6 +36,10 @@ sourceSets {
         java {
             setSrcDirs(listOf("src"))
         }
+        resources {
+            setSrcDirs(listOf("src"))
+            files("**/*.css")
+        }
     }
 
     test {

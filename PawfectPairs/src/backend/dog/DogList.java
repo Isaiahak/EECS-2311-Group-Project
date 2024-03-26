@@ -14,8 +14,7 @@ private TreeMap<String, Dog> dogMap = new TreeMap<>();
     public void removeDog(String name, Dog dog) {
         dogMap.remove(name, dog);
     }
-    
-    
+
     public int getNumDogs() {
         return dogMap.size();
     }
@@ -49,7 +48,4 @@ private TreeMap<String, Dog> dogMap = new TreeMap<>();
         
         return sb.toString();
 	}
-    
-    
-    
 }

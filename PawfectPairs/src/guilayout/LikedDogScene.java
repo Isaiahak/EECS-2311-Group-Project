@@ -1,19 +1,28 @@
 package guilayout;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.geometry.*;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
+
+
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.PriorityQueue;
 
 import backend.dog.Dog;
 
 
 public class LikedDogScene extends PrimaryScene{
-
 	private static LikedDogScene instance;
+	private int dogsDisplayed;
 
 	public static LikedDogScene getInstance() {
 		if (instance == null) {
@@ -27,62 +36,94 @@ public class LikedDogScene extends PrimaryScene{
 	}
 	
 	@Override
-	public void start(Stage stage){
-		initailizePrimaryScene();
+	public void start(Stage stage){	
+		Components.updateCurrentScene("likedDogs");
+		initailizePrimaryScene(stage);
+		ObservableList<Dog> smallerDogs = FXCollections.observableArrayList();
+		dogsDisplayed = 0;
 		
-		ArrayList<Dog> likedDogs = user.getLikedDogs();
-		VBox root = new VBox();
-		root.setAlignment(javafx.geometry.Pos.CENTER);
-    	root.setSpacing(20);
-    	
-
-    	HBox navTab = Components.navTab(userProfileScene, LikedDogScene.getInstance(), dogProfileScene, sponsoredDogsScene, BookedAppointmentScene.getInstance(),stage,"likedDogs", appData);
-		VBox likedDogsDisplay = new VBox();
-	    	
-    	for(Dog d : likedDogs) {
-    		likedDogsDisplay.getChildren().add(Components.likedDogView(d, stage, appData.getPosters()));
+		ArrayList<Dog> likedDogs1 = user.getLikedDogs();
+		ArrayList<Dog> likedDogs = new ArrayList<Dog>();
+		//deep copy 
+		for(Dog d : likedDogs1) {
+			likedDogs.add(new Dog(d));
+		}
+		
+		Collections.reverse(likedDogs);
+		
+		initializeSmallerDogList(likedDogs,smallerDogs);
+		
+		Label likedDogsLabel = Components.largeLabel("Dogs you've Liked: " + likedDogs.size(), Pos.CENTER);
+		mainContainer.getChildren().add(likedDogsLabel);
+	    
+		smallerDogs.addListener(new ListChangeListener<Dog>(){
+			@Override
+	        public void onChanged(ListChangeListener.Change<? extends Dog> change) {
+				while (change.next()) {
+					if(change.wasAdded()) {
+		                for (int i = dogsDisplayed; i < smallerDogs.size(); i++) {
+		                	if (i == 0) {
+		                		mainContainer.getChildren().add(Components.likedDogView(smallerDogs.get(i), stage, appData));
+		                	}
+		                	else {
+		                		mainContainer.getChildren().add(Components.likedDogView(smallerDogs.get(i-1), stage, appData));		           
+		                	} 	
+		                }
+					}
+				}                 
+	        }
+		});
+		
+    	for(Dog d : smallerDogs) {
+    		mainContainer.getChildren().add(Components.likedDogView(d, stage, appData));
     	}
-    	likedDogsDisplay.setAlignment(javafx.geometry.Pos.CENTER);
-    	
-//    	ScrollPane scrollPane = new ScrollPane(likedDogsDisplay);  
-    	
-    	Label likedDogsLabel = Components.largeLabel("Dogs you've Liked", Pos.CENTER);
-    	 
-    	
-    	root.getChildren().addAll(
-    			navTab,
-    			likedDogsLabel,
-    			likedDogsDisplay
-    			
-    			);
-	    	
-
-	    	
-    	StackPane stackPane = new StackPane(root);
-    	stackPane.setAlignment(javafx.geometry.Pos.CENTER);
-    	
-    	ScrollPane scrollPane = new ScrollPane(stackPane);
-    	
-    	scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        scrollPane.setFitToWidth(true);
     	
     	
-//	        scrollPane.setAlignment(javafx.geometry.Pos.CENTER);
-        
-        
-    	Scene scene = new Scene(scrollPane, Components.screenWidth, Components.screenHeight);
+    	EventHandler<MouseEvent> mouseHandler = new EventHandler<MouseEvent>() {
+    		@Override 
+	        public void handle(MouseEvent e) { 
+				if(scrollPane.getVvalue() > 0.8 && smallerDogs.size() != likedDogs.size()) {
+					increaseSmallerDogList(likedDogs,smallerDogs);
+				}
+	        }
+    	};
     	
-		stage.setScene(scene);
-		stage.setTitle("Pawfect Pairs");
-//		stage.setMaximized(true);
-		stage.show();
-
-//		stage.setOnCloseRequest(event -> {
-//    	    System.out.println("Window is closing. Perform cleanup if needed.");
-//    	    
-//    	    Database.onApplicationClose(user, posterDogs);
-//    	});
+		EventHandler<ScrollEvent> scrollHandler = new EventHandler<ScrollEvent>(){
+			
+			@Override 
+	        public void handle(ScrollEvent e) { 
+				if(scrollPane.getVvalue() > 0.8 && smallerDogs.size() != likedDogs.size()) {
+					increaseSmallerDogList(likedDogs,smallerDogs);
+				}
+	        }
+		};
 		
-	}	
+		scrollPane.addEventFilter(ScrollEvent.ANY, scrollHandler);
+		scrollPane.addEventFilter(MouseEvent.MOUSE_DRAGGED, mouseHandler);
+		
+		
+		stage.show();
+		
+	}
+	
+	public void increaseSmallerDogList(ArrayList<Dog> allDogs, ObservableList<Dog> currentList){
+		int additionalDogs =   (allDogs.size() - currentList.size() >  10 && allDogs.size() - currentList.size() > 0 )? 10 : allDogs.size() - currentList.size();
+		int originalSize = currentList.size();
+		for(int i = currentList.size(); i < originalSize + additionalDogs ; i++) {
+			dogsDisplayed = currentList.size();
+			currentList.add(allDogs.get(i));
+			System.out.println(currentList.size());
+		}
+	}
+	
+	public void initializeSmallerDogList( ArrayList<Dog> allDogs, ObservableList<Dog> currentList){
+		int addAmount = allDogs.size() > 20 ? 20 : allDogs.size();
+		if(allDogs.size() != 0) {
+			for (int i = 0; i < addAmount; i++) {
+				dogsDisplayed = currentList.size();
+				currentList.add(allDogs.get(i));
+			}
+		}
+	}
 	
 }

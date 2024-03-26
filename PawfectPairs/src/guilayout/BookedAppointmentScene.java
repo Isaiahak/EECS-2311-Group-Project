@@ -37,86 +37,35 @@ public class BookedAppointmentScene extends PrimaryScene {
 
     @Override
     public void start(Stage stage) {
-    	initailizePrimaryScene();
+    	Components.updateCurrentScene("appointments");
+        initailizePrimaryScene(stage);
     	
         user = AppData.getInstance().getUser();
 
-        VBox root = new VBox();
-        root.setAlignment(javafx.geometry.Pos.CENTER);
-        root.setSpacing(20);
-
-        HBox navTab = Components.navTab(userProfileScene, likedDogsScene, dogProfileScene, sponsoredDogsScene, bookedAppointmentsScene, stage, "appointments", appData);
-
         Label appointmentsLabel = Components.largeLabel("Your Booked Appointments", Pos.CENTER);
 
-        // Get user appointments from the database
+        appointments = appData.getAppointmentManager().getUserAppointments();
         
-        //DB Call
-        //TreeMap<Integer, Date> userAppointments = Database.getUserAppointments(user.getUserID());
-        
-        //Local Object
-        userAppointments = CalendarScene.getInstance().getUserAppointments();
-        if (userAppointments!=null) {
-        appointments = userAppointments.getUserAppointments();
-        }
-        
-
-        VBox appointmentsDisplay = new VBox();
-
-        
-        //change code below
-        // Display user appointments
-        
-        if (appointments!= null) {
-        	for (Appointment selectedAppointment : appointments) {
-                ArrayList<Dog> doglist = AppData.getInstance().getDogProfiles().get(selectedAppointment.getPosterID());
-                Dog appointmentDog = null;
-                for(Dog dog : doglist){
-                    if( dog.getId() == selectedAppointment.getDogID()){
-                       appointmentDog = dog;
-                    }
-                }
-        		//Katya and Isaiah, we might need to chenge this to get dog locally
-        		appointmentsDisplay.getChildren().add(Components.appointmentView(appointmentDog, selectedAppointment.getDate(), stage,AppData.getInstance().getPosters()));
-        	}
-        }
-        else {
-        	appointmentsDisplay.getChildren().add(new Label("No appointments found."));
-        }
-        /*if (userAppointments != null) {
-            for (Integer dogID : userAppointments.keySet()) {
-                Dog dog = Database.getDogById(dogID); // Fetch dog details
-                if (dog != null) {
-                    Date appointmentDate = userAppointments.get(dogID);
-                    appointmentsDisplay.getChildren().add(Components.appointmentView(dog, appointmentDate, stage));
-                } else {
-                    System.out.println("Dog with ID " + dogID + " not found.");
-                }
-            }
-        } else {
-            appointmentsDisplay.getChildren().add(new Label("No appointments found."));
-        }*/
-        
-        appointmentsDisplay.setAlignment(javafx.geometry.Pos.CENTER);
-
-        root.getChildren().addAll(
-                navTab,
-                appointmentsLabel,
-                appointmentsDisplay
+        mainContainer.getChildren().add(
+                appointmentsLabel
         );
 
-        StackPane stackPane = new StackPane(root);
-        stackPane.setAlignment(javafx.geometry.Pos.CENTER);
+        	for (Appointment selectedAppointment : appointments) {
+        		ArrayList<Dog> doglist = appData.getUser().getLikedDogs();
+                
+                Dog appointmentDog = null;
+                
+                for(Dog dog : doglist){
+                    if( dog.getId() == selectedAppointment.getDogID()){ //&& dog.getAdopted()!=true
+                       appointmentDog = dog;
+                    }
+                    
+                }
+        		mainContainer.getChildren().add(Components.appointmentView(appointmentDog, selectedAppointment.getDate(), stage, appData.getPosters(), appData));
+        	}
 
-        ScrollPane scrollPane = new ScrollPane(stackPane);
 
-        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        scrollPane.setFitToWidth(true);
-
-        Scene scene = new Scene(scrollPane, Components.screenWidth, Components.screenHeight);
-
-        stage.setScene(scene);
-        stage.setTitle("Pawfect Pairs");
         stage.show();
+
     }
 }

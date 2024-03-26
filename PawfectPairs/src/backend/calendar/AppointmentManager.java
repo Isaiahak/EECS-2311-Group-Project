@@ -1,5 +1,7 @@
 package backend.calendar;
 
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class AppointmentManager {
@@ -37,13 +39,16 @@ public void removeAppointment(Appointment appointment) {
 	
 }
 
+
 public boolean appointmentExists(Appointment appointment) {
 	int posterID = appointment.getPosterID();
     int dogID = appointment.getDogID();
     
     for (Appointment existingAppointment : this.userAppointments) {
         if (existingAppointment.getPosterID() == posterID && existingAppointment.getDogID() == dogID) {
-            return true;
+        	System.out.println("other: p,d" + posterID + " " +dogID  );
+        	System.out.println("this: p,d" + existingAppointment.getPosterID() + " " +existingAppointment.getDogID()  );
+        	return true;
         }
     }
     
@@ -51,6 +56,8 @@ public boolean appointmentExists(Appointment appointment) {
 	
 }
 
-
-
+public boolean contains(Appointment currentAppointment) {
+	// TODO Auto-generated method stub
+	return userAppointments.contains(currentAppointment);
+}
 }

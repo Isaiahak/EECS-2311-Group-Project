@@ -11,48 +11,48 @@ import backend.wallet.Wallet;
 public class User {
 	
 	private Hashtable<Integer,Tag> tagPreferences = new Hashtable<Integer,Tag>();
-
 	private ArrayList<Attribute> agePreferences = new ArrayList<Attribute>();
-
 	private ArrayList<Attribute> sizePreferences  = new ArrayList<Attribute>() ;
-
 	private ArrayList<Attribute> sexPreferences  = new ArrayList<Attribute>();
-
 	private ArrayList<Attribute> energyLevelPreferences  = new ArrayList<Attribute>();
-	
+	private ArrayList<Integer> postersRatedByUser = new ArrayList<Integer>();
 	private String username;
-	
 	private String email;
-	
 	private int userID;
-	
 	private String password;
-	
 	private Wallet wallet;
-	
 	private ArrayList<Dog> likedDogs = new ArrayList<Dog>();
-	
 	private ArrayList<Dog> passedDogs = new ArrayList<Dog>();
 	
-
+	
+	
 	
 	public User(String username, String password) {
 		this.username = username;
 		this.password = password;
 
 	}
-//	public User(String username, String email, String password) {
-//		super();
-//		this.username = username;
-//		this.password = password;
-//		this.email = email;
-//	}
-//	
-	/*
-	 * For adding and for removing attribute/tag preferences
-	 */
+	
+	public void setLikedDogsToNull() {
+		this.likedDogs = null;
+	}
+	
+	public void setPassedDogsToNull() {
+		this.likedDogs = null;
+	}
+	
+	public void addToPostersRatedByUser(int posterId) {
+		this.postersRatedByUser.add(posterId);
+	}
 	
 
+	public ArrayList<Integer> getPostersRatedByUser(){
+		return this.postersRatedByUser; 
+	}
+	
+	public void setPosterRatedByUser (ArrayList<Integer> postersRatedByUser) {
+		this.postersRatedByUser=postersRatedByUser;
+	}
 	public int getUserID() {
 		return userID;
 	}
@@ -149,8 +149,7 @@ public class User {
 		return tagPreferences;
 	}
 	
-	public boolean arePreferencesEqual(Hashtable<Integer, Tag> tags) { // check if tags and attributes are the same
-    	// compare 'old' tags/preferences (provided in parameters) to current user's to detect any change
+	public boolean arePreferencesEqual(Hashtable<Integer, Tag> tags) {
 		
     	Hashtable<Integer,Tag> currTags = this.getTagPreferences(); 
     	Hashtable<Integer,Tag> oldTags = tags;
@@ -180,12 +179,6 @@ public class User {
 			return false;
 		}
 		return true;
-	}
-
-	@Override
-	public String toString() {
-		return "User [username=" + username + ", email=" + email + ", password="
-				+ password + "]";
 	}
 
 	public ArrayList<Attribute> getCopyOfAgePreferences(ArrayList<Attribute> agePreferences){
@@ -229,9 +222,14 @@ public class User {
 		return preferences;
 	}
 
-
 	public ArrayList<Dog> getSponsoredDogs() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public String toString() {
+		return "User [username=" + username + ", email=" + email + ", password="
+				+ password + "]";
 	}
 }

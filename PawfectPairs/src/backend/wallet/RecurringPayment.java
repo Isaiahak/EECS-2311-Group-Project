@@ -12,17 +12,13 @@ public class RecurringPayment {
 	LocalDate lastPaymentDate;
 	int posterId;
 	int dogId; 
-	
 
-	public RecurringPayment(double paymentAmount, int daysBetweenPayments, int dogId, int posterId) { // init first time
+		public RecurringPayment(double paymentAmount, int daysBetweenPayments, int dogId, int posterId) { // init first time
 		this.paymentAmount = paymentAmount;
 		this.daysBetweenPayments = daysBetweenPayments;
 		this.dogId = dogId;
-		this.posterId = posterId; 
-		
+		this.posterId = posterId;
         this.lastPaymentDate = LocalDate.now();
-//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-//        this.lastPaymentDate = currentDate.format(formatter);
         } 
 	
 	public RecurringPayment(double paymentAmount, int daysBetweenPayments, int dogId, int posterId, String lastPaymentDate) { // from db
@@ -43,8 +39,7 @@ public class RecurringPayment {
 	public boolean isTodayAPaymentDate() {
 		
 		LocalDate currentDate = LocalDate.now();
-		
-		if(lastPaymentDate.plusDays(daysBetweenPayments).equals(currentDate)) return true;
+		if(lastPaymentDate.plusDays(daysBetweenPayments).compareTo(currentDate) <= 0) return true;
 		
 		return false;
 	}
@@ -71,7 +66,4 @@ public class RecurringPayment {
 	public int getDogId() {
 		return this.dogId;
 	}
-	
-	
-
 }

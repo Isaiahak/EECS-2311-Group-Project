@@ -1,7 +1,9 @@
 package guicontrol;
 
+import java.time.LocalDate;
 import java.util.*;
 
+import backend.calendar.Appointment;
 import backend.calendar.AppointmentManager;
 import backend.database.Database;
 import backend.dog.Dog;
@@ -17,6 +19,8 @@ import guilayout.UserProfile;
 public class AppData {
 	
 	private User user;//comment
+	
+	private Hashtable<Integer, ArrayList<Dog>> allDogs; 
 
 	private Hashtable<Integer, ArrayList<Dog>> dogProfileHashtable; // posterid, dogs
 	private HashMap<Integer, Tag> allTags;
@@ -24,22 +28,22 @@ public class AppData {
 	private PriorityQueue<Dog> sortedDogProfiles;
 	private static AppData instance;
 	private AppointmentManager appointmentManager;
-	
+	private ArrayList<Appointment> otherUsersAppointments;
 	private HashMap<Integer, ArrayList<Attribute>> allAttributes;
+	private boolean okToClose;
+	
+	public void setOkToClose(boolean state) {
+		this.okToClose = state;
+	}
+	
+	public boolean getOkToClose() {
+		return this.okToClose;
+	}
 
-
-
-//	//Wallet Methods
 	public void initializeWallet (int userid, String password) {
 		this.user.setWallet(Database.getWallet(userid, password));
-		
 		this.user.getWallet().makeRecurringPayments(posterProfiles);
 	}
-//	public Wallet getWallet () {
-//		return this.user.getWallet();
-//	}
-//	//
-
 
 	public AppointmentManager getAppointmentManager() {
 		return appointmentManager;
@@ -56,7 +60,6 @@ public class AppData {
 	public Hashtable<Integer,Poster> getPosterProfiles(){
 		return posterProfiles;
 	}
-
 
 	public void setSortedDogProfiles(PriorityQueue sortedDogProfiles) {
 		this.sortedDogProfiles = sortedDogProfiles;
@@ -85,6 +88,11 @@ public class AppData {
 		this.dogProfileHashtable = Database.getAllDogs(user, this.posterProfiles.keySet());
 	}
 	
+	public void setAllDogs() {
+		
+		this.allDogs = Database.getAllDogsNoPreferences(user, this.posterProfiles.keySet());
+	}
+	
 	public HashMap<Integer,Tag> getallTags(){
 		return this.allTags;
 	}
@@ -103,9 +111,11 @@ public class AppData {
 		return posterProfiles;
 	}
 	
-	
-	
-	// calculate dog scores
+	public void setPosterRatedbyUser(int userid) {
+		this.user.setPosterRatedByUser(Database.getPosterRatedbyUser(userid)); 
+	}
+
+
 	public void updateDogScores() {
 
 	// perform check on if the user's preferences have changed before updating scores	
@@ -113,17 +123,8 @@ public class AppData {
 				UserProfile.getInstance().getOldAgePreferences(),
 				UserProfile.getInstance().getOldSizePreferences(),
 				UserProfile.getInstance().getOldEnergyLevelPreferences()) == false){
-			ArrayList<Dog> likedDogs = Database.getUsersDogs(user.getUserID(),"userdogs");
-			for (Dog d : user.getLikedDogs()) {
-				if(likedDogs.contains(d) == false)
-					Database.addUserDog(d.getId(), user.getUserID(),"userdogs");
-			}
-
-			ArrayList<Dog> passedDogs = Database.getUsersDogs(user.getUserID(),"userpasseddogs");
-			for (Dog d : user.getPassedDogs()) {
-				if(passedDogs.contains(d) == false)
-					Database.addUserDog(d.getId(), user.getUserID(),"userpasseddogs");
-			}
+			Database.addUserDog(user.getLikedDogs(), user.getUserID(),"userdogs");
+			Database.addUserDog(user.getPassedDogs(), user.getUserID(),"userpasseddogs");
 			Database.deletePreferenceTagsFromUser(user.getUserID());
 			Database.addPreferenceTagsToUser(user.getTagPreferences(), user.getUserID());
 			Database.deleteUserAttributePreferences(user.getUserID());
@@ -149,7 +150,7 @@ public class AppData {
 	public void setPosterDogLists() {
 		// loop through dogProfiles and add to posters
 		for(Poster p : this.posterProfiles.values()) {
-			p.setDogList(this.dogProfileHashtable.get(p.getUniqueId()));
+			p.setDogList(this.allDogs.get(p.getUniqueId()));
 
 		}
 	}
@@ -191,30 +192,56 @@ public class AppData {
 		return this.allAttributes;
 		
 	}
+	private void setOtherUsersAppointments() {
+		this.otherUsersAppointments = Database.getOtherUserAppointments(user.getUserID()); 
+	}
 
-	
 	public void onStart(String username, String pass) {
 		getInstance(); 	
 		
 		setUser(username, pass); // sets user, dog liked list, ideal dog attribtues
 		
-		initializeWallet(getUser().getUserID(), pass);
-		
 		setAllTags();
 		
 		setPosters();
+
+		initializeWallet(getUser().getUserID(), pass);
+		
+		setAllDogs();
 		
 		setDogProfiles(); 
 		
 		setPosterDogLists();
-		
+			
 		initializeDogProfilesSorted();
 
 		setAppointmentManager(new AppointmentManager(user.getUserID(), Database.getUserAppointments(user.getUserID())));
 		
+		setOtherUsersAppointments();
 		
-		
+		setPosterRatedbyUser(user.getUserID());
+
+		this.user.getWallet().setRecurringPayments(Database.getRecurringPayment(user.getUserID()));
 
 	}
+
+	public Hashtable<Integer, ArrayList<Dog>> getAllDogs() {
+		return this.allDogs;
+	}
+
+	public ArrayList<Appointment> getOtherUsersAppointments() {
+		return this.otherUsersAppointments;
+	}
+	
+	public boolean isDateAlreadyBooked(int dogId, int posterId, LocalDate appDate) {
+		
+		for(Appointment otherApp: this.otherUsersAppointments ) {
+			if(otherApp.getPosterID() == posterId && otherApp.getDogID() == dogId && otherApp.getLocalDate().equals(appDate)) 
+				return true;
+
+		}
+		return false;
+	}
+	
 	
 }

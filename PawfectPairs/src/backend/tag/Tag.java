@@ -25,23 +25,18 @@ public class Tag{
     	this.preference = 0; // default
     }
 
-
-	// Getter for preferenceWeight
     public int getWeight() {
         return preference;
     }
 
-    // Setter for preferenceWeight
     public void setWeight(int preferenceWeight) {
         this.preference = preferenceWeight;
     }
 
-    // Getter for tagName
     public String getTagName() {
         return tagName;
     }
 
-    // Setter for tagName
     public void setTagName(String tagName) {
         this.tagName = tagName;
     }

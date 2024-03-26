@@ -15,10 +15,6 @@ public class Wallet {
 	private int userid;
 	private HashMap<Integer, RecurringPayment> recurringPayments = new HashMap<Integer, RecurringPayment>(); // dogid, payment
 
-	public void setBalance(double balance) {
-		this.balance = balance;
-	}
-	
 	public Wallet(double balance, int userid) {
 		this.balance = balance;
 		this.userid = userid;
@@ -33,47 +29,42 @@ public class Wallet {
 	public int getUserid() {
 		return userid;
 	}
+
 	public void setUserid(int userid) {
 		this.userid = userid;
 	}
 	
-	public void donate (double amount, Poster poster){//withdraw from wallet ->donate to poster
-		//if (amount>this.balance)//need to comment this out too
-//			throw new FundsTooLow("Deposit amount exceeds balance");
-			// temporarily doenst thorw erors
+	public void donate (double amount, Poster poster){
 		
 		this.balance = this.balance-amount;
-		
 		poster.depositDonation(amount);
 	}
 	
 	public void makeRecurringPayments(Hashtable<Integer, Poster> posters){
-		
 		for(RecurringPayment recurrPay : this.recurringPayments.values()) {
 			if(recurrPay.isTodayAPaymentDate()) {
-				donate(recurrPay.getPaymentAmount(), posters.get(recurrPay.getPosterId()));
+					donate(recurrPay.getPaymentAmount(), posters.get(recurrPay.getPosterId()));
+
 				recurrPay.setLastPaymentDateToToday(LocalDate.now());
-				
 			}
 		}
-		
 	}
 
-	
 	public void deposit (double amount)
 	{
+		if (amount<=0)
+			throw new IllegalArgumentException();
+		else
 		this.balance += amount;
 	}
-
-
 
 	public double getBalance() {
 		return balance;
 	}
-//	public void setBalance(int balance) {
-//		this.balance = balance;
-//	}
 
+	public void setBalance(double balance) {
+		this.balance = balance;
+	}
 
 	public class FundsTooLow extends Exception { 
 		//	    public FundsTooLow(String errorMessage, Throwable causeError) {
@@ -84,21 +75,25 @@ public class Wallet {
 		}
 
 	}
-
+	
+	
 
 	public void removeRecurringPayment(int dogid) {
 		//this.recurringPayments.remove(this.recurringPayments.get(dogid));
 		this.recurringPayments.remove(dogid);
-		
 	}
+
 	public HashMap<Integer, RecurringPayment> getRecurringPayments() {
 		return this.recurringPayments; 
 	}
-	
-	
-	//just to test cancel donation button
+
 	public Set<Integer> getRecurringPaymentsDogsList () {
 		 
 		 return  this.recurringPayments.keySet();
+	}
+
+	public void setRecurringPayments(HashMap<Integer,RecurringPayment> map){
+		this.recurringPayments = map;
+
 	}
 }

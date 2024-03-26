@@ -1,45 +1,45 @@
-package guilayout;
+	package guilayout;
 
-import backend.database.Database;
-import backend.dog.Dog;
-import backend.wallet.Wallet;
-import javafx.geometry.Pos;
-import javafx.scene.Scene;
-import javafx.scene.control.*;
-import javafx.scene.image.*;
-import javafx.scene.layout.*;
-import javafx.stage.Stage;
+	import backend.database.Database;
+	import backend.dog.Dog;
+	import backend.wallet.Wallet;
+	import javafx.animation.KeyFrame;
+	import javafx.animation.Timeline;
+	import javafx.geometry.Insets;
+	import javafx.geometry.Pos;
+	import javafx.scene.Scene;
+	import javafx.scene.control.*;
+	import javafx.scene.image.*;
+	import javafx.scene.layout.*;
+	import javafx.scene.shape.Rectangle;
+	import javafx.stage.Stage;
+	import javafx.util.Duration;
 
 public class DogProfileScene extends PrimaryScene{
 
 	private static DogProfileScene instance;
+	private ImageView petImageView;
+	private Label sizeLabel;
+	private HBox sizeIcon;
+	private HBox energyIcon;
+	private Label energyLabel;
+	private Label primaryInfoLabel;
+	private Label biographyText;
+	private Hyperlink posterLink;
+	private StackPane tagsPane;
+	private Stage stage;
+	private OutOfDogsScene outOfDogs;
+	private Wallet wallet;
+
 	public static DogProfileScene getInstance() {
 		if (instance == null) {
 			instance = new DogProfileScene();		
 		}
 		return instance;
 	}
+	private DogProfileScene(){
 
-    private ImageView petImageView;
-    private Label sizeLabel;
-    private Label energyLabel;
-    private Label primaryInfoLabel; 
-    private Label biographyText;
-    private Hyperlink posterLink;
-	private StackPane tagsPane;
-	private Stage stage;
-	private OutOfDogsScene outOfDogs;
-//    private Button donate = Components.button("Sponsor");
-//    DonateScene donatePage = DonateScene.getInstance();//ADDED DONATE PAGE
-
-
-
-//    private int l = 1080; 
-//    private int w = 1920; 
-
-//    private Label bioLabel;
-//    private Label tagsLabel;
-    private Wallet wallet;
+	}
 
     public static void main(String[] args) {
         launch(args);
@@ -47,117 +47,133 @@ public class DogProfileScene extends PrimaryScene{
 
     @Override
     public void start(Stage primaryStage) {
-    	initailizePrimaryScene();
-    	//wallet=appData.getWallet();
-    	//root is v box
-		VBox root = new VBox();
-		root.setSpacing(10);
-		root.setAlignment(Pos.CENTER);
-//    	wallet=user.getWallet();
+    	Components.updateCurrentScene("dogProfiles");
+		initailizePrimaryScene(primaryStage);
+		
+		PosterProfileScene posterProfile = PosterProfileScene.getInstance();
+		outOfDogs = OutOfDogsScene.getInstance();
+		HBox primaryControlTab = new HBox();
+		petImageView = Components.imageView(500, 500);
+	
 
+		tagsPane = new StackPane();
+		stage = primaryStage;
+		
 
-        primaryStage.setTitle("Pawfect Pairs");
-        PosterProfileScene posterProfile = PosterProfileScene.getInstance();
-        outOfDogs = OutOfDogsScene.getInstance();
+		Button passButton = Components.button("❌");
+		passButton.getStyleClass().add("pass-button");
+		Timeline passTimeline = new Timeline(new KeyFrame(Duration.seconds(3), passEvent -> {
+			passButton.setText("❌");
+			// Re-enable the button
+			passButton.setDisable(false);
 
-
-
-        HBox primaryControlTab = new HBox();
-        
-        petImageView = Components.imageView(500,500);
-
-        Button passButton = Components.button("╳");
-		passButton.setStyle("-fx-background-color: #0a0f40; -fx-text-fill: white; -fx-font-size: 60;");
-        passButton.setOnAction(event -> {
-            user.addPassedDogs(allDogs.peek());
-			if(allDogs.size() == 1) {
+			user.addPassedDogs(allDogs.peek());
+			if (allDogs.size() == 1) {
 				changeProfile();
 				outOfDogs.start(primaryStage);
+			} else {
+				changeProfile();
+				displayCurrentPetProfile();
+			}
+		}));
+		passButton.setOnAction(event -> {
+			if (passButton.getText().equals("❌")) {
+				// Disable the button to prevent multiple clicks
+				//passButton.setDisable(true);
+
+				// Change the button's text to undo sign
+				passButton.setText("↩");
+
+
+				passTimeline.playFromStart();
+			} else {
+				passButton.setText("❌");
+				passTimeline.stop();
 			}
 
-        	else {
-				changeProfile();
-	            displayCurrentPetProfile();
-        	}
-        });
+		});
 
-        Button likeButton = Components.button("♥");
-		likeButton.setStyle("-fx-background-color: #db2a4d; -fx-text-fill: white; -fx-font-size: 60;");
-        likeButton.setOnAction(e -> {
-			allDogs.peek().setAdopted(true);
-            user.addLikedDogs(allDogs.peek());
-			if(allDogs.size() == 1) {
+		Button likeButton = Components.button("♥");
+		likeButton.getStyleClass().add("like-button");
+		Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(3), event -> {
+			likeButton.setText("♥");
+			// Add your existing logic here
+			user.addLikedDogs(allDogs.peek());
+			if (allDogs.size() == 1) {
 				changeProfile();
 				outOfDogs.start(primaryStage);
+			} else {
+				changeProfile();
+				displayCurrentPetProfile();
 			}
-        	else {	
-	            changeProfile();
-	            displayCurrentPetProfile();
-        	}
-         });
+		}));
+		likeButton.setOnAction(e -> {
+			if (likeButton.getText().equals("♥")) {
 
-        primaryControlTab.getChildren().addAll(likeButton,petImageView,passButton);
-        primaryControlTab.setSpacing(20);
-        primaryControlTab.setAlignment(Pos.CENTER);
-        primaryInfoLabel = Components.largeLabel(); // Name, Age, Sex
-		sizeLabel =  Components.mediumLabel(); // Attributes 
+				// Change the button's text to undo sign
+				likeButton.setText("↩");
+
+				// Schedule the button's appearance change back to ♥ after 5 seconds
+				timeline.playFromStart();
+			} else {
+				// If the button is clicked while showing the undo sign, revert to ♥ immediately
+				likeButton.setText("♥");
+				timeline.stop();
+			}
+		});
+
+		primaryControlTab.getChildren().addAll(likeButton, petImageView, passButton);
+		primaryControlTab.getStyleClass().add("dog-picture-container");
+		primaryControlTab.setPadding(new Insets(10));
+		primaryControlTab.setSpacing(20);
+		primaryControlTab.setPrefWidth(Components.screenWidth * 0.35);
+		primaryControlTab.setAlignment(Pos.CENTER);
+
+		
+		primaryInfoLabel = Components.largeLabel(); // Name, Age, Sex
+		sizeIcon =  new HBox();
+		energyIcon = new HBox();
+		sizeLabel = Components.mediumLabel();
 		energyLabel = Components.mediumLabel();
+		
+		HBox secondaryInfo = new HBox();
+		secondaryInfo.setAlignment(Pos.CENTER);
+		secondaryInfo.setSpacing(60);
+		secondaryInfo.getChildren().addAll(sizeLabel, sizeIcon, energyLabel, energyIcon);
 
-		//		  Initialize layout
-        // attributes hBox
-        HBox secondaryInfo = new HBox(); 
-        secondaryInfo.setAlignment(Pos.CENTER);
-        secondaryInfo.setSpacing(10); 
-        secondaryInfo.getChildren().addAll(sizeLabel, energyLabel);
-        // bio textBox
-        biographyText = Components.smallLabel(); 
-        biographyText.setPrefWidth(900);
-        // tags box - TO BE IMPLEMENTED -
-        //BUTTON FOR WALLET / DONATE TO OR SPONSOR AN ANIMAL
-        // nav tab
-        HBox navTab = Components.navTab(userProfileScene, likedDogsScene, DogProfileScene.getInstance(),sponsoredDogsScene, BookedAppointmentScene.getInstance(),primaryStage, "dogProfiles", appData);
-        // poster link
-        posterLink = Components.hyperlink();
-        posterLink.setOnAction(event -> {
-        	try {
+
+		biographyText = Components.smallLabel();
+		biographyText.setPrefWidth(Components.screenWidth * 0.6);
+		biographyText.setWrapText(true);
+
+		posterLink = Components.hyperlink();
+		posterLink.setOnAction(event -> {
+			try {
 				posterProfile.start(primaryStage);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-        });
-        // add dog tags
-		tagsPane = new StackPane();
-        stage = primaryStage;
-        
-         // add to root vbox
+		});
 
-		root.getChildren().addAll(navTab, primaryControlTab, primaryInfoLabel, posterLink, secondaryInfo, biographyText, tagsPane);
-		// Display the initial pet profile
+		mainContainer.getChildren().addAll(primaryControlTab, primaryInfoLabel, posterLink, secondaryInfo, biographyText, tagsPane);
 		displayCurrentPetProfile();
-		StackPane stackPane = new StackPane(root);
-		stackPane.setAlignment(Pos.CENTER);
-		ScrollPane scrollPane = new ScrollPane(stackPane);
-		scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-		scrollPane.setFitToWidth(true);
-		Scene scene = new Scene(scrollPane, Components.screenWidth, Components.screenHeight);
-
-		primaryStage.setScene(scene);
-	      
-	//  primaryStage.setMaximized(true);
-		if(allDogs.size() == 0){
+    	       
+		mainContainer.setSpacing(5);
+		
+		if (allDogs.size() == 0) {
 			outOfDogs.start(stage);
-		}
-		else{
+		} else {
 			primaryStage.show();
 		}
-      
-      primaryStage.setOnCloseRequest(event -> {
-    	    System.out.println("Window is closing. Perform cleanup if needed.");
-    	    
-    	    Database.onApplicationClose(user, allDogs, appData.getAppointmentManager());
-    	});
-		}
-	
+
+		primaryStage.setOnCloseRequest(event -> {
+			System.out.println("Window is closing. Perform cleanup if needed.");
+			
+			
+
+			Database.onApplicationClose(user, allDogs, appData.getAppointmentManager(), appData.getOkToClose());
+		});
+	}
 
 	public void displayCurrentPetProfile() {
 
@@ -165,25 +181,26 @@ public class DogProfileScene extends PrimaryScene{
 			outOfDogs.start(stage);
 		} else {
 			Dog currentProfile = allDogs.peek();
-//		donate.setOnAction(event -> {
-//		  //	wallet=user.getWallet();
-//			Poster poster =posterList.get(posterDogs.get(currentProfileIndex).getPosterId());
-//			wallet.setPosterToSponsorPending(poster.getUniqueId());
-//			donatePage.start(stage);
-//
-//		});
+
 			petImageView.setImage(new Image(currentProfile.getImagePath()));
 			primaryInfoLabel.setText(currentProfile.getName() + ", " + currentProfile.getAge() + " years, " + currentProfile.getSex());
 			sizeLabel.setText("Size: " + currentProfile.getSize());
+
+			Components.dogAttributeDisplay(sizeIcon, "🐕", currentProfile.getSize().getWeight());
+			
 			energyLabel.setText("Energy Level: " + currentProfile.getEnergyLevel());
+			Components.dogAttributeDisplay(energyIcon, "⚡", currentProfile.getEnergyLevel().getWeight());
+			
 			biographyText.setText(currentProfile.getBiography());
 
 			posterLink.setText(posterList.get(currentProfile.getPosterId()).getDisplayName());
 			PosterProfileScene posterProfile = PosterProfileScene.getInstance();
-			posterProfile.setCurrentPoster(posterList.get(currentProfile.getPosterId()));
+			
+			
 
 			posterLink.setOnAction(event -> {
 				try {
+					posterProfile.setCurrentPoster(posterList.get(currentProfile.getPosterId()));
 					posterProfile.start(stage);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -197,22 +214,17 @@ public class DogProfileScene extends PrimaryScene{
 		}
 	}
 
-
 	public void changeProfile() {
 		 allDogs.remove();
-
 	}
 
 	public Dog getCurrentProfile() {
-
 		return this.allDogs.peek();
 	}
-
 }
 
 
     
-
 
 
 

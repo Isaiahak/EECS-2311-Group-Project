@@ -8,20 +8,22 @@ public class Sex extends Attribute {
 		setName(names[weight]);      
 		this.weight = weight;
 	}
+
 	@Override
 	public String toString() {
 		return this.getName();
 		}
+
 	@Override
 	public String[] getNames() {
 		// TODO Auto-generated method stub
 		return names;
 	}
+
 	@Override 
 	public int getType() {
 		return type; 
 	}
-
 }
 
 

@@ -9,8 +9,7 @@ import backend.dog.Dog;
 
 public class PosterList {
 	private TreeMap<String, Poster> PosterMap = new TreeMap<>();
-	
-    
+
     public void addPoster(String name, Poster poster) {//name of poster and poster object
     	PosterMap.put(name, poster);
     }
@@ -32,8 +31,6 @@ public class PosterList {
             }
     	return PosterDogsMap;
     	}
-        
-    
 
 	@Override
 	public String toString() {
@@ -56,7 +53,4 @@ public class PosterList {
         
         return sb.toString();
 	}
-    
-    
-    
 }
