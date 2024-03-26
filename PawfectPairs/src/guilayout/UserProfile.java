@@ -1,6 +1,7 @@
 package guilayout;
 
 import backend.dog.trait.Attribute;
+import backend.database.Database;
 import backend.wallet.Wallet;
 import javafx.geometry.*;
 import javafx.scene.Scene;
@@ -19,6 +20,7 @@ import static guilayout.Components.showAlert;
 
 
 public class UserProfile extends PrimaryScene{
+	private LoginScene loginScene;
 	private ArrayList<Attribute> oldAgePreferences;
 	private ArrayList<Attribute> oldSexPreferences;
 	private ArrayList<Attribute> oldSizePreferences;
@@ -28,7 +30,6 @@ public class UserProfile extends PrimaryScene{
 	double SingleMaxWalletDepositLimit=1000;//in dollars
 	double ValueSelectedInScrollBar=0;
 	private static UserProfile instance;
-	private LoginScene loginScene;
 
 	public static UserProfile getInstance() {
 		if (instance == null) {
@@ -95,7 +96,10 @@ public class UserProfile extends PrimaryScene{
 		GridPane ageAttributeGrid = Components.createAttribute(user.getAgePreferences(), 0,allAttributes);
 		ageAttributeGrid.setAlignment(javafx.geometry.Pos.CENTER);   	
 
+		
+		loginScene = LoginScene.getInstance();
 
+		
 		attributes.getChildren().addAll(
 				attributesTitle,
 				sizeAttributesTitle,
@@ -111,26 +115,10 @@ public class UserProfile extends PrimaryScene{
 
 
 		Button deposit = Components.button("Deposit funds into your wallet");
-		/*	//GETTING RID OF SCROLL BAR	
-		ScrollBar scrollBar = new ScrollBar();
-        //scrollBar.setStyle("-fx-pref-width: 1;");
-       scrollBar.setStyle("-fx-pref-height: 20;");
-        VBox scrollContainer = new VBox();   
-        scrollContainer.setMargin(scrollBar, new Insets(20, 100, 20, 100));  // top, right, bottom, left
-        scrollContainer.getChildren().addAll(scrollBar);
-        // Set the range of the scroll bar
-        scrollBar.setMin(0);
-        scrollBar.setMax(SingleMaxWalletDepositLimit);//for now arbitrarily set max single deposit limit to 1000
-		 */        
+		
 		Label currentFunds =Components.mediumLabel();
 		currentFunds.setText("Your current balance: "+ wallet.getBalance());
-		/*	//GETTING RID OF SCROLL BAR	
-//        // Add listener to capture value changes
-//        scrollBar.valueProperty().addListener((observable, oldValue, newValue) -> {
-//            valueLabel.setText("Selected Value: " + String.format("%.2f", newValue));
-//            ValueSelectedInScrollBar=Double.parseDouble(String.format("%.2f", newValue));
-//        });
-		 */
+	
 		TextField amount = new TextField();
 
 		deposit.setOnAction(event -> {
@@ -166,6 +154,17 @@ public class UserProfile extends PrimaryScene{
 		});
 
 		Button signOutButton = new Button("sign out");
+		
+		//Sign out button
+				signOutButton.setOnMouseClicked(event -> {
+					Database.onApplicationClose(user, allDogs, appData.getAppointmentManager(), appData.getOkToClose());
+					appData.setOkToClose(false);//Prevent double saving with a null dog list
+					user.setUsername(null);
+					user.setPassword(null);
+					user.setLikedDogsToNull();
+					user.setPassedDogsToNull();
+					loginScene.start(primaryStage);
+				});
 
 		VBox allWalletUserComponents = new VBox();
 		allWalletUserComponents.setSpacing(30);
@@ -174,17 +173,7 @@ public class UserProfile extends PrimaryScene{
 		// Set padding for the VBox (top, right, bottom, left)
 		allWalletUserComponents.setPadding(new javafx.geometry.Insets(20, 10, 20, 10));
 
-		//Sign out button
-		signOutButton.setOnMouseClicked(event -> {
-			Database.onApplicationClose(user, allDogs, appData.getAppointmentManager(), appData.getOkToClose());
-			appData.setOkToClose(false);//Prevent double saving with a null dog list
-			user.setUsername(null);
-			user.setPassword(null);
-			user.setLikedDogsToNull();
-			user.setPassedDogsToNull();
-			loginScene.start(primaryStage);
-		});
-		
+
 		Button changeUsernamePassword = new Button("Change username \nand password?");
 
 
@@ -210,15 +199,6 @@ public class UserProfile extends PrimaryScene{
 			// Show the alert and wait for the user response
 			alert.showAndWait().ifPresent(response -> {
 				if (response == ButtonType.OK) {
-					/* // Retrieve the text entered by the user
-                    String inputText = textField.getText();
-                    // Display the input text in another alert
-                    Alert resultAlert = new Alert(Alert.AlertType.INFORMATION);
-                    resultAlert.setTitle("Input Text");
-                    resultAlert.setHeaderText("You entered:");
-                    resultAlert.setContentText(inputText);
-                    resultAlert.showAndWait();
-					 */                 
 					Alert newValues = new Alert(Alert.AlertType.CONFIRMATION);
 
 					newValues.setTitle("Changing your username and password");
