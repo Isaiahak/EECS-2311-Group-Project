@@ -110,6 +110,11 @@ public class AppData {
 	public Hashtable<Integer, Poster> getPosters(){
 		return posterProfiles;
 	}
+	
+	public void setPosterRatedbyUser(int userid) {
+		this.user.setPosterRatedByUser(Database.getPosterRatedbyUser(userid)); 
+	}
+
 
 	public void updateDogScores() {
 
@@ -213,6 +218,8 @@ public class AppData {
 		setAppointmentManager(new AppointmentManager(user.getUserID(), Database.getUserAppointments(user.getUserID())));
 		
 		setOtherUsersAppointments();
+		
+		setPosterRatedbyUser(user.getUserID());
 
 		this.user.getWallet().setRecurringPayments(Database.getRecurringPayment(user.getUserID()));
 
@@ -235,4 +242,6 @@ public class AppData {
 		}
 		return false;
 	}
+	
+	
 }

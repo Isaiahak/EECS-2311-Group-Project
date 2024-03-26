@@ -13,10 +13,12 @@ import backend.user.User;
 import guicontrol.AppData;
 //import guicontrol.PosterProfileController;
 import javafx.application.Application;
+import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -60,14 +62,20 @@ public class PosterProfileScene extends PrimaryScene {
 		PosterInfo.setAlignment(Pos.CENTER);
 
 		HBox stars = Components.generateStars(currentPoster.getScore());
+		Label score = Components.mediumLabel("Total Score: "+currentPoster.getScore() + "/10", Pos.CENTER);
 		Label email = Components.mediumLabel("Email 📧:  "+ currentPoster.getEmail(), Pos.CENTER);
 		Label phone = Components.mediumLabel("Phone ☎:  "+ currentPoster.getPhone(), Pos.CENTER);
-
+		Label ratePoster = Components.mediumLabel("Rate this poster", Pos.CENTER);
+		ComboBox<String> howOftenBox = new ComboBox<>(FXCollections.observableArrayList("Once", "Weekly", "Biweekly", "Monthly"));
+		VBox slider = Components.scoreSlider (user, currentPoster, primaryStage); 
 		PosterInfo.getChildren().addAll(
 				name, 
 				email,
 				phone,
-				stars);
+				stars,
+				score,
+				ratePoster,
+				slider);
 
 
 		VBox posterProfileDogsDisplay = new VBox();
