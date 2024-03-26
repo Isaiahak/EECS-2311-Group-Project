@@ -1,16 +1,19 @@
 	package guilayout;
 
-import backend.database.Database;
-import backend.dog.Dog;
-import backend.wallet.Wallet;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.Scene;
-import javafx.scene.control.*;
-import javafx.scene.image.*;
-import javafx.scene.layout.*;
-import javafx.scene.shape.Rectangle;
-import javafx.stage.Stage;
+	import backend.database.Database;
+	import backend.dog.Dog;
+	import backend.wallet.Wallet;
+	import javafx.animation.KeyFrame;
+	import javafx.animation.Timeline;
+	import javafx.geometry.Insets;
+	import javafx.geometry.Pos;
+	import javafx.scene.Scene;
+	import javafx.scene.control.*;
+	import javafx.scene.image.*;
+	import javafx.scene.layout.*;
+	import javafx.scene.shape.Rectangle;
+	import javafx.stage.Stage;
+	import javafx.util.Duration;
 
 public class DogProfileScene extends PrimaryScene{
 
@@ -59,7 +62,11 @@ public class DogProfileScene extends PrimaryScene{
 
 		Button passButton = Components.button("❌");
 		passButton.getStyleClass().add("pass-button");
-		passButton.setOnAction(event -> {
+		Timeline passTimeline = new Timeline(new KeyFrame(Duration.seconds(3), passEvent -> {
+			passButton.setText("❌");
+			// Re-enable the button
+			passButton.setDisable(false);
+
 			user.addPassedDogs(allDogs.peek());
 			if (allDogs.size() == 1) {
 				changeProfile();
@@ -68,14 +75,29 @@ public class DogProfileScene extends PrimaryScene{
 				changeProfile();
 				displayCurrentPetProfile();
 			}
+		}));
+		passButton.setOnAction(event -> {
+			if (passButton.getText().equals("❌")) {
+				// Disable the button to prevent multiple clicks
+				//passButton.setDisable(true);
+
+				// Change the button's text to undo sign
+				passButton.setText("↩");
+
+
+				passTimeline.playFromStart();
+			} else {
+				passButton.setText("❌");
+				passTimeline.stop();
+			}
+
 		});
 
 		Button likeButton = Components.button("♥");
-		
-		//this has to be fixed just to show dogs that are not yet adopted!
 		likeButton.getStyleClass().add("like-button");
-		likeButton.setOnAction(e -> {
-
+		Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(3), event -> {
+			likeButton.setText("♥");
+			// Add your existing logic here
 			user.addLikedDogs(allDogs.peek());
 			if (allDogs.size() == 1) {
 				changeProfile();
@@ -83,6 +105,20 @@ public class DogProfileScene extends PrimaryScene{
 			} else {
 				changeProfile();
 				displayCurrentPetProfile();
+			}
+		}));
+		likeButton.setOnAction(e -> {
+			if (likeButton.getText().equals("♥")) {
+
+				// Change the button's text to undo sign
+				likeButton.setText("↩");
+
+				// Schedule the button's appearance change back to ♥ after 5 seconds
+				timeline.playFromStart();
+			} else {
+				// If the button is clicked while showing the undo sign, revert to ♥ immediately
+				likeButton.setText("♥");
+				timeline.stop();
 			}
 		});
 
