@@ -39,6 +39,7 @@ public void removeAppointment(Appointment appointment) {
 	
 }
 
+
 public boolean appointmentExists(Appointment appointment) {
 	int posterID = appointment.getPosterID();
     int dogID = appointment.getDogID();
@@ -53,5 +54,10 @@ public boolean appointmentExists(Appointment appointment) {
     
     return false;
 	
+}
+
+public boolean contains(Appointment currentAppointment) {
+	// TODO Auto-generated method stub
+	return userAppointments.contains(currentAppointment);
 }
 }
