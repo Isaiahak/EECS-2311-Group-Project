@@ -263,6 +263,10 @@ public class AppData {
 		return Database.getallUserNames();
 	}
 
+	public ArrayList<String> getAllUsernames() {
+		return usernames;
+	}
+
 	public void setUsernames(ArrayList<String> usernames) {
 		this.usernames = usernames;
 	}
