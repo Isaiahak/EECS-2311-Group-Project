@@ -35,12 +35,11 @@ public class User {
 
 	}
 	
-	public void setLikedDogsToNull() {
-		this.likedDogs = null;
-	}
-	
-	public void setPassedDogsToNull() {
-		this.likedDogs = null;
+	public void reset() {
+		setUsername(null);
+		setPassword(null);
+		this.likedDogs.clear();
+		this.passedDogs.clear();
 	}
 	
 	public void addToPostersRatedByUser(int posterId) {
