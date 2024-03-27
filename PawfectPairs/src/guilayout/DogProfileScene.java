@@ -30,8 +30,10 @@ public class DogProfileScene extends PrimaryScene{
 	private Stage stage;
 	private OutOfDogsScene outOfDogs;
 	private Wallet wallet;
+	private Dog lastRemovedDog;
 
 	public static DogProfileScene getInstance() {
+		
 		if (instance == null) {
 			instance = new DogProfileScene();		
 		}
@@ -47,6 +49,7 @@ public class DogProfileScene extends PrimaryScene{
 
     @Override
     public void start(Stage primaryStage) {
+    	lastRemovedDog = null;
     	Components.updateCurrentScene("dogProfiles");
 		initailizePrimaryScene(primaryStage);
 		
@@ -63,7 +66,10 @@ public class DogProfileScene extends PrimaryScene{
 		Button passButton = Components.button("❌");
 		passButton.getStyleClass().add("pass-button");
 		passButton.setOnAction(event -> {
+			
 			user.addPassedDogs(allDogs.peek());
+			lastRemovedDog = allDogs.peek();
+			System.out.println(lastRemovedDog.getName());
 			if (allDogs.size() == 1) {
 				changeProfile();
 				outOfDogs.start(primaryStage);
@@ -72,28 +78,51 @@ public class DogProfileScene extends PrimaryScene{
 				displayCurrentPetProfile();
 			}
 		});
-
+		
+		
 		Button likeButton = Components.button("♥");
+        likeButton.getStyleClass().add("like-button");
+        likeButton.setOnAction(e -> {
+        	
+        	user.addLikedDogs(allDogs.peek());
+            lastRemovedDog = allDogs.peek(); // Remove the dog from the priority queue
+            System.out.println(lastRemovedDog.getName());
+            if (lastRemovedDog != null) {
+                //user.addLikedDogs(lastRemovedDog);
+                if (allDogs.size() == 1) {
+    				changeProfile();
+    				outOfDogs.start(primaryStage);
+    			} else {
+    				changeProfile();
+    				displayCurrentPetProfile();
+    			}
+            }
+        });
 		
-		//this has to be fixed just to show dogs that are not yet adopted!
-		likeButton.getStyleClass().add("like-button");
-		likeButton.setOnAction(e -> {
+        
+		Button undoButton = Components.button("undo");
+		undoButton.getStyleClass().add("undo-button");
+		undoButton.setOnAction(e -> {
+		    if (getLastRemovedDog() != null) {
+		        // Determine whether the last action was a like or pass
+		        if (user.getLikedDogs().contains(lastRemovedDog)) {
+		            user.getLikedDogs().remove(lastRemovedDog); // Remove the dog from liked dogs list
+		        } else if (user.getPassedDogs().contains(lastRemovedDog)) {
+		            user.getPassedDogs().remove(lastRemovedDog); // Remove the dog from passed dogs list
+		        }
 
-			user.addLikedDogs(allDogs.peek());
-			if (allDogs.size() == 1) {
-				changeProfile();
-				outOfDogs.start(primaryStage);
-			} else {
-				changeProfile();
-				displayCurrentPetProfile();
-			}
+		        // Add the last removed dog back to the priority queue
+		        allDogs.add(getLastRemovedDog());
+		        System.out.println("Undo: "+ lastRemovedDog.getName());
+		        
+		        changeProfile();
+		        // Redisplay the profile
+		        displayCurrentPetProfile();
+//		        displayUndidDogProfile();
+		    }
 		});
-		
-		
-		
-		
 
-		primaryControlTab.getChildren().addAll(likeButton, petImageView, passButton);
+		primaryControlTab.getChildren().addAll(likeButton, petImageView, passButton, undoButton);
 		primaryControlTab.getStyleClass().add("dog-picture-container");
 		primaryControlTab.setPadding(new Insets(10));
 		primaryControlTab.setSpacing(20);
@@ -184,6 +213,45 @@ public class DogProfileScene extends PrimaryScene{
 			tagsPane.getChildren().add(Components.createTags(currentProfile.getTags()));
 		}
 	}
+	
+//	public void displayUndidDogProfile() {
+//		if (allDogs.size() == 0) {
+//			outOfDogs.start(stage);
+//		} else {
+//			Dog currentProfile = lastRemovedDog;
+//
+//			petImageView.setImage(new Image(currentProfile.getImagePath()));
+//			primaryInfoLabel.setText(currentProfile.getName() + ", " + currentProfile.getAge() + " years, " + currentProfile.getSex());
+//			sizeLabel.setText("Size: " + currentProfile.getSize());
+//
+//			Components.dogAttributeDisplay(sizeIcon, "🐕", currentProfile.getSize().getWeight());
+//			
+//			energyLabel.setText("Energy Level: " + currentProfile.getEnergyLevel());
+//			Components.dogAttributeDisplay(energyIcon, "⚡", currentProfile.getEnergyLevel().getWeight());
+//			
+//			biographyText.setText(currentProfile.getBiography());
+//
+//			posterLink.setText(posterList.get(currentProfile.getPosterId()).getDisplayName());
+//			PosterProfileScene posterProfile = PosterProfileScene.getInstance();
+//			
+//			
+//
+//			posterLink.setOnAction(event -> {
+//				try {
+//					posterProfile.setCurrentPoster(posterList.get(currentProfile.getPosterId()));
+//					posterProfile.start(stage);
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//				}
+//			});
+//
+//
+//			tagsPane.getChildren().clear();
+//
+//			tagsPane.getChildren().add(Components.createTags(currentProfile.getTags()));
+//		}
+//	}
+//	
 
 	public void changeProfile() {
 		 allDogs.remove();
@@ -192,6 +260,13 @@ public class DogProfileScene extends PrimaryScene{
 	public Dog getCurrentProfile() {
 		return this.allDogs.peek();
 	}
+	
+	// Getter method to retrieve the last removed dog
+    public Dog getLastRemovedDog() {
+        return lastRemovedDog;
+    }
+    
+
 }
 
 
