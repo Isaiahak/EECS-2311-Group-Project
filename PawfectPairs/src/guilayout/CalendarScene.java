@@ -88,6 +88,16 @@ public class CalendarScene extends PrimaryScene {
 
 	}
 
+	private void removeOtherDogAppointments(ArrayList<Appointment> exist) {
+		ArrayList<Appointment> copy = Components.deepCopyUserAppointments(exist);
+		for(Appointment app : copy) {
+
+			if(app.getDogID() != currentDog.getId()) {
+					exist.remove(app);
+				
+			}		
+		}
+	}
 	@Override
 	public void start(Stage stage) {
 		Components.updateCurrentScene("none");
@@ -102,12 +112,11 @@ public class CalendarScene extends PrimaryScene {
 
 			if(app.getDogID() == currentDog.getId()) {
 				if(existingAppointment==null ||existingAppointment.isEmpty()||!existingAppointment.contains(app))
-					existingAppointment.add(app); 
-
+					existingAppointment.add(app); 	
 				
 			}		
 		}
-
+removeOtherDogAppointments(existingAppointment);
 		createCalendar();
 
 		HBox navigation =  CreateNavigationButtons (titleLabel);
