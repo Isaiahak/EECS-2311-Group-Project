@@ -440,7 +440,7 @@ public class Database {
 			while (resultSet.next()) {
 				String displayName = resultSet.getString("displayName");
 				int posterId = resultSet.getInt("poster_id");
-				int score = resultSet.getInt("score");
+				double score = resultSet.getDouble("score");
 				String phone = resultSet.getString("phone");
 				String email = resultSet.getString("email");
 				double balance = resultSet.getDouble("balance");
