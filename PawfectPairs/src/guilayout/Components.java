@@ -646,7 +646,6 @@ private static void RemoveAppointmentFromUser (Appointment appointment, ArrayLis
 public static ArrayList<Appointment> deepCopyUserAppointments(ArrayList<Appointment> originalList) {
     ArrayList<Appointment> copyList = new ArrayList<>();
     for (Appointment appointment : originalList) {
-        // Assuming Appointment class has a copy constructor or a method to create a copy
         copyList.add(new Appointment(appointment)); // Create a copy of each appointment and add to the new list
     }
     return copyList;
