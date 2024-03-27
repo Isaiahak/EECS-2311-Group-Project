@@ -55,7 +55,16 @@ public boolean appointmentExists(Appointment appointment) {
     return false;
 	
 }
-
+@Override
+public String toString() {
+    StringBuilder sb = new StringBuilder();
+    sb.append("User ID: ").append(userID).append("\n");
+    sb.append("User Appointments:\n");
+    for (Appointment appointment : userAppointments) {
+        sb.append(appointment).append("\n");
+    }
+    return sb.toString();
+}
 public boolean contains(Appointment currentAppointment) {
 	// TODO Auto-generated method stub
 	return userAppointments.contains(currentAppointment);

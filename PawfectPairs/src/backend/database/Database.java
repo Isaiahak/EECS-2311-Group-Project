@@ -1269,10 +1269,31 @@ public static boolean updateUsernamePassword (String newUsername, String newPass
 	    return ratedposterlist;
 		
 	}
+	public static ArrayList<String> getallUserNames() {
+		ArrayList<String> usernames = new ArrayList<>();
+
+	    try {
+	        Connection connection = Database.connect();
+	        Statement statement = connection.createStatement();
+	        ResultSet resultSet = statement.executeQuery("SELECT username FROM users;");
+
+	        while (resultSet.next()) {
+	            String name = resultSet.getString("username");
+	            usernames.add(name);
+	        }
+
+	        connection.close();
+	    } catch (SQLException e) {
+	        System.out.println("Error retrieving usernames.");
+	        e.printStackTrace();
+	    }
+	    return usernames;
+	}
 
 	/*
 	 * Cleanup Methods
 	 */
+	
 
 	public static void onApplicationClose(User user, PriorityQueue<Dog> doglist, AppointmentManager appointmentManager, Boolean okToClose) {
 		if(okToClose==true) {
