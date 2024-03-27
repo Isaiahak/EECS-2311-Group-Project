@@ -166,10 +166,8 @@ public class UserProfile extends PrimaryScene{
 		signOutButton.setOnMouseClicked(event -> {
 			Database.onApplicationClose(user, allDogs, appData.getAppointmentManager(), appData.getOkToClose());
 			appData.setOkToClose(false);//Prevent double saving with a null dog list
-			user.setUsername(null);
-			user.setPassword(null);
-			user.setLikedDogsToNull();
-			user.setPassedDogsToNull();
+			user.reset();
+			appData.reset();
 			//appData.addToOtherUsersAppointments(appData.getAppointmentManager());
 			//appData.setAppointmentManagerToEmpty();
 //			System.out.println(appData.getAppointmentManager().toString());
