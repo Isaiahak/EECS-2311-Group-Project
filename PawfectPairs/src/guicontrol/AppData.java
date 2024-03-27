@@ -31,6 +31,11 @@ public class AppData {
 	private ArrayList<Appointment> otherUsersAppointments;
 	private HashMap<Integer, ArrayList<Attribute>> allAttributes;
 	private boolean okToClose;
+	private Dog lastRemovedDog;
+	
+	public Dog getlastRemovedDog() {
+		return this.lastRemovedDog;
+	}
 	
 	public void setOkToClose(boolean state) {
 		this.okToClose = state;
@@ -135,7 +140,12 @@ public class AppData {
 			setDogProfiles();
 			setPosterDogLists();
 			initializeDogProfilesSorted();
+			lastRemovedDog = this.sortedDogProfiles.peek(); 
 		}
+	}
+	
+	public void setlastRemovedDog(Dog lastRemovedDog) {
+		this.lastRemovedDog = this.sortedDogProfiles.peek();
 	}
 	
 	public void initializeDogProfilesSorted() {  // to be optimized

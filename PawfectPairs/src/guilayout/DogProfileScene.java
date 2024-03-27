@@ -3,7 +3,8 @@
 	import backend.database.Database;
 	import backend.dog.Dog;
 	import backend.wallet.Wallet;
-	import javafx.animation.KeyFrame;
+import guicontrol.AppData;
+import javafx.animation.KeyFrame;
 	import javafx.animation.Timeline;
 	import javafx.geometry.Insets;
 	import javafx.geometry.Pos;
@@ -86,7 +87,7 @@ public class DogProfileScene extends PrimaryScene{
         	
         	user.addLikedDogs(allDogs.peek());
             lastRemovedDog = allDogs.peek(); // Remove the dog from the priority queue
-            System.out.println(lastRemovedDog.getName());
+        	System.out.println(lastRemovedDog.getName());
             if (lastRemovedDog != null) {
                 //user.addLikedDogs(lastRemovedDog);
                 if (allDogs.size() == 1) {
