@@ -669,6 +669,7 @@ public static ArrayList<Appointment> deepCopyUserAppointments(ArrayList<Appointm
 						RemoveAppointmentFromUser(appointment, userAppointments, userManager,appData);
 						appointmentPage.setCurrentPosterDog(selectedPoster, dog);
 						appointmentPage.start(primaryStage);
+						showAlert("Rebooking","Please select an alternate appointment, your previous appointment has been cancelled.",AlertType.INFORMATION);
 						break;
 						}
 						
