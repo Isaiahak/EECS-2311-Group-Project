@@ -63,6 +63,7 @@ public class PosterProfileScene extends PrimaryScene {
 
 		HBox stars = Components.generateStars((int)currentPoster.getScore());
 		Label score = Components.mediumLabel("Total Score: "+currentPoster.getScore() + "/10", Pos.CENTER);
+		Label numRatings = Components.mediumLabel("Number of Ratings: "+currentPoster.getNumberofRatings(), Pos.CENTER);
 		Label email = Components.mediumLabel("Email 📧:  "+ currentPoster.getEmail(), Pos.CENTER);
 		Label phone = Components.mediumLabel("Phone ☎:  "+ currentPoster.getPhone(), Pos.CENTER);
 		Label ratePoster = Components.mediumLabel("Rate this poster", Pos.CENTER);
@@ -74,6 +75,7 @@ public class PosterProfileScene extends PrimaryScene {
 				phone,
 				stars,
 				score,
+				numRatings,
 				ratePoster,
 				slider);
 
