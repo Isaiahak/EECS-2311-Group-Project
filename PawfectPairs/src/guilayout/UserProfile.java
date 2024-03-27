@@ -166,10 +166,8 @@ public class UserProfile extends PrimaryScene{
 		signOutButton.setOnMouseClicked(event -> {
 			Database.onApplicationClose(user, allDogs, appData.getAppointmentManager(), appData.getOkToClose());
 			appData.setOkToClose(false);//Prevent double saving with a null dog list
-			user.setUsername(null);
-			user.setPassword(null);
-			user.setLikedDogsToNull();
-			user.setPassedDogsToNull();
+			user.reset();
+			appData.reset();
 			//appData.addToOtherUsersAppointments(appData.getAppointmentManager());
 			//appData.setAppointmentManagerToEmpty();
 //			System.out.println(appData.getAppointmentManager().toString());
@@ -257,6 +255,10 @@ public class UserProfile extends PrimaryScene{
 			alert.close();
 		}
 	}
+	
+	private boolean otherUsersUsername (TextField username) {
+		return appData.getAllUsernames().contains(username.getText())&&!username.getText().equals(user.getUsername());
+	}
 	private void successInput(TextField username, TextField password, Alert alert, VBox textInputforPopUp) {
 	    // Set title and header for the alert
 	    alert.setTitle("Changing your username and password");
@@ -269,13 +271,15 @@ public class UserProfile extends PrimaryScene{
 	    if (result.isPresent() && result.get() == ButtonType.OK) {
 	        // Process input if user clicks OK
 	    	//System.out.println("authentic sign up" + authenticator.authenticateLogIn(username.getText(), password.getText()));
-			System.out.println("same user? "+username.getText().equals(user.getUsername()));
-	        if (authenticator.checkFieldsAreValid(username.getText(), password.getText())&&(appData.getAllUsernames().contains(username.getText())&&!username.getText().equals(user.getUsername()))) {
+			//System.out.println("same user? "+username.getText().equals(user.getUsername()));
+			
+	        if (authenticator.checkFieldsAreValid(username.getText(), password.getText())&&!otherUsersUsername(username)) {
 	            // If authentication is successful, create a success dialog
 	            Alert resultAlert = new Alert(Alert.AlertType.INFORMATION);
 	            // Create UI elements for the success dialog
 	            Button showPassword = new Button("👁");
-	            Label loginInfo = new Label("Your new username and password are:\nusername: " + username.getText() + "\npassword: " +
+	            Label loginInfo = new Label("Your new username and password are:\nusername: " + 
+	            username.getText() + "\npassword: " +
 	                    hidePassword(password.getText()));
 	            resultAlert.setTitle("Change Successful");
 	            resultAlert.setHeaderText("Your username and password have been changed successfully ");

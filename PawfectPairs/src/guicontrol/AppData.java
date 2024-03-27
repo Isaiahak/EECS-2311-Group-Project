@@ -37,6 +37,18 @@ public class AppData {
 		return this.lastRemovedDog;
 	}
 	private ArrayList<String> usernames;
+
+	public void reset() {
+		this.user = null;
+		this.allDogs.clear();
+		this.dogProfileHashtable.clear();
+		this.allTags.clear();
+		this.posterProfiles.clear();
+		this.sortedDogProfiles.clear();
+		this.appointmentManager = null;
+		this.otherUsersAppointments.clear();
+		this.allAttributes.clear();
+	}
 	
 	public void setOkToClose(boolean state) {
 		this.okToClose = state;
@@ -270,7 +282,11 @@ public class AppData {
 	}
 
 	public ArrayList<String> initializeAllUsernames() {
-		return Database.getallUserNames();
+		return usernames=Database.getallUserNames();
+	}
+
+	public ArrayList<String> getAllUsernames() {
+		return usernames;
 	}
 
 	public void setUsernames(ArrayList<String> usernames) {
