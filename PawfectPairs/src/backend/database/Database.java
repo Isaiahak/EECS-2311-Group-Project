@@ -1313,6 +1313,7 @@ public static boolean updateUsernamePassword (String newUsername, String newPass
 			Database.deletePreferenceTagsFromUser(userId);
 			Database.addPreferenceTagsToUser(user.getTagPreferences(), userId);
 			Database.deleteAppointment(userId);
+			System.out.println(appointmentManager.toString());
 			Database.setUserAppointments(appointmentManager);
 			Database.deleteUserAttributePreferences(userId);
 			Database.addUserAttributePreferences(user.getAgePreferences(), userId);

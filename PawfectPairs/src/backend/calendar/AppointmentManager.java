@@ -61,7 +61,7 @@ public String toString() {
     sb.append("User ID: ").append(userID).append("\n");
     sb.append("User Appointments:\n");
     for (Appointment appointment : userAppointments) {
-        sb.append(appointment).append("\n");
+        sb.append(appointment.toString()).append("\n");
     }
     return sb.toString();
 }

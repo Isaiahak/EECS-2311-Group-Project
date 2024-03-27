@@ -68,6 +68,25 @@ public class CalendarScene extends PrimaryScene {
 		return instance;
 	}
 
+	private void retrieveAppDataInfo () {
+		user = appData.getUser();
+		userAppointments = appData.getAppointmentManager();
+		otherUsersAppointments = appData.getOtherUsersAppointments();
+
+	}
+	private void pageSetUp (Stage stage, Label titleLabel) {
+		stage.setTitle("Calendar");
+		meetWithLabel.setAlignment(Pos.CENTER);
+
+		// Title label to display the current month and year
+		titleLabel.setDisable(true);
+
+		calendarGrid = new GridPane();
+		calendarGrid.setAlignment(Pos.CENTER);
+		calendarGrid.setHgap(5);
+		calendarGrid.setVgap(5);
+
+	}
 
 	@Override
 	public void start(Stage stage) {
@@ -85,10 +104,8 @@ public class CalendarScene extends PrimaryScene {
 				if(existingAppointment==null ||existingAppointment.isEmpty()||!existingAppointment.contains(app))
 					existingAppointment.add(app); 
 
-				break;
-			}else {
-				existingAppointment = new ArrayList<>(); 
-			}			
+				
+			}		
 		}
 
 		createCalendar();
@@ -136,7 +153,8 @@ public class CalendarScene extends PrimaryScene {
 				dayButton = Components.calendarCell(Integer.toString(buttonText));
 
 				if (!alreadyBookedByThisUser(buttonDate)&&cellNumber>0&& buttonDate.getMonth()==month&&
-						buttonText<=month.length(leapMonth)&&buttonDate.isAfter(firstDayOfMonth.minusDays(1))&&buttonDate.isAfter(todaysDate)){
+						buttonText<=month.length(leapMonth)&&buttonDate.isAfter(firstDayOfMonth.minusDays(1))&&
+						buttonDate.isAfter(todaysDate)){
 					if(!appData.isDateAlreadyBooked(currentDog.getId(), currentDog.getPosterId(), buttonDate)) {
 						StackPane dayButtonCopy = dayButton; 
 						activeButtonBehaviour ( dayButton,  dayButtonCopy,  buttonDate);
@@ -144,12 +162,16 @@ public class CalendarScene extends PrimaryScene {
 					}
 					else {
 						setBusyForOtherUserAppointments(dayButton);
+
 					}
 				}
-				else {
-					dayButton.setId("inactive-calendar-cell");
+
+				else if (alreadyBookedByThisUser(buttonDate)){
+					populateExistingAppointments ( buttonDate,  dayButton );
 				}
-				populateExistingAppointments ( buttonDate,  dayButton );
+				else 
+					dayButton.setId("inactive-calendar-cell");
+
 
 				calendarGrid.add(dayButton, col, row);
 
@@ -292,25 +314,6 @@ public class CalendarScene extends PrimaryScene {
 	private void updateCalendar() {
 		calendarGrid.getChildren().clear();
 		createCalendar();
-	}
-	private void retrieveAppDataInfo () {
-		user = appData.getUser();
-		userAppointments = appData.getAppointmentManager();
-		otherUsersAppointments = appData.getOtherUsersAppointments();
-
-	}
-	private void pageSetUp (Stage stage, Label titleLabel) {
-		stage.setTitle("Calendar");
-		meetWithLabel.setAlignment(Pos.CENTER);
-
-		// Title label to display the current month and year
-		titleLabel.setDisable(true);
-
-		calendarGrid = new GridPane();
-		calendarGrid.setAlignment(Pos.CENTER);
-		calendarGrid.setHgap(5);
-		calendarGrid.setVgap(5);
-
 	}
 
 
