@@ -561,8 +561,19 @@ public class Components{
             // Remove the dog from the likedDogs list
 //		    user.unlikeDog(dog);
             appData.getUser().getLikedDogs().remove(dog);
+            appData.getSortedDogProfiles().add(dog);
             // Remove the entire likedDogView from the UI
 			((VBox) unlikeButton.getParent().getParent()).getChildren().remove(unlikeButton.getParent());
+			
+			AppointmentManager userManager = AppData.getInstance().getAppointmentManager();
+			ArrayList<Appointment> userAppointments = userManager.getUserAppointments();
+			for (Appointment appointment : userAppointments) {
+				if (appointment.getDogID() == dog.getId()) {
+					userManager.removeAppointment(appointment);
+					break;
+				}
+			}
+			AppData.getInstance().getUser().getWallet().removeRecurringPayment(dog.getId());
         });
 
         return HBox;
