@@ -215,44 +215,6 @@ public class DogProfileScene extends PrimaryScene{
 		}
 	}
 	
-//	public void displayUndidDogProfile() {
-//		if (allDogs.size() == 0) {
-//			outOfDogs.start(stage);
-//		} else {
-//			Dog currentProfile = lastRemovedDog;
-//
-//			petImageView.setImage(new Image(currentProfile.getImagePath()));
-//			primaryInfoLabel.setText(currentProfile.getName() + ", " + currentProfile.getAge() + " years, " + currentProfile.getSex());
-//			sizeLabel.setText("Size: " + currentProfile.getSize());
-//
-//			Components.dogAttributeDisplay(sizeIcon, "🐕", currentProfile.getSize().getWeight());
-//			
-//			energyLabel.setText("Energy Level: " + currentProfile.getEnergyLevel());
-//			Components.dogAttributeDisplay(energyIcon, "⚡", currentProfile.getEnergyLevel().getWeight());
-//			
-//			biographyText.setText(currentProfile.getBiography());
-//
-//			posterLink.setText(posterList.get(currentProfile.getPosterId()).getDisplayName());
-//			PosterProfileScene posterProfile = PosterProfileScene.getInstance();
-//			
-//			
-//
-//			posterLink.setOnAction(event -> {
-//				try {
-//					posterProfile.setCurrentPoster(posterList.get(currentProfile.getPosterId()));
-//					posterProfile.start(stage);
-//				} catch (Exception e) {
-//					e.printStackTrace();
-//				}
-//			});
-//
-//
-//			tagsPane.getChildren().clear();
-//
-//			tagsPane.getChildren().add(Components.createTags(currentProfile.getTags()));
-//		}
-//	}
-//	
 
 	public void changeProfile() {
 		 allDogs.remove();

@@ -559,21 +559,31 @@ public class Components{
 
         unlikeButton.setOnAction(event -> {
             // Remove the dog from the likedDogs list
-//		    user.unlikeDog(dog);
-            appData.getUser().getLikedDogs().remove(dog);
-            appData.getSortedDogProfiles().add(dog);
+        	
+           // appData.getUser().getLikedDogs().remove(dog);
+            appData.getUser().removeUnlikedDog(dog);
+           
+            Database.removeLikedDog(dog.getId(), appData.getUser().getUserID());
+        	
+        	
             // Remove the entire likedDogView from the UI
 			((VBox) unlikeButton.getParent().getParent()).getChildren().remove(unlikeButton.getParent());
 			
 			AppointmentManager userManager = AppData.getInstance().getAppointmentManager();
 			ArrayList<Appointment> userAppointments = userManager.getUserAppointments();
-			for (Appointment appointment : userAppointments) {
-				if (appointment.getDogID() == dog.getId()) {
-					userManager.removeAppointment(appointment);
-					break;
-				}
+			
+			Iterator<Appointment> iterator = userAppointments.iterator();
+			while (iterator.hasNext()) {
+			    Appointment appointment = iterator.next();
+			    if (appointment.getDogID() == dog.getId()) {
+			        iterator.remove(); // Remove the current appointment from the list
+			        userManager.removeAppointment(appointment);
+			    }
 			}
 			AppData.getInstance().getUser().getWallet().removeRecurringPayment(dog.getId());
+			
+
+			
         });
 
         return HBox;

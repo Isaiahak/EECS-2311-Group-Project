@@ -35,7 +35,7 @@ public class Database {
 			Class.forName("org.postgresql.Driver"); // Replace with your database driver
 			//Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/db", "postgres", "1234"); // zainab
 
-			Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/finaldb2", "postgres", "123"); // connor (sorry katya)
+			Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/posterscoreupdate", "postgres", "12345"); // connor (sorry katya)
 			//Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/posterscoreupdate", "postgres", "12345"); // connor (sorry katya)
 
 //			Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5434/thebestoneyet", "postgres", "321123"); // isaiah
@@ -408,13 +408,12 @@ public class Database {
 	}
 
 	public static void removeLikedDog(int dogID, int userID) {
-
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 
 		try {
 			connection = Database.connect();
-			preparedStatement = connection.prepareStatement("DELETE FROM userdogs WHERE dogid = " + dogID + "AND userid  =" + userID + ";");
+			preparedStatement = connection.prepareStatement("DELETE FROM userdogs WHERE dogid =? AND userid =?;");
 			preparedStatement.setInt(1, dogID);
 			preparedStatement.setInt(2, userID);
 			int rowsAffected = preparedStatement.executeUpdate();
@@ -1305,6 +1304,7 @@ public static boolean updateUsernamePassword (String newUsername, String newPass
 	public static void onApplicationClose(User user, PriorityQueue<Dog> doglist, AppointmentManager appointmentManager, Boolean okToClose) {
 		if(okToClose==true) {
 //			Database.updateAllAdoptedDogs(doglist); // sets dogs to be adopted
+
 			Database.addUserDog(user.getLikedDogs(), user.getUserID(), "userdogs");
 			Database.addUserDog(user.getPassedDogs(), user.getUserID(), "userpasseddogs");
 
