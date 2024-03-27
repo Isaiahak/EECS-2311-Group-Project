@@ -282,7 +282,7 @@ public class AppData {
 	}
 
 	public ArrayList<String> initializeAllUsernames() {
-		return Database.getallUserNames();
+		return usernames=Database.getallUserNames();
 	}
 
 	public ArrayList<String> getAllUsernames() {
