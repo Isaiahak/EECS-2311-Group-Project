@@ -31,6 +31,7 @@ public class AppData {
 	private ArrayList<Appointment> otherUsersAppointments;
 	private HashMap<Integer, ArrayList<Attribute>> allAttributes;
 	private boolean okToClose;
+	private ArrayList<String> usernames;
 	
 	public void setOkToClose(boolean state) {
 		this.okToClose = state;
@@ -51,6 +52,12 @@ public class AppData {
 
 	public void setAppointmentManager(AppointmentManager appointmentManager) {
 		this.appointmentManager = appointmentManager;
+	}
+	
+	public void setAppointmentManagerToEmpty() {
+		ArrayList<Appointment> EmptyAppointmentsList= new ArrayList<>();
+		AppointmentManager empty =new AppointmentManager(user.getUserID(), EmptyAppointmentsList);
+		this.appointmentManager = empty;
 	}
 
 	public PriorityQueue<Dog> getSortedDogProfiles() {
@@ -199,6 +206,8 @@ public class AppData {
 	public void onStart(String username, String pass) {
 		getInstance(); 	
 		
+		initializeAllUsernames();
+		
 		setUser(username, pass); // sets user, dog liked list, ideal dog attribtues
 		
 		setAllTags();
@@ -241,6 +250,21 @@ public class AppData {
 
 		}
 		return false;
+	}
+
+	public void addToOtherUsersAppointments(AppointmentManager appointmentManager2) {
+		// TODO Auto-generated method stub
+		
+		this.otherUsersAppointments.addAll(appointmentManager2.getUserAppointments());
+		
+	}
+
+	public ArrayList<String> initializeAllUsernames() {
+		return Database.getallUserNames();
+	}
+
+	public void setUsernames(ArrayList<String> usernames) {
+		this.usernames = usernames;
 	}
 	
 	

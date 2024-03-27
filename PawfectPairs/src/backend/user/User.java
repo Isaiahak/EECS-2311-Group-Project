@@ -2,6 +2,7 @@ package backend.user;
 
 import java.util.*;
 
+import backend.calendar.AppointmentManager;
 import backend.dog.Dog;
 import backend.dog.trait.*;
 import backend.tag.Tag;
@@ -16,6 +17,7 @@ public class User {
 	private ArrayList<Attribute> sexPreferences  = new ArrayList<Attribute>();
 	private ArrayList<Attribute> energyLevelPreferences  = new ArrayList<Attribute>();
 	private ArrayList<Integer> postersRatedByUser = new ArrayList<Integer>();
+	private AppointmentManager bookedDates = new AppointmentManager(getUserID(), new ArrayList<>());
 	private String username;
 	private String email;
 	private int userID;
@@ -44,7 +46,7 @@ public class User {
 	public void addToPostersRatedByUser(int posterId) {
 		this.postersRatedByUser.add(posterId);
 	}
-	
+
 
 	public ArrayList<Integer> getPostersRatedByUser(){
 		return this.postersRatedByUser; 

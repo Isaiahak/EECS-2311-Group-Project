@@ -170,6 +170,10 @@ public class UserProfile extends PrimaryScene{
 			user.setPassword(null);
 			user.setLikedDogsToNull();
 			user.setPassedDogsToNull();
+			//appData.addToOtherUsersAppointments(appData.getAppointmentManager());
+			//appData.setAppointmentManagerToEmpty();
+//			System.out.println(appData.getAppointmentManager().toString());
+
 			loginScene.start(primaryStage);
 		});
 
@@ -266,7 +270,7 @@ public class UserProfile extends PrimaryScene{
 	        // Process input if user clicks OK
 	    	//System.out.println("authentic sign up" + authenticator.authenticateLogIn(username.getText(), password.getText()));
 			System.out.println("same user? "+username.getText().equals(user.getUsername()));
-	        if (authenticator.checkFieldsAreValid(username.getText(), password.getText())) {
+	        if (authenticator.checkFieldsAreValid(username.getText(), password.getText())&&(appData.getAllUsernames().contains(username.getText())&&!username.getText().equals(user.getUsername()))) {
 	            // If authentication is successful, create a success dialog
 	            Alert resultAlert = new Alert(Alert.AlertType.INFORMATION);
 	            // Create UI elements for the success dialog
