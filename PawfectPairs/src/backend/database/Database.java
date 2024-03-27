@@ -33,9 +33,9 @@ public class Database {
 	public static Connection connect() {
 		try {
 			Class.forName("org.postgresql.Driver"); // Replace with your database driver
-			Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/db", "postgres", "1234"); // zainab
+			//Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/db", "postgres", "1234"); // zainab
 
-		//	Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/thebestoneyet", "postgres", "123"); // connor (sorry katya)
+			Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/finaldb2", "postgres", "123"); // connor (sorry katya)
 			//Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/posterscoreupdate", "postgres", "12345"); // connor (sorry katya)
 
 //			Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5434/thebestoneyet", "postgres", "321123"); // isaiah
@@ -440,7 +440,7 @@ public class Database {
 			while (resultSet.next()) {
 				String displayName = resultSet.getString("displayName");
 				int posterId = resultSet.getInt("poster_id");
-				int score = resultSet.getInt("score");
+				double score = resultSet.getDouble("score");
 				String phone = resultSet.getString("phone");
 				String email = resultSet.getString("email");
 				double balance = resultSet.getDouble("balance");
@@ -1175,54 +1175,47 @@ public static boolean updateUsernamePassword (String newUsername, String newPass
 		}
 	}
 	
-	// add posters rated ( local to DB)
-	public static void addPosterRatedByUser(int userId, int posterId) {
-	    Connection connection = null;
-	    PreparedStatement preparedStatement = null;
+	
+	// Add posters rated (local to DB)
+		public static void addPosterRatedByUser(int userId, int posterId) {
+		    Connection connection = null;
+		    PreparedStatement preparedStatement = null;
 
-	    try {
-	        connection = Database.connect();
-	        
-	        // Check if the record already exists
-	        String checkQuery = "SELECT COUNT(*) FROM userpostersrated WHERE userid = ? AND posterid = ?";
-	        preparedStatement = connection.prepareStatement(checkQuery);
-	        preparedStatement.setInt(1, userId);
-	        preparedStatement.setInt(2, posterId);
-	        ResultSet resultSet = preparedStatement.executeQuery();
-	        resultSet.next();
-	        int count = resultSet.getInt(1);
-	        if (count > 0) {
-	            System.out.println("The record already exists.");
-	            return;
-	        }
+		    try {
+		        connection = Database.connect();
+		        
+		        // Insert the record if it doesn't already exist
+		        String insertQuery = "INSERT INTO userpostersrated (userid, posterid) "
+		                           + "SELECT ?, ? "
+		                           + "WHERE NOT EXISTS (SELECT 1 FROM userpostersrated WHERE userid = ? AND posterid = ?)";
+		        preparedStatement = connection.prepareStatement(insertQuery);
+		        preparedStatement.setInt(1, userId);
+		        preparedStatement.setInt(2, posterId);
+		        preparedStatement.setInt(3, userId);
+		        preparedStatement.setInt(4, posterId);
+		        preparedStatement.executeUpdate();
+		    } catch (SQLException e) {
+		        System.out.println("Error adding poster rated by user.");
+		        e.printStackTrace();
+		    } finally {
+		        // Close resources in the finally block
+		        if (preparedStatement != null) {
+		            try {
+		                preparedStatement.close();
+		            } catch (SQLException e) {
+		                e.printStackTrace();
+		            }
+		        }
+		        if (connection != null) {
+		            try {
+		                connection.close();
+		            } catch (SQLException e) {
+		                e.printStackTrace();
+		            }
+		        }
+		    }
+		}
 
-	        // Insert the record if it doesn't already exist
-	        String insertQuery = "INSERT INTO userpostersrated (userid, posterid) VALUES (?, ?)";
-	        preparedStatement = connection.prepareStatement(insertQuery);
-	        preparedStatement.setInt(1, userId);
-	        preparedStatement.setInt(2, posterId);
-	        preparedStatement.executeUpdate();
-	    } catch (SQLException e) {
-	        System.out.println("Error adding poster rated by user.");
-	        e.printStackTrace();
-	    } finally {
-	        // Close resources in the finally block
-	        if (preparedStatement != null) {
-	            try {
-	                preparedStatement.close();
-	            } catch (SQLException e) {
-	                e.printStackTrace();
-	            }
-	        }
-	        if (connection != null) {
-	            try {
-	                connection.close();
-	            } catch (SQLException e) {
-	                e.printStackTrace();
-	            }
-	        }
-	    }
-	}
 	
 	// upload posters rated by user (DB to local)
 	public static void setPostersRatedByUser(User user) {

@@ -718,11 +718,19 @@ public static ArrayList<Appointment> deepCopyUserAppointments(ArrayList<Appointm
 					showAlert("Dog has been adopted", dog.getName() + " is thankful for you!", AlertType.INFORMATION);
 					AppointmentManager userManager = AppData.getInstance().getAppointmentManager();
 					ArrayList<Appointment> userAppointments = userManager.getUserAppointments();
-					for (Appointment appointment : userAppointments) {
+					/*for (Appointment appointment : userAppointments) {
 						if (appointment.getDogID() == dog.getId()) {
 							userManager.removeAppointment(appointment);
 							break;
 						}
+					}*/
+					Iterator<Appointment> iterator = userAppointments.iterator();
+					while (iterator.hasNext()) {
+					    Appointment appointment = iterator.next();
+					    if (appointment.getDogID() == dog.getId()) {
+					        iterator.remove(); // Remove the current appointment from the list
+					        userManager.removeAppointment(appointment);
+					    }
 					}
 					AppData.getInstance().getUser().getWallet().removeRecurringPayment(dog.getId());
 					
