@@ -61,7 +61,7 @@ public class BookedAppointmentScene extends PrimaryScene {
                     }
                     
                 }
-        		mainContainer.getChildren().add(Components.appointmentView(appointmentDog, selectedAppointment.getDate(), stage, appData.getPosters()));
+        		mainContainer.getChildren().add(Components.appointmentView(appointmentDog, selectedAppointment.getDate(), stage, appData.getPosters(), appData, selectedAppointment));
         	}
 
 

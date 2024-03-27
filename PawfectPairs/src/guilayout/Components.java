@@ -488,16 +488,16 @@ public class Components{
 	}
 
 	public static HBox appointmentView (Dog dog, Date localDate, Stage
-			primaryStage, Hashtable < Integer, Poster > poster){
+			primaryStage, Hashtable < Integer, Poster > poster, AppData appData, Appointment selectedDate){
 		ImageView img = Components.imageView(200, 200);
 		img.setImage(new Image(dog.getImagePath()));
 
 		Label primaryInfoLabel = Components.mediumLabel(dog.getName() + ", " + dog.getAge() + " years, " + dog.getSex(), Pos.CENTER);
 		Label appointmentDate = Components.mediumLabel("Appointment Date: " + localDate.toString(), Pos.CENTER);
 
-		Hyperlink rescheduleLink = hyperlinkToReschedule(dog, primaryStage, poster);
+		Hyperlink rescheduleLink = hyperlinkToReschedule(dog, primaryStage, poster, appData, selectedDate);
 
-		Hyperlink cancelLink = hyperlinkToCancelAppointment(dog, primaryStage, poster);
+		Hyperlink cancelLink = hyperlinkToCancelAppointment(dog, primaryStage, poster, appData);
 
 		VBox info = new VBox(primaryInfoLabel, appointmentDate, rescheduleLink, cancelLink);
 		HBox HBox = new HBox(img, info);
@@ -601,9 +601,8 @@ public class Components{
 
 		return posterLink;
 	}
-
 	public static Hyperlink hyperlinkToCancelAppointment (Dog dog, Stage
-			primaryStage, Hashtable < Integer, Poster > poster){
+			primaryStage, Hashtable < Integer, Poster > poster, AppData appData){
 		AppointmentManager userManager = AppData.getInstance().getAppointmentManager();
 		ArrayList<Appointment> userAppointments = userManager.getUserAppointments();
 
@@ -616,11 +615,8 @@ public class Components{
 
 				for (Appointment appointment : userAppointments) {
 					if (appointment.getDogID() == dog.getId()) {
-						userManager.removeAppointment(appointment);
-						System.out.println(userManager.getUserAppointments().isEmpty());
-						ArrayList <Appointment> newExist= CalendarScene.getInstance().getExistingAppointment();
-						newExist.remove(appointment);
-						CalendarScene.getInstance().setExistingAppointment(newExist);
+						
+						RemoveAppointmentFromUser(appointment, userAppointments, userManager,appData);
 						BookedAppointmentScene bookedPage = BookedAppointmentScene.getInstance();
 						bookedPage.start(primaryStage);
 						break;
@@ -633,11 +629,34 @@ public class Components{
 
 		return appointmentLink;
 	}
+	
+	
+private static void RemoveAppointmentFromUser (Appointment appointment, ArrayList<Appointment> userAppointments,AppointmentManager userManager, AppData appData ) {
+	userManager.removeAppointment(appointment);
+	System.out.println(userManager.getUserAppointments().isEmpty());
+	ArrayList <Appointment> newExist= CalendarScene.getInstance().getExistingAppointment();
+	newExist.remove(appointment);
+	CalendarScene.getInstance().setExistingAppointment(newExist);
+	AppointmentManager RemoveApp= appData.getAppointmentManager();
+	RemoveApp.removeAppointment(appointment);
+	 appData.setAppointmentManager(RemoveApp);
+	
+}
 
-	public static Hyperlink hyperlinkToReschedule (Dog dog, Stage primaryStage, Hashtable < Integer, Poster > poster)
+public static ArrayList<Appointment> deepCopyUserAppointments(ArrayList<Appointment> originalList) {
+    ArrayList<Appointment> copyList = new ArrayList<>();
+    for (Appointment appointment : originalList) {
+        // Assuming Appointment class has a copy constructor or a method to create a copy
+        copyList.add(new Appointment(appointment)); // Create a copy of each appointment and add to the new list
+    }
+    return copyList;
+}
+	public static Hyperlink hyperlinkToReschedule (Dog dog, Stage primaryStage, Hashtable < Integer, Poster > poster, AppData appData, Appointment selectedDate)
 	{
 		AppointmentManager userManager = AppData.getInstance().getAppointmentManager();
 		ArrayList<Appointment> userAppointments = userManager.getUserAppointments();
+        ArrayList<Appointment> deepCopyList = deepCopyUserAppointments(userAppointments);
+
 		Hyperlink appointmentLink = Components.hyperlink();
 		appointmentLink.setText("Reschedule");
 		Poster selectedPoster = poster.get(dog.getPosterId());
@@ -645,10 +664,15 @@ public class Components{
 
 		appointmentLink.setOnAction(event -> {
 			try {
-				for (Appointment appointment : userAppointments) {
+				for (Appointment appointment : deepCopyList) {
 					if (appointment.getDogID() == dog.getId()) {
+						if(appointment.equals(selectedDate)) {
+						RemoveAppointmentFromUser(appointment, userAppointments, userManager,appData);
 						appointmentPage.setCurrentPosterDog(selectedPoster, dog);
 						appointmentPage.start(primaryStage);
+						break;
+						}
+						
 					}
 				}
 			} catch (Exception e) {

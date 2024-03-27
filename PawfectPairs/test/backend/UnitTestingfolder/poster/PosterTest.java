@@ -41,8 +41,8 @@ class PosterTest {
 
     @Test
     void testToString() {
-        Poster poster = new Poster(5, "John", 1,"123-456","poster@email.com", 123.5);
-        String expected = "Poster [score=5, displayName=John, uniqueId=1]";
+    	Poster poster = new Poster(5, "John", 1,"123-456","poster@email.com", 123.5);
+        String expected = "Poster [score=5.0, displayName=John, uniqueId=1]";
         assertEquals(expected, poster.toString());
     }
 
