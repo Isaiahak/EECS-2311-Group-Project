@@ -35,7 +35,9 @@ public class Database {
 			Class.forName("org.postgresql.Driver"); // Replace with your database driver
 			Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/db", "postgres", "1234"); // zainab
 
-			//Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/posterscoreupdate", "postgres", "12345"); // connor (sorry katya)
+
+			//Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/finaldb2", "postgres", "123"); // connor (sorry katya)
+
 			//Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/posterscoreupdate", "postgres", "12345"); // connor (sorry katya)
 
 //			Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5434/thebestoneyet", "postgres", "321123"); // isaiah
@@ -1313,6 +1315,7 @@ public static boolean updateUsernamePassword (String newUsername, String newPass
 			Database.deletePreferenceTagsFromUser(userId);
 			Database.addPreferenceTagsToUser(user.getTagPreferences(), userId);
 			Database.deleteAppointment(userId);
+			System.out.println(appointmentManager.toString());
 			Database.setUserAppointments(appointmentManager);
 			Database.deleteUserAttributePreferences(userId);
 			Database.addUserAttributePreferences(user.getAgePreferences(), userId);

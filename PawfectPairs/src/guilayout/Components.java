@@ -667,7 +667,6 @@ private static void RemoveAppointmentFromUser (Appointment appointment, ArrayLis
 public static ArrayList<Appointment> deepCopyUserAppointments(ArrayList<Appointment> originalList) {
     ArrayList<Appointment> copyList = new ArrayList<>();
     for (Appointment appointment : originalList) {
-        // Assuming Appointment class has a copy constructor or a method to create a copy
         copyList.add(new Appointment(appointment)); // Create a copy of each appointment and add to the new list
     }
     return copyList;
@@ -691,6 +690,7 @@ public static ArrayList<Appointment> deepCopyUserAppointments(ArrayList<Appointm
 						RemoveAppointmentFromUser(appointment, userAppointments, userManager,appData);
 						appointmentPage.setCurrentPosterDog(selectedPoster, dog);
 						appointmentPage.start(primaryStage);
+						showAlert("Rebooking","Please select an alternate appointment, your previous appointment has been cancelled.",AlertType.INFORMATION);
 						break;
 						}
 						

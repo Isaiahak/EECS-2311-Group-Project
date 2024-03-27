@@ -61,6 +61,11 @@ public class Appointment{
 		this.userID = userID;
 	}
 
+	@Override
+	public String toString() {
+		return "Appointment [posterID=" + posterID + ", dogID=" + dogID + ", date=" + date + ", userID=" + userID + "]";
+	}
+
 	public static boolean checkIfBefore (LocalDate currentSelectedDate) {
 		java.util.Date utilDate = Date.from(currentSelectedDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
 

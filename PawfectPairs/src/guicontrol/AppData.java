@@ -248,6 +248,7 @@ public class AppData {
 
 		setAppointmentManager(new AppointmentManager(user.getUserID(), Database.getUserAppointments(user.getUserID())));
 		
+		System.out.println(this.appointmentManager.toString());
 		setOtherUsersAppointments();
 		
 		setPosterRatedbyUser(user.getUserID());
