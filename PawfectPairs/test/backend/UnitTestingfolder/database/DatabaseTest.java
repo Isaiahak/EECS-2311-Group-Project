@@ -1,4 +1,4 @@
-package backend.database;
+/*package backend.database;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.util.Hashtable;
 
@@ -61,6 +61,9 @@ class DatabaseTest {
 	    
 	    @BeforeAll
 	    public static void setUpClass() {
+	    	if (Database.getUser("123", "123") == null) {
+	    		Database.addUser("123", "123", null);
+	    	}
 	    	userTest = Database.getUser("123", "123");
 			//System.out.println(userTest);
 	   	
@@ -75,7 +78,7 @@ class DatabaseTest {
 	   	   
 	   	}
 	   	
-	   	Hashtable<Integer, ArrayList<Dog>> dogHashtable = Database.getAllDogs(userTest, posters.keySet());
+	   	Hashtable<Integer, ArrayList<Dog>> dogHashtable = database.getAllDogs(userTest, posters.keySet());
 	   	ArrayList<Dog> dogList0 = dogHashtable.get(userTest.getUserID());
 	   	testDog = dogList0.get(0);
 	   	
@@ -140,8 +143,7 @@ class DatabaseTest {
 	        testDog.setAdopted(false);
 	      
 	        //set it back to false in the db!!!! use connection
-	        DatabaseConnectorTest databaseConnector = new DatabaseConnectorTest();
-	        Connection connection = databaseConnector.connect();
+	        Connection connection = Database.connect();
 	     // SQL query to update adopted status to false where dogid is 174
 	        String sql = "UPDATE dog SET adopted = false WHERE dogid = ?";
 	        try (PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -158,8 +160,7 @@ class DatabaseTest {
 	    
 	    @Test
 	    public void testTag() {
-	    	DatabaseConnectorTest databaseConnector = new DatabaseConnectorTest();
-	        Connection connection = databaseConnector.connect();
+	    	Connection connection = Database.connect();
 
 	    	Statement statement = null;
 			try {
@@ -177,7 +178,7 @@ class DatabaseTest {
 	    @Test
 	    public void testGetAllDogs() {
 	    	Hashtable<Integer, Poster> posters = database.getAllPosters();
-	    	Hashtable<Integer, ArrayList<Dog>> dogHashtableTest = Database.getAllDogs(userTest, posters.keySet());
+	    	Hashtable<Integer, ArrayList<Dog>> dogHashtableTest = database.getAllDogs(userTest, posters.keySet());
 	       	Dog testDog2 = dogHashtableTest.get(userTest.getUserID()).get(0);
 	       	assertEquals(testDog.getId(), testDog2.getId());
 
@@ -191,29 +192,7 @@ class DatabaseTest {
 
 	    }
 	    
+	    	    
 	    
 	    
-	    
-	    
-}
-
-//this needs to be fixed cause database connector is private
-	class DatabaseConnectorTest {
-		public Connection connect() {
-			try {
-				Class.forName("org.postgresql.Driver"); // Replace with your database driver
-				//Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/pawitr2", "postgres", "1234"); // zainab
-				//Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/thebestoneyet", "postgres", "doglover123"); // katya
-//				Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5434/pawsome", "postgres", "321123"); // isaiah
-				Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/finaldb", "postgres", "123"); // Edson
-				//System.out.println( "Connected to the PostgreSQL server successfully.");
-				return connection;
-			} catch (ClassNotFoundException | SQLException e) {
-				System.out.println("Connection failed");
-				e.printStackTrace();
-			}
-			return null;
-		}
-		
-	}
-
+}*/

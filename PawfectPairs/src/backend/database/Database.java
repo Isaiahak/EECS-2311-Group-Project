@@ -33,10 +33,10 @@ public class Database {
 	public static Connection connect() {
 		try {
 			Class.forName("org.postgresql.Driver"); // Replace with your database driver
-			Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/db", "postgres", "1234"); // zainab
+			//Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/db", "postgres", "1234"); // zainab
 
 		//	Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/thebestoneyet", "postgres", "123"); // connor (sorry katya)
-			//Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/finaldb2", "postgres", "123"); // connor (sorry katya)
+			Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/finaldb2", "postgres", "123"); // connor (sorry katya)
 
 //			Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5434/thebestoneyet", "postgres", "321123"); // isaiah
 			//System.out.println( "Connected to the PostgreSQL server successfully.");
@@ -59,6 +59,20 @@ public class Database {
 			String query = "DELETE FROM datesbooked WHERE userid = ?";
 			statement = connection.prepareStatement(query);
 			statement.setInt(1, userID);
+			statement.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static void deleteAppointmentForDog(Dog d) {
+		Connection connection = null;
+		PreparedStatement statement = null;
+		try {
+			connection = Database.connect();// Assuming you have a method to get the database connection
+			String query = "DELETE FROM datesbooked WHERE dogid = ?";
+			statement = connection.prepareStatement(query);
+			statement.setInt(1, d.getId());
 			statement.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -1319,7 +1333,7 @@ public static boolean updateUsernamePassword (String newUsername, String newPass
 		  for (Dog d : dogListUser) {
 			if (d.getAdopted()==true) {
 				Database.setDogAdopted(d);
-				Database.deleteAppointment(userId);
+				Database.deleteAppointmentForDog(d);
 				Database.deleteRecurringPaymentsForDog(d);
 				
 			}
