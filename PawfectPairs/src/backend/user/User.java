@@ -7,6 +7,7 @@ import backend.dog.Dog;
 import backend.dog.trait.*;
 import backend.tag.Tag;
 import backend.wallet.Wallet;
+import guicontrol.AppData;
 
 
 public class User {
@@ -100,6 +101,10 @@ public class User {
 
 	public void addLikedDogs(Dog likedDog) {
 		likedDogs.add(likedDog);
+	}
+	
+	public void removeUnlikedDog(Dog dog) {
+		likedDogs.remove(dog);
 	}
 	
 	public ArrayList<Dog> getPassedDogs() {
