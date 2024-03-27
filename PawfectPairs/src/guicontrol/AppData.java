@@ -32,6 +32,18 @@ public class AppData {
 	private HashMap<Integer, ArrayList<Attribute>> allAttributes;
 	private boolean okToClose;
 	private ArrayList<String> usernames;
+
+	public void reset() {
+		this.user = null;
+		this.allDogs.clear();
+		this.dogProfileHashtable.clear();
+		this.allTags.clear();
+		this.posterProfiles.clear();
+		this.sortedDogProfiles.clear();
+		this.appointmentManager = null;
+		this.otherUsersAppointments.clear();
+		this.allAttributes.clear();
+	}
 	
 	public void setOkToClose(boolean state) {
 		this.okToClose = state;
