@@ -331,3 +331,14 @@ March 25, 2024
 - Ekaterina implemented GUI for adopting dogs
 - Ekaterina added DB calls to update poster scores 
 - Connor finished the sign-out button.
+- Yuqian started working on the unlike button that allows user to unlike a dog that they liked.
+- Yuqian Started working on the undo button foe user when they mistakenly likes/passes the wrong dog.
+
+March 26, 2024
+- Zainab helped Yuqian ith undo button
+- Yuqian finished unlike button and undo button
+
+March 27, 2024
+- Yuqian started testing and troubleshooting the unlike button
+- Yuqian and Edson fixed the unlike button
+- Yuqian started testing and troubleshooting the undo button
