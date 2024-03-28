@@ -619,7 +619,6 @@ public class Components{
 				e.printStackTrace();
 			}
 		});
-		
 
 		return posterLink;
 	}
