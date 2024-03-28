@@ -276,7 +276,6 @@ public class AppData {
 	}
 
 	public void addToOtherUsersAppointments(AppointmentManager appointmentManager2) {
-		// TODO Auto-generated method stub
 		
 		this.otherUsersAppointments.addAll(appointmentManager2.getUserAppointments());
 		

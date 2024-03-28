@@ -70,7 +70,6 @@ public class DogProfileScene extends PrimaryScene{
 			
 			user.addPassedDogs(allDogs.peek());
 			lastRemovedDog = allDogs.peek();
-			System.out.println(lastRemovedDog.getName());
 			if (allDogs.size() == 1) {
 				changeProfile();
 				outOfDogs.start(primaryStage);
@@ -87,7 +86,6 @@ public class DogProfileScene extends PrimaryScene{
         	
         	user.addLikedDogs(allDogs.peek());
             lastRemovedDog = allDogs.peek(); // Remove the dog from the priority queue
-        	System.out.println(lastRemovedDog.getName());
             if (lastRemovedDog != null) {
                 //user.addLikedDogs(lastRemovedDog);
                 if (allDogs.size() == 1) {

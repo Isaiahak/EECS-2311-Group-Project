@@ -43,10 +43,7 @@ public class PrimaryScene extends Application{
         
     }
     
-    public void initailizePrimaryScene(Stage primaryStage) {
-//    	String css = this.getClass().getResource("/style.css").toExternalForm();
-//    	primaryStage.getScene().getStylesheets().add(css);
-    	
+    public void initailizePrimaryScene(Stage primaryStage) {    	
     	root = new BorderPane();
     	root.setMinHeight(Components.screenHeight);
     	
@@ -63,7 +60,6 @@ public class PrimaryScene extends Application{
       
       // Calculate padding based on screen size (e.g., 10% of screen width and height)
     	mainContainer.setPadding(new Insets(spacingY/20,spacingX, spacingY/2, spacingX));//based on screen size(top, right, bottom, left)
-    //	mainContainer.setSpacing()
     	VBox.setVgrow(root, Priority.ALWAYS);
       // Set VBox size to match screen resolution
     	mainContainer.setMaxSize(Components.screenWidth, Components.screenHeight);
@@ -77,8 +73,6 @@ public class PrimaryScene extends Application{
     	scrollPane.setFitToHeight(true);
     	
     	root.setCenter(scrollPane);
-//    	root.setRight(null);
-//    	root.setLeft(null);
 
     	
     	this.scene = new Scene(root, Components.screenWidth, Components.screenHeight);
