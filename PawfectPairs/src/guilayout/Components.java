@@ -1,9 +1,6 @@
 package guilayout;
 
 import java.sql.Date;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Hashtable;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -564,6 +561,10 @@ public class Components{
             appData.getUser().removeUnlikedDog(dog);
            
             Database.removeLikedDog(dog.getId(), appData.getUser().getUserID());
+            
+            PriorityQueue<Dog> doglist = appData.getSortedDogProfiles();
+            
+            doglist.add(dog);
         	
         	
             // Remove the entire likedDogView from the UI
@@ -618,7 +619,6 @@ public class Components{
 				e.printStackTrace();
 			}
 		});
-		
 
 		return posterLink;
 	}
