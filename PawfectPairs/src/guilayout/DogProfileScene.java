@@ -32,7 +32,6 @@ public class DogProfileScene extends PrimaryScene{
 	private OutOfDogsScene outOfDogs;
 	private Wallet wallet;
 	private Dog lastRemovedDog;
-	private Dog undoDog;
 
 	public static DogProfileScene getInstance() {
 		
@@ -68,11 +67,9 @@ public class DogProfileScene extends PrimaryScene{
 		Button passButton = Components.button("❌");
 		passButton.getStyleClass().add("pass-button");
 		passButton.setOnAction(event -> {
-			if (lastRemovedDog == null) {
-			Dog dog = allDogs.peek();
 			
-			user.addPassedDogs(dog);
-			lastRemovedDog = dog;
+			user.addPassedDogs(allDogs.peek());
+			lastRemovedDog = allDogs.peek();
 			System.out.println("Passed: "+ lastRemovedDog.getName());
 			if (allDogs.size() == 1) {
 				changeProfile();
@@ -81,29 +78,15 @@ public class DogProfileScene extends PrimaryScene{
 				changeProfile();
 				displayCurrentPetProfile();
 			}
-			}
-			else {
-				Dog dog = lastRemovedDog;
-				
-				user.addPassedDogs(dog);
-				if (allDogs.size() == 1) {
-					changeProfile();
-					outOfDogs.start(primaryStage);
-				} else {
-					displayCurrentPetProfile();
-					lastRemovedDog = null;
-				}
-			}
 		});
 		
 		
 		Button likeButton = Components.button("♥");
         likeButton.getStyleClass().add("like-button");
         likeButton.setOnAction(e -> {
-        	if (lastRemovedDog == null) {
-        	Dog dog = allDogs.peek();
-        	user.addLikedDogs(dog);
-        	lastRemovedDog = dog;
+        	
+        	user.addLikedDogs(allDogs.peek());
+            lastRemovedDog = allDogs.peek(); // Remove the dog from the priority queue
             System.out.println("Liked: "+ lastRemovedDog.getName());
             if (lastRemovedDog != null) {
                 //user.addLikedDogs(lastRemovedDog);
@@ -115,19 +98,6 @@ public class DogProfileScene extends PrimaryScene{
     				displayCurrentPetProfile();
     			}
             }
-        	}
-        	else {
-				Dog dog = lastRemovedDog;
-				
-				user.addLikedDogs(dog);
-				if (allDogs.size() == 1) {
-					changeProfile();
-					outOfDogs.start(primaryStage);
-				} else {
-					displayCurrentPetProfile();
-					lastRemovedDog = null;
-				}
-			}
         });
 		
         
@@ -143,14 +113,14 @@ public class DogProfileScene extends PrimaryScene{
 		        }
 
 		        // Add the last removed dog back to the priority queue
-		        //allDogs.add(getLastRemovedDog());
-		        
-		        undoDog = lastRemovedDog;
-		        
+		        allDogs.add(getLastRemovedDog());
 		        System.out.println("Undo: "+ lastRemovedDog.getName());
 		        
-		        displayCurrentPetProfile();
-		        
+		        changeProfile();
+		        // Redisplay the profile
+		       // displayCurrentPetProfile();
+//		        displayUndidDogProfile();
+		        displayLastRemovedProfile();
 		    }
 		});
 
@@ -209,19 +179,10 @@ public class DogProfileScene extends PrimaryScene{
 
 	public void displayCurrentPetProfile() {
 
-		Dog currentProfile;
 		if (allDogs.size() == 0) {
 			outOfDogs.start(stage);
 		} else {
-			
-			if (undoDog == null) {
-				currentProfile = allDogs.peek();
-			}
-			else {
-				currentProfile = undoDog;
-				undoDog = null;
-				
-			}
+			Dog currentProfile = allDogs.peek();
 
 			petImageView.setImage(new Image(currentProfile.getImagePath()));
 			primaryInfoLabel.setText(currentProfile.getName() + ", " + currentProfile.getAge() + " years, " + currentProfile.getSex());
@@ -255,6 +216,44 @@ public class DogProfileScene extends PrimaryScene{
 		}
 	}
 	
+	public void displayLastRemovedProfile() {
+
+		if (allDogs.size() == 0) {
+			outOfDogs.start(stage);
+		} else {
+			Dog currentProfile = lastRemovedDog;
+
+			petImageView.setImage(new Image(currentProfile.getImagePath()));
+			primaryInfoLabel.setText(currentProfile.getName() + ", " + currentProfile.getAge() + " years, " + currentProfile.getSex());
+			sizeLabel.setText("Size: " + currentProfile.getSize());
+
+			Components.dogAttributeDisplay(sizeIcon, "🐕", currentProfile.getSize().getWeight());
+			
+			energyLabel.setText("Energy Level: " + currentProfile.getEnergyLevel());
+			Components.dogAttributeDisplay(energyIcon, "⚡", currentProfile.getEnergyLevel().getWeight());
+			
+			biographyText.setText(currentProfile.getBiography());
+
+			posterLink.setText(posterList.get(currentProfile.getPosterId()).getDisplayName());
+			PosterProfileScene posterProfile = PosterProfileScene.getInstance();
+			
+			
+
+			posterLink.setOnAction(event -> {
+				try {
+					posterProfile.setCurrentPoster(posterList.get(currentProfile.getPosterId()));
+					posterProfile.start(stage);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			});
+
+
+			tagsPane.getChildren().clear();
+
+			tagsPane.getChildren().add(Components.createTags(currentProfile.getTags()));
+		}
+	}
 	
 
 	public void changeProfile() {
@@ -270,5 +269,4 @@ public class DogProfileScene extends PrimaryScene{
         return lastRemovedDog;
     }
 }
-
 
