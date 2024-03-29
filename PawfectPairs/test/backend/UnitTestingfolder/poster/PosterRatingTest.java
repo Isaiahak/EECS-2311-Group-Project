@@ -24,7 +24,7 @@ class PosterRatingTest {
 		dog = new Dog("testDog",-1,0,0,0,0,-1,false,".","test");
 		user.addLikedDogs(dog);
 		
-		poster = new Poster(5.0, "testPoster", -1, "000","poster@gmail.com", 0.0);
+		poster = new Poster(5.0, "testPoster", -1, "000","poster@gmail.com", 0.0,0);
 		ArrayList<Dog> posterDogs = new ArrayList<Dog>();
 		posterDogs.add(dog);
 		poster.setDogList(posterDogs);
