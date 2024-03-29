@@ -11,7 +11,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class DogListTest {
-	Poster pi = new Poster(0, "John", 1,"123-456","poster@email.com", 123.5);
+	Poster pi = new Poster(0, "John", 1,"123-456","poster@email.com", 123.5,0);
 
 	@BeforeEach
     void setUp() {

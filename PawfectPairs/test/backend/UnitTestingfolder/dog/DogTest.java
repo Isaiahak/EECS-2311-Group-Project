@@ -12,7 +12,7 @@ import backend.tag.Tag;
 
 
 public class DogTest {
-	Poster pi = new Poster(0, "John", 1,"123-456","poster@email.com", 123.5);
+	Poster pi = new Poster(0, "John", 1,"123-456","poster@email.com", 123.5,0);
 
     @Test
     public void testDogCreation() {
@@ -31,7 +31,7 @@ public class DogTest {
 
     @Test
     public void testSettingAndGettingAttributes() {
-    	Poster pi = new Poster(0, "John", 1,"123-456","poster@email.com", 123.5);
+    	Poster pi = new Poster(0, "John", 1,"123-456","poster@email.com", 123.5,0);
 
         Dog dog = new Dog("Max", 1, 3, 0, 1, 0,pi.getUniqueId(), false,null,"bio");
         assertEquals("Max", dog.getName());
@@ -57,7 +57,7 @@ public class DogTest {
         dog.setAdopted(true);
         assertTrue(dog.getAdopted());
 
-        Poster newPoster = new Poster(1, "Jane", 2,"123-456","poster@email.com", 123.5);
+        Poster newPoster = new Poster(1, "Jane", 2,"123-456","poster@email.com", 123.5,0);
         dog.setPosterId(newPoster.getUniqueId());
         assertEquals(newPoster.getUniqueId(), dog.getPosterId());
     }
@@ -80,7 +80,7 @@ public class DogTest {
 
     @Test
     public void testSetInvalidEnergyLevel() {
-    	Poster pi = new Poster(0, "John", 1,"123-456","poster@email.com", 123.5);
+    	Poster pi = new Poster(0, "John", 1,"123-456","poster@email.com", 123.5,0);
 
         
         // Expecting IllegalArgumentException when setting invalid energy level
@@ -91,7 +91,7 @@ public class DogTest {
 
     @Test
     public void testSetInvalidSize() {
-    	Poster pi = new Poster(0, "John", 1,"123-456","poster@email.com", 123.5);
+    	Poster pi = new Poster(0, "John", 1,"123-456","poster@email.com", 123.5,0);
 
         // Expecting IllegalArgumentException when setting invalid size
         assertThrows(ArrayIndexOutOfBoundsException.class, () -> {
