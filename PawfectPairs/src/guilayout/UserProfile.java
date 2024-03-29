@@ -171,7 +171,6 @@ public class UserProfile extends PrimaryScene{
             appData.getInstance().getAllAttributes().clear();
             appData.getInstance().getAllDogs().clear();
             appData.getInstance().getallTags().clear();
-            appData.getInstance().getAllUsernames().clear();
             appData.getInstance().getDogProfiles().clear();
             appData.getInstance().getPosterProfiles().clear();
             appData.getInstance().getSortedDogProfiles().clear();
@@ -246,12 +245,8 @@ public class UserProfile extends PrimaryScene{
 			if (result.get() == ButtonType.OK) {
 				// Authenticate user input
 				if (authenticator.authenticateLogIn(username.getText(), password.getText())&&username.getText().equals(user.getUsername())) {
-					System.out.println("authentis" + authenticator.authenticateLogIn(username.getText(), password.getText()));
-					System.out.println("same user? "+username.getText().equals(user.getUsername()));
 					// If authentication is successful, proceed with success input
 					successInput(username, password, alert, textInputforPopUp);
-//					textInputforPopUp.getChildren().addAll(username, password);
-					//alert.getDialogPane().setContent(textInputforPopUp);
 				} else {
 					// If authentication fails, prompt for valid input
 					ResetFields(username, password);
@@ -269,8 +264,8 @@ public class UserProfile extends PrimaryScene{
 		}
 	}
 	
-	private boolean otherUsersUsername (TextField username) {
-		return appData.getAllUsernames().contains(username.getText())&&!username.getText().equals(user.getUsername());
+	public boolean otherUsersUsername (TextField username) {
+		return Database.usernameChecker(username.getText()).equals(username.getText())&&!username.getText().equals(user.getUsername());
 	}
 	private void successInput(TextField username, TextField password, Alert alert, VBox textInputforPopUp) {
 	    // Set title and header for the alert
@@ -326,7 +321,7 @@ public class UserProfile extends PrimaryScene{
 	        alert.close();
 	    }
 	}
-	private String hidePassword (String pswd) {
+	public String hidePassword (String pswd) {
 		StringBuilder toStars = new StringBuilder();
 		for(int i=0;i<pswd.length();i++)
 		{
