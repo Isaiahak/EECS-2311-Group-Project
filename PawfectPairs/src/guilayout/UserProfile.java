@@ -36,6 +36,7 @@ public class UserProfile extends PrimaryScene{
 	double ValueSelectedInScrollBar=0;
 	private static UserProfile instance;
 	private        Authenticator authenticator;
+	private CalendarScene calendarScene;
 
 	public static UserProfile getInstance() {
 		if (instance == null) {
@@ -105,6 +106,7 @@ public class UserProfile extends PrimaryScene{
 
 
 		loginScene = LoginScene.getInstance();
+		calendarScene = CalendarScene.getInstance();
 
 
 		attributes.getChildren().addAll(
@@ -163,17 +165,28 @@ public class UserProfile extends PrimaryScene{
 		Button signOutButton = new Button("sign out");
 
 		//Sign out button
-		signOutButton.setOnMouseClicked(event -> {
-			Database.onApplicationClose(user, allDogs, appData.getAppointmentManager(), appData.getOkToClose());
-			appData.setOkToClose(false);//Prevent double saving with a null dog list
-			user.reset();
-			appData.reset();
-			//appData.addToOtherUsersAppointments(appData.getAppointmentManager());
-			//appData.setAppointmentManagerToEmpty();
-//			System.out.println(appData.getAppointmentManager().toString());
+        signOutButton.setOnMouseClicked(event -> {
+            Database.onApplicationClose(user, allDogs, appData.getAppointmentManager(), appData.getOkToClose());
+            appData.setOkToClose(false);//Prevent double saving with a null dog list
+            appData.getInstance().getAllAttributes().clear();
+            appData.getInstance().getAllDogs().clear();
+            appData.getInstance().getallTags().clear();
+            appData.getInstance().getAllUsernames().clear();
+            appData.getInstance().getDogProfiles().clear();
+            appData.getInstance().getPosterProfiles().clear();
+            appData.getInstance().getSortedDogProfiles().clear();
+            appData.getInstance().getOtherUsersAppointments().clear();
+            appData.getInstance().getAppointmentManager().reset();
+            appData.getInstance().getUser().reset();
+            appData.getInstance().getPosters().clear();
+            appData.getInstance().setAppointmentManagerToEmpty();
+            calendarScene.getInstance().getAppointments().clear();//ArrayList<Appointment>
+            calendarScene.getInstance().getExistingAppointment().clear();//ArrayList<Appointment>
 
-			loginScene.start(primaryStage);
-		});
+
+            loginScene.start(primaryStage);
+        });
+
 
 		VBox allWalletUserComponents = new VBox();
 		allWalletUserComponents.setSpacing(30);
