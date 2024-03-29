@@ -161,7 +161,7 @@ public class DogProfileScene extends PrimaryScene{
         });
 		
         
-		Button undoButton = Components.button("undo");
+		Button undoButton = Components.button("↩");
 		undoButton.getStyleClass().add("undo-button");
 		undoButton.setOnAction(e -> {
 		    if (user.getLastRemovedDog() != null) {
