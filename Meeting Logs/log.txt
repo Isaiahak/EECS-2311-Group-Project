@@ -351,3 +351,6 @@ March 27, 2024
 March 28, 2024
 -Edson worked on additional JUnit Tests
 -Edson conducted with Connor, Zainab and Yuqian the final interview with Carolina
+
+March 29,2024
+-Edson worked on optimization and code cleaning
