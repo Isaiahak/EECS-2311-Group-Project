@@ -201,6 +201,20 @@ darkest */
 	-fx-background-color: #041D57;
 }
 
+.undo-button{
+	-fx-background-color: #007a37;
+	 -fx-text-fill: white; 
+	 -fx-font-size: 40;
+	 -fx-background-radius: 50%; 
+}
+
+.undo-button:hover{
+	-fx-background-color: #025a2a;
+	 -fx-text-fill: white; 
+	 -fx-font-size: 40;
+	 -fx-background-radius: 50%; 
+}
+
 .dog-attribute-label{
 	-fx-text-fill: rgb(199, 198, 197);
 	-fx-padding: 10px;
