@@ -28,7 +28,8 @@ public class User {
 	private Wallet wallet;
 	private ArrayList<Dog> likedDogs = new ArrayList<Dog>();
 	private ArrayList<Dog> passedDogs = new ArrayList<Dog>();
-	
+	private Dog lastRemovedDog;
+	private Dog undoDog;
 	
 	
 	
@@ -166,6 +167,24 @@ public class User {
 		return tagPreferences;
 	}
 	
+	public Dog getLastRemovedDog() {
+		return lastRemovedDog;
+	}
+
+	public void setLastRemovedDog(Dog lastRemovedDog) {
+		this.lastRemovedDog = lastRemovedDog;
+	}
+	
+	
+	
+	public Dog getUndoDog() {
+		return undoDog;
+	}
+
+	public void setUndoDog(Dog undoDog) {
+		this.undoDog = undoDog;
+	}
+
 	public boolean arePreferencesEqual(Hashtable<Integer, Tag> tags) {
 		
     	Hashtable<Integer,Tag> currTags = this.getTagPreferences(); 
