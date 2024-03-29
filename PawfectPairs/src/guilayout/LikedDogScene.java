@@ -112,7 +112,6 @@ public class LikedDogScene extends PrimaryScene{
 		for(int i = currentList.size(); i < originalSize + additionalDogs ; i++) {
 			dogsDisplayed = currentList.size();
 			currentList.add(allDogs.get(i));
-			System.out.println(currentList.size());
 		}
 	}
 	

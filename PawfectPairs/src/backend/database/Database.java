@@ -33,9 +33,11 @@ public class Database {
 	public static Connection connect() {
 		try {
 			Class.forName("org.postgresql.Driver"); // Replace with your database driver
-			Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/db", "postgres", "1234"); // zainab
+			//Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/db", "postgres", "1234"); // zainab
 
-			//Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/finaldb2", "postgres", "123"); // connor (sorry katya)
+
+			Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/finaldb2", "postgres", "123"); // connor (sorry katya)
+
 			//Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/posterscoreupdate", "postgres", "12345"); // connor (sorry katya)
 
 //			Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5434/thebestoneyet", "postgres", "321123"); // isaiah
@@ -269,11 +271,6 @@ public class Database {
 
 
 				dog.calculateScore(user.getTagPreferences()); // initialise dog score
-//				    System.out.println("key set =" + dogProfiles.keySet().toString());
-
-//			    for(Dog d : queue) {
-//		        	 System.out.println(d.getName() + d.getPosterId());
-//		         }
 				dogProfiles.get(posterId).add(dog);
 			}
 
@@ -298,7 +295,6 @@ public class Database {
 		try {
 			Statement statement = connection.createStatement();
 			Statement statement2 = connection.createStatement();
-//		         ResultSet resultSet = statement.executeQuery ("SELECT * FROM dog WHERE dog.dogid NOT IN (SELECT userdogs.dogid FROM userdogs WHERE userdogs.userid = "+ user.getUserID() + " ) AND adopted = false;");
 			ResultSet resultSet = statement.executeQuery
 					("SELECT * FROM dog");
 			while (resultSet.next()) {
@@ -332,11 +328,7 @@ public class Database {
 
 
 				dog.calculateScore(user.getTagPreferences()); // initialise dog score
-//				    System.out.println("key set =" + dogProfiles.keySet().toString());
 
-//			    for(Dog d : queue) {
-//		        	 System.out.println(d.getName() + d.getPosterId());
-//		         }
 				dogProfiles.get(posterId).add(dog);
 			}
 
@@ -408,13 +400,12 @@ public class Database {
 	}
 
 	public static void removeLikedDog(int dogID, int userID) {
-
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 
 		try {
 			connection = Database.connect();
-			preparedStatement = connection.prepareStatement("DELETE FROM userdogs WHERE dogid = " + dogID + "AND userid  =" + userID + ";");
+			preparedStatement = connection.prepareStatement("DELETE FROM userdogs WHERE dogid =? AND userid =?;");
 			preparedStatement.setInt(1, dogID);
 			preparedStatement.setInt(2, userID);
 			int rowsAffected = preparedStatement.executeUpdate();
@@ -445,8 +436,7 @@ public class Database {
 				String email = resultSet.getString("email");
 				double balance = resultSet.getDouble("balance");
 				int numberofratings = resultSet.getInt("numberofratings");
-				poster = new Poster(score, displayName, posterId, phone, email, balance);
-				poster.setNumberofRatings(numberofratings);
+				poster = new Poster(score, displayName, posterId, phone, email, balance,numberofratings);
 				posters.put(posterId, poster);
 			}
 		} catch (SQLException e) {
@@ -550,41 +540,7 @@ public class Database {
 		}
 		return tags;
 	}
-
-	/*public static void addPreferenceTagsToUser(Hashtable<Integer,Tag> tags, int userId){
-		
-		if(tags.values().size() > 0) {
-			Connection connection = null;
-			PreparedStatement preparedStatement = null;
-			
-	        try {
-	        	 connection = Database.connect();
-				 Statement statement = connection.createStatement();
-				 Collection<Tag> tagList = tags.values();
-				 Iterator<Tag> iterator = tagList.iterator();
-				 ArrayList<Tag> tagsList = new ArrayList<>();
-				 while(iterator.hasNext()){
-					 tagsList.add(iterator.next());
-				 }
-				StringBuilder query = new StringBuilder("INSERT INTO usertagpreferences (userid, tagid) VALUES ");
-	        	 for(int i = 0; i < tagsList.size();i++) {
-					 if (i != 0){
-						 query.append(", ");
-					 }
-					 query.append("( " + userId + ", " + tagsList.get(i).getTagId() +" )");
-			    }
 	
-				 query.append(";");
-				 
-				 statement.addBatch(query.toString());
-				 statement.executeBatch();
-	        }
-	        catch (SQLException e) {
-	            e.printStackTrace();
-	          
-	        }
-	}}*/
-
 	public static void addPreferenceTagsToUser(Hashtable<Integer, Tag> tags, int userId) {
 		/*
 		 * Add tags to user preferences in the database
@@ -857,7 +813,6 @@ public static boolean updateUsernamePassword (String newUsername, String newPass
 		int rowsAffected = preparedStatement.executeUpdate();
 
 		if (rowsAffected > 0) {
-			System.out.println("User updated successfully!");
 			return true;
 
 		}
@@ -898,7 +853,6 @@ public static boolean updateUsernamePassword (String newUsername, String newPass
 			preparedStatement.setDouble(3, 0);
 			int rowsAffected = preparedStatement.executeUpdate();
 			if (rowsAffected > 0) {
-				System.out.println("User added successfully!");
 				sql = "SELECT userid FROM users WHERE username = '" + username + "' AND userpassword = '" + password + "';";
 				Statement statement = connection.createStatement();
 				ResultSet result = statement.executeQuery(sql);
@@ -984,9 +938,6 @@ public static boolean updateUsernamePassword (String newUsername, String newPass
 		try {
 			connection = Database.connect();
 
-			//	        Statement statement = connection.createStatement ();
-			//	        ResultSet resultSet = statement.executeQuery ("SELECT * FROM users WHERE username = " + username + " AND userpassword  = " + password + ";") ;
-
 			String sql = "SELECT * FROM users WHERE userid = ?";
 
 			preparedStatement = connection.prepareStatement(sql);
@@ -995,9 +946,7 @@ public static boolean updateUsernamePassword (String newUsername, String newPass
 
 
 			ResultSet resultSet = preparedStatement.executeQuery();
-			//	public Wallet(double balance, boolean recurringPayment, int frequency, int userid,	Map<Integer, Double> posterWallets, int recurringAmount) {
 			if (resultSet.next()) {
-				//	public Wallet(double balance, boolean recurringPayment, int frequency, int userid,int recurringAmount, int posterToSponsorPending, int recurringPoster) {
 
 				wallet = new Wallet(resultSet.getDouble("balance"), resultSet.getInt("userid"));
 			}
@@ -1220,7 +1169,7 @@ public static boolean updateUsernamePassword (String newUsername, String newPass
 	// upload posters rated by user (DB to local)
 	public static void setPostersRatedByUser(User user) {
 		Connection connection = null;
-		HashMap<Integer,RecurringPayment> map = new HashMap<>();
+		Hashtable<Integer, Poster> posterList = AppData.getInstance().getPosters();
 		try {
 			connection = Database.connect();
 			String query = "SELECT * FROM userpostersrated WHERE userid = ?";
@@ -1232,7 +1181,9 @@ public static boolean updateUsernamePassword (String newUsername, String newPass
 			try (ResultSet resultSet = preparedStatement.executeQuery()) {
 				// Iterate over the result set and populate the TreeMap
 				while (resultSet.next()) {
-					user.addToPostersRatedByUser(resultSet.getInt("posterid"));
+					
+					Poster poster  = posterList.get(resultSet.getInt("posterid"));
+					user.addToPostersRatedByUser(poster);
 				}
 			}
 
@@ -1255,8 +1206,9 @@ public static boolean updateUsernamePassword (String newUsername, String newPass
 	    }
 	}
 	
-	public static ArrayList <Integer> getPosterRatedbyUser(int userid){
-		ArrayList<Integer> ratedposterlist = new ArrayList<>();
+	public static ArrayList <Poster> getPosterRatedbyUser(int userid){
+		ArrayList<Poster> ratedposterlist = new ArrayList<>();
+		Hashtable<Integer, Poster> posterList = AppData.getInstance().getPosters();
 
 	    try {
 	        Connection connection = Database.connect();
@@ -1265,7 +1217,8 @@ public static boolean updateUsernamePassword (String newUsername, String newPass
 
 	        while (resultSet.next()) {
 	            int posterId = resultSet.getInt("posterid");
-	            ratedposterlist.add(posterId);
+	            Poster poster  = posterList.get(posterId);
+	            ratedposterlist.add(poster);
 	        }
 
 	        connection.close();
@@ -1304,16 +1257,12 @@ public static boolean updateUsernamePassword (String newUsername, String newPass
 
 	public static void onApplicationClose(User user, PriorityQueue<Dog> doglist, AppointmentManager appointmentManager, Boolean okToClose) {
 		if(okToClose==true) {
-//			Database.updateAllAdoptedDogs(doglist); // sets dogs to be adopted
 			Database.addUserDog(user.getLikedDogs(), user.getUserID(), "userdogs");
 			Database.addUserDog(user.getPassedDogs(), user.getUserID(), "userpasseddogs");
-
-			// TO DO: update user's attribute preferences and tag preferences :)
 			int userId = user.getUserID();
 			Database.deletePreferenceTagsFromUser(userId);
 			Database.addPreferenceTagsToUser(user.getTagPreferences(), userId);
 			Database.deleteAppointment(userId);
-			System.out.println(appointmentManager.toString());
 			Database.setUserAppointments(appointmentManager);
 			Database.deleteUserAttributePreferences(userId);
 			Database.addUserAttributePreferences(user.getAgePreferences(), userId);
@@ -1323,30 +1272,21 @@ public static boolean updateUsernamePassword (String newUsername, String newPass
 			Database.deleteRecurringPayments(user);
 			Database.addRecurringPayments(user, user.getWallet().getRecurringPayments());
 			Database.updateWallet(user);
-			ArrayList<Dog> dogListUser = user.getLikedDogs();
-		  for (Dog d : dogListUser) {
+			ArrayList<Dog> dogLocalAdopted = user.getAdoptedDogs();
+		  for (Dog d : dogLocalAdopted) {
 			if (d.getAdopted()==true) {
 				Database.setDogAdopted(d);
 				Database.deleteAppointmentForDog(d);
 				Database.deleteRecurringPaymentsForDog(d);
-				
 			}
 		}
-		  ArrayList<Integer> ratedPosters = user.getPostersRatedByUser();
-		  Hashtable<Integer, Poster> posterlist=AppData.getInstance().getPosters();
-		  for (Dog d : dogListUser) {
-			  if (ratedPosters.contains(d.getPosterId())) {
-				  Poster poster = posterlist.get(d.getPosterId());
-				  Database.updatePosterScore(d.getPosterId(), poster.getScore(), poster.getNumberofRatings());
-				  Database.addPosterRatedByUser(user.getUserID(),d.getPosterId());
-			  }
-		  }
-			
-			  
+		  ArrayList<Poster> ratedPosters = user.getPostersRatedByUser();
 		  
-
-
-
+		  for (Poster poster : ratedPosters) {
+				  Database.updatePosterScore(poster.getUniqueId(), poster.getScore(), poster.getNumberofRatings());
+				  Database.addPosterRatedByUser(user.getUserID(),poster.getUniqueId());
+			  }
+		  
 	}
 }
 }

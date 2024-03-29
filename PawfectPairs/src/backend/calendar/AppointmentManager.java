@@ -14,6 +14,10 @@ public AppointmentManager(int userID, ArrayList<Appointment> userAppointments) {
 	this.userAppointments = userAppointments;
 }
 
+public void reset() {
+	this.userAppointments.clear();
+}
+
 public int getUserID() {
 	return userID;
 }

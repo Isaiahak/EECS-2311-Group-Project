@@ -1,9 +1,6 @@
 package guilayout;
 
 import java.sql.Date;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Hashtable;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -559,10 +556,35 @@ public class Components{
 
         unlikeButton.setOnAction(event -> {
             // Remove the dog from the likedDogs list
-//		    user.unlikeDog(dog);
-            appData.getUser().getLikedDogs().remove(dog);
+        	
+           // appData.getUser().getLikedDogs().remove(dog);
+            appData.getUser().removeUnlikedDog(dog);
+           
+            Database.removeLikedDog(dog.getId(), appData.getUser().getUserID());
+            
+            PriorityQueue<Dog> doglist = appData.getSortedDogProfiles();
+            
+            doglist.add(dog);
+        	
+        	
             // Remove the entire likedDogView from the UI
 			((VBox) unlikeButton.getParent().getParent()).getChildren().remove(unlikeButton.getParent());
+			
+			AppointmentManager userManager = AppData.getInstance().getAppointmentManager();
+			ArrayList<Appointment> userAppointments = userManager.getUserAppointments();
+			
+			Iterator<Appointment> iterator = userAppointments.iterator();
+			while (iterator.hasNext()) {
+			    Appointment appointment = iterator.next();
+			    if (appointment.getDogID() == dog.getId()) {
+			        iterator.remove(); // Remove the current appointment from the list
+			        userManager.removeAppointment(appointment);
+			    }
+			}
+			AppData.getInstance().getUser().getWallet().removeRecurringPayment(dog.getId());
+			
+
+			
         });
 
         return HBox;
@@ -597,7 +619,6 @@ public class Components{
 				e.printStackTrace();
 			}
 		});
-		
 
 		return posterLink;
 	}
@@ -633,7 +654,6 @@ public class Components{
 	
 private static void RemoveAppointmentFromUser (Appointment appointment, ArrayList<Appointment> userAppointments,AppointmentManager userManager, AppData appData ) {
 	userManager.removeAppointment(appointment);
-	System.out.println(userManager.getUserAppointments().isEmpty());
 	ArrayList <Appointment> newExist= CalendarScene.getInstance().getExistingAppointment();
 	newExist.remove(appointment);
 	CalendarScene.getInstance().setExistingAppointment(newExist);
@@ -718,12 +738,7 @@ public static ArrayList<Appointment> deepCopyUserAppointments(ArrayList<Appointm
 					showAlert("Dog has been adopted", dog.getName() + " is thankful for you!", AlertType.INFORMATION);
 					AppointmentManager userManager = AppData.getInstance().getAppointmentManager();
 					ArrayList<Appointment> userAppointments = userManager.getUserAppointments();
-					/*for (Appointment appointment : userAppointments) {
-						if (appointment.getDogID() == dog.getId()) {
-							userManager.removeAppointment(appointment);
-							break;
-						}
-					}*/
+					User user = AppData.getInstance().getUser();
 					Iterator<Appointment> iterator = userAppointments.iterator();
 					while (iterator.hasNext()) {
 					    Appointment appointment = iterator.next();
@@ -738,6 +753,7 @@ public static ArrayList<Appointment> deepCopyUserAppointments(ArrayList<Appointm
 					for (Dog d:likedDogList) {
 						if (d.getId()==dog.getId()) {
 							d.setAdopted(true);
+							user.addToAdoptedDogs(d);
 						}
 					}
 					LikedDogScene likedPage = LikedDogScene.getInstance();
@@ -794,12 +810,12 @@ public static ArrayList<Appointment> deepCopyUserAppointments(ArrayList<Appointm
 
 	    Button saveButton = new Button("Set Score");
 	    saveButton.setOnAction(event -> {
-	    	ArrayList<Integer> postersRatedByUser = user.getPostersRatedByUser();
-	        int posterId = poster.getUniqueId();
+	    	ArrayList<Poster> postersRatedByUser = user.getPostersRatedByUser();
+	        //int posterId = poster.getUniqueId();
 	        
-	        if (!postersRatedByUser.contains(posterId)) {
+	        if (!postersRatedByUser.contains(poster)) {
 	            int sliderValue = (int) slider.getValue();
-	            user.addToPostersRatedByUser(posterId);
+	            user.addToPostersRatedByUser(poster);
 	            poster.setScore(((poster.getScore() * poster.getNumberofRatings()) + sliderValue) / (poster.getNumberofRatings() + 1));
 	            poster.setNumberofRatings(poster.getNumberofRatings() + 1);
 	            PosterProfileScene posterPage = PosterProfileScene.getInstance();
@@ -895,28 +911,13 @@ public static ArrayList<Appointment> deepCopyUserAppointments(ArrayList<Appointm
 
 		SetNewRecurring.setOnAction(event -> {
 
-			//						try {
-			//
-			//						//	makePayment(appData, howOftenBox.getValue());
-			//
-			//						} catch (FundsTooLow e) {
-			//							// TODO Auto-generated catch block
-			//							e.printStackTrace();
-			//						}
 			appdata.getUser().getWallet().removeRecurringPayment(d.getId());
-			//	public RecurringPayment(double paymentAmount, int daysBetweenPayments, int dogId, int posterId, String lastPaymentDate) { // from db
-			//box.setBox(info);
-			//box.setButton();
 			setIsClicked(true);
-			//DonateScene donateScene = new DonateScene();
-			//appdata.getUser().getWallet().addRecurringPayment(new RecurringPayment(amountToDonate, daysBetweenPayments, currentDog.getId(), currentDog.getPosterId()));
 			try {
 				makePayment(appdata, howOftenBox.getValue(), howMuchMoney,howOftenBox,d);
-				//info.getChildren().addAll(howMuch, howMuchMoney,howOften, howOftenBox, SetNewRecurring);
 
 				info.getChildren().removeAll(howMuch, howMuchMoney,howOften, howOftenBox, SetNewRecurring);
 			} catch (FundsTooLow e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 
@@ -977,11 +978,6 @@ public static ArrayList<Appointment> deepCopyUserAppointments(ArrayList<Appointm
 	        transition.play();
 	    }
 	public static void bounce (Button button) {
-//		// Create a curved path (arc)
-//		Path path = new Path();
-//		path.getElements().add(new MoveTo(50, 50)); // Starting point
-//		path.getElements().add(new CubicCurveTo(150, 0, 250, 150, 350, 50)); // Cubic curve
-
 		 
         // Call the method to create the logo shape
         Path path = createPath();		
@@ -990,7 +986,6 @@ public static ArrayList<Appointment> deepCopyUserAppointments(ArrayList<Appointm
 		pathTransition.setDuration(Duration.seconds(8)); // Duration for one bounce cycle
 		pathTransition.setPath(path);
 		pathTransition.setNode(button);
-		// pathTransition.setCycleCount(PathTransition.INDEFINITE); // Indefinite bounce
 		pathTransition.setCycleCount(1);
 
 		// Set the position of the button back to (0, 0) at the end of the animation
@@ -1166,10 +1161,6 @@ public static ArrayList<Appointment> deepCopyUserAppointments(ArrayList<Appointm
 				appdata.getUser().getWallet().donate(amountToDonate, poster);
 				showAlert("Payment went through",d.getName()+" is thankful for you! ♥", AlertType.INFORMATION);
 			}
-
-
-
-			//System.out.println("poster"+poster.getDisplayName() +"'s balance is"+poster.getBalance());//was for testing
 
 		}
 	}

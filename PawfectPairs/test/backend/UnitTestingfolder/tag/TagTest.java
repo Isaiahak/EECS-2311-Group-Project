@@ -8,21 +8,21 @@ import backend.tag.Tag;
 class TagTest {
 
     @Test
-    void test1() {
+    void tagWeightTest() {
         Tag tag1 = new Tag("Shy", 0);
         int expected = 0;
         assertEquals(expected, tag1.getWeight());
     }
 
     @Test
-    void test2() {
+    void tagNameTest() {
         Tag tag1 = new Tag("Shy",0);
         String expected = "Shy";
         assertEquals(expected, tag1.getTagName());
     }
 
     @Test
-    void test3() {
+    void tagNameTest2() {
         Tag tag1 = new Tag("Angry",0);
         tag1.setTagName("Shy");
         String expected = "Shy";
@@ -30,7 +30,7 @@ class TagTest {
     }
 
     @Test
-    void test4() {
+    void tagNameWeight2() {
         Tag tag1 = new Tag("Shy",0);
         tag1.setWeight(3);
         int expected = 3;

@@ -70,7 +70,7 @@ public class DogProfileScene extends PrimaryScene{
 			
 			user.addPassedDogs(allDogs.peek());
 			lastRemovedDog = allDogs.peek();
-			System.out.println(lastRemovedDog.getName());
+			System.out.println("Passed: "+ lastRemovedDog.getName());
 			if (allDogs.size() == 1) {
 				changeProfile();
 				outOfDogs.start(primaryStage);
@@ -87,7 +87,7 @@ public class DogProfileScene extends PrimaryScene{
         	
         	user.addLikedDogs(allDogs.peek());
             lastRemovedDog = allDogs.peek(); // Remove the dog from the priority queue
-        	System.out.println(lastRemovedDog.getName());
+            System.out.println("Liked: "+ lastRemovedDog.getName());
             if (lastRemovedDog != null) {
                 //user.addLikedDogs(lastRemovedDog);
                 if (allDogs.size() == 1) {
@@ -118,8 +118,9 @@ public class DogProfileScene extends PrimaryScene{
 		        
 		        changeProfile();
 		        // Redisplay the profile
-		        displayCurrentPetProfile();
+		       // displayCurrentPetProfile();
 //		        displayUndidDogProfile();
+		        displayLastRemovedProfile();
 		    }
 		});
 
@@ -215,44 +216,45 @@ public class DogProfileScene extends PrimaryScene{
 		}
 	}
 	
-//	public void displayUndidDogProfile() {
-//		if (allDogs.size() == 0) {
-//			outOfDogs.start(stage);
-//		} else {
-//			Dog currentProfile = lastRemovedDog;
-//
-//			petImageView.setImage(new Image(currentProfile.getImagePath()));
-//			primaryInfoLabel.setText(currentProfile.getName() + ", " + currentProfile.getAge() + " years, " + currentProfile.getSex());
-//			sizeLabel.setText("Size: " + currentProfile.getSize());
-//
-//			Components.dogAttributeDisplay(sizeIcon, "🐕", currentProfile.getSize().getWeight());
-//			
-//			energyLabel.setText("Energy Level: " + currentProfile.getEnergyLevel());
-//			Components.dogAttributeDisplay(energyIcon, "⚡", currentProfile.getEnergyLevel().getWeight());
-//			
-//			biographyText.setText(currentProfile.getBiography());
-//
-//			posterLink.setText(posterList.get(currentProfile.getPosterId()).getDisplayName());
-//			PosterProfileScene posterProfile = PosterProfileScene.getInstance();
-//			
-//			
-//
-//			posterLink.setOnAction(event -> {
-//				try {
-//					posterProfile.setCurrentPoster(posterList.get(currentProfile.getPosterId()));
-//					posterProfile.start(stage);
-//				} catch (Exception e) {
-//					e.printStackTrace();
-//				}
-//			});
-//
-//
-//			tagsPane.getChildren().clear();
-//
-//			tagsPane.getChildren().add(Components.createTags(currentProfile.getTags()));
-//		}
-//	}
-//	
+	public void displayLastRemovedProfile() {
+
+		if (allDogs.size() == 0) {
+			outOfDogs.start(stage);
+		} else {
+			Dog currentProfile = lastRemovedDog;
+
+			petImageView.setImage(new Image(currentProfile.getImagePath()));
+			primaryInfoLabel.setText(currentProfile.getName() + ", " + currentProfile.getAge() + " years, " + currentProfile.getSex());
+			sizeLabel.setText("Size: " + currentProfile.getSize());
+
+			Components.dogAttributeDisplay(sizeIcon, "🐕", currentProfile.getSize().getWeight());
+			
+			energyLabel.setText("Energy Level: " + currentProfile.getEnergyLevel());
+			Components.dogAttributeDisplay(energyIcon, "⚡", currentProfile.getEnergyLevel().getWeight());
+			
+			biographyText.setText(currentProfile.getBiography());
+
+			posterLink.setText(posterList.get(currentProfile.getPosterId()).getDisplayName());
+			PosterProfileScene posterProfile = PosterProfileScene.getInstance();
+			
+			
+
+			posterLink.setOnAction(event -> {
+				try {
+					posterProfile.setCurrentPoster(posterList.get(currentProfile.getPosterId()));
+					posterProfile.start(stage);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			});
+
+
+			tagsPane.getChildren().clear();
+
+			tagsPane.getChildren().add(Components.createTags(currentProfile.getTags()));
+		}
+	}
+	
 
 	public void changeProfile() {
 		 allDogs.remove();
@@ -266,12 +268,5 @@ public class DogProfileScene extends PrimaryScene{
     public Dog getLastRemovedDog() {
         return lastRemovedDog;
     }
-    
-
 }
-
-
-    
-
-
 

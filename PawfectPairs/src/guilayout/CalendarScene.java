@@ -238,7 +238,6 @@ removeOtherDogAppointments(existingAppointment);
 			for (Appointment appointment : existingAppointment) {
 
 				if(appointment!=null&&appointment.getDate().toLocalDate().equals(buttonDate)) {
-					System.out.println("contains true");
 
 					return true;
 				}
@@ -261,7 +260,6 @@ removeOtherDogAppointments(existingAppointment);
 			if ((existingAppointment==null||existingAppointment.isEmpty()||!existingAppointment.contains(currentAppointment))&&
 					!userAppointments.contains(currentAppointment)) {
 				existingAppointment.add(currentAppointment); 
-				//System.out.println(existingAppointment.contains(currentAppointment)+" added to exist");
 				userAppointments.addAppointment(currentAppointment);
 				successLabel.setText("Date added successfully!");
 				updateCalendar();}

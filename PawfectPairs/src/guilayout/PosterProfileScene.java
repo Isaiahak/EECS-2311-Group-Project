@@ -106,12 +106,10 @@ public class PosterProfileScene extends PrimaryScene {
 	}
 
 	public double getScore() {
-		// TODO Auto-generated method stub
 		return currentPoster.getScore();
 	}
 
 	public String getDisplayName() {
-		// TODO Auto-generated method stub
 		return currentPoster.getDisplayName();
 	}
 	//end of methods to add back

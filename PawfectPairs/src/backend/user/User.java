@@ -5,8 +5,10 @@ import java.util.*;
 import backend.calendar.AppointmentManager;
 import backend.dog.Dog;
 import backend.dog.trait.*;
+import backend.poster.Poster;
 import backend.tag.Tag;
 import backend.wallet.Wallet;
+import guicontrol.AppData;
 
 
 public class User {
@@ -16,7 +18,8 @@ public class User {
 	private ArrayList<Attribute> sizePreferences  = new ArrayList<Attribute>() ;
 	private ArrayList<Attribute> sexPreferences  = new ArrayList<Attribute>();
 	private ArrayList<Attribute> energyLevelPreferences  = new ArrayList<Attribute>();
-	private ArrayList<Integer> postersRatedByUser = new ArrayList<Integer>();
+	private ArrayList<Poster> postersRatedByUser = new ArrayList<Poster>();
+	private ArrayList<Dog> localAdoptedDog = new ArrayList<Dog>();
 	private AppointmentManager bookedDates = new AppointmentManager(getUserID(), new ArrayList<>());
 	private String username;
 	private String email;
@@ -42,16 +45,25 @@ public class User {
 		this.passedDogs.clear();
 	}
 	
-	public void addToPostersRatedByUser(int posterId) {
-		this.postersRatedByUser.add(posterId);
+	public void addToAdoptedDogs(Dog dog) {
+		this.localAdoptedDog.add(dog);
 	}
 
 
-	public ArrayList<Integer> getPostersRatedByUser(){
+	public ArrayList<Dog> getAdoptedDogs(){
+		return this.localAdoptedDog; 
+	}
+	
+	public void addToPostersRatedByUser(Poster poster) {
+		this.postersRatedByUser.add(poster);
+	}
+
+
+	public ArrayList<Poster> getPostersRatedByUser(){
 		return this.postersRatedByUser; 
 	}
 	
-	public void setPosterRatedByUser (ArrayList<Integer> postersRatedByUser) {
+	public void setPosterRatedByUser (ArrayList<Poster> postersRatedByUser) {
 		this.postersRatedByUser=postersRatedByUser;
 	}
 	public int getUserID() {
@@ -100,6 +112,10 @@ public class User {
 
 	public void addLikedDogs(Dog likedDog) {
 		likedDogs.add(likedDog);
+	}
+	
+	public void removeUnlikedDog(Dog dog) {
+		likedDogs.remove(dog);
 	}
 	
 	public ArrayList<Dog> getPassedDogs() {

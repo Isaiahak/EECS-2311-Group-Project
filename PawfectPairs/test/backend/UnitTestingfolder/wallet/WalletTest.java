@@ -32,7 +32,7 @@ class WalletTest {
 	void setUp() throws Exception {
 		user= new User("a", "a");
 		wallet = new Wallet(50.0,user.getUserID());
-		poster =new Poster(8, "testingPoster", 1, "123456789", "testingPoster@hotmail.com", 0.0);
+		poster =new Poster(8, "testingPoster", 1, "123456789", "testingPoster@hotmail.com", 0.0,0);
 		dog = new Dog("Mr.dog", 1, 3, 0, 1, 0, poster.getUniqueId(), false, "", "Mr.dog is a good dog");
 		dog2 = new Dog("dog2", 1, 3, 0, 1, 0, poster.getUniqueId(), false, "", "dog2 is a good dog");
        //  dog = new Dog("Max", 1, 3, 0, 1, 0, poster.getUniqueId(), false,null,"bio");

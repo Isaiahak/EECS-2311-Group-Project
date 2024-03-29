@@ -15,13 +15,14 @@ public class Poster implements Comparable<Poster> {
 	private int numberofratings = 0;
 
 	//not adding number of ratings to constructor as I was worried it would break other things
-	public Poster(double score, String displayName, int uniqueId, String phone, String email, double balance) {
+	public Poster(double score, String displayName, int uniqueId, String phone, String email, double balance, int numberofratings) {
 		this.score = score;
 		this.displayName = displayName;
 		this.uniqueId = uniqueId;
 		this.phone = phone;
 		this.email = email;
 		this.setBalance(balance);
+		this.numberofratings = numberofratings;
 	}
 	
 	public void setNumberofRatings (int ratingnum) {

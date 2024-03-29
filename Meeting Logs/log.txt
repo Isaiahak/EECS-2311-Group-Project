@@ -323,6 +323,7 @@ March 23, 2024
 March 24, 2024
 -Ekaterina worked on her take home assignmetn and started some bug fixing/refactoring her assigned scene
 - Connor started working on the sign-out button.
+-Edson worked on his take home assignment and made the bug reports and code smell reports 
 
 March 25, 2024
 - Ekaterina finished refactoring and debugging her takehome assignmeent (login scene) 
@@ -331,3 +332,25 @@ March 25, 2024
 - Ekaterina implemented GUI for adopting dogs
 - Ekaterina added DB calls to update poster scores 
 - Connor finished the sign-out button.
+- Yuqian started working on the unlike button that allows user to unlike a dog that they liked.
+- Yuqian Started working on the undo button foe user when they mistakenly likes/passes the wrong dog.
+-Edson worked on some additional outstanding user stories which involves rating a poster and adopting a dog with JUnit tests and UI integration
+
+March 26, 2024
+- Zainab helped Yuqian ith undo button
+- Yuqian finished unlike button and undo button
+-Edson has conduted manual tests of all user stories and reported the issues with all members which had to still fix the logic of their user stories
+- Edson worked on additional debugging of adopt and rating poster found in manual tests
+
+March 27, 2024
+- Yuqian started manual testing and troubleshooting the unlike button
+- Yuqian started manual testing and troubleshooting the undo button
+-Edson continued manual tests and assisted other members with debugging their respective user stories
+-Edson worked on DB call optimization on close and code cleaning 
+
+March 28, 2024
+-Edson worked on additional JUnit Tests
+-Edson conducted with Connor, Zainab and Yuqian the final interview with Carolina
+
+March 29,2024
+-Edson worked on optimization and code cleaning

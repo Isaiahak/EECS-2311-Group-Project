@@ -15,7 +15,7 @@ import java.util.Hashtable;
 
 import backend.tag.Tag;
 
-class Integration {
+class IntegrationTags {
 	
 	//User Must Change it to their parameters
     /*String url = "jdbc:postgresql://localhost:5432/pawdb";
