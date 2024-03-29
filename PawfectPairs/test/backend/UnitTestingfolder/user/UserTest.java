@@ -9,21 +9,21 @@ import backend.user.User;
 class UserTest {
 
     @Test
-    void test1() {
+    void userUsernameTest() {
         User user1 = new User("Bob","12345");
         String expected = "Bob";
         assertEquals(expected, user1.getUsername());
     }
 
     @Test
-    void test2() {
+    void userPasswordTest() {
         User user1 = new User("Bob","12345");
         String expected = "12345";
         assertEquals(expected, user1.getPassword());
     }
 
     @Test
-    void test3() {
+    void userEmailTest() {
         User user1 = new User("Bob","12345");
         user1.setEmail("BobBoogaloo@gmail.com");
         String expected = "BobBoogaloo@gmail.com";
@@ -31,7 +31,7 @@ class UserTest {
     }
 
     @Test
-    void test4() {
+    void userChangeUsernameTest() {
         User user1 = new User("Bob", "12345");
         user1.setUsername("Bob2");
         String expected = "Bob2";
@@ -39,7 +39,7 @@ class UserTest {
     }
 
     @Test
-    void test5() {
+    void userChangePasswordTest() {
         User user1 = new User("Bob", "12345");
         user1.setPassword("abcde");
         String expected = "abcde";
