@@ -30,7 +30,7 @@ class DogAdoptionTest {
 	
 	@BeforeAll
     public static void setUpClass() {
-		user = new User("test", "test");
+		user = new User("test", "tests");
 		user.setUserID(-1);
 		user.setEmail("test@gmail.com");
 		
