@@ -2,7 +2,8 @@
 
 	import backend.database.Database;
 	import backend.dog.Dog;
-	import backend.wallet.Wallet;
+import backend.user.User;
+import backend.wallet.Wallet;
 import guicontrol.AppData;
 import javafx.animation.KeyFrame;
 	import javafx.animation.Timeline;
@@ -31,8 +32,7 @@ public class DogProfileScene extends PrimaryScene{
 	private Stage stage;
 	private OutOfDogsScene outOfDogs;
 	private Wallet wallet;
-	private Dog lastRemovedDog;
-	private Dog undoDog;
+	private User user;
 
 	public static DogProfileScene getInstance() {
 		
@@ -51,7 +51,15 @@ public class DogProfileScene extends PrimaryScene{
 
     @Override
     public void start(Stage primaryStage) {
-    	lastRemovedDog = null;
+    	//For undo Button
+    	user = AppData.getInstance().getUser();
+    	/*if (user.getUndoDog()!= null) {
+    		AppData.getInstance().getSortedDogProfiles().remove(user.getUndoDog());
+    		user.setUndoDog(null);
+    		}*/
+    	user.setUndoDog(null);
+    	user.setLastRemovedDog(null);
+    	
     	Components.updateCurrentScene("dogProfiles");
 		initailizePrimaryScene(primaryStage);
 		
@@ -68,16 +76,18 @@ public class DogProfileScene extends PrimaryScene{
 		Button passButton = Components.button("❌");
 		passButton.getStyleClass().add("pass-button");
 		passButton.setOnAction(event -> {
-			if (undoDog == null) {
+			
+			System.out.println(allDogs.size());
+			if (user.getUndoDog() == null && (allDogs.peek()!= user.getUndoDog())) {
 			Dog dog = allDogs.peek();
 			
 			user.addPassedDogs(dog);
-			lastRemovedDog = dog;
+			user.setLastRemovedDog(dog);
 			//System.out.println("Unlike Last Removed: "+ lastRemovedDog.getName());
-			if (undoDog != null) {
-				System.out.println("Unlike Undo: "+ undoDog.getName());
+			if (user.getUndoDog() != null) {
+				System.out.println("Unlike Undo: "+ user.getUndoDog().getName());
 		    	}
-			if (allDogs.size() == 1) {
+			if (allDogs.size() == 0) {
 				changeProfile();
 				outOfDogs.start(primaryStage);
 			} else {
@@ -86,37 +96,38 @@ public class DogProfileScene extends PrimaryScene{
 			}
 			}
 			else {
-				Dog dog = undoDog;
-	        	if (undoDog != null) {
-					System.out.println("Liked Undo: "+ undoDog.getName());
+				Dog dog = user.getUndoDog();
+	        	if (user.getUndoDog() != null) {
+					System.out.println("Liked Undo: "+ user.getUndoDog().getName());
 			    	}
 				user.addPassedDogs(dog);
-				if (allDogs.size() == 1) {
+				if (allDogs.size() == 0) {
 					changeProfile();
 					outOfDogs.start(primaryStage);
 				} else {
 					displayCurrentPetProfile();
-					lastRemovedDog = null;
-					undoDog = null;
+					user.setLastRemovedDog(null);
+					user.setUndoDog(null);
 					displayCurrentPetProfile();
 				}
 			}
+			user.setUndoDog(null);
 		});
 		
 		
 		Button likeButton = Components.button("♥");
         likeButton.getStyleClass().add("like-button");
         likeButton.setOnAction(e -> {
-        	if (undoDog == null) {
+        	if (user.getUndoDog() == null && (allDogs.peek()!= user.getUndoDog()) ) {
         	Dog dog = allDogs.peek();
         	user.addLikedDogs(dog);
-        	lastRemovedDog = dog;
+        	user.setLastRemovedDog(dog);
         	//System.out.println("Liked Last Removed: "+ lastRemovedDog.getName());
-        	if (undoDog != null) {
-				System.out.println("Liked Undo: "+ undoDog.getName());
+        	if (user.getUndoDog() != null) {
+				System.out.println("Liked Undo: "+ user.getUndoDog().getName());
 		    	}
             //user.addLikedDogs(lastRemovedDog);
-            if (allDogs.size() == 1) {
+            if (allDogs.size() == 0) {
             	changeProfile();
     			outOfDogs.start(primaryStage);
     		} else {
@@ -125,43 +136,46 @@ public class DogProfileScene extends PrimaryScene{
     			}
         	}
         	else {
-				Dog dog = undoDog;
-	        	if (undoDog != null) {
-					System.out.println("Liked Undo: "+ undoDog.getName());
+				Dog dog = user.getUndoDog();
+	        	if (user.getUndoDog() != null) {
+					System.out.println("Liked Undo: "+ user.getUndoDog().getName());
 			    	}
 				user.addLikedDogs(dog);
-				if (allDogs.size() == 1) {
+				if (allDogs.size() == 0) {
 					changeProfile();
 					outOfDogs.start(primaryStage);
 				} else {
 					
 					displayCurrentPetProfile();
-					lastRemovedDog = null;
-					undoDog = null;
+					user.setLastRemovedDog(null);
+					user.setUndoDog(null);
 					displayCurrentPetProfile();
 				}
 			}
+        	user.setUndoDog(null);
         });
 		
         
 		Button undoButton = Components.button("undo");
 		undoButton.getStyleClass().add("undo-button");
 		undoButton.setOnAction(e -> {
-		    if (getLastRemovedDog() != null) {
-		    	if (undoDog != null) {
-				System.out.println("Undo Undo: "+ undoDog.getName());
+		    if (user.getLastRemovedDog() != null) {
+		    	if (user.getUndoDog() != null) {
+				System.out.println("Undo Undo: "+ user.getUndoDog().getName());
 		    	}
 		        // Determine whether the last action was a like or pass
+		    	Dog lastRemovedDog = user.getLastRemovedDog();
 		        if (user.getLikedDogs().contains(lastRemovedDog)) {
 		            user.getLikedDogs().remove(lastRemovedDog); // Remove the dog from liked dogs list
-		        } else if (user.getPassedDogs().contains(lastRemovedDog)) {
+		        } 
+		        if (user.getPassedDogs().contains(lastRemovedDog)) {
 		            user.getPassedDogs().remove(lastRemovedDog); // Remove the dog from passed dogs list
 		        }
 
 		        // Add the last removed dog back to the priority queue
 		        //allDogs.add(getLastRemovedDog());
 		        
-		        undoDog = lastRemovedDog;
+		        user.setUndoDog(lastRemovedDog);
 		        System.out.println("Undo Last Removed: "+ lastRemovedDog.getName());
 		        lastRemovedDog = null;
 		        
@@ -232,11 +246,11 @@ public class DogProfileScene extends PrimaryScene{
 			outOfDogs.start(stage);
 		} else {
 			
-			if (undoDog == null) {
+			if (user.getUndoDog() == null) {
 				currentProfile = allDogs.peek();
 			}
 			else {
-				currentProfile = undoDog;
+				currentProfile = user.getUndoDog();
 				
 			}
 
@@ -282,10 +296,7 @@ public class DogProfileScene extends PrimaryScene{
 		return this.allDogs.peek();
 	}
 	
-	// Getter method to retrieve the last removed dog
-    public Dog getLastRemovedDog() {
-        return lastRemovedDog;
-    }
+
 }
 
 
