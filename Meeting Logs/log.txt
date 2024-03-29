@@ -339,6 +339,5 @@ March 26, 2024
 - Yuqian finished unlike button and undo button
 
 March 27, 2024
-- Yuqian started testing and troubleshooting the unlike button
-- Yuqian and Edson fixed the unlike button
-- Yuqian started testing and troubleshooting the undo button
+- Yuqian started manual testing and troubleshooting the unlike button
+- Yuqian started manual testing and troubleshooting the undo button
