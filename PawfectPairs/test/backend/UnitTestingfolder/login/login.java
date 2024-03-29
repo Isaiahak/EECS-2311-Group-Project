@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 import backend.database.Database;
 import backend.user.User;
 
-public class MakingAccountTest {
+public class login {
 
     @Test
     public void testSignUp() {
