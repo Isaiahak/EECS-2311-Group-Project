@@ -675,7 +675,26 @@ public class Database {
 
 		return result;
 	}
+	public static int getUserid(String username){
+		Connection connection = null;
+		int result = 0;
+		try{
+			connection = Database.connect();
+			Statement statement = connection.createStatement();
+			String query = "SELECT  userid\r\n"
+					+ "	FROM public.users where username= '"+username+"' ;";
+			ResultSet resultSet = statement.executeQuery(query);
+			if(resultSet.next()) {
+				result = resultSet.getInt("userid");
+			}
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+		}
 
+		return result;
+	}
+	
 	public static String passwordChecker(String username, String password){
 		Connection connection = null;
 		String result = "";
@@ -838,7 +857,28 @@ public static boolean updateUsernamePassword (String newUsername, String newPass
 	return false;
 	}
 
-	
+	public static String getPassword (String username) {
+		String password="";
+		Connection connection=null;
+		PreparedStatement preparedStatement = null;
+		PreparedStatement preparedStatement2 = null;
+		try {
+			connection = Database.connect();
+			Statement statement = connection.createStatement();
+			ResultSet resultSet = statement.executeQuery("\"SELECT userpassword\\r\\n\"\r\n"
+					+ "					+ \"	FROM public.users\\r\\n\"\r\n"
+					+ "					+ \"	where username= '" +username+"'; \"");
+
+			while (resultSet.next()) {
+				password=resultSet.getString("userpassword");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return password;
+			
+	}
 
 	public static boolean addUser(String username, String password, HashMap<Integer, ArrayList<Attribute>> allAttributes) {
 		Connection connection = null;
