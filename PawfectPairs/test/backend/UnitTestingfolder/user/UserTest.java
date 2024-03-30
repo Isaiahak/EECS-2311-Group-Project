@@ -46,6 +46,7 @@ class UserTest {
         assertEquals(expected, user1.getPassword());
     }
 
+    
 
 }
 

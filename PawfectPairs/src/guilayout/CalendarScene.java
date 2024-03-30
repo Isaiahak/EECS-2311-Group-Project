@@ -93,8 +93,8 @@ public class CalendarScene extends PrimaryScene {
 		for(Appointment app : copy) {
 
 			if(app.getDogID() != currentDog.getId()) {
-					exist.remove(app);
-				
+				exist.remove(app);
+
 			}		
 		}
 	}
@@ -113,18 +113,18 @@ public class CalendarScene extends PrimaryScene {
 			if(app.getDogID() == currentDog.getId()) {
 				if(existingAppointment==null ||existingAppointment.isEmpty()||!existingAppointment.contains(app))
 					existingAppointment.add(app); 	
-				
+
 			}		
 		}
-removeOtherDogAppointments(existingAppointment);
+		removeOtherDogAppointments(existingAppointment);
 		createCalendar();
 
 		HBox navigation =  CreateNavigationButtons (titleLabel);
 
 		Button confirmationButton = Components.calendarButton("Confirm Appointment");
 		confirmationButton.setOnAction(event -> {
-			
-				handleConfirmButtonClick();
+
+			handleConfirmButtonClick();
 
 		});
 
@@ -151,7 +151,6 @@ removeOtherDogAppointments(existingAppointment);
 
 		LocalDate firstDayOfMonth = currentDate.withDayOfMonth(1);
 		int dayOfWeek = firstDayOfMonth.getDayOfWeek().getValue(); // 1=Monday, ..., 7=Sunday
-		Boolean leapMonth=leapYear(firstDayOfMonth);
 
 		// Add buttons for each day of the month
 		for (int row = 0; row < WEEKS_IN_MONTH; row++) {
@@ -161,9 +160,7 @@ removeOtherDogAppointments(existingAppointment);
 				int buttonText = buttonDate.getDayOfMonth();
 				dayButton = Components.calendarCell(Integer.toString(buttonText));
 
-				if (!alreadyBookedByThisUser(buttonDate)&&cellNumber>0&& buttonDate.getMonth()==month&&
-						buttonText<=month.length(leapMonth)&&buttonDate.isAfter(firstDayOfMonth.minusDays(1))&&
-						buttonDate.isAfter(todaysDate)){
+				if (setToActiveCell ( buttonDate,  cellNumber,  firstDayOfMonth)){
 					if(!appData.isDateAlreadyBooked(currentDog.getId(), currentDog.getPosterId(), buttonDate)) {
 						StackPane dayButtonCopy = dayButton; 
 						activeButtonBehaviour ( dayButton,  dayButtonCopy,  buttonDate);
@@ -188,7 +185,18 @@ removeOtherDogAppointments(existingAppointment);
 		}
 
 	} 
-	
+	private boolean setToActiveCell (LocalDate buttonDate, int cellNumber, LocalDate firstDayOfMonth)  {
+		Boolean leapMonth=leapYear(firstDayOfMonth);
+
+
+		return !alreadyBookedByThisUser(buttonDate)&&
+				cellNumber>0&&
+				buttonDate.getMonth()==month&&
+				buttonDate.getDayOfMonth()<=month.length(leapMonth)&&
+				buttonDate.isAfter(firstDayOfMonth.minusDays(1))&&
+				buttonDate.isAfter(todaysDate);
+	}
+
 	private void activeButtonBehaviour (StackPane dayButton, StackPane dayButtonCopy, LocalDate buttonDate)  {
 
 		SimpleIntegerProperty numClicks = new SimpleIntegerProperty(0);
@@ -264,7 +272,7 @@ removeOtherDogAppointments(existingAppointment);
 				successLabel.setText("Date added successfully!");
 				updateCalendar();}
 
-			
+
 		}
 		else 
 		{
@@ -274,7 +282,7 @@ removeOtherDogAppointments(existingAppointment);
 
 	}
 
-	
+
 	public static void main(String[] args) {
 		launch(args);
 	}
