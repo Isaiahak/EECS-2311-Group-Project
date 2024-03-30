@@ -194,12 +194,24 @@ public class DogProfileScene extends PrimaryScene{
 		    }
 		});
 
-		primaryControlTab.getChildren().addAll(likeButton, petImageView, passButton, undoButton);
+		Region spacer = new Region();
+        HBox.setHgrow(spacer, Priority.ALWAYS);
+        spacer.setPrefWidth(20);
+		
+        Region spacer2 = new Region();
+        HBox.setHgrow(spacer2, Priority.ALWAYS);
+        spacer2.setPrefWidth(40);
+		BorderPane buttonContainer = new BorderPane();
+		
+		buttonContainer.setTop(undoButton);
+		primaryControlTab.getChildren().addAll(spacer2,likeButton, petImageView, passButton, spacer, buttonContainer);
 		primaryControlTab.getStyleClass().add("dog-picture-container");
 		primaryControlTab.setPadding(new Insets(10));
 		primaryControlTab.setSpacing(20);
 		primaryControlTab.setPrefWidth(Components.screenWidth * 0.35);
 		primaryControlTab.setAlignment(Pos.CENTER);
+		
+		
 
 		
 		primaryInfoLabel = Components.largeLabel(); // Name, Age, Sex
