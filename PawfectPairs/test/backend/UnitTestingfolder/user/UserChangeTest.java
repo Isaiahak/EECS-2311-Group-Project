@@ -45,8 +45,11 @@ User user;
 	@BeforeEach
 	void setUp() throws Exception {
 //        MockitoAnnotations.initMocks(this);
-
 		user = new User("1", "1");
+		if (!Database.usernameChecker("1").equals("1"))
+			Database.addUser(user.getUsername(), user.getPassword(), appdata.getAllAttributes());
+		else 
+			Database.updateUsernamePassword("1", "1");
 
     	
 
@@ -54,8 +57,17 @@ User user;
 
 	@AfterEach
 	void tearDown() throws Exception {
+		
 	}
 
+	@Test
+	void testloginFalse() {
+		String inputUsername="1"; 
+		String inputPasswordString="q3";
+		boolean check =UserProfile.otherUsersUsername(inputUsername, user)&&inputUsername.equals(user.getUsername());
+		
+		assertFalse(check);
+	}
 	
 //	@Test
 //	void testloginFalse() {
