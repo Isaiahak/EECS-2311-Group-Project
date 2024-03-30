@@ -18,6 +18,7 @@ import java.util.Collections;
 import java.util.PriorityQueue;
 
 import backend.dog.Dog;
+import guicontrol.AppData;
 
 
 public class LikedDogScene extends PrimaryScene{

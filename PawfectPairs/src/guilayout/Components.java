@@ -583,7 +583,15 @@ public class Components{
 			}
 			AppData.getInstance().getUser().getWallet().removeRecurringPayment(dog.getId());
 			
-
+			
+			//updating likedDogPage whenever the unlike button is clicked
+			LikedDogScene likedDogPage = LikedDogScene.getInstance();
+			try {
+				likedDogPage.start(primaryStage);
+			}
+			catch (Exception e){
+				e.printStackTrace();
+			}
 			
         });
 
@@ -818,6 +826,7 @@ public static ArrayList<Appointment> deepCopyUserAppointments(ArrayList<Appointm
 	            user.addToPostersRatedByUser(poster);
 	            poster.setScore(((poster.getScore() * poster.getNumberofRatings()) + sliderValue) / (poster.getNumberofRatings() + 1));
 	            poster.setNumberofRatings(poster.getNumberofRatings() + 1);
+	            
 	            PosterProfileScene posterPage = PosterProfileScene.getInstance();
 	            try {
 	                posterPage.start(primaryStage);
