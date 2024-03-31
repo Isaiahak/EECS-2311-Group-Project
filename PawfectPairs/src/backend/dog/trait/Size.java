@@ -23,6 +23,11 @@ public class Size extends Attribute {
 	public int getType() {
 		return type; 
 	}
+
+	@Override
+	public Attribute cloneAttribute() {
+		return new Size(this.weight);
+	}
 }
 
 
