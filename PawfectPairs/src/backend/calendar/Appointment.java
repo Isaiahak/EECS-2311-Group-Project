@@ -2,6 +2,7 @@ package backend.calendar;
 
 import java.sql.Date;
 import java.time.LocalDate;
+import java.time.YearMonth;
 import java.time.ZoneId;
 
 public class Appointment{
@@ -78,6 +79,14 @@ public class Appointment{
 		LocalDate appointmentDate = sqlDate.toLocalDate();
 		return sqlDate.before(nowSQL)&&appointmentDate.getMonthValue()==nowLocal.getMonthValue();
 
+	}
+	public boolean leapYear (LocalDate date) {
+		// Get the YearMonth object for the LocalDate
+		YearMonth yearMonth = YearMonth.from(date);
+
+		// Check if the year of the YearMonth is a leap year
+		boolean isLeapMonth = yearMonth.isLeapYear();
+		return isLeapMonth;
 	}
 
 	@Override

@@ -2,6 +2,7 @@ package guilayout;
 
 import java.sql.Date;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.*;
 
 import backend.calendar.Appointment;
@@ -494,7 +495,7 @@ public class Components{
 
 		Hyperlink rescheduleLink = hyperlinkToReschedule(dog, primaryStage, poster, appData, selectedDate);
 
-		Hyperlink cancelLink = hyperlinkToCancelAppointment(dog, primaryStage, poster, appData);
+		Hyperlink cancelLink = hyperlinkToCancelAppointment(dog, primaryStage, poster, appData, localDate);
 
 		VBox info = new VBox(primaryInfoLabel, appointmentDate, rescheduleLink, cancelLink);
 		HBox HBox = new HBox(img, info);
@@ -631,10 +632,9 @@ public class Components{
 		return posterLink;
 	}
 	public static Hyperlink hyperlinkToCancelAppointment (Dog dog, Stage
-			primaryStage, Hashtable < Integer, Poster > poster, AppData appData){
+			primaryStage, Hashtable < Integer, Poster > poster, AppData appData, Date localDate){
 		AppointmentManager userManager = AppData.getInstance().getAppointmentManager();
 		ArrayList<Appointment> userAppointments = userManager.getUserAppointments();
-
 
 		Hyperlink appointmentLink = Components.hyperlink();
 		appointmentLink.setText("Cancel");
@@ -643,8 +643,7 @@ public class Components{
 			try {
 
 				for (Appointment appointment : userAppointments) {
-					if (appointment.getDogID() == dog.getId()) {
-						
+					if (appointment.getDogID() == dog.getId()&&appointment.getDate().equals(localDate)) {
 						RemoveAppointmentFromUser(appointment, userAppointments, userManager,appData);
 						BookedAppointmentScene bookedPage = BookedAppointmentScene.getInstance();
 						bookedPage.start(primaryStage);
