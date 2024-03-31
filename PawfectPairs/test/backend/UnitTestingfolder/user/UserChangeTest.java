@@ -72,7 +72,7 @@ private static Boolean[] existedInDbBefore;
 	            Database.addUser(username, username, null);
 	            existedInDbBefore[Integer.parseInt(username) - 1] = false;
 	        } else {
-	            oldPassword[Integer.parseInt(username) - 1] = Database.getPassword(username);
+	            //oldPassword[Integer.parseInt(username) - 1] = Database.getPassword(username);
 	            existedInDbBefore[Integer.parseInt(username) - 1] = true;
 	            Database.updateUsernamePassword(username, username, Database.getUserid(username));
 	        }
