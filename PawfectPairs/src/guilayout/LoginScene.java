@@ -58,6 +58,11 @@ public class LoginScene extends Application{
 		
 		double paddingX = Components.screenWidth * 0.2; // 20% of screen width
 		double paddingY = Components.screenHeight * 0.2; // 20% of screen height
+		
+		int maxCharacters = 20;
+		
+       
+
 
 
      	mainContainer.setAlignment(Pos.CENTER);
@@ -68,6 +73,12 @@ public class LoginScene extends Application{
         usernameFieldAndLabel.setSpacing(0.01 * Components.screenWidth);
         usernameFieldAndLabel.setAlignment(Pos.CENTER);
         
+        userTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue.length() > maxCharacters) {
+            	userTextField.setText(oldValue);
+            }
+        });
+        
         Label passwordLabel = Components.mediumLabel("Password:", Pos.CENTER);
         PasswordField passwordField = new PasswordField();
         HBox passwordFieldAndLabel = new HBox(passwordLabel, passwordField);
@@ -75,6 +86,12 @@ public class LoginScene extends Application{
         passwordFieldAndLabel.setAlignment(Pos.CENTER);
         VBox textFields = new VBox(usernameFieldAndLabel,
         		passwordFieldAndLabel);
+        
+        passwordField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue.length() > maxCharacters) {
+            	passwordField.setText(oldValue);
+            }
+        });
         
         textFields.setAlignment(Pos.CENTER);
         Button signUpButton = new Button("Sign Up");
