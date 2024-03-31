@@ -25,6 +25,11 @@ public class Age extends Attribute {
 		return type; 
 	}
 
+	@Override
+	public Attribute cloneAttribute() {
+		return new Age(this.weight);
+	}
+
 
 }
 

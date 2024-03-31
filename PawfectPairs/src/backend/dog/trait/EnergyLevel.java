@@ -23,6 +23,11 @@ public class EnergyLevel extends Attribute {
 	public int getType() {
 		return type; 
 	}
+
+	@Override
+	public Attribute cloneAttribute() {
+		return new EnergyLevel(this.weight);
+	}
 }
 
 

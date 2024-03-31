@@ -21,6 +21,7 @@ public abstract class Attribute implements Comparable<Attribute>{
             return -1;
         }
     }
+    public abstract Attribute cloneAttribute();
     
     public int getWeight() {
         return weight;
