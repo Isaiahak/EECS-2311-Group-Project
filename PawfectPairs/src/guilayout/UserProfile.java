@@ -68,10 +68,10 @@ public class UserProfile extends PrimaryScene{
 		HashMap<Integer,ArrayList<Attribute>> allAttributes = appData.getAllAttributes();
 		wallet=user.getWallet();
 
-		oldSexPreferences = user.getCopyOfSexPreferences(user.getSexPreferences());
-		oldAgePreferences = user.getCopyOfAgePreferences(user.getAgePreferences());
-		oldEnergyLevelPreferences = user.getCopyOfEnergyLevelPreferences(user.getEnergyLevelPreferences());
-		oldSizePreferences = user.getCopyOfSizePreferences(user.getSizePreferences());
+		oldSexPreferences = user.getCopyOfPreferences(user.getSexPreferences());
+		oldAgePreferences = user.getCopyOfPreferences(user.getAgePreferences());
+		oldEnergyLevelPreferences = user.getCopyOfPreferences(user.getEnergyLevelPreferences());
+		oldSizePreferences = user.getCopyOfPreferences(user.getSizePreferences());
 		oldTagPreferences = user.getCopyOfTagPreferences(user.getTagPreferences());
 
 		VBox preferences = new VBox();

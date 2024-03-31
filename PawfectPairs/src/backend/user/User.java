@@ -217,37 +217,15 @@ public class User {
 		return true;
 	}
 
-	public ArrayList<Attribute> getCopyOfAgePreferences(ArrayList<Attribute> agePreferences){
-		ArrayList<Attribute> preferences = new ArrayList<>();
-		for(Attribute att : agePreferences){
-			preferences.add(new Age(att.getWeight()));
+	
+	public ArrayList<Attribute> getCopyOfPreferences(ArrayList<Attribute> preferences){
+		ArrayList<Attribute> returnPreferences = new ArrayList<>();
+		for(Attribute att : preferences){
+			returnPreferences.add(att.cloneAttribute());
 		}
-		return preferences;
+		return returnPreferences;
 	}
 
-	public ArrayList<Attribute> getCopyOfSizePreferences(ArrayList<Attribute> SizePreferences){
-		ArrayList<Attribute> preferences = new ArrayList<>();
-		for(Attribute att : SizePreferences){
-			preferences.add(new Age(att.getWeight()));
-		}
-		return preferences;
-	}
-
-	public ArrayList<Attribute> getCopyOfSexPreferences(ArrayList<Attribute> SexPreferences){
-		ArrayList<Attribute> preferences = new ArrayList<>();
-		for(Attribute att : SexPreferences){
-			preferences.add(new Age(att.getWeight()));
-		}
-		return preferences;
-	}
-
-	public ArrayList<Attribute> getCopyOfEnergyLevelPreferences(ArrayList<Attribute> EnergyLevelPreferences){
-		ArrayList<Attribute> preferences = new ArrayList<>();
-		for(Attribute att : EnergyLevelPreferences){
-			preferences.add(new Age(att.getWeight()));
-		}
-		return preferences;
-	}
 
 	public Hashtable<Integer,Tag> getCopyOfTagPreferences(Hashtable<Integer,Tag> TagPreferences){
 		Hashtable<Integer,Tag> preferences = new Hashtable<>();
