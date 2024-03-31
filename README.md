@@ -4,13 +4,13 @@ Group Project
 
 **HOW TO RUN:**
 
-Step 1:
-Import this project by cloning the URL
+_Step 1: Download_
 Ensure JavaFX SDK is installed on your computer - https://gluonhq.com/products/javafx/
 * unzip the SDK into a location on your computer - Take note of the file path to lib (e.g. C:\Java\javafx-sdk-20\lib)
+
 Ensure Postrgesql is installed on your computer, take note of the file path to postgresql-42.7.2.jar (e.g. C:\Program Files (x86)\PostgreSQL\pgJDBC)
 
-Step 2: Add JavaFX library to the project
+_Step 2: Add JavaFX library to the project_
 Right click on "Pawfect Pairs/src" --> Build Path --> Configure Build Path... --> Libraries 
 
 1. Click 'Class Path' --> Add Library --> User Library --> User Libaries --> New 
@@ -22,12 +22,12 @@ Right click on "Pawfect Pairs/src" --> Build Path --> Configure Build Path... --
 ![image](https://github.com/Isaiahak/EECS-2311-Group-Project/assets/97921328/8d64f5cb-db5a-4f15-8918-c493b7061bf9)
 
 
-Step 3: Add the PostreSQL jar to the project
+_Step 3: Add the PostreSQL jar to the project_
 Similar to the previous step, select the 'Configure Build Path' and go to the Libraries tab
 1. Click 'Module Path' --> and double-click 'postgresql-42.7.2'
 2. A window should pop up, here enter the path to the postgresql-42.7.2.jar file that you took note of earlier, select the jar, click open, and then click 'Apply and close'
 
-Step 4: Establish a connection to the database with the sql file
+_Step 4: Establish a connection to the database with the sql file_
 
 Note: Please ensure to use "ITR3_Database.sql" located in "EECS-2311-Group-Project"
 
