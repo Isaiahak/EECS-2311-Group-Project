@@ -75,11 +75,8 @@ public class Wallet {
 		}
 
 	}
-	
-	
 
 	public void removeRecurringPayment(int dogid) {
-		//this.recurringPayments.remove(this.recurringPayments.get(dogid));
 		this.recurringPayments.remove(dogid);
 	}
 

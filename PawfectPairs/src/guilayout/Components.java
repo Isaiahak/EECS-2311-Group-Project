@@ -1,8 +1,6 @@
 package guilayout;
 
 import java.sql.Date;
-import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.*;
 
 import backend.calendar.Appointment;
@@ -18,14 +16,10 @@ import backend.wallet.Wallet.FundsTooLow;
 import guicontrol.AppData;
 import javafx.animation.*;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
-import javafx.scene.Group;
 import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.effect.ColorAdjust;
@@ -35,12 +29,9 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.CubicCurveTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
-import javafx.scene.shape.QuadCurveTo;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.stage.Screen;
@@ -557,8 +548,7 @@ public class Components{
 
         unlikeButton.setOnAction(event -> {
             // Remove the dog from the likedDogs list
-        	
-           // appData.getUser().getLikedDogs().remove(dog);
+
             appData.getUser().removeUnlikedDog(dog);
            
             Database.removeLikedDog(dog.getId(), appData.getUser().getUserID());
@@ -871,10 +861,7 @@ public static ArrayList<Appointment> deepCopyUserAppointments(ArrayList<Appointm
 			else 
 			{
 				numClicks.set(numClicks.get()+1);
-				//slantMoveAnimation(cancelButton);
-				//bounce(cancelButton);
-				//addBouncingButton(cancelButton, 10);
-				
+
 				numClicks.set(numClicks.get() + 1);
 				cancelButton.setTranslateX(150);
 				cancelButton.setTranslateY(150);
@@ -1081,19 +1068,6 @@ public static ArrayList<Appointment> deepCopyUserAppointments(ArrayList<Appointm
 		// Translate the button
 		button.setTranslateX(20);
 		button.setTranslateY(30);
-		//
-		//	        // Create a PauseTransition with a 1-second pause
-		//	        PauseTransition pauseTransition = new PauseTransition(Duration.seconds(1));
-		//
-		//	        // Set the action to be performed after the pause
-		//	        pauseTransition.setOnFinished(event -> {
-		//	            // Reset the button's translation after the pause
-		//	            button.setTranslateX(0);
-		//	            button.setTranslateY(0);
-		//	        });
-		//
-		//	        // Start the pause transition
-		//	        pauseTransition.play();
 	}
 	public static boolean isClicked() {
 		return clicked;

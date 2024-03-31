@@ -1,10 +1,8 @@
 package backend.wallet;
 
-import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-import backend.wallet.Wallet.FundsTooLow;
 
 public class RecurringPayment {
 	double paymentAmount;
@@ -46,8 +44,6 @@ public class RecurringPayment {
 	
 	public String getLastPaymentDateToString() {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-
-        // Format the date to a string
         return this.lastPaymentDate.format(formatter);
 	}
 

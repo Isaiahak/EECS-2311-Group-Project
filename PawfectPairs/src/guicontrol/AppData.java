@@ -31,13 +31,12 @@ public class AppData {
 	private ArrayList<Appointment> otherUsersAppointments;
 	private HashMap<Integer, ArrayList<Attribute>> allAttributes;
 	private boolean okToClose;
+	
 	private Dog lastRemovedDog;
 	
 	public Dog getlastRemovedDog() {
 		return this.lastRemovedDog;
 	}
-	private ArrayList<String> usernames;
-
 	public void reset() {
 		this.user = null;
 		this.allDogs.clear();
@@ -143,10 +142,14 @@ public class AppData {
 	public void updateDogScores() {
 
 	// perform check on if the user's preferences have changed before updating scores	
-		if(this.user.arePreferencesEqual(UserProfile.getInstance().getOldTagPreferences()) == false || this.user.areAttributesEqual(UserProfile.getInstance().getOldSexPreferences(),
-				UserProfile.getInstance().getOldAgePreferences(),
-				UserProfile.getInstance().getOldSizePreferences(),
-				UserProfile.getInstance().getOldEnergyLevelPreferences()) == false){
+		if(this.user.arePreferencesEqual(UserProfile.getInstance().getOldTagPreferences()) == false 
+				|| this.user.areAttributesEqual(
+						UserProfile.getInstance().getOldSexPreferences(),
+						UserProfile.getInstance().getOldAgePreferences(),
+						UserProfile.getInstance().getOldSizePreferences(),
+						UserProfile.getInstance().getOldEnergyLevelPreferences()) == false
+			){
+			
 			Database.addUserDog(user.getLikedDogs(), user.getUserID(),"userdogs");
 			Database.addUserDog(user.getPassedDogs(), user.getUserID(),"userpasseddogs");
 			Database.deletePreferenceTagsFromUser(user.getUserID());
@@ -156,11 +159,13 @@ public class AppData {
 			Database.addUserAttributePreferences(user.getSexPreferences(),  user.getUserID());
 			Database.addUserAttributePreferences(user.getEnergyLevelPreferences(), user.getUserID());
 			Database.addUserAttributePreferences(user.getSizePreferences(), user.getUserID());
+		
 			setDogProfiles();
 			setPosterDogLists();
 			initializeDogProfilesSorted();
 			lastRemovedDog = this.sortedDogProfiles.peek(); 
 		}
+
 	}
 	
 	public void setlastRemovedDog(Dog lastRemovedDog) {
@@ -246,8 +251,7 @@ public class AppData {
 		initializeDogProfilesSorted();
 
 		setAppointmentManager(new AppointmentManager(user.getUserID(), Database.getUserAppointments(user.getUserID())));
-		
-		System.out.println(this.appointmentManager.toString());
+
 		setOtherUsersAppointments();
 		
 		setPosterRatedbyUser(user.getUserID());
@@ -278,11 +282,6 @@ public class AppData {
 		
 		this.otherUsersAppointments.addAll(appointmentManager2.getUserAppointments());
 		
-	}
-
-
-
-
-	
+	}	
 	
 }

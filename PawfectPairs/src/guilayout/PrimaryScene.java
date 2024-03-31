@@ -11,14 +11,11 @@ import guicontrol.AppData;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Priority;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 public class PrimaryScene extends Application{
@@ -47,7 +44,7 @@ public class PrimaryScene extends Application{
     	root = new BorderPane();
     	root.setMinHeight(Components.screenHeight);
     	
-    	//this is where you would attach all the nodes/ scene
+
     	mainContainer = new VBox();
     	mainContainer.setSpacing(30);
     	mainContainer.setAlignment(Pos.CENTER);

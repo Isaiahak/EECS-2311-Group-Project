@@ -52,8 +52,8 @@ class AttributeTest {
         Attribute attribute2 = new Age(2);
         Attribute attribute3 = new Age(3);
 
-        assertTrue(attribute1.equals(attribute2)); // Checks if attribute1 is not equal to attribute2
-        assertFalse(attribute1.equals(attribute3)); // Checks if attribute1 is not equal to attribute3
+        assertTrue(attribute1.compareTo(attribute2) == 0); // Checks if attribute1 is not equal to attribute2
+        assertFalse(attribute1.compareTo(attribute3) == 0); // Checks if attribute1 is not equal to attribute3
     }
 
 }

@@ -18,9 +18,8 @@ static Authenticator authenticator;
 
 
 	public ChangeProfileDetails(User user, Authenticator authenticator) {
-	super();
-	this.user = user;
-	this.authenticator = authenticator;
+		this.user = user;
+		this.authenticator = authenticator;
 }
 
 	public static boolean otherUsersUsername (String username, User user) {
@@ -90,8 +89,6 @@ static Authenticator authenticator;
 	    Optional<ButtonType> result = alert.showAndWait();
 	    if (result.isPresent() && result.get() == ButtonType.OK) {
 	        // Process input if user clicks OK
-	    	//System.out.println("authentic sign up" + authenticator.authenticateLogIn(username.getText(), password.getText()));
-			//System.out.println("same user? "+username.getText().equals(user.getUsername()));
 			
 	        if (authenticator.checkFieldsAreValid(username.getText(), password.getText())&&!otherUsersUsername(username.getText(),user)) {
 	            // If authentication is successful, create a success dialog

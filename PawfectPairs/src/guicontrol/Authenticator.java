@@ -1,19 +1,13 @@
 package guicontrol;
 
-import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import backend.calendar.AppointmentManager;
 import backend.database.Database;
-import backend.user.User;
-import guilayout.DogProfileScene;
 import guilayout.LoginScene;
 import javafx.scene.control.Label;
 
 public class Authenticator {
-	private AppData appData;
-	private LoginScene loginScene;
 	private Label message;
 	
 	public  Authenticator(Label message) {
@@ -31,11 +25,9 @@ public class Authenticator {
 	public boolean checkFieldsAreValid(String username, String password){
 		if(username.isEmpty() || username.equals("")) {
 			setLoginPageMessage("Username is empty.", "red");
-			System.out.println("empty user");
 			return false;
 		}else if(password.isEmpty() || password.equals("")) {
 			setLoginPageMessage("Password is empty.", "red");
-			System.out.println("empty pass");
 			return false;
 		}
 		else if(containsInvalidCharacters(username)) {
