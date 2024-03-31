@@ -22,30 +22,6 @@ Right click on "Pawfect Pairs/src" --> Build Path --> Configure Build Path... --
 ![image](https://github.com/Isaiahak/EECS-2311-Group-Project/assets/119365237/a134a816-4d4d-461d-8a5f-ad852b9acf80)
 
 
-Step 3: VM Arguments
-Navigate to ApplicationStart (\src\guilayout\ApplicationStart.java). Right click, and select: Run as --> Run Configuration 
-Double click on " Java Application" to create a new run config. Ensure the main class and project is set correctly, as seen below.
-
-![image](https://github.com/Isaiahak/EECS-2311-Group-Project/assets/119365237/14f4f1d8-4bce-49bb-b5b0-97299957743d)
-
-Navigate to "Arguments" and enter the following VM arguments:
-MAC/LINUX: --module-path [PATH TO SDK HERE] --add-modules javafx.controls,javafx.fxml
-WINDOWS: --module-path "[PATH TO SDK HERE]" --add-modules javafx.controls,javafx.fxml
-Remember how I said you should have your javaFX library path? Use that path in place of [PATH TO SDK HERE]
-
-![image](https://github.com/Isaiahak/EECS-2311-Group-Project/assets/119365237/4b39f030-54fe-406a-b800-942d0a99fa9b)
-
-Now, click "Apply" and "Run"! 
-
-Enjoy :D
-
-**EXTRA TROUBLESHOOTING**
-
-We were having issues with the .classpath file being deleted upon pushing changes, thus changing our project layout and breaking it.
-
-If you find that this is the case, please download and use "pawfectpairs.zip" in eclipse and follow the prior steps to set up the library. 
-
-
 
 **TO ESTABLISH A CONNECTION TO THE DATABASE WITH THE SQL FILE**
 
@@ -59,3 +35,6 @@ Replace username with the username that you used to create the database you crea
 In the database connection method,  (src>backend.database.Database.java) replace "password" with your postgresql password, "postgres" with your username, and "pawdb" with the dbname defined in the above command.
 
 Note: Please ensure to use finalter2db.sql
+
+**To Run**
+In your command terminal, navigate to the "PawfectPairs" directory and type gradle run!
