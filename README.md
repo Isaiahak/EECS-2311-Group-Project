@@ -3,7 +3,6 @@ Group Project
 
 
 **HOW TO RUN:**
-_and a little bit of a troubleshooting guide...._
 
 Step 1:
 Import this project by cloning the URL
@@ -28,18 +27,22 @@ Similar to the previous step, select the 'Configure Build Path' and go to the Li
 1. Click 'Module Path' --> and double-click 'postgresql-42.7.2'
 2. A window should pop up, here enter the path to the postgresql-42.7.2.jar file that you took note of earlier, select the jar, click open, and then click 'Apply and close'
 
-**TO ESTABLISH A CONNECTION TO THE DATABASE WITH THE SQL FILE**
+Step 4: Establish a connection to the database with the sql file
 
+Note: Please ensure to use "ITR3_Database.sql" located in "EECS-2311-Group-Project"
 
-Create a blank database in terminal and run the following command in the directory that contains the sql file.
+Create a blank database in the terminal or pgAdmin.
+
+For the terminal: run the following command in the directory that contains the sql file.
 pg_restore -U username -d dbname -1 newpawdb.sql
 Replace username with the username that you used to create the database you created, replace dbname with the name of the database you created. 
 
 ![image](https://github.com/Isaiahak/EECS-2311-Group-Project/assets/97921328/4d0a26a9-8637-4c68-9cd5-6e03cd3bf756)
 
-In the database connection method,  (src>backend.database.Database.java) replace "password" with your postgresql password, "postgres" with your username, and "pawdb" with the dbname defined in the above command.
+For pgAdmin: Simply right-click the empty database you created, select 'Restore..." and put the path to the sql file, select 'open' and 'Restore'
 
-Note: Please ensure to use finalter2db.sql
+In the database connection method,  (src>backend.database.Database.java) replace "password" with your postgresql password, "postgres" with the postrgesql username used to create the database, and "pawdb" with the dbname defined in the above command.
+
 
 **To Run**
 
