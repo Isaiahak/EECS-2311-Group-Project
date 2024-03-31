@@ -25,15 +25,9 @@ repositories {
 dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.0")
     testImplementation("org.junit.jupiter:junit-jupiter-params:5.8.0")
- //   testImplementation("org.junit.jupiter.api.AfterAll");
     
-   //   testImplementation("import org.junit.jupiter.api.AfterEach")
     //testImplementation("org.junit.jupiter:junit-jupiter-params:5.7.0")
-    //testImplementation("org.junit.jupiter.api.BeforeEach");
-   // testImplementation("org.junit.jupiter.api.Test");
-
-   // testImplementation ("org.junit.jupiter.api.BeforeAll");
-   
+    
        testImplementation ("org.mockito:mockito-core:3.12.4")
    
    // testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.7.0")
