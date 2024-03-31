@@ -10,6 +10,9 @@ Ensure JavaFX SDK is installed on your computer - https://gluonhq.com/products/j
 
 Ensure Postrgesql is installed on your computer, take note of the file path to postgresql-42.7.2.jar (e.g. C:\Program Files (x86)\PostgreSQL\pgJDBC)
 
+Ensure Gradle is installed on your computer. 
+
+
 _Step 2: Add JavaFX library to the project_
 Right click on "Pawfect Pairs/src" --> Build Path --> Configure Build Path... --> Libraries 
 
