@@ -1,22 +1,18 @@
-	package guilayout;
+package guilayout;
 
-	import backend.database.Database;
-	import backend.dog.Dog;
+import backend.database.Database;
+import backend.dog.Dog;
 import backend.user.User;
 import backend.wallet.Wallet;
 import guicontrol.AppData;
-import javafx.animation.KeyFrame;
-	import javafx.animation.Timeline;
-	import javafx.geometry.Insets;
-	import javafx.geometry.Pos;
-	import javafx.scene.Scene;
-	import javafx.scene.control.*;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.*;
-	import javafx.scene.layout.*;
-	import javafx.scene.shape.Rectangle;
-	import javafx.stage.Stage;
-	import javafx.util.Duration;
+import javafx.scene.layout.*;
+import javafx.stage.Stage;
+
 
 public class DogProfileScene extends PrimaryScene{
 
