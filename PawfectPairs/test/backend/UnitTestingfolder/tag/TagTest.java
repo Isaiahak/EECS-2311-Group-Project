@@ -11,7 +11,7 @@ class TagTest {
     void tagWeightTest() {
         Tag tag1 = new Tag("Shy", 0);
         int expected = 0;
-        assertEquals(expected, tag1.getWeight());
+        assertEquals(expected, tag1.getTagId());
     }
 
     @Test
@@ -32,9 +32,9 @@ class TagTest {
     @Test
     void tagNameWeight2() {
         Tag tag1 = new Tag("Shy",0);
-        tag1.setWeight(3);
+        tag1.setTagId(3);
         int expected = 3;
-        assertEquals(expected, tag1.getWeight());
+        assertEquals(expected, tag1.getTagId());
     }
 }
 

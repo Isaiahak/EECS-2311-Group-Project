@@ -156,7 +156,6 @@ public class UserProfile extends PrimaryScene{
 
 
 				} catch (IllegalArgumentException e) {
-					// TODO: handle exception
 					showAlert("Cannot enter a negative number", "Please enter a non-negative number", AlertType.ERROR);
 					amount.clear();
 				}
@@ -172,19 +171,19 @@ public class UserProfile extends PrimaryScene{
         signOutButton.setOnMouseClicked(event -> {
             Database.onApplicationClose(user, allDogs, appData.getAppointmentManager(), appData.getOkToClose());
             appData.setOkToClose(false);//Prevent double saving with a null dog list
-            appData.getInstance().getAllAttributes().clear();
-            appData.getInstance().getAllDogs().clear();
-            appData.getInstance().getallTags().clear();
-            appData.getInstance().getDogProfiles().clear();
-            appData.getInstance().getPosterProfiles().clear();
-            appData.getInstance().getSortedDogProfiles().clear();
-            appData.getInstance().getOtherUsersAppointments().clear();
-            appData.getInstance().getAppointmentManager().reset();
-            appData.getInstance().getUser().reset();
-            appData.getInstance().getPosters().clear();
-            appData.getInstance().setAppointmentManagerToEmpty();
-            calendarScene.getInstance().getAppointments().clear();//ArrayList<Appointment>
-            calendarScene.getInstance().getExistingAppointment().clear();//ArrayList<Appointment>
+            appData.getAllAttributes().clear();
+            appData.getAllDogs().clear();
+            appData.getallTags().clear();
+            appData.getDogProfiles().clear();
+            appData.getPosterProfiles().clear();
+            appData.getSortedDogProfiles().clear();
+            appData.getOtherUsersAppointments().clear();
+            appData.getAppointmentManager().reset();
+            appData.getUser().reset();
+            appData.getPosters().clear();
+            appData.setAppointmentManagerToEmpty();
+            calendarScene.getAppointments().clear();
+            calendarScene.getExistingAppointment().clear();
 
 
             loginScene.start(primaryStage);
