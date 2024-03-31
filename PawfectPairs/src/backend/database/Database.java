@@ -33,10 +33,10 @@ public class Database {
 	public static Connection connect() {
 		try {
 			Class.forName("org.postgresql.Driver"); // Replace with your database driver
-			//Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/db", "postgres", "1234"); // zainab
+			Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/final", "postgres", "1234"); // zainab
 
 
-			Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/thebestoneyet", "postgres", "doglover123"); // katya
+			//Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/thebestoneyet", "postgres", "doglover123"); // katya
 
 
 //			Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5434/thebestoneyet", "postgres", "321123"); // isaiah
@@ -864,9 +864,7 @@ public static boolean updateUsernamePassword (String newUsername, String newPass
 		try {
 			connection = Database.connect();
 			Statement statement = connection.createStatement();
-			ResultSet resultSet = statement.executeQuery("\"SELECT userpassword\\r\\n\"\r\n"
-					+ "					+ \"	FROM public.users\\r\\n\"\r\n"
-					+ "					+ \"	where username= '" +username+"'; \"");
+			ResultSet resultSet = statement.executeQuery("SELECT userpassword FROM users where username= '" +username+"'; ");
 
 			while (resultSet.next()) {
 				password=resultSet.getString("userpassword");
