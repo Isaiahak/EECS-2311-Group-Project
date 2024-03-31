@@ -1,4 +1,4 @@
-/*package backend.database;
+package backend.database;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.util.Hashtable;
 
@@ -61,10 +61,10 @@ class DatabaseTest {
 	    
 	    @BeforeAll
 	    public static void setUpClass() {
-	    	if (Database.getUser("123", "123") == null) {
-	    		Database.addUser("123", "123", null);
+	    	if (Database.getUser("test", "test") == null) {
+	    		Database.addUser("test", "test", null);
 	    	}
-	    	userTest = Database.getUser("123", "123");
+	    	userTest = Database.getUser("test", "test");
 			//System.out.println(userTest);
 	   	
 	   	Hashtable<Integer, Poster> posters = database.getAllPosters();
@@ -113,14 +113,13 @@ class DatabaseTest {
 	    
 	    @Test
 	    public void testAdoption() {
+	    	
 	    	testDog.setAdopted(false);
 	        assertEquals(false, testDog.getAdopted());
 	        testDog.setAdopted(true);
-	        System.out.println(testDog.getAdopted());
-	       
 	        database.setDogAdopted(testDog);
-	        Hashtable<Integer, Poster> posters = database.getAllPosters();
-	        Hashtable<Integer, ArrayList<Dog>> dogHashtables = Database.getAllDogs(userTest, posters.keySet());
+	        Hashtable<Integer, Poster> posters2 = database.getAllPosters();
+	        Hashtable<Integer, ArrayList<Dog>> dogHashtables = Database.getAllDogs(userTest, posters2.keySet());
 	        ArrayList<Dog> dogList1 = dogHashtables.get(userTest.getUserID());
 	        Dog dogTest = null;
 	        //System.out.println(dogList0.size());
@@ -130,15 +129,12 @@ class DatabaseTest {
 	        	if (counter == 0) {
 	            if (dog.getId() == testDog.getId()) {
 	                dogTest =  dog;
+	                testDog = dogTest;
 	                counter = counter +1;
 	            }
 	        	}
 	        }
-	        testDog = dogTest;
 	       
-	    	//testDog = dogHashtables.get(1).get(4);
-	    	System.out.println("Hey "+ testDog.getAdopted());
-	        //System.out.println(testDog.getAdopted());
 	        assertEquals(true, testDog.getAdopted());
 	        testDog.setAdopted(false);
 	      
@@ -195,4 +191,4 @@ class DatabaseTest {
 	    	    
 	    
 	    
-}*/
+}
