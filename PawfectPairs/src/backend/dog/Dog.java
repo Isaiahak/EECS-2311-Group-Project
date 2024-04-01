@@ -188,6 +188,13 @@ public class Dog  implements Comparable<Dog>{
 		public int compareTo(Dog o) { // for priorityqueue
 			return Integer.compare(o.score,this.score);
 		}
+		
+		@Override
+		public boolean equals(Object d) {
+			if(this.getId() == ((Dog) d).getId())return true;
+			
+			return false; 
+		}
 }
 
 
