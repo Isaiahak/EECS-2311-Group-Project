@@ -32,7 +32,7 @@ Similar to the previous step, select the 'Configure Build Path' and go to the Li
 
 _Step 4: Establish a connection to the database with the sql file_
 
-Note: Please ensure to use "ITR3_Database.sql" located in "EECS-2311-Group-Project"
+Note: Please ensure to use "Itr3_FinalDB_Group_3.sql" located in "EECS-2311-Group-Project"
 
 Create a blank database in the terminal or pgAdmin.
 
