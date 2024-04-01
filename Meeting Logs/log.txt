@@ -331,6 +331,7 @@ March 25, 2024
 -Ekaterina added new tables to the DB to support poster scoring
 - Ekaterina implemented GUI for adopting dogs
 - Ekaterina added DB calls to update poster scores 
+- Zainab reconfigured calendar to allow multiple appointment with the same dog
 - Connor finished the sign-out button.
 - Yuqian started working on the unlike button that allows user to unlike a dog that they liked.
 - Yuqian Started working on the undo button foe user when they mistakenly likes/passes the wrong dog.
@@ -338,6 +339,7 @@ March 25, 2024
 
 March 26, 2024
 - Zainab helped Yuqian ith undo button
+- Zainab fixed outstansing calendar bugs
 - Yuqian finished unlike button and undo button
 - Edson has conduted manual tests of all user stories and reported the issues with all members which had to still fix the logic of their user stories
 - Edson worked on additional debugging of adopt and rating poster found in manual tests
