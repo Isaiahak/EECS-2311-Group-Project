@@ -370,3 +370,4 @@ March 31, 2024
 - Ekaterina made the dataset a little smaller for demo purposes
 - Ekaterina worked on documentations (refactoring, added issues to documentation)
 - Edson worked on updating the tests and documentation
+- Zainab worked on documentation and tests
