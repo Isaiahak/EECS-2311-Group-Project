@@ -324,6 +324,7 @@ March 24, 2024
 -Ekaterina worked on her take home assignmetn and started some bug fixing/refactoring her assigned scene
 - Connor started working on the sign-out button.
 -Edson worked on his take home assignment and made the bug reports and code smell reports 
+-Zainab added a username and password change feature
 
 March 25, 2024
 - Ekaterina finished refactoring and debugging her takehome assignmeent (login scene) 
