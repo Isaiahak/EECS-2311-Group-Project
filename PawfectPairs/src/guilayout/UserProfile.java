@@ -128,6 +128,7 @@ public class UserProfile extends PrimaryScene{
 
 
 		Button deposit = Components.button("Deposit funds into your wallet");
+		deposit.getStyleClass().add("user-profile-page-buttons");
 
 		Label currentFunds =Components.mediumLabel();
 		currentFunds.setText("Your current balance: "+ wallet.getBalance());
@@ -198,9 +199,8 @@ public class UserProfile extends PrimaryScene{
 		allWalletUserComponents.setPadding(new javafx.geometry.Insets(20, 10, 20, 10));
 
 
-		Button changeUsernamePassword = new Button("Change username \nand password?");
+		Button changeUsernamePassword = new Button("Change username and password?");
 		changeUsernamePassword.getStyleClass().add("user-profile-page-buttons");
-		deposit.getStyleClass().add("user-profile-page-buttonss");
 
 
 
