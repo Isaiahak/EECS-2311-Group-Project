@@ -78,11 +78,22 @@ class DatabaseTest {
 	   	   
 	   	}
 	   	
-	   	Hashtable<Integer, ArrayList<Dog>> dogHashtable = database.getAllDogs(userTest, posters.keySet());
-	   	ArrayList<Dog> dogList0 = dogHashtable.get(userTest.getUserID());
+	   	Connection connection = Database.connect();
+	
+        /*String sql = "UPDATE dog SET adopted = false WHERE dogid IN (93, 54)";
+
+        try (Statement stmt = connection.createStatement()) {
+            int rowsAffected = stmt.executeUpdate(sql);
+
+            
+            System.out.println("Rows affected: " + rowsAffected);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }*/
+        
+        
+	   	ArrayList <Dog> dogList0 = database.getUsersLikedOrPassedDogs(userTest.getUserID(), "userdogs");
 	   	testDog = dogList0.get(0);
-	   	
-	   	//System.out.println(testDog);
 	   	String dateString = "2028-03-20";
 	   	sqlDate = java.sql.Date.valueOf(dateString);
 	   	
@@ -96,16 +107,10 @@ class DatabaseTest {
 	    }
 	    
 	    @Test
-	    public void testEqual() {
-	    	assertEquals(2,2);
-	    }
-	    
-	    @Test
 	    public void testAppointment() {
 	    	database.setUserAppointments(appointmentManagerTest);
 	        ArrayList<Appointment> appointmentsTester = database.getUserAppointments(userTest.getUserID());
 	       
-	        //System.out.println(appointmentsTester.get(appointmentsTester.size()-1).getDate());
 	        assertEquals(sqlDate,appointmentsTester.get(appointmentsTester.size()-1).getDate());
 	        database.deleteAppointment(userTest.getUserID());
 
@@ -174,15 +179,15 @@ class DatabaseTest {
 	    @Test
 	    public void testGetAllDogs() {
 	    	Hashtable<Integer, Poster> posters = database.getAllPosters();
-	    	Hashtable<Integer, ArrayList<Dog>> dogHashtableTest = database.getAllDogs(userTest, posters.keySet());
-	       	Dog testDog2 = dogHashtableTest.get(userTest.getUserID()).get(0);
+	    	ArrayList <Dog> dogList0 = database.getUsersLikedOrPassedDogs(userTest.getUserID(), "userdogs");
+	    	Dog testDog2 = dogList0.get(0);
 	       	assertEquals(testDog.getId(), testDog2.getId());
 
 	    }
 	    
 	    @Test
 	    public void testLikedDogs() {
-	    	ArrayList<Dog> dogList = Database.getUsersLikedOrPassedDogs(userTest.getUserID(), "userdogs");
+	    	ArrayList <Dog> dogList = database.getUsersLikedOrPassedDogs(userTest.getUserID(), "userdogs");
 	        //System.out.print(dogList.size());
 	        assertNotNull(dogList);
 

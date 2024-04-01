@@ -32,7 +32,6 @@ class DogAdoptionTest {
     public static void setUpClass() {
 		user = new User("test", "tests");
 		user.setUserID(-1);
-		user.setEmail("test@gmail.com");
 		
 		dog = new Dog("testDog",-1,0,0,0,0,-1,false,".","test");
 		user.addLikedDogs(dog);
