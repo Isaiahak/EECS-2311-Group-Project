@@ -50,26 +50,26 @@ public class SponsoredDogsScene extends PrimaryScene{
 	}	
 
 
-    public static void applyBounceAnimation(Button button) {
-        // Create Timeline for the animation
-        Timeline timeline = new Timeline();
-
-        // Define keyframes for the animation
-        timeline.getKeyFrames().addAll(
-                new KeyFrame(Duration.ZERO, new KeyValue(button.translateYProperty(), 0)),
-                new KeyFrame(Duration.seconds(0.5), new KeyValue(button.translateYProperty(), -50)),
-                new KeyFrame(Duration.seconds(1), new KeyValue(button.translateYProperty(), 0))
-        );
-
-    /*    // Set cycle count to indefinite for continuous bouncing
-        timeline.setCycleCount(Timeline.INDEFINITE);
-	*/
-        timeline.setCycleCount(5);
-        button.setOnAction(e -> {
-            // Play the animation when the button is clicked
-            timeline.playFromStart();
-        });
-    }
+//    public static void applyBounceAnimation(Button button) {
+//        // Create Timeline for the animation
+//        Timeline timeline = new Timeline();
+//
+//        // Define keyframes for the animation
+//        timeline.getKeyFrames().addAll(
+//                new KeyFrame(Duration.ZERO, new KeyValue(button.translateYProperty(), 0)),
+//                new KeyFrame(Duration.seconds(0.5), new KeyValue(button.translateYProperty(), -50)),
+//                new KeyFrame(Duration.seconds(1), new KeyValue(button.translateYProperty(), 0))
+//        );
+//
+//    /*    // Set cycle count to indefinite for continuous bouncing
+//        timeline.setCycleCount(Timeline.INDEFINITE);
+//	*/
+//        timeline.setCycleCount(5);
+//        button.setOnAction(e -> {
+//            // Play the animation when the button is clicked
+//            timeline.playFromStart();
+//        });
+//    }
 	private Dog findDogById(ArrayList<Dog> list, int targetId) {
         for (Dog d : list) {
             if (d.getId() == targetId) {
