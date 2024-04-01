@@ -322,6 +322,7 @@ March 23, 2024
 
 March 24, 2024
 -Ekaterina worked on her take home assignmetn and started some bug fixing/refactoring her assigned scene
+- Zainab fixed bugs and adressed code smells related to Calendar
 - Connor started working on the sign-out button.
 -Edson worked on his take home assignment and made the bug reports and code smell reports 
 -Zainab added a username and password change feature
@@ -340,7 +341,7 @@ March 25, 2024
 
 March 26, 2024
 - Zainab helped Yuqian ith undo button
-- Zainab fixed outstansing calendar bugs
+- Zainab fixed outstanding calendar bugs and smells
 - Yuqian finished unlike button and undo button
 - Edson has conduted manual tests of all user stories and reported the issues with all members which had to still fix the logic of their user stories
 - Edson worked on additional debugging of adopt and rating poster found in manual tests
