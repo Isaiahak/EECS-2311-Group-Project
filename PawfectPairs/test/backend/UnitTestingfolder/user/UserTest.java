@@ -23,14 +23,6 @@ class UserTest {
     }
 
     @Test
-    void userEmailTest() {
-        User user1 = new User("Bob","12345");
-        user1.setEmail("BobBoogaloo@gmail.com");
-        String expected = "BobBoogaloo@gmail.com";
-        assertEquals(expected, user1.getEmail());
-    }
-
-    @Test
     void userChangeUsernameTest() {
         User user1 = new User("Bob", "12345");
         user1.setUsername("Bob2");

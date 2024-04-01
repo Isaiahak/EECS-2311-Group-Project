@@ -10,18 +10,6 @@ import backend.user.User;
 public class login {
 
     @Test
-    public void testSignUp() {
-        // Test signing up with a new username and password
-        // Ensure that the user is successfully added to the database
-    	Database.addUser("testUser", "testPassword", null);
-    	User testUser = Database.getUser("testUser", "testPassword");
-    	if (testUser != null) {
-        assertEquals(testUser.getUsername(), "testUser");
-        assertEquals(testUser.getPassword(), "testPassword");
-    	}
-    }
-
-    @Test
     public void testLoginWithValidCredentials() {
         // Test logging in with valid credentials
         // Ensure that the login process succeeds

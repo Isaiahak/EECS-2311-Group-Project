@@ -24,7 +24,6 @@ class UndoButtonTest {
         // Initialize user and dog queue objects
 		user = new User("test", "tests");
 		user.setUserID(-1);
-		user.setEmail("test@gmail.com");
         Dog dog1 = new Dog ("testDog1",-1,0,0,0,0,-1,false,".","test");
         Dog dog2 = new Dog ("testDog2",-1,0,0,0,0,-1,false,".","test");
         allDogs = new PriorityQueue<Dog>();
