@@ -359,3 +359,10 @@ March 29,2024
 - Edson Refactored undoButton to fix logic
 - Yuqian worked on junit testing for like, pass, and undo button
 - Yuqian cleaned up the unused imports for Dog class and DogProfileScene
+- Ekaterina interviewed Adrian (other customer)
+
+March 31, 2024
+- Ekaterina cleaned up the code (dead code, duplicate code, etc)
+- Ekaterina made the dataset a little smaller for demo purposes
+- Ekaterina worked on documentations (refactoring, added issues to documentation)
+
