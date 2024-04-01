@@ -674,43 +674,8 @@ public class Database {
 
 		return result;
 	}
-	public static int getUserid(String username){
-		Connection connection = null;
-		int result = 0;
-		try{
-			connection = Database.connect();
-			Statement statement = connection.createStatement();
-			String query = "SELECT  userid\r\n"
-					+ "	FROM public.users where username= '"+username+"' ;";
-			ResultSet resultSet = statement.executeQuery(query);
-			if(resultSet.next()) {
-				result = resultSet.getInt("userid");
-			}
-		}
-		catch (SQLException e) {
-			e.printStackTrace();
-		}
-
-		return result;
-	}
 	
-	public static String passwordChecker(String username, String password){
-		Connection connection = null;
-		String result = "";
-		try{
-			connection = Database.connect();
-			Statement statement = connection.createStatement();
-			String query = "SELECT username FROM users WHERE username = '" + username + "' AND userpassword = '" + password + "' ;";
-			ResultSet resultSet = statement.executeQuery(query);
-			if(resultSet.next()) {
-				result = resultSet.getString("username");
-			}
 
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return result;
-	}
 
 	public static User getUser(String username, String password) {
 		Connection connection = null;

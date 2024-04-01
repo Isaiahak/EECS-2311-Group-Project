@@ -734,7 +734,6 @@ public static ArrayList<Appointment> deepCopyUserAppointments(ArrayList<Appointm
 	//Adopt Hyperlink
 	public static Hyperlink hyperLinkToAdopt (Dog dog, Stage primaryStage){
 		
-		//when u close and reopen then adoption is not updated
 		Hyperlink adoptLink = Components.hyperlink();
 		adoptLink.setText("Adopt " + dog.getName() + "!");	
 		adoptLink.setOnAction(event -> {
@@ -871,10 +870,7 @@ public static ArrayList<Appointment> deepCopyUserAppointments(ArrayList<Appointm
 			else 
 			{
 				numClicks.set(numClicks.get()+1);
-				//slantMoveAnimation(cancelButton);
-				//bounce(cancelButton);
-				//addBouncingButton(cancelButton, 10);
-				
+			
 				numClicks.set(numClicks.get() + 1);
 				cancelButton.setTranslateX(150);
 				cancelButton.setTranslateY(150);
@@ -968,74 +964,8 @@ public static ArrayList<Appointment> deepCopyUserAppointments(ArrayList<Appointm
 		}
 		return Numberwithdecimal;
 	}
-	 public static void addBouncingButton(Button button, double durationSeconds) {
 
-	        TranslateTransition transition = new TranslateTransition(Duration.seconds(durationSeconds), button);
-	        transition.setCycleCount(Animation.INDEFINITE);
-	        transition.setAutoReverse(true);
-	        transition.setInterpolator(Interpolator.EASE_BOTH);
-
-	        // Calculate the bounds of the container
-	        double maxX = Components.screenWidth - button.getWidth();
-	        double maxY = Components.screenHeight - button.getHeight();
-
-	        // Set the bounce boundaries based on the container bounds
-	        transition.setByX(maxX);
-	        transition.setByY(maxY);
-
-	        transition.play();
-	    }
-	public static void bounce (Button button) {
-		 
-        // Call the method to create the logo shape
-        Path path = createPath();		
-        
-		PathTransition pathTransition = new PathTransition();// Create a PathTransition
-		pathTransition.setDuration(Duration.seconds(8)); // Duration for one bounce cycle
-		pathTransition.setPath(path);
-		pathTransition.setNode(button);
-		pathTransition.setCycleCount(1);
-
-		// Set the position of the button back to (0, 0) at the end of the animation
-		pathTransition.setOnFinished(event -> {
-			button.setTranslateX(0);
-			button.setTranslateY(0);
-		});
-
-		// Start the animation
-		pathTransition.play();
-	}
 	
-	
-	public static Path createPath() {
-		  double startX = 0;
-	        double startY = 10 * Math.pow(startX, 4) - 5 * Math.pow(startX, 3) - 5 * Math.pow(startX, 2);
-
-	        double controlX1 = 1;
-	        double controlY1 = 10 * Math.pow(controlX1, 4) - 5 * Math.pow(controlX1, 3) - 5 * Math.pow(controlX1, 2);
-
-	        double controlX2 = -1;
-	        double controlY2 = 10 * Math.pow(controlX2, 4) - 5 * Math.pow(controlX2, 3) - 5 * Math.pow(controlX2, 2);
-
-	        double endX = -2;
-	        double endY = 10 * Math.pow(endX, 4) - 5 * Math.pow(endX, 3) - 5 * Math.pow(endX, 2);
-
-	        // Create a Path
-	        Path path = new Path();
-
-	        // Define the quartic curve using CubicCurveTo
-	        path.getElements().add(new MoveTo(startX, startY));
-	        path.getElements().add(new CubicCurveTo(
-	                // Control point 1
-	                controlX1, controlY1,
-	                // Control point 2
-	                controlX2, controlY2,
-	                // Ending point
-	                endX, endY
-	        ));
-		
-		return path;
-	}
 	
 	public static void dogAttributeDisplay(HBox parent, String emoji, int weight) {
 		int j = 0;
@@ -1054,47 +984,7 @@ public static ArrayList<Appointment> deepCopyUserAppointments(ArrayList<Appointm
 			parent.setAlignment(Pos.CENTER);
 		}
 	}
-	
-	public static void slantMoveAnimation(Button button) {
-		// Create Timeline for the animation
-		Timeline timeline = new Timeline();
 
-		// Define keyframes for the animation
-		timeline.getKeyFrames().addAll(
-				new KeyFrame(Duration.ZERO, new KeyValue(button.translateYProperty(), 0)),
-				new KeyFrame(Duration.ZERO, new KeyValue(button.translateXProperty(), 0)),
-				new KeyFrame(Duration.seconds(0.5), new KeyValue(button.translateXProperty(), -50)),
-
-				new KeyFrame(Duration.seconds(0.5), new KeyValue(button.translateYProperty(), -50)),
-				new KeyFrame(Duration.seconds(1), new KeyValue(button.translateYProperty(), 0)),
-				new KeyFrame(Duration.seconds(1), new KeyValue(button.translateXProperty(), 0))
-
-				);
-
-		/*  // Set cycle count to indefinite for continuous bouncing
-	        timeline.setCycleCount(Timeline.INDEFINITE);
-		 */
-		timeline.setCycleCount(3);
-
-	}
-	private static void moveButton(Button button) {
-		// Translate the button
-		button.setTranslateX(20);
-		button.setTranslateY(30);
-		//
-		//	        // Create a PauseTransition with a 1-second pause
-		//	        PauseTransition pauseTransition = new PauseTransition(Duration.seconds(1));
-		//
-		//	        // Set the action to be performed after the pause
-		//	        pauseTransition.setOnFinished(event -> {
-		//	            // Reset the button's translation after the pause
-		//	            button.setTranslateX(0);
-		//	            button.setTranslateY(0);
-		//	        });
-		//
-		//	        // Start the pause transition
-		//	        pauseTransition.play();
-	}
 	public static boolean isClicked() {
 		return clicked;
 	}
