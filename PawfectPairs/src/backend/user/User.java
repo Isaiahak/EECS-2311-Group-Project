@@ -22,7 +22,6 @@ public class User {
 	private ArrayList<Dog> localAdoptedDog = new ArrayList<Dog>();
 	private AppointmentManager bookedDates = new AppointmentManager(getUserID(), new ArrayList<>());
 	private String username;
-	private String email;
 	private int userID;
 	private String password;
 	private Wallet wallet;
@@ -81,14 +80,6 @@ public class User {
 
 	public void setUsername(String username) {
 		this.username = username;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
 	}
 
 	public String getPassword() {
@@ -238,7 +229,7 @@ public class User {
 
 	@Override
 	public String toString() {
-		return "User [username=" + username + ", email=" + email + ", password="
+		return "User [username=" + username + ", email=" + null + ", password="
 				+ password + "]";
 	}
 }
