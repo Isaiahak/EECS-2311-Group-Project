@@ -5,11 +5,11 @@ import java.time.format.DateTimeFormatter;
 
 
 public class RecurringPayment {
-	double paymentAmount;
-	int daysBetweenPayments; 
-	LocalDate lastPaymentDate;
-	int posterId;
-	int dogId; 
+	private double paymentAmount;
+	private int daysBetweenPayments; 
+	private LocalDate lastPaymentDate;
+	private int posterId;
+	private int dogId; 
 
 		public RecurringPayment(double paymentAmount, int daysBetweenPayments, int dogId, int posterId) { // init first time
 		this.paymentAmount = paymentAmount;
