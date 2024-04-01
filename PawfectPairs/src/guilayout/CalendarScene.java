@@ -1,16 +1,12 @@
 package guilayout;
 
-import javafx.application.Application;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.sql.Date;
@@ -18,17 +14,13 @@ import java.time.LocalDate;
 import java.time.Month;
 import java.time.YearMonth;
 import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.PriorityQueue;
 
 import backend.calendar.Appointment;
 import backend.calendar.AppointmentManager;
 import backend.dog.Dog;
 import backend.poster.Poster;
 import backend.user.User;
-import guicontrol.AppData;
-
 public class CalendarScene extends PrimaryScene {
 
 	private static final int DAYS_IN_WEEK = 7;

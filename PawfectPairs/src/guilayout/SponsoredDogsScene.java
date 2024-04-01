@@ -1,23 +1,15 @@
 package guilayout;
 
 import backend.wallet.RecurringPayment;
-import backend.wallet.Wallet.FundsTooLow;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.geometry.*;
-import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.Alert.AlertType;
-import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.PriorityQueue;
-
 import backend.dog.Dog;
 
 

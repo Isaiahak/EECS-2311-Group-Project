@@ -12,9 +12,8 @@ public class Poster implements Comparable<Poster> {
 	private String email;
 	private ArrayList<Dog> dogList = new ArrayList<Dog>();
 	private double balance;
-	private int numberofratings = 0;
+	private int numberofratings;
 
-	//not adding number of ratings to constructor as I was worried it would break other things
 	public Poster(double score, String displayName, int uniqueId, String phone, String email, double balance, int numberofratings) {
 		this.score = score;
 		this.displayName = displayName;

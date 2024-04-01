@@ -18,14 +18,10 @@ import backend.wallet.Wallet.FundsTooLow;
 import guicontrol.AppData;
 import javafx.animation.*;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
-import javafx.scene.Group;
 import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.effect.ColorAdjust;
@@ -35,12 +31,9 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.CubicCurveTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
-import javafx.scene.shape.QuadCurveTo;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.stage.Screen;
@@ -557,8 +550,7 @@ public class Components{
 
         unlikeButton.setOnAction(event -> {
             // Remove the dog from the likedDogs list
-        	
-           // appData.getUser().getLikedDogs().remove(dog);
+
             appData.getUser().removeUnlikedDog(dog);
            
             Database.removeLikedDog(dog.getId(), appData.getUser().getUserID());

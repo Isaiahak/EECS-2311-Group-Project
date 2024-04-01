@@ -13,10 +13,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import backend.dog.Dog;
-import backend.dog.DogList;
 import backend.poster.Poster;
-import backend.poster.PosterList;
-
 class PosterTest {
 
     @Test

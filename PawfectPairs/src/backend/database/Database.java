@@ -3,8 +3,6 @@ package backend.database;
 import java.sql.*;
 import java.sql.Date;
 import java.util.*;
-import java.time.LocalDate;
-import java.time.ZoneId;
 
 import backend.calendar.Appointment;
 import backend.calendar.AppointmentManager;
@@ -52,6 +50,7 @@ public class Database {
 	/*
 	 * Appointment Methods
 	 */
+	
 	public static void deleteAppointment(int userID) {
 		Connection connection = null;
 		PreparedStatement statement = null;
@@ -182,6 +181,7 @@ public class Database {
 		}
 		return null;
 	}
+	
 
 	/*
 	 * Dog Methods
@@ -204,7 +204,6 @@ public class Database {
 		Hashtable<Integer, Tag> tags = new Hashtable<Integer, Tag>();
 		// get all tags in dogtag data table associated with the dog id
 		try {
-//			Statement statement = connection.createStatement() ;
 			ResultSet resultSet = statement.executeQuery("SELECT tags.tagname, tags.tagid FROM tags JOIN dogtag ON tags.tagid = dogtag.tagid WHERE dogtag.dogid = " + dogId + ";");
 
 			while (resultSet.next()) {
@@ -229,7 +228,6 @@ public class Database {
 		try {
 			Statement statement = connection.createStatement();
 			Statement statement2 = connection.createStatement();
-//		         ResultSet resultSet = statement.executeQuery ("SELECT * FROM dog WHERE dog.dogid NOT IN (SELECT userdogs.dogid FROM userdogs WHERE userdogs.userid = "+ user.getUserID() + " ) AND adopted = false;");
 			ResultSet resultSet = statement.executeQuery
 					("SELECT * FROM dog WHERE dog.adopted =  'FALSE' AND " +
 							"dog.dogid NOT IN (SELECT userdogs.dogid FROM userdogs WHERE userdogs.userid = " + user.getUserID() + " ) " +
@@ -461,7 +459,6 @@ public class Database {
 				int energyId = resultSet.getInt("energylevelid");
 				int sizeId = resultSet.getInt("sizeid");
 				int sexId = resultSet.getInt("sexid");
-//			int posterId = resultSet.getInt("posterid"); 
 				boolean adoptedBool = resultSet.getBoolean("adopted");
 				String imagePath = resultSet.getString("imagePath");
 				String biography = resultSet.getString("biography");
@@ -489,32 +486,139 @@ public class Database {
 		}
 		return dogProfiles;
 	}
+	
+	/*Poster ratings*/ 
+	public static void deletePostersRatedByUser(User user) {
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		Wallet wallet = null;
 
-	public static void addUserDog(ArrayList<Dog> dogList, int userID, String table) {
-		if (dogList.size() > 0) {
-			Connection connection = null;
-			PreparedStatement preparedStatement = null;
-			try {
-				connection = Database.connect();
-				Statement statement = connection.createStatement();
-				StringBuilder query = new StringBuilder("INSERT INTO " + table + " (dogid, userid) VALUES ");
-				for (int i = 0; i < dogList.size(); i++) {
-					if (i != 0) {
-						query.append(", ");
-					}
-					query.append("( " + dogList.get(i).getId() + ", " + userID + ")");
-				}
+		try {
+			connection = Database.connect();
 
-				query.append(" ON CONFLICT (userid,dogid) DO NOTHING;");
+			String sql = "DELETE FROM userpostersrated WHERE userid = ?";
 
-				statement.addBatch(query.toString());
-				statement.executeBatch();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
+			preparedStatement = connection.prepareStatement(sql);
+
+			preparedStatement.setInt(1, user.getUserID());
+
+
+			preparedStatement.executeUpdate();
+
+		} catch (SQLException e) {
+
+			e.printStackTrace();
+
 		}
 	}
+	
+	
+	// Add posters rated (local to DB)
+		public static void addPosterRatedByUser(int userId, int posterId) {
+		    Connection connection = null;
+		    PreparedStatement preparedStatement = null;
 
+		    try {
+		        connection = Database.connect();
+		        
+		        // Insert the record if it doesn't already exist
+		        String insertQuery = "INSERT INTO userpostersrated (userid, posterid) "
+		                           + "SELECT ?, ? "
+		                           + "WHERE NOT EXISTS (SELECT 1 FROM userpostersrated WHERE userid = ? AND posterid = ?)";
+		        preparedStatement = connection.prepareStatement(insertQuery);
+		        preparedStatement.setInt(1, userId);
+		        preparedStatement.setInt(2, posterId);
+		        preparedStatement.setInt(3, userId);
+		        preparedStatement.setInt(4, posterId);
+		        preparedStatement.executeUpdate();
+		    } catch (SQLException e) {
+		        System.out.println("Error adding poster rated by user.");
+		        e.printStackTrace();
+		    } finally {
+		        // Close resources in the finally block
+		        if (preparedStatement != null) {
+		            try {
+		                preparedStatement.close();
+		            } catch (SQLException e) {
+		                e.printStackTrace();
+		            }
+		        }
+		        if (connection != null) {
+		            try {
+		                connection.close();
+		            } catch (SQLException e) {
+		                e.printStackTrace();
+		            }
+		        }
+		    }
+		}
+
+	
+	// upload posters rated by user (DB to local)
+	public static void setPostersRatedByUser(User user) {
+		Connection connection = null;
+		Hashtable<Integer, Poster> posterList = AppData.getInstance().getPosters();
+		try {
+			connection = Database.connect();
+			String query = "SELECT * FROM userpostersrated WHERE userid = ?";
+			PreparedStatement preparedStatement = connection.prepareStatement(query);
+			// Set the userID parameter
+			preparedStatement.setInt(1, user.getUserID());
+
+			// Execute the query
+			try (ResultSet resultSet = preparedStatement.executeQuery()) {
+				// Iterate over the result set and populate the TreeMap
+				while (resultSet.next()) {
+					
+					Poster poster  = posterList.get(resultSet.getInt("posterid"));
+					user.addToPostersRatedByUser(poster);
+				}
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+	}
+	// update posters score (local to DB)
+	public static void updatePosterScore(int posterId, double newScore, int newNumberOfRatings) {
+	    try {
+	        Connection connection = Database.connect();
+	        Statement statement = connection.createStatement();
+	        statement.executeUpdate("UPDATE poster SET score = " + newScore + " WHERE poster_id = " + posterId + ";");
+	        statement.executeUpdate("UPDATE poster SET numberofratings = " + newNumberOfRatings + " WHERE poster_id = " + posterId + ";");
+	        connection.close();
+	    } catch (SQLException e) {
+	        System.out.println("Connection failure.");
+	        e.printStackTrace();
+	    }
+	}
+	
+	public static ArrayList <Poster> getPosterRatedbyUser(int userid){
+		ArrayList<Poster> ratedposterlist = new ArrayList<>();
+		Hashtable<Integer, Poster> posterList = AppData.getInstance().getPosters();
+
+	    try {
+	        Connection connection = Database.connect();
+	        Statement statement = connection.createStatement();
+	        ResultSet resultSet = statement.executeQuery("SELECT posterid FROM userpostersrated WHERE userid = " + userid);
+
+	        while (resultSet.next()) {
+	            int posterId = resultSet.getInt("posterid");
+	            Poster poster  = posterList.get(posterId);
+	            ratedposterlist.add(poster);
+	        }
+
+	        connection.close();
+	    } catch (SQLException e) {
+	        System.out.println("Error retrieving posters rated by user.");
+	        e.printStackTrace();
+	    }
+	    return ratedposterlist;
+		
+	}
+
+	
 	/*
 	 * Tag Methods
 	 */
@@ -674,8 +778,43 @@ public class Database {
 
 		return result;
 	}
-	
+	public static int getUserid(String username){
+		Connection connection = null;
+		int result = 0;
+		try{
+			connection = Database.connect();
+			Statement statement = connection.createStatement();
+			String query = "SELECT  userid\r\n"
+					+ "	FROM public.users where username= '"+username+"' ;";
+			ResultSet resultSet = statement.executeQuery(query);
+			if(resultSet.next()) {
+				result = resultSet.getInt("userid");
+			}
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+		}
 
+		return result;
+	}
+	
+	public static String passwordChecker(String username, String password){
+		Connection connection = null;
+		String result = "";
+		try{
+			connection = Database.connect();
+			Statement statement = connection.createStatement();
+			String query = "SELECT username FROM users WHERE username = '" + username + "' AND userpassword = '" + password + "' ;";
+			ResultSet resultSet = statement.executeQuery(query);
+			if(resultSet.next()) {
+				result = resultSet.getString("username");
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
 
 	public static User getUser(String username, String password) {
 		Connection connection = null;
@@ -724,6 +863,32 @@ public class Database {
 
 		return user;
 	}
+	
+	public static void addUserDog(ArrayList<Dog> dogList, int userID, String table) {
+		if (dogList.size() > 0) {
+			Connection connection = null;
+			PreparedStatement preparedStatement = null;
+			try {
+				connection = Database.connect();
+				Statement statement = connection.createStatement();
+				StringBuilder query = new StringBuilder("INSERT INTO " + table + " (dogid, userid) VALUES ");
+				for (int i = 0; i < dogList.size(); i++) {
+					if (i != 0) {
+						query.append(", ");
+					}
+					query.append("( " + dogList.get(i).getId() + ", " + userID + ")");
+				}
+
+				query.append(" ON CONFLICT (userid,dogid) DO NOTHING;");
+
+				statement.addBatch(query.toString());
+				statement.executeBatch();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
 
 	public static ArrayList<Attribute> getUsersPreferredAttributes(int userid, int attType) {
 
@@ -1101,136 +1266,7 @@ public static boolean updateUsernamePassword (String newUsername, String newPass
 	return null;
 	}
 	
-	// delete posters rated (DB)
-	public static void deletePostersRatedByUser(User user) {
-		Connection connection = null;
-		PreparedStatement preparedStatement = null;
-		Wallet wallet = null;
-
-		try {
-			connection = Database.connect();
-
-			String sql = "DELETE FROM userpostersrated WHERE userid = ?";
-
-			preparedStatement = connection.prepareStatement(sql);
-
-			preparedStatement.setInt(1, user.getUserID());
-
-
-			preparedStatement.executeUpdate();
-
-		} catch (SQLException e) {
-
-			e.printStackTrace();
-
-		}
-	}
 	
-	
-	// Add posters rated (local to DB)
-		public static void addPosterRatedByUser(int userId, int posterId) {
-		    Connection connection = null;
-		    PreparedStatement preparedStatement = null;
-
-		    try {
-		        connection = Database.connect();
-		        
-		        // Insert the record if it doesn't already exist
-		        String insertQuery = "INSERT INTO userpostersrated (userid, posterid) "
-		                           + "SELECT ?, ? "
-		                           + "WHERE NOT EXISTS (SELECT 1 FROM userpostersrated WHERE userid = ? AND posterid = ?)";
-		        preparedStatement = connection.prepareStatement(insertQuery);
-		        preparedStatement.setInt(1, userId);
-		        preparedStatement.setInt(2, posterId);
-		        preparedStatement.setInt(3, userId);
-		        preparedStatement.setInt(4, posterId);
-		        preparedStatement.executeUpdate();
-		    } catch (SQLException e) {
-		        System.out.println("Error adding poster rated by user.");
-		        e.printStackTrace();
-		    } finally {
-		        // Close resources in the finally block
-		        if (preparedStatement != null) {
-		            try {
-		                preparedStatement.close();
-		            } catch (SQLException e) {
-		                e.printStackTrace();
-		            }
-		        }
-		        if (connection != null) {
-		            try {
-		                connection.close();
-		            } catch (SQLException e) {
-		                e.printStackTrace();
-		            }
-		        }
-		    }
-		}
-
-	
-	// upload posters rated by user (DB to local)
-	public static void setPostersRatedByUser(User user) {
-		Connection connection = null;
-		Hashtable<Integer, Poster> posterList = AppData.getInstance().getPosters();
-		try {
-			connection = Database.connect();
-			String query = "SELECT * FROM userpostersrated WHERE userid = ?";
-			PreparedStatement preparedStatement = connection.prepareStatement(query);
-			// Set the userID parameter
-			preparedStatement.setInt(1, user.getUserID());
-
-			// Execute the query
-			try (ResultSet resultSet = preparedStatement.executeQuery()) {
-				// Iterate over the result set and populate the TreeMap
-				while (resultSet.next()) {
-					
-					Poster poster  = posterList.get(resultSet.getInt("posterid"));
-					user.addToPostersRatedByUser(poster);
-				}
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		
-	}
-	// update posters score (local to DB)
-	public static void updatePosterScore(int posterId, double newScore, int newNumberOfRatings) {
-	    try {
-	        Connection connection = Database.connect();
-	        Statement statement = connection.createStatement();
-	        statement.executeUpdate("UPDATE poster SET score = " + newScore + " WHERE poster_id = " + posterId + ";");
-	        statement.executeUpdate("UPDATE poster SET numberofratings = " + newNumberOfRatings + " WHERE poster_id = " + posterId + ";");
-	        connection.close();
-	    } catch (SQLException e) {
-	        System.out.println("Connection failure.");
-	        e.printStackTrace();
-	    }
-	}
-	
-	public static ArrayList <Poster> getPosterRatedbyUser(int userid){
-		ArrayList<Poster> ratedposterlist = new ArrayList<>();
-		Hashtable<Integer, Poster> posterList = AppData.getInstance().getPosters();
-
-	    try {
-	        Connection connection = Database.connect();
-	        Statement statement = connection.createStatement();
-	        ResultSet resultSet = statement.executeQuery("SELECT posterid FROM userpostersrated WHERE userid = " + userid);
-
-	        while (resultSet.next()) {
-	            int posterId = resultSet.getInt("posterid");
-	            Poster poster  = posterList.get(posterId);
-	            ratedposterlist.add(poster);
-	        }
-
-	        connection.close();
-	    } catch (SQLException e) {
-	        System.out.println("Error retrieving posters rated by user.");
-	        e.printStackTrace();
-	    }
-	    return ratedposterlist;
-		
-	}
 	public static ArrayList<String> getallUserNames() {
 		ArrayList<String> usernames = new ArrayList<>();
 
