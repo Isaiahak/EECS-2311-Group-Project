@@ -6,6 +6,7 @@ import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
@@ -35,7 +36,19 @@ public class LoginScene extends Application{
     public static void main(String[] args) {
         launch(args);
     }
-
+    public void validSignUpMethod (String username, String password) {
+   	 
+        boolean result = Database.addUser(username, password, appData.getAllAttributes());
+        if ( password == "" && username == "")
+            showAlert("Sign up failed","Empty username or password not allowed!");
+        else if (Database.usernameChecker(username) != username && result == false)
+            showAlert("Sign up failed","Username in use, try logging in!");
+        else {
+            User user = Database.getUser(username, password);
+            appData.setAppointmentManager(new AppointmentManager(user.getUserID(), new ArrayList<>()));
+        }
+   	
+   }
     @Override
     public void start(Stage primaryStage) {
     	DogProfileScene dogProfileScene = DogProfileScene.getInstance();
@@ -56,6 +69,7 @@ public class LoginScene extends Application{
 
         Button signUpButton = new Button("Sign Up");
         Button loginButton = new Button("Login");
+        Button changeUsernamePassword = new Button("Change username \nand password?");
         
         
 //        String css = this.getClass().getResource("/style.css").toExternalForm();
@@ -70,23 +84,63 @@ public class LoginScene extends Application{
         grid.add(passwordField, 1, 1);
         grid.add(signUpButton, 0, 2);
         grid.add(loginButton, 1, 2);
-        
+        grid.add(changeUsernamePassword, 2, 2);
         appData = AppData.getInstance();    
         appData.initializeAttributes(); 
                 
         signUpButton.setOnAction(e -> {
-            String username = userTextField.getText();
+        	String username = userTextField.getText();
             String password = passwordField.getText();
-            boolean result = Database.addUser(username, password, appData.getAllAttributes());
-            if ( password == "" && username == "")
-                showAlert("Sign up failed","Empty username or password not allowed!");
-            else if (Database.usernameChecker(username) != username && result == false)
-                showAlert("Sign up failed","Username in use, try logging in!");
-            else {
-                User user = Database.getUser(username, password);
-                appData.setAppointmentManager(new AppointmentManager(user.getUserID(), new ArrayList<>()));
-            }
+            validSignUpMethod(username, password);
             clearFields(userTextField, passwordField);
+
+        });
+        
+       
+
+        changeUsernamePassword.setOnAction(e -> {// Create a text field
+            TextField username = new TextField();
+            username.setPromptText("Enter username");
+
+            TextField password = new TextField();
+            password.setPromptText("Enter password");
+
+            // Create a VBox to hold the text field
+            VBox textInputforPopUp = new VBox();
+            textInputforPopUp.getChildren().addAll(username, password);
+
+            // Create a new Alert
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Changing your username and password");
+            alert.setHeaderText("Please enter your old username and password:");
+            alert.getDialogPane().setContent(textInputforPopUp);
+
+            // Show the alert and wait for the user response
+            alert.showAndWait().ifPresent(response -> {
+                if (response == ButtonType.OK) {
+                   /* // Retrieve the text entered by the user
+                    String inputText = textField.getText();
+                    // Display the input text in another alert
+                    Alert resultAlert = new Alert(Alert.AlertType.INFORMATION);
+                    resultAlert.setTitle("Input Text");
+                    resultAlert.setHeaderText("You entered:");
+                    resultAlert.setContentText(inputText);
+                    resultAlert.showAndWait();
+                    */                 
+                	Alert newValues = new Alert(Alert.AlertType.CONFIRMATION);
+
+                	newValues.setTitle("Changing your username and password");
+                	newValues.setHeaderText("Now enter your new desired username and password:");
+                	newValues.getDialogPane().setContent(textInputforPopUp);
+                	newValues.showAndWait().ifPresent(click -> {
+                		if (click==ButtonType.OK) {
+                			//check valid input
+                			
+                		}
+                		
+                	});
+                }
+            });
         });
 
         loginButton.setOnAction(e -> {
