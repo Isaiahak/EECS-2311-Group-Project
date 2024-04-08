@@ -944,7 +944,8 @@ public class Database {
 
 			String sql2 = "SELECT * FROM userpayments WHERE userid = " + userid;
 			preparedStatement = connection.prepareStatement(sql2);
-
+			resultSet = preparedStatement.executeQuery();
+			
 			while (resultSet.next()) {
 				wallet.addRecurringPayment(
 						new RecurringPayment(resultSet.getDouble("paymentamount"),
@@ -955,6 +956,7 @@ public class Database {
 						)
 				);
 			}
+			System.out.println(wallet.getRecurringPayments().values());
 		} catch (SQLException e) {
 			e.printStackTrace();
 
