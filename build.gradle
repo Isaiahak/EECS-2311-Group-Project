@@ -5,3 +5,28 @@
  * Learn more about Gradle by exploring our samples at https://docs.gradle.org/7.6.4/samples
  * This project uses @Incubating APIs which are subject to change.
  */
+
+plugins {
+    id 'jacoco'
+}
+jacoco {
+    toolVersion = "0.8.11" // Update to latest version
+}
+test {
+    finalizedBy jacocoTestReport // report is always generated after tests run
+}
+jacocoTestReport {
+    dependsOn test // tests are required to run before generating the report
+    reports {
+        xml.required = false
+        csv.required = false
+        html.outputLocation = layout.buildDirectory.dir('jacocoHtml')
+    }
+}
+jacocoTestReport {
+    reports {
+        xml.required = false
+        csv.required = false
+        html.outputLocation = layout.buildDirectory.dir('jacocoHtml')
+    }
+}
