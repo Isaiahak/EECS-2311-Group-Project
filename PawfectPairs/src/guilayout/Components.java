@@ -40,16 +40,18 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-public class Components{
+public class Components {
 	/*
 	 * GUI components contained here to streamline GUI process and create more modular, thematic GUI parts
 	 */
+
 
 	private static String currentScene = "";
 
 	public static int screenHeight =  (int) Screen.getPrimary().getVisualBounds().getHeight();
 
 	public static int screenWidth =  (int) Screen.getPrimary().getVisualBounds().getWidth(); 
+
 
 	private static int fontTn = 15;
 	private static int fontSm = 20;
@@ -58,8 +60,10 @@ public class Components{
 	private static String font = "Verdana";
 
 
+
 	//var for editing sponsorship
 	private static boolean clicked;
+
 
 	/*
 	 * Collecting lists of all tags and attributes to create dynamically updating GUI components
@@ -69,6 +73,8 @@ public class Components{
 
 	public static Button button(String text) {
 		Button button = new Button(text);
+
+
 		button.setFont(Font.font(font, fontMd));
 
 		return button;
@@ -142,10 +148,12 @@ public class Components{
 				likedDog.start(stage);
 			});
 			dogProfileButton.setOnMouseClicked(event -> {
+
 				appData.updateDogScores();
 
 				dogProfile.start(stage);
 			});
+
 			appointmentsButton.setOnMouseClicked(event -> {
 				appData.updateDogScores();
 				appointmentScene.start(stage);
@@ -169,21 +177,26 @@ public class Components{
 				appointmentScene.start(stage);
 			});
 			sponsoredDogButton.setOnMouseClicked(event -> {
+
 				sponsoredDogs.start(stage);
 			});
 		}
+
 
 		navTab.getChildren().addAll(settingsButton, dogProfileButton, likedDogButton, sponsoredDogButton, appointmentsButton);
 
 		navTab.setAlignment(Pos.TOP_CENTER);
 		return navTab; 
+
 	}
 
 	public static Hyperlink hyperlink() {
 		Hyperlink hyperlink = new Hyperlink();
 
 
+
 		hyperlink.getStyleClass().add("hyperlink");
+
 
 		return hyperlink;
 
@@ -194,6 +207,7 @@ public class Components{
 		label.setAlignment(pos);
 		//		label.setFont(Font.font(font, fontLg));
 		label.getStyleClass().addAll("label","large");
+
 
 
 		return label;
@@ -238,7 +252,9 @@ public class Components{
 
 	public static Label mediumLabel() {
 		Label label = new Label();
+
 		label.getStyleClass().addAll("label","medium");
+
 		return label;
 	}
 
@@ -257,22 +273,26 @@ public class Components{
 		imageView.setFitWidth(w);
 
 		imageView.setPreserveRatio(true);
+
 		
 		Rectangle clip = new Rectangle(w, l);
 		clip.setArcWidth(w * 0.1); 
         clip.setArcHeight(l * 0.1);
         imageView.setClip(clip);
-        
+
 
 		return imageView;
 
 	}
 
+
 	public static Label tagLabel(String tag,Tag labelTag, User user) {
+
 		// tags in the user profile to change preferences
 		Label label = new Label(tag);
 		label.getStyleClass().addAll("tag-label", "label", "small");
 		label.setWrapText(true);
+
 		label.maxWidth(50);
 
 		//function to be able to turn the label highlighted when loading them if in the dog tags list.
@@ -290,14 +310,17 @@ public class Components{
 				label.setId("highlighted-tag-label"); // highlight if not highlighted
 				if(user.getTagPreferences().contains(labelTag) == false) {
 					user.getTagPreferences().put(labelTag.getTagId(),labelTag);
+
 				}
 
 
 			} else {
+
 				if(user.getTagPreferences().contains(labelTag) == true) {
 					user.getTagPreferences().remove(labelTag.getTagId());
 				}
 				label.setId(null);         	
+
 			}
 		});
 
@@ -310,6 +333,7 @@ public class Components{
 		int row = 0;
 		int col = 0;
 
+
 		int maxRows = 6;
 
 		gridPane.setHgap(10); 
@@ -319,6 +343,7 @@ public class Components{
 		int i = 0; // current index
 
 		for(Tag t : tags.values()) {
+
 
 			Label label = tagLabel(t.getTagName(), t, user);
 
@@ -342,11 +367,13 @@ public class Components{
 		// tags used to label dogs
 
 		Label label = new Label(tag);
+
 //		label.setWrapText(true);
 
 		label.maxWidth(100);
 
 		label.getStyleClass().addAll("dog-tag-label", "tiny", "label");
+
 		label.setAlignment(Pos.CENTER);
 
 		return label;
@@ -370,7 +397,9 @@ public class Components{
 
 			// Add the label to the grid
 			gridPane.add(label, row, col);
+
 //			GridPane.setHalignment(label, javafx.geometry.HPos.CENTER);
+
 
 			// Increment column and row counters
 			row++;
@@ -390,28 +419,33 @@ public class Components{
 	public static HBox generateStars(int num) {
 		int j = 0;
 		HBox stars = new HBox();
-		for (int i = 0; i < 10; i ++) {
+		for (int i = 0; i < 10; i++) {
 			//generate a star
 			Label star = new Label("★");
+
 			star.getStyleClass().add("star");
 
 			if(j < num) {
 				//color it
 				star.setId("star-active");
+
 				j++;
 			}
 			stars.getChildren().add(star);
 			stars.setAlignment(Pos.CENTER);
 		}
-		return stars; 
+		return stars;
 	}
 
+
 	public static Label attributeLabel(String name, GridPane gridPane, ArrayList<Attribute> userAttributeList, int attributeType, int weight, HashMap<Integer,ArrayList<Attribute>> allAttributes ) {
+
 		Label label = new Label(name);
 		label.setFont(Font.font(font, fontSm));
 		label.setWrapText(true);
 		label.maxWidth(50);
 		ObservableList<Node> labels = gridPane.getChildren();
+
 
 
 		//function to be able to turn the label highlighted when loading them if dog attribute matches.
@@ -421,10 +455,12 @@ public class Components{
 		for (Attribute attribute : userAttributeList) {
 			if(attribute.getWeight() == weight) {
 				label.setId("highlighted-attribute-label");
+
 			}
 		}
 
 		label.setOnMouseClicked(event -> {
+
 			if (label.getId() == null) {
 				label.setId("highlighted-attribute-label");
 				if(!userAttributeList.contains(allAttributes.get(attributeType).get(weight))) {
@@ -433,6 +469,7 @@ public class Components{
 			}else{
 				if(userAttributeList.size() >= 2) {
 					label.setId(null);
+
 					userAttributeList.remove(allAttributes.get(attributeType).get(weight));
 				}
 			}
@@ -445,7 +482,9 @@ public class Components{
 
 		Button button = new Button(text);
 
+
 		button.getStyleClass().addAll("calendar-button", "medium");
+
 
 		return button;
 
@@ -466,8 +505,10 @@ public class Components{
 	}
 
 
+
 	public static GridPane createAttribute (ArrayList < Attribute > userAttributeList,int attributeType, HashMap<
 			Integer, ArrayList < Attribute >> allAttributes ){
+
 		GridPane gridPane = new GridPane();
 		String[] names = allAttributes.get(attributeType).get(0).getNames();
 		for (int j = 0; j < names.length; j++) {
@@ -477,6 +518,7 @@ public class Components{
 		}
 		return gridPane;
 	}
+
 
 	public static HBox appointmentView (Dog dog, Date localDate, Stage
 			primaryStage, Hashtable < Integer, Poster > poster, AppData appData, Appointment selectedDate){
@@ -1053,7 +1095,9 @@ public static ArrayList<Appointment> deepCopyUserAppointments(ArrayList<Appointm
 			}
 
 		}
+
 	}
 	
 	
 }
+
