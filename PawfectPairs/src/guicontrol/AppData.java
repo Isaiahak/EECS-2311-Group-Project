@@ -19,6 +19,8 @@ import guilayout.UserProfile;
 public class AppData {
 	
 	private User user;//comment
+	
+	private Hashtable<Integer, ArrayList<Dog>> allDogs; 
 
 	private Hashtable<Integer, ArrayList<Dog>> dogProfileHashtable; // posterid, dogs
 	private HashMap<Integer, Tag> allTags;
@@ -28,7 +30,32 @@ public class AppData {
 	private AppointmentManager appointmentManager;
 	private ArrayList<Appointment> otherUsersAppointments;
 	private HashMap<Integer, ArrayList<Attribute>> allAttributes;
-
+	private boolean okToClose;
+	
+	private Dog lastRemovedDog;
+	
+	public Dog getlastRemovedDog() {
+		return this.lastRemovedDog;
+	}
+	public void reset() {
+		this.user = null;
+		this.allDogs.clear();
+		this.dogProfileHashtable.clear();
+		this.allTags.clear();
+		this.posterProfiles.clear();
+		this.sortedDogProfiles.clear();
+		this.appointmentManager = null;
+		this.otherUsersAppointments.clear();
+		this.allAttributes.clear();
+	}
+	
+	public void setOkToClose(boolean state) {
+		this.okToClose = state;
+	}
+	
+	public boolean getOkToClose() {
+		return this.okToClose;
+	}
 
 	public void initializeWallet (int userid, String password) {
 		this.user.setWallet(Database.getWallet(userid, password));
@@ -41,6 +68,12 @@ public class AppData {
 
 	public void setAppointmentManager(AppointmentManager appointmentManager) {
 		this.appointmentManager = appointmentManager;
+	}
+	
+	public void setAppointmentManagerToEmpty() {
+		ArrayList<Appointment> EmptyAppointmentsList= new ArrayList<>();
+		AppointmentManager empty =new AppointmentManager(user.getUserID(), EmptyAppointmentsList);
+		this.appointmentManager = empty;
 	}
 
 	public PriorityQueue<Dog> getSortedDogProfiles() {
@@ -78,6 +111,11 @@ public class AppData {
 		this.dogProfileHashtable = Database.getAllDogs(user, this.posterProfiles.keySet());
 	}
 	
+	public void setAllDogs() {
+		
+		this.allDogs = Database.getAllDogsNoPreferences(user, this.posterProfiles.keySet());
+	}
+	
 	public HashMap<Integer,Tag> getallTags(){
 		return this.allTags;
 	}
@@ -95,14 +133,23 @@ public class AppData {
 	public Hashtable<Integer, Poster> getPosters(){
 		return posterProfiles;
 	}
+	
+	public void setPosterRatedbyUser(int userid) {
+		this.user.setPosterRatedByUser(Database.getPosterRatedbyUser(userid)); 
+	}
+
 
 	public void updateDogScores() {
 
 	// perform check on if the user's preferences have changed before updating scores	
-		if(this.user.arePreferencesEqual(UserProfile.getInstance().getOldTagPreferences()) == false || this.user.areAttributesEqual(UserProfile.getInstance().getOldSexPreferences(),
-				UserProfile.getInstance().getOldAgePreferences(),
-				UserProfile.getInstance().getOldSizePreferences(),
-				UserProfile.getInstance().getOldEnergyLevelPreferences()) == false){
+		if(this.user.arePreferencesEqual(UserProfile.getInstance().getOldTagPreferences()) == false 
+				|| this.user.areAttributesEqual(
+						UserProfile.getInstance().getOldSexPreferences(),
+						UserProfile.getInstance().getOldAgePreferences(),
+						UserProfile.getInstance().getOldSizePreferences(),
+						UserProfile.getInstance().getOldEnergyLevelPreferences()) == false
+			){
+			
 			Database.addUserDog(user.getLikedDogs(), user.getUserID(),"userdogs");
 			Database.addUserDog(user.getPassedDogs(), user.getUserID(),"userpasseddogs");
 			Database.deletePreferenceTagsFromUser(user.getUserID());
@@ -112,10 +159,17 @@ public class AppData {
 			Database.addUserAttributePreferences(user.getSexPreferences(),  user.getUserID());
 			Database.addUserAttributePreferences(user.getEnergyLevelPreferences(), user.getUserID());
 			Database.addUserAttributePreferences(user.getSizePreferences(), user.getUserID());
+		
 			setDogProfiles();
 			setPosterDogLists();
 			initializeDogProfilesSorted();
+			lastRemovedDog = this.sortedDogProfiles.peek(); 
 		}
+
+	}
+	
+	public void setlastRemovedDog(Dog lastRemovedDog) {
+		this.lastRemovedDog = this.sortedDogProfiles.peek();
 	}
 	
 	public void initializeDogProfilesSorted() {  // to be optimized
@@ -130,7 +184,7 @@ public class AppData {
 	public void setPosterDogLists() {
 		// loop through dogProfiles and add to posters
 		for(Poster p : this.posterProfiles.values()) {
-			p.setDogList(this.dogProfileHashtable.get(p.getUniqueId()));
+			p.setDogList(this.allDogs.get(p.getUniqueId()));
 
 		}
 	}
@@ -179,27 +233,36 @@ public class AppData {
 	public void onStart(String username, String pass) {
 		getInstance(); 	
 		
-		setUser(username, pass); // sets user, dog liked list, ideal dog attribtues
 		
-		initializeWallet(getUser().getUserID(), pass);
+		setUser(username, pass); // sets user, dog liked list, ideal dog attribtues
 		
 		setAllTags();
 		
 		setPosters();
+
+		initializeWallet(getUser().getUserID(), pass);
+		
+		setAllDogs();
 		
 		setDogProfiles(); 
 		
 		setPosterDogLists();
-		
+			
 		initializeDogProfilesSorted();
 
 		setAppointmentManager(new AppointmentManager(user.getUserID(), Database.getUserAppointments(user.getUserID())));
-		
+
 		setOtherUsersAppointments();
 		
+		setPosterRatedbyUser(user.getUserID());
+
+		this.user.getWallet().setRecurringPayments(Database.getRecurringPayment(user.getUserID()));
 
 	}
 
+	public Hashtable<Integer, ArrayList<Dog>> getAllDogs() {
+		return this.allDogs;
+	}
 
 	public ArrayList<Appointment> getOtherUsersAppointments() {
 		return this.otherUsersAppointments;
@@ -214,4 +277,11 @@ public class AppData {
 		}
 		return false;
 	}
+
+	public void addToOtherUsersAppointments(AppointmentManager appointmentManager2) {
+		
+		this.otherUsersAppointments.addAll(appointmentManager2.getUserAppointments());
+		
+	}	
+	
 }

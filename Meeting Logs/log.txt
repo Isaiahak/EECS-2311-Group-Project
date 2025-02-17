@@ -250,6 +250,9 @@ March 10, 2024
 - Isaiah finished calendar class by adding database calls to it
 - Sidney worked on JUnit test for Calendar (Appointment and AppointmentManager Class)
 - Connor worked on creating the JUnit tests for Wallet
+- Zainab merged all wallet changes and related UI pages/features into main, fixed any merge conflicts and adapted code to recent refactoring 
+- Zainab added all tables and necessary tables for poster info user story and wallet user story to the most up to date database
+- Zainab incorporated the wallet into AppData - made methods to initialize the local wallet objects from the database, modify and set the wallet (save local back to the database)
 
 March 11, 2024
 - Ekaterina made some minor updates to the wallet and calendar classes
@@ -261,15 +264,110 @@ March 11, 2024
 - Ekaterina udpated the calendar gui
 - Isaiah debugged the sorting algortim (changed DB calls, so we needed to change some data structures)
 - Sidney has worked on JUnit Tests and Integration Testing
-- SIdney was troublshooting JUnit test for Integration
+- Sidney was troublshooting JUnit test for Integration
 - Edson has worked on fixing JUnit Tests with Sidney
-- Zainab worked on testing for Wallet and added alerts, and fixed boundaries
-- Zainab fixed canecelling recurring payments for wallet
+- Zainab worked on testing for Wallet (remade tests) and added alerts, and fixed boundaries for input
+- Zainab ensured the wallet balance is consistent throughout the app - fixed bug
+- Zainab fixed canecelling recurring payments for wallet and added constraint so user can't have multiple recurring payments set up for same dog
 - Connor worked on JUnit Tests and Updating UML
 
 March 12, 2024
 - Ekaterina updated calendar GUI
-- Ekaterina added labels to show the user which dates they had alraedy booked
+- Ekaterina added labels to show the user which dates they had alraedy booked (and busy dates)
 - Ekaterina fixed several bugs in calendar (cancelling, reschduling, etc)
 - Ekaterina added a 'confirm' button, and allowed the user to rescheyle with a responsive GUI on the same page (instead of having to click 'reschedule')
 - Ekaterina added constraints to adding apppointmnets (now, the user can see which other users have bookked appointments with the same dog, and cvant book the same day)
+
+March 13, 2024
+- Ekaterina debugged some changes that were pushed to main
+- Ekaterina fixed bugs that we were previously having (wallet not saving correctly, sponsored dogs page not displaying, etc)
+
+March 14, 2024 
+- Zainab added a feature where the user can edit/update their existing sponsorships
+- Zainab set up the cancel button so that it moves around the screen when its clicked for the first time, and cancels upon second click
+
+March 15, 2024
+- Ekaterina updated the GUI again
+- Ekateirna added a stylesheet, and added it to every scene (and configured the gradle build file)
+- Ekaterina updated the primary scene and did a little bit of refactoring
+
+March 16, 2024
+- Ekateirna made some major GUI udpates (cenerteralized some of the elemtns in the primary scene, fixed navtab, updated the panes)
+- Ekateirna alos fixedf a visual bug where the wrong dog/poster was being shown
+- Ekaterina added some css styling and refactored a couoke of scenes
+- Zainab set up adaptive (based on screen size) padding, spacing so that all components are shown on screens properly 
+- Zainab tried three new different ways to create button animations (in branch "weee" currently)
+
+March 18,2024
+- Zainab moved some error handling for deposit to the backend, and changed UI for the deposit in the userprofile page
+- Ekaterina updated the GUI for the dogproile page and some other general CSS Styling
+- Ekaterina made a dynamic icon label/scaling for the dog attributes displayed on the profile
+
+March 19, 2024
+- Yuqian finished unit testing for all five classes in dog trait
+
+March 20, 2024
+- Ekaterina update the database and added more attributes
+- Ekaterina updated the Attributes class and components class, as well as some styling to make sure tag label text is not cut off
+
+March 21, 2024
+- Yuqian worked on unit testing for RecurringPayment class
+- Yuiqan finished all unit testings for all the classes under calendar, wallet, and dog trait
+
+March 23, 2024
+- Ekaterina repopulated the database again (10,000 dogs) to test loads and database calls
+- Ekaterina made some minor GUI adjustments
+- Ekaterina fixed a bug associated with not correctly displaying a poster's dogs
+- Ekaterina made some adjustments to the gradle build file to support tests
+
+March 24, 2024
+-Ekaterina worked on her take home assignmetn and started some bug fixing/refactoring her assigned scene
+- Zainab fixed bugs and adressed code smells related to Calendar
+- Connor started working on the sign-out button.
+-Edson worked on his take home assignment and made the bug reports and code smell reports 
+-Zainab added a username and password change feature
+
+March 25, 2024
+- Ekaterina finished refactoring and debugging her takehome assignmeent (login scene) 
+- Ekaterina addeda the authetnicator class
+-Ekaterina added new tables to the DB to support poster scoring
+- Ekaterina implemented GUI for adopting dogs
+- Ekaterina added DB calls to update poster scores 
+- Zainab reconfigured calendar to allow multiple appointment with the same dog
+- Connor finished the sign-out button.
+- Yuqian started working on the unlike button that allows user to unlike a dog that they liked.
+- Yuqian Started working on the undo button foe user when they mistakenly likes/passes the wrong dog.
+- Edson worked on some additional outstanding user stories which involves rating a poster and adopting a dog with JUnit tests and UI integration
+
+March 26, 2024
+- Zainab helped Yuqian ith undo button
+- Zainab fixed outstanding calendar bugs and smells
+- Yuqian finished unlike button and undo button
+- Edson has conduted manual tests of all user stories and reported the issues with all members which had to still fix the logic of their user stories
+- Edson worked on additional debugging of adopt and rating poster found in manual tests
+
+March 27, 2024
+- Yuqian started manual testing and troubleshooting the unlike button
+- Yuqian started manual testing and troubleshooting the undo button
+- Edson continued manual tests and assisted other members with debugging their respective user stories
+- Edson worked on DB call optimization on close and code cleaning 
+
+March 28, 2024
+- Edson worked on additional JUnit Tests
+- Edson conducted with Connor, Zainab and Yuqian the final interview with Carolina
+- Yuqian worked on some manual testing for undo button
+- Yuqian added an alert.Error box for undo button
+
+March 29,2024
+- Edson worked on optimization and code cleaning
+- Edson Refactored undoButton to fix logic
+- Yuqian worked on junit testing for like, pass, and undo button
+- Yuqian cleaned up the unused imports for Dog class and DogProfileScene
+- Ekaterina interviewed Adrian (other customer)
+
+March 31, 2024
+- Ekaterina cleaned up the code (dead code, duplicate code, etc)
+- Ekaterina made the dataset a little smaller for demo purposes
+- Ekaterina worked on documentations (refactoring, added issues to documentation)
+- Edson worked on updating the tests and documentation
+- Zainab worked on documentation and tests

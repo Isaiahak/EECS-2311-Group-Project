@@ -2,10 +2,13 @@ package backend.user;
 
 import java.util.*;
 
+import backend.calendar.AppointmentManager;
 import backend.dog.Dog;
 import backend.dog.trait.*;
+import backend.poster.Poster;
 import backend.tag.Tag;
 import backend.wallet.Wallet;
+import guicontrol.AppData;
 
 
 public class User {
@@ -15,20 +18,54 @@ public class User {
 	private ArrayList<Attribute> sizePreferences  = new ArrayList<Attribute>() ;
 	private ArrayList<Attribute> sexPreferences  = new ArrayList<Attribute>();
 	private ArrayList<Attribute> energyLevelPreferences  = new ArrayList<Attribute>();
+	private ArrayList<Poster> postersRatedByUser = new ArrayList<Poster>();
+	private ArrayList<Dog> localAdoptedDog = new ArrayList<Dog>();
+	private AppointmentManager bookedDates = new AppointmentManager(getUserID(), new ArrayList<>());
 	private String username;
-	private String email;
 	private int userID;
 	private String password;
 	private Wallet wallet;
 	private ArrayList<Dog> likedDogs = new ArrayList<Dog>();
 	private ArrayList<Dog> passedDogs = new ArrayList<Dog>();
+	private Dog lastRemovedDog;
+	private Dog undoDog;
+	
+	
 	
 	public User(String username, String password) {
 		this.username = username;
 		this.password = password;
 
 	}
+	
+	public void reset() {
+		setUsername(null);
+		setPassword(null);
+		this.likedDogs.clear();
+		this.passedDogs.clear();
+	}
+	
+	public void addToAdoptedDogs(Dog dog) {
+		this.localAdoptedDog.add(dog);
+	}
 
+
+	public ArrayList<Dog> getAdoptedDogs(){
+		return this.localAdoptedDog; 
+	}
+	
+	public void addToPostersRatedByUser(Poster poster) {
+		this.postersRatedByUser.add(poster);
+	}
+
+
+	public ArrayList<Poster> getPostersRatedByUser(){
+		return this.postersRatedByUser; 
+	}
+	
+	public void setPosterRatedByUser (ArrayList<Poster> postersRatedByUser) {
+		this.postersRatedByUser=postersRatedByUser;
+	}
 	public int getUserID() {
 		return userID;
 	}
@@ -43,14 +80,6 @@ public class User {
 
 	public void setUsername(String username) {
 		this.username = username;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
 	}
 
 	public String getPassword() {
@@ -75,6 +104,10 @@ public class User {
 
 	public void addLikedDogs(Dog likedDog) {
 		likedDogs.add(likedDog);
+	}
+	
+	public void removeUnlikedDog(Dog dog) {
+		likedDogs.remove(dog);
 	}
 	
 	public ArrayList<Dog> getPassedDogs() {
@@ -125,6 +158,24 @@ public class User {
 		return tagPreferences;
 	}
 	
+	public Dog getLastRemovedDog() {
+		return lastRemovedDog;
+	}
+
+	public void setLastRemovedDog(Dog lastRemovedDog) {
+		this.lastRemovedDog = lastRemovedDog;
+	}
+	
+	
+	
+	public Dog getUndoDog() {
+		return undoDog;
+	}
+
+	public void setUndoDog(Dog undoDog) {
+		this.undoDog = undoDog;
+	}
+
 	public boolean arePreferencesEqual(Hashtable<Integer, Tag> tags) {
 		
     	Hashtable<Integer,Tag> currTags = this.getTagPreferences(); 
@@ -157,55 +208,28 @@ public class User {
 		return true;
 	}
 
-	public ArrayList<Attribute> getCopyOfAgePreferences(ArrayList<Attribute> agePreferences){
-		ArrayList<Attribute> preferences = new ArrayList<>();
-		for(Attribute att : agePreferences){
-			preferences.add(new Age(att.getWeight()));
+	
+	public ArrayList<Attribute> getCopyOfPreferences(ArrayList<Attribute> preferences){
+		ArrayList<Attribute> returnPreferences = new ArrayList<>();
+		for(Attribute att : preferences){
+			returnPreferences.add(att.cloneAttribute());
 		}
-		return preferences;
+		return returnPreferences;
 	}
 
-	public ArrayList<Attribute> getCopyOfSizePreferences(ArrayList<Attribute> SizePreferences){
-		ArrayList<Attribute> preferences = new ArrayList<>();
-		for(Attribute att : SizePreferences){
-			preferences.add(new Age(att.getWeight()));
-		}
-		return preferences;
-	}
-
-	public ArrayList<Attribute> getCopyOfSexPreferences(ArrayList<Attribute> SexPreferences){
-		ArrayList<Attribute> preferences = new ArrayList<>();
-		for(Attribute att : SexPreferences){
-			preferences.add(new Age(att.getWeight()));
-		}
-		return preferences;
-	}
-
-	public ArrayList<Attribute> getCopyOfEnergyLevelPreferences(ArrayList<Attribute> EnergyLevelPreferences){
-		ArrayList<Attribute> preferences = new ArrayList<>();
-		for(Attribute att : EnergyLevelPreferences){
-			preferences.add(new Age(att.getWeight()));
-		}
-		return preferences;
-	}
 
 	public Hashtable<Integer,Tag> getCopyOfTagPreferences(Hashtable<Integer,Tag> TagPreferences){
 		Hashtable<Integer,Tag> preferences = new Hashtable<>();
 		Collection<Tag> tags = TagPreferences.values();
 		for(Tag tag : tags){
-			preferences.put(tag.getWeight(),(new Tag(tag.getTagName(),tag.getWeight())));
+			preferences.put(tag.getTagId(),(new Tag(tag.getTagName(),tag.getTagId())));
 		}
 		return preferences;
 	}
 
-	public ArrayList<Dog> getSponsoredDogs() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	@Override
 	public String toString() {
-		return "User [username=" + username + ", email=" + email + ", password="
+		return "User [username=" + username + ", email=" + null + ", password="
 				+ password + "]";
 	}
 }
