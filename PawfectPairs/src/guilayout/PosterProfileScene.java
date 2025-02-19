@@ -1,74 +1,62 @@
 package guilayout;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.PriorityQueue;
-import java.util.TreeSet;
-
 import backend.database.Database;
 import backend.dog.Dog;
 import backend.poster.Poster;
 import backend.user.User;
 import guicontrol.AppData;
-//import guicontrol.PosterProfileController;
-import javafx.application.Application;
-import javafx.geometry.Insets;
+import javafx.collections.FXCollections;
 import javafx.geometry.Pos;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Hyperlink;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;  
 
 public class PosterProfileScene extends PrimaryScene {
 	AppData appData;
-    private Hyperlink posterinfoLink;
 	private static PosterProfileScene instance;
 	Poster currentPoster;
 
 	public static void main(String[] args) {
-		launch(); // launch THIS class
+		launch(); 
 	}
 
 	@Override  
 	public void start(Stage primaryStage) throws Exception {  
-
+		Components.updateCurrentScene("posterProfile");
+		
 		appData = AppData.getInstance();
-		PriorityQueue<Dog> posterDogs = appData.getSortedDogProfiles();
 		User user = appData.getUser();
-		DogProfileScene dogProfileScene = DogProfileScene.getInstance();
-		UserProfile userProfile = UserProfile.getInstance();
-		ArrayList<Dog> posterDogsList =  appData.getDogProfiles().get(currentPoster.getUniqueId());
+		ArrayList<Dog> posterDogsList =  Database.getPosterDogs(currentPoster.getUniqueId());
 
-		HBox navTab = Components.navTab(userProfile, LikedDogScene.getInstance(), dogProfileScene, sponsoredDogsScene, BookedAppointmentScene.getInstance(), primaryStage,"posterProfile",appData);
+		
+		initailizePrimaryScene(primaryStage);
 
-		navTab.setAlignment(Pos.CENTER);
 
-		VBox root = new VBox();
 		Label name = Components.largeLabel(currentPoster.getDisplayName(), Pos.CENTER); 
 		name.setAlignment(Pos.CENTER);
 		VBox PosterInfo = new VBox();
 		PosterInfo.setAlignment(Pos.CENTER);
 
-		HBox stars = Components.generateStars(currentPoster.getScore());
+		HBox stars = Components.generateStars((int)currentPoster.getScore());
+		Label score = Components.mediumLabel("Total Score: "+currentPoster.getScore() + "/10", Pos.CENTER);
+		Label numRatings = Components.mediumLabel("Number of Ratings: "+currentPoster.getNumberofRatings(), Pos.CENTER);
 		Label email = Components.mediumLabel("Email 📧:  "+ currentPoster.getEmail(), Pos.CENTER);
 		Label phone = Components.mediumLabel("Phone ☎:  "+ currentPoster.getPhone(), Pos.CENTER);
-
+		Label ratePoster = Components.mediumLabel("Rate this poster", Pos.CENTER);
+		ComboBox<String> howOftenBox = new ComboBox<>(FXCollections.observableArrayList("Once", "Weekly", "Biweekly", "Monthly"));
+		VBox slider = Components.scoreSlider (user, currentPoster, primaryStage); 
 		PosterInfo.getChildren().addAll(
 				name, 
 				email,
 				phone,
-				stars);
+				stars,
+				score,
+				numRatings,
+				ratePoster,
+				slider);
 
 
 		VBox posterProfileDogsDisplay = new VBox();
@@ -78,25 +66,12 @@ public class PosterProfileScene extends PrimaryScene {
 			posterProfileDogsDisplay.getChildren().add(Components.posterDogView(d));
 		}
 
-		root.getChildren().addAll(
-				navTab,
+		mainContainer.getChildren().addAll(
 				PosterInfo,
 				posterProfileDogsDisplay
 				);
-		root.setAlignment(Pos.CENTER);
 
-		StackPane base = new StackPane(root);  
-		base.setAlignment(Pos.CENTER);
-
-		ScrollPane scrollPane = new ScrollPane(base);
-		scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-		scrollPane.setFitToWidth(true);
-
-		//POSTER INFO PAGE
-		//add the stuff here
-		//POSTER INFO PAGE
 		
-		Scene scene = new Scene(scrollPane, Components.screenWidth, Components.screenHeight);
 		primaryStage.setScene(scene);
 		primaryStage.show();
 	}
@@ -109,16 +84,14 @@ public class PosterProfileScene extends PrimaryScene {
 		return this.currentPoster.getUniqueId();
 	}
 
-	public int getScore() {
-		// TODO Auto-generated method stub
+	public double getScore() {
 		return currentPoster.getScore();
 	}
 
 	public String getDisplayName() {
-		// TODO Auto-generated method stub
 		return currentPoster.getDisplayName();
 	}
-	//end of methods to add back
+
 
 	public static PosterProfileScene getInstance() {
 		if (instance == null) {

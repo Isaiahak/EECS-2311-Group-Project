@@ -1,19 +1,17 @@
 package backend.wallet;
 
-import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-import backend.wallet.Wallet.FundsTooLow;
 
 public class RecurringPayment {
-	double paymentAmount;
-	int daysBetweenPayments; 
-	LocalDate lastPaymentDate;
-	int posterId;
-	int dogId; 
+	private double paymentAmount;
+	private int daysBetweenPayments; 
+	private LocalDate lastPaymentDate;
+	private int posterId;
+	private int dogId; 
 
-	public RecurringPayment(double paymentAmount, int daysBetweenPayments, int dogId, int posterId) { // init first time
+		public RecurringPayment(double paymentAmount, int daysBetweenPayments, int dogId, int posterId) { // init first time
 		this.paymentAmount = paymentAmount;
 		this.daysBetweenPayments = daysBetweenPayments;
 		this.dogId = dogId;
@@ -39,16 +37,13 @@ public class RecurringPayment {
 	public boolean isTodayAPaymentDate() {
 		
 		LocalDate currentDate = LocalDate.now();
-		
-		if(lastPaymentDate.plusDays(daysBetweenPayments).equals(currentDate)) return true;
+		if(lastPaymentDate.plusDays(daysBetweenPayments).compareTo(currentDate) <= 0) return true;
 		
 		return false;
 	}
 	
 	public String getLastPaymentDateToString() {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-
-        // Format the date to a string
         return this.lastPaymentDate.format(formatter);
 	}
 

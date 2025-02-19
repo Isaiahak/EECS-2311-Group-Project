@@ -1,15 +1,15 @@
 package guilayout;
 
 import backend.wallet.RecurringPayment;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
 import javafx.geometry.*;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.*;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.PriorityQueue;
-
 import backend.dog.Dog;
 
 
@@ -30,55 +30,46 @@ public class SponsoredDogsScene extends PrimaryScene{
 	
 	@Override
 	public void start(Stage stage){
+		Components.updateCurrentScene("sponsoredDogs");
+		initailizePrimaryScene(stage);
 		
-		initailizePrimaryScene();
 		HashMap<Integer, RecurringPayment> recurringPayments = user.getWallet().getRecurringPayments();
-		VBox root = new VBox();
-		root.setAlignment(javafx.geometry.Pos.CENTER);
-    	root.setSpacing(20);
-    	
-    	HBox navTab = Components.navTab(userProfileScene, likedDogsScene, dogProfileScene, sponsoredDogsScene, bookedAppointmentsScene, stage,"sponsoredDogs", appData);
- 
-		VBox sponsoredDogsDisplay = new VBox();
-	    	
-    	for(RecurringPayment pay : recurringPayments.values()) {
-    		ArrayList<Dog> dogs = appData.getDogProfiles().get(pay.getPosterId());
-    		Dog d = findDogById(dogs, pay.getDogId());
-    		sponsoredDogsDisplay.getChildren().add(Components.sponsoredDogView(d, stage, appData.getPosters(), appData, sponsoredDogsScene));
-    	}
-    	sponsoredDogsDisplay.setAlignment(javafx.geometry.Pos.CENTER);
-
-    	Label sponsoredDogsLabel = Components.largeLabel("Dogs you've Sponsored", Pos.CENTER);
-    	 
-    	
-    	root.getChildren().addAll(
-    			navTab,
-    			sponsoredDogsLabel,
-    			sponsoredDogsDisplay
+		
+		Label sponsoredDogsLabel = Components.largeLabel("Dogs you've Sponsored", Pos.CENTER);
+		mainContainer.getChildren().add(
+    			sponsoredDogsLabel
     			);
-	    	
+		ArrayList<Dog> dogs = appData.getUser().getLikedDogs();
+    	for(RecurringPayment pay : recurringPayments.values()) {
+    		Dog d = findDogById(dogs, pay.getDogId());
+    		mainContainer.getChildren().add(Components.sponsoredDogView(d, stage, appData.getPosters(), appData, sponsoredDogsScene,pay.getPaymentAmount()));
+    	}
 
-	    	
-    	StackPane stackPane = new StackPane(root);
-    	stackPane.setAlignment(javafx.geometry.Pos.CENTER);
-    	
-    	ScrollPane scrollPane = new ScrollPane(stackPane);
-    	
-    	scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        scrollPane.setFitToWidth(true);
-    	Scene scene = new Scene(scrollPane, Components.screenWidth, Components.screenHeight);
-		stage.setScene(scene);
-		stage.setTitle("Pawfect Pairs");
 		stage.show();
 
-//		stage.setOnCloseRequest(event -> {
-//    	    System.out.println("Window is closing. Perform cleanup if needed.");
-//    	    
-//    	    Database.onApplicationClose(user, posterDogs);
-//    	});
-		
 	}	
-	
+
+
+//    public static void applyBounceAnimation(Button button) {
+//        // Create Timeline for the animation
+//        Timeline timeline = new Timeline();
+//
+//        // Define keyframes for the animation
+//        timeline.getKeyFrames().addAll(
+//                new KeyFrame(Duration.ZERO, new KeyValue(button.translateYProperty(), 0)),
+//                new KeyFrame(Duration.seconds(0.5), new KeyValue(button.translateYProperty(), -50)),
+//                new KeyFrame(Duration.seconds(1), new KeyValue(button.translateYProperty(), 0))
+//        );
+//
+//    /*    // Set cycle count to indefinite for continuous bouncing
+//        timeline.setCycleCount(Timeline.INDEFINITE);
+//	*/
+//        timeline.setCycleCount(5);
+//        button.setOnAction(e -> {
+//            // Play the animation when the button is clicked
+//            timeline.playFromStart();
+//        });
+//    }
 	private Dog findDogById(ArrayList<Dog> list, int targetId) {
         for (Dog d : list) {
             if (d.getId() == targetId) {

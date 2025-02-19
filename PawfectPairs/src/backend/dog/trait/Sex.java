@@ -24,6 +24,12 @@ public class Sex extends Attribute {
 	public int getType() {
 		return type; 
 	}
+
+	@Override
+	public Attribute cloneAttribute() {
+		return new Sex(this.weight);
+	}
+	
 }
 
 

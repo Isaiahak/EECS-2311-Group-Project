@@ -3,8 +3,6 @@ package backend.database;
 import java.sql.*;
 import java.sql.Date;
 import java.util.*;
-import java.time.LocalDate;
-import java.time.ZoneId;
 
 import backend.calendar.Appointment;
 import backend.calendar.AppointmentManager;
@@ -15,6 +13,7 @@ import backend.tag.Tag;
 import backend.user.User;
 import backend.wallet.RecurringPayment;
 import backend.wallet.Wallet;
+import guicontrol.AppData;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -28,6 +27,7 @@ import static java.util.List.copyOf;
  */
 public class Database {
 
+<<<<<<< HEAD
 
 	public static Connection connect() {
 		try {
@@ -43,10 +43,35 @@ public class Database {
 		}
 		return null;
 	}
+=======
+	
+	public static Connection connect() {
+		try {
+			Class.forName("org.postgresql.Driver"); // Replace with your database driver
+//			Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/final", "postgres", "1234"); // zainab
+>>>>>>> aa54dc70b6012810ea65e2a6b58b5a5c42f03944
 
+
+			Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/thebestoneyet", "postgres", "doglover123"); // katya
+
+
+//			Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5434/thebestoneyet", "postgres", "321123"); // isaiah
+			//System.out.println( "Connected to the PostgreSQL server successfully.");
+			return connection;
+		} catch (ClassNotFoundException | SQLException e) {
+			System.out.println("Connection failed");
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 	/*
 	 * Appointment Methods
 	 */
+<<<<<<< HEAD
+=======
+	
+>>>>>>> aa54dc70b6012810ea65e2a6b58b5a5c42f03944
 	public static void deleteAppointment(int userID) {
 		Connection connection = null;
 		PreparedStatement statement = null;
@@ -57,6 +82,23 @@ public class Database {
 			statement.setInt(1, userID);
 			statement.executeUpdate();
 		} catch (SQLException e) {
+<<<<<<< HEAD
+=======
+			e.printStackTrace();
+		}
+	}
+	
+	public static void deleteAppointmentForDog(Dog d) {
+		Connection connection = null;
+		PreparedStatement statement = null;
+		try {
+			connection = Database.connect();// Assuming you have a method to get the database connection
+			String query = "DELETE FROM datesbooked WHERE dogid = ?";
+			statement = connection.prepareStatement(query);
+			statement.setInt(1, d.getId());
+			statement.executeUpdate();
+		} catch (SQLException e) {
+>>>>>>> aa54dc70b6012810ea65e2a6b58b5a5c42f03944
 			e.printStackTrace();
 		}
 	}
@@ -163,6 +205,7 @@ public class Database {
 		}
 		return null;
 	}
+	
 
 	/*
 	 * Dog Methods
@@ -185,7 +228,6 @@ public class Database {
 		Hashtable<Integer, Tag> tags = new Hashtable<Integer, Tag>();
 		// get all tags in dogtag data table associated with the dog id
 		try {
-//			Statement statement = connection.createStatement() ;
 			ResultSet resultSet = statement.executeQuery("SELECT tags.tagname, tags.tagid FROM tags JOIN dogtag ON tags.tagid = dogtag.tagid WHERE dogtag.dogid = " + dogId + ";");
 
 			while (resultSet.next()) {
@@ -210,15 +252,25 @@ public class Database {
 		try {
 			Statement statement = connection.createStatement();
 			Statement statement2 = connection.createStatement();
+<<<<<<< HEAD
 //		         ResultSet resultSet = statement.executeQuery ("SELECT * FROM dog WHERE dog.dogid NOT IN (SELECT userdogs.dogid FROM userdogs WHERE userdogs.userid = "+ user.getUserID() + " ) AND adopted = false;");
 			ResultSet resultSet = statement.executeQuery
 					("SELECT * FROM dog WHERE " +
+=======
+			ResultSet resultSet = statement.executeQuery
+					("SELECT * FROM dog WHERE dog.adopted =  'FALSE' AND " +
+>>>>>>> aa54dc70b6012810ea65e2a6b58b5a5c42f03944
 							"dog.dogid NOT IN (SELECT userdogs.dogid FROM userdogs WHERE userdogs.userid = " + user.getUserID() + " ) " +
 							"AND dog.dogid NOT IN (SELECT userpasseddogs.dogid FROM userpasseddogs WHERE userpasseddogs.userid = " + user.getUserID() + ")" +
 							"AND dog.ageid IN (SELECT userattributepreferences.attributeid FROM userattributepreferences WHERE userattributepreferences.userid = " + user.getUserID() + " AND userattributepreferences.attributetype = 0) " +
 							"AND dog.sizeid IN (SELECT userattributepreferences.attributeid FROM userattributepreferences WHERE userattributepreferences.userid = " + user.getUserID() + " AND userattributepreferences.attributetype = 3) " +
 							"AND dog.sexid IN (SELECT userattributepreferences.attributeid FROM userattributepreferences WHERE userattributepreferences.userid = " + user.getUserID() + " AND userattributepreferences.attributetype = 1) " +
+<<<<<<< HEAD
 							"AND dog.energylevelid IN (SELECT userattributepreferences.attributeid FROM userattributepreferences WHERE userattributepreferences.userid = " + user.getUserID() + " AND userattributepreferences.attributetype = 2);");
+=======
+							"AND dog.energylevelid IN (SELECT userattributepreferences.attributeid FROM userattributepreferences WHERE userattributepreferences.userid = " + user.getUserID() + " AND userattributepreferences.attributetype = 2)"
+									);
+>>>>>>> aa54dc70b6012810ea65e2a6b58b5a5c42f03944
 			while (resultSet.next()) {
 				// only add a dog if adoption = false and its id is not negative (if negative, its a dummy dog)
 
@@ -245,6 +297,7 @@ public class Database {
 						biography
 				);
 
+<<<<<<< HEAD
 
 				dog.setTags(getDogTags(dogId, statement2));
 
@@ -258,6 +311,16 @@ public class Database {
 				dogProfiles.get(posterId).add(dog);
 			}
 
+=======
+
+				dog.setTags(getDogTags(dogId, statement2));
+
+
+				dog.calculateScore(user.getTagPreferences()); // initialise dog score
+				dogProfiles.get(posterId).add(dog);
+			}
+
+>>>>>>> aa54dc70b6012810ea65e2a6b58b5a5c42f03944
 			connection.close();
 
 		} catch (SQLException e) {
@@ -266,7 +329,11 @@ public class Database {
 		}
 		return dogProfiles;
 	}
+<<<<<<< HEAD
 
+=======
+	
+>>>>>>> aa54dc70b6012810ea65e2a6b58b5a5c42f03944
 	public static Hashtable<Integer, ArrayList<Dog>> getAllDogsNoPreferences(User user, Set<Integer> posterIds) {
 
 
@@ -279,7 +346,10 @@ public class Database {
 		try {
 			Statement statement = connection.createStatement();
 			Statement statement2 = connection.createStatement();
+<<<<<<< HEAD
 //		         ResultSet resultSet = statement.executeQuery ("SELECT * FROM dog WHERE dog.dogid NOT IN (SELECT userdogs.dogid FROM userdogs WHERE userdogs.userid = "+ user.getUserID() + " ) AND adopted = false;");
+=======
+>>>>>>> aa54dc70b6012810ea65e2a6b58b5a5c42f03944
 			ResultSet resultSet = statement.executeQuery
 					("SELECT * FROM dog");
 			while (resultSet.next()) {
@@ -313,11 +383,15 @@ public class Database {
 
 
 				dog.calculateScore(user.getTagPreferences()); // initialise dog score
+<<<<<<< HEAD
 //				    System.out.println("key set =" + dogProfiles.keySet().toString());
 
 //			    for(Dog d : queue) {
 //		        	 System.out.println(d.getName() + d.getPosterId());
 //		         }
+=======
+
+>>>>>>> aa54dc70b6012810ea65e2a6b58b5a5c42f03944
 				dogProfiles.get(posterId).add(dog);
 			}
 
@@ -389,13 +463,20 @@ public class Database {
 	}
 
 	public static void removeLikedDog(int dogID, int userID) {
+<<<<<<< HEAD
 
+=======
+>>>>>>> aa54dc70b6012810ea65e2a6b58b5a5c42f03944
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 
 		try {
 			connection = Database.connect();
+<<<<<<< HEAD
 			preparedStatement = connection.prepareStatement("DELETE FROM userdogs WHERE dogid = " + dogID + "AND userid  =" + userID + ";");
+=======
+			preparedStatement = connection.prepareStatement("DELETE FROM userdogs WHERE dogid =? AND userid =?;");
+>>>>>>> aa54dc70b6012810ea65e2a6b58b5a5c42f03944
 			preparedStatement.setInt(1, dogID);
 			preparedStatement.setInt(2, userID);
 			int rowsAffected = preparedStatement.executeUpdate();
@@ -421,11 +502,12 @@ public class Database {
 			while (resultSet.next()) {
 				String displayName = resultSet.getString("displayName");
 				int posterId = resultSet.getInt("poster_id");
-				int score = resultSet.getInt("score");
+				double score = resultSet.getDouble("score");
 				String phone = resultSet.getString("phone");
 				String email = resultSet.getString("email");
 				double balance = resultSet.getDouble("balance");
-				poster = new Poster(score, displayName, posterId, phone, email, balance);
+				int numberofratings = resultSet.getInt("numberofratings");
+				poster = new Poster(score, displayName, posterId, phone, email, balance,numberofratings);
 				posters.put(posterId, poster);
 			}
 		} catch (SQLException e) {
@@ -451,7 +533,10 @@ public class Database {
 				int energyId = resultSet.getInt("energylevelid");
 				int sizeId = resultSet.getInt("sizeid");
 				int sexId = resultSet.getInt("sexid");
+<<<<<<< HEAD
 //			int posterId = resultSet.getInt("posterid");
+=======
+>>>>>>> aa54dc70b6012810ea65e2a6b58b5a5c42f03944
 				boolean adoptedBool = resultSet.getBoolean("adopted");
 				String imagePath = resultSet.getString("imagePath");
 				String biography = resultSet.getString("biography");
@@ -479,6 +564,7 @@ public class Database {
 		}
 		return dogProfiles;
 	}
+<<<<<<< HEAD
 
 	public static void addUserDog(ArrayList<Dog> dogList, int userID, String table) {
 		if (dogList.size() > 0) {
@@ -503,11 +589,145 @@ public class Database {
 				e.printStackTrace();
 			}
 		}
+=======
+	
+	/*Poster ratings*/ 
+	public static void deletePostersRatedByUser(User user) {
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		Wallet wallet = null;
+
+		try {
+			connection = Database.connect();
+
+			String sql = "DELETE FROM userpostersrated WHERE userid = ?";
+
+			preparedStatement = connection.prepareStatement(sql);
+
+			preparedStatement.setInt(1, user.getUserID());
+
+
+			preparedStatement.executeUpdate();
+
+		} catch (SQLException e) {
+
+			e.printStackTrace();
+
+		}
+	}
+	
+	
+	// Add posters rated (local to DB)
+		public static void addPosterRatedByUser(int userId, int posterId) {
+		    Connection connection = null;
+		    PreparedStatement preparedStatement = null;
+
+		    try {
+		        connection = Database.connect();
+		        
+		        // Insert the record if it doesn't already exist
+		        String insertQuery = "INSERT INTO userpostersrated (userid, posterid) "
+		                           + "SELECT ?, ? "
+		                           + "WHERE NOT EXISTS (SELECT 1 FROM userpostersrated WHERE userid = ? AND posterid = ?)";
+		        preparedStatement = connection.prepareStatement(insertQuery);
+		        preparedStatement.setInt(1, userId);
+		        preparedStatement.setInt(2, posterId);
+		        preparedStatement.setInt(3, userId);
+		        preparedStatement.setInt(4, posterId);
+		        preparedStatement.executeUpdate();
+		    } catch (SQLException e) {
+		        System.out.println("Error adding poster rated by user.");
+		        e.printStackTrace();
+		    } finally {
+		        // Close resources in the finally block
+		        if (preparedStatement != null) {
+		            try {
+		                preparedStatement.close();
+		            } catch (SQLException e) {
+		                e.printStackTrace();
+		            }
+		        }
+		        if (connection != null) {
+		            try {
+		                connection.close();
+		            } catch (SQLException e) {
+		                e.printStackTrace();
+		            }
+		        }
+		    }
+		}
+
+	
+	// upload posters rated by user (DB to local)
+	public static void setPostersRatedByUser(User user) {
+		Connection connection = null;
+		Hashtable<Integer, Poster> posterList = AppData.getInstance().getPosters();
+		try {
+			connection = Database.connect();
+			String query = "SELECT * FROM userpostersrated WHERE userid = ?";
+			PreparedStatement preparedStatement = connection.prepareStatement(query);
+			// Set the userID parameter
+			preparedStatement.setInt(1, user.getUserID());
+
+			// Execute the query
+			try (ResultSet resultSet = preparedStatement.executeQuery()) {
+				// Iterate over the result set and populate the TreeMap
+				while (resultSet.next()) {
+					
+					Poster poster  = posterList.get(resultSet.getInt("posterid"));
+					user.addToPostersRatedByUser(poster);
+				}
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+	}
+	// update posters score (local to DB)
+	public static void updatePosterScore(int posterId, double newScore, int newNumberOfRatings) {
+	    try {
+	        Connection connection = Database.connect();
+	        Statement statement = connection.createStatement();
+	        statement.executeUpdate("UPDATE poster SET score = " + newScore + " WHERE poster_id = " + posterId + ";");
+	        statement.executeUpdate("UPDATE poster SET numberofratings = " + newNumberOfRatings + " WHERE poster_id = " + posterId + ";");
+	        connection.close();
+	    } catch (SQLException e) {
+	        System.out.println("Connection failure.");
+	        e.printStackTrace();
+	    }
+	}
+	
+	public static ArrayList <Poster> getPosterRatedbyUser(int userid){
+		ArrayList<Poster> ratedposterlist = new ArrayList<>();
+		Hashtable<Integer, Poster> posterList = AppData.getInstance().getPosters();
+
+	    try {
+	        Connection connection = Database.connect();
+	        Statement statement = connection.createStatement();
+	        ResultSet resultSet = statement.executeQuery("SELECT posterid FROM userpostersrated WHERE userid = " + userid);
+
+	        while (resultSet.next()) {
+	            int posterId = resultSet.getInt("posterid");
+	            Poster poster  = posterList.get(posterId);
+	            ratedposterlist.add(poster);
+	        }
+
+	        connection.close();
+	    } catch (SQLException e) {
+	        System.out.println("Error retrieving posters rated by user.");
+	        e.printStackTrace();
+	    }
+	    return ratedposterlist;
+		
+>>>>>>> aa54dc70b6012810ea65e2a6b58b5a5c42f03944
 	}
 
+	
 	/*
 	 * Tag Methods
 	 */
+<<<<<<< HEAD
 
 	public static HashMap<Integer, Tag> getAllTags() {
 
@@ -579,6 +799,45 @@ public class Database {
 				// Set auto-commit to false for batch processing
 				connection.setAutoCommit(false);
 
+=======
+
+	public static HashMap<Integer, Tag> getAllTags() {
+
+		HashMap<Integer, Tag> tags = new HashMap<Integer, Tag>();
+
+		try {
+			Connection connection = Database.connect();
+			Statement statement = connection.createStatement();
+			ResultSet resultSet = statement.executeQuery("SELECT * FROM tags");
+			while (resultSet.next()) {
+				tags.put(resultSet.getInt("tagid"), new Tag(resultSet.getString("tagname"), resultSet.getInt("tagid")));
+
+			}
+			connection.close();
+
+		} catch (SQLException e) {
+			System.out.println("Connection failure.");
+			e.printStackTrace();
+		}
+		return tags;
+	}
+	
+	public static void addPreferenceTagsToUser(Hashtable<Integer, Tag> tags, int userId) {
+		/*
+		 * Add tags to user preferences in the database
+		 */
+		if (tags.values().size() > 0) {
+			Connection connection = null;
+			PreparedStatement preparedStatement = null;
+
+			try {
+				connection = Database.connect();
+				preparedStatement = connection.prepareStatement("INSERT INTO usertagpreferences (userid, tagid) VALUES (?, ?)");
+
+				// Set auto-commit to false for batch processing
+				connection.setAutoCommit(false);
+
+>>>>>>> aa54dc70b6012810ea65e2a6b58b5a5c42f03944
 				for (Tag tag : tags.values()) {
 					// Check if the tagid exists in the tags table
 					if (isTagExists(connection, tag.getTagId())) {
@@ -699,6 +958,27 @@ public class Database {
 		return result;
 	}
 
+	public static int getUserid(String username){
+		Connection connection = null;
+		int result = 0;
+		try{
+			connection = Database.connect();
+			Statement statement = connection.createStatement();
+			String query = "SELECT  userid\r\n"
+					+ "	FROM public.users where username= '"+username+"' ;";
+			ResultSet resultSet = statement.executeQuery(query);
+			if(resultSet.next()) {
+				result = resultSet.getInt("userid");
+			}
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return result;
+	}
+	
+
 	public static String passwordChecker(String username, String password){
 		Connection connection = null;
 		String result = "";
@@ -721,6 +1001,8 @@ public class Database {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		User user = null;
+
+
 		try {
 			connection = Database.connect();
 
@@ -737,7 +1019,6 @@ public class Database {
 			if (resultSet.next()) {
 				user = new User(resultSet.getString("username"), resultSet.getString("userpassword"));
 				user.setUserID(resultSet.getInt("userid"));
-				user.setEmail(resultSet.getString("email"));
 
 				for (Dog d : Database.getUsersLikedOrPassedDogs(user.getUserID(), "userdogs")) {
 					user.addLikedDogs(d);
@@ -756,13 +1037,40 @@ public class Database {
 			user.setTagPreferences(getUsersPreferredTags(userId));
 
 
-		}
-		catch (SQLException e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
+
 		}
 
 		return user;
 	}
+	
+	public static void addUserDog(ArrayList<Dog> dogList, int userID, String table) {
+		if (dogList.size() > 0) {
+			Connection connection = null;
+			PreparedStatement preparedStatement = null;
+			try {
+				connection = Database.connect();
+				Statement statement = connection.createStatement();
+				StringBuilder query = new StringBuilder("INSERT INTO " + table + " (dogid, userid) VALUES ");
+				for (int i = 0; i < dogList.size(); i++) {
+					if (i != 0) {
+						query.append(", ");
+					}
+					query.append("( " + dogList.get(i).getId() + ", " + userID + ")");
+				}
+
+				query.append(" ON CONFLICT (userid,dogid) DO NOTHING;");
+
+				statement.addBatch(query.toString());
+				statement.executeBatch();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+
 
 	public static ArrayList<Attribute> getUsersPreferredAttributes(int userid, int attType) {
 
@@ -805,8 +1113,7 @@ public class Database {
 	public static Hashtable<Integer, Tag> getUsersPreferredTags(int userId) {
 		Hashtable<Integer, Tag> tags = new Hashtable<Integer, Tag>();
 		Connection connection = null;
-		// get all tags in dogtag data table associated with the dog id
-//
+
 		try {
 			connection = Database.connect();
 			Statement statement = connection.createStatement();
@@ -822,6 +1129,66 @@ public class Database {
 		return tags;
 	}
 
+public static boolean updateUsernamePassword (String newUsername, String newPassword, int userid) {
+	Connection connection = null;
+	PreparedStatement preparedStatement = null;
+	PreparedStatement preparedStatement2 = null;
+	try {
+		connection = Database.connect();
+		String sql = "UPDATE users SET username=?, userpassword=?, userid=? WHERE userid = "+userid+"; ";
+		preparedStatement = connection.prepareStatement(sql);
+		preparedStatement.setString(1, newUsername);
+		preparedStatement.setString(2, newPassword);
+		preparedStatement.setInt(3, userid);
+		int rowsAffected = preparedStatement.executeUpdate();
+
+		if (rowsAffected > 0) {
+			return true;
+
+		}
+		else {
+			System.out.println("Failed to update User.");
+			return false;
+		}
+	} catch (SQLException e) {
+		e.printStackTrace();
+
+	} finally {
+		try {
+			if (preparedStatement != null) {
+				preparedStatement.close();
+			}
+			if (connection != null) {
+				connection.close();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	return false;
+	}
+
+	public static String getPassword (String username) {
+		String password="";
+		Connection connection=null;
+		PreparedStatement preparedStatement = null;
+		PreparedStatement preparedStatement2 = null;
+		try {
+			connection = Database.connect();
+			Statement statement = connection.createStatement();
+			ResultSet resultSet = statement.executeQuery("SELECT userpassword FROM users where username= '" +username+"'; ");
+
+			while (resultSet.next()) {
+				password=resultSet.getString("userpassword");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return password;
+			
+	}
+
 	public static boolean addUser(String username, String password, HashMap<Integer, ArrayList<Attribute>> allAttributes) {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
@@ -835,34 +1202,49 @@ public class Database {
 			preparedStatement.setDouble(3, 0);
 			int rowsAffected = preparedStatement.executeUpdate();
 			if (rowsAffected > 0) {
-				System.out.println("User added successfully!");
+
 				sql = "SELECT userid FROM users WHERE username = '" + username + "' AND userpassword = '" + password + "';";
 				Statement statement = connection.createStatement();
 				ResultSet result = statement.executeQuery(sql);
 				if (result.next()) {
-					if (!allAttributes.isEmpty()) {
-						int userid = result.getInt("userid");
-						String sql2 = "INSERT INTO userattributepreferences (userid, attributetype, attributeid) VALUES ";
-						for (int type = 0; type < allAttributes.keySet().size(); type++) {
-							for (int weight = 0; weight < allAttributes.get(type).size(); weight++) {
-								sql2 += "(" + userid + "," + type + "," + weight + "),";
-							}
+
+					int userid = result.getInt("userid");
+					String sql2 = "INSERT INTO userattributepreferences (userid, attributetype, attributeid) VALUES ";
+					for (int type = 0; type < allAttributes.keySet().size(); type++) {
+						for (int weight = 0; weight < allAttributes.get(type).size(); weight++) {
+							sql2 += "(" + userid + "," + type + "," + weight + "),";
 						}
-						sql2 = sql2.substring(0, sql2.length() - 1);
-						preparedStatement2 = connection.prepareStatement(sql2);
-						preparedStatement2.executeUpdate();
 					}
+
+
+					sql2 = sql2.substring(0, sql2.length() - 1);
+					preparedStatement2 = connection.prepareStatement(sql2);
+					preparedStatement2.executeUpdate();
+					return true;
 				}
-				return true;
+
 			} else {
 				System.out.println("Failed to add User.");
 				return false;
 			}
-		}
-		catch (SQLException e) {
+
+		} catch (SQLException e) {
 			e.printStackTrace();
-			return false;
+
+		} finally {
+			try {
+				if (preparedStatement != null) {
+					preparedStatement.close();
+				}
+				if (connection != null) {
+					connection.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
+		return false;
+
 	}
 
 	public static void deleteUserAttributePreferences(int userId) {
@@ -910,8 +1292,6 @@ public class Database {
 		try {
 			connection = Database.connect();
 
-			//	        Statement statement = connection.createStatement ();
-			//	        ResultSet resultSet = statement.executeQuery ("SELECT * FROM users WHERE username = " + username + " AND userpassword  = " + password + ";") ;
 
 			String sql = "SELECT * FROM users WHERE userid = ?";
 
@@ -921,9 +1301,7 @@ public class Database {
 
 
 			ResultSet resultSet = preparedStatement.executeQuery();
-			//	public Wallet(double balance, boolean recurringPayment, int frequency, int userid,	Map<Integer, Double> posterWallets, int recurringAmount) {
 			if (resultSet.next()) {
-				//	public Wallet(double balance, boolean recurringPayment, int frequency, int userid,int recurringAmount, int posterToSponsorPending, int recurringPoster) {
 
 				wallet = new Wallet(resultSet.getDouble("balance"), resultSet.getInt("userid"));
 			}
@@ -932,7 +1310,9 @@ public class Database {
 
 			String sql2 = "SELECT * FROM userpayments WHERE userid = " + userid;
 			preparedStatement = connection.prepareStatement(sql2);
+
 			resultSet = preparedStatement.executeQuery();
+
 
 			while (resultSet.next()) {
 				wallet.addRecurringPayment(
@@ -944,7 +1324,7 @@ public class Database {
 						)
 				);
 			}
-			System.out.println(wallet.getRecurringPayments().values());
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 
@@ -1020,6 +1400,32 @@ public class Database {
 
 		} catch (SQLException e) {
 
+
+			e.printStackTrace();
+
+		}
+
+	}
+	
+	public static void deleteRecurringPaymentsForDog(Dog dog) {
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		Wallet wallet = null;
+
+		try {
+			connection = Database.connect();
+
+			String sql = "DELETE FROM userpayments WHERE dogid = ?";
+
+			preparedStatement = connection.prepareStatement(sql);
+
+			preparedStatement.setInt(1, dog.getId());
+
+
+			preparedStatement.executeUpdate();
+
+		} catch (SQLException e) {
+
 			e.printStackTrace();
 
 		}
@@ -1052,30 +1458,67 @@ public class Database {
 		}
 	return null;
 	}
+
+	
+	public static ArrayList<String> getallUserNames() {
+		ArrayList<String> usernames = new ArrayList<>();
+
+	    try {
+	        Connection connection = Database.connect();
+	        Statement statement = connection.createStatement();
+	        ResultSet resultSet = statement.executeQuery("SELECT username FROM users;");
+
+	        while (resultSet.next()) {
+	            String name = resultSet.getString("username");
+	            usernames.add(name);
+	        }
+
+	        connection.close();
+	    } catch (SQLException e) {
+	        System.out.println("Error retrieving usernames.");
+	        e.printStackTrace();
+	    }
+	    return usernames;
+	}
+
 	/*
 	 * Cleanup Methods
 	 */
-	public static void onApplicationClose(User user, PriorityQueue<Dog> doglist, AppointmentManager appointmentManager) {
-//		Database.updateAllAdoptedDogs(doglist); // sets dogs to be adopted
-		Database.addUserDog(user.getLikedDogs(), user.getUserID(), "userdogs");
-		Database.addUserDog(user.getPassedDogs(), user.getUserID(), "userpasseddogs");
+	
 
-		// TO DO: update user's attribute preferences and tag preferences :)
-		int userId = user.getUserID();
-		Database.deletePreferenceTagsFromUser(userId);
-		Database.addPreferenceTagsToUser(user.getTagPreferences(), userId);
-		Database.deleteAppointment(userId);
-		Database.setUserAppointments(appointmentManager);
-		Database.deleteUserAttributePreferences(userId);
-		Database.addUserAttributePreferences(user.getAgePreferences(), userId);
-		Database.addUserAttributePreferences(user.getSexPreferences(), userId);
-		Database.addUserAttributePreferences(user.getEnergyLevelPreferences(), userId);
-		Database.addUserAttributePreferences(user.getSizePreferences(), userId);
-		Database.deleteRecurringPayments(user);
-		Database.addRecurringPayments(user, user.getWallet().getRecurringPayments());
-		Database.updateWallet(user);
-
-
+	public static void onApplicationClose(User user, PriorityQueue<Dog> doglist, AppointmentManager appointmentManager, Boolean okToClose) {
+		if(okToClose==true) {
+			Database.addUserDog(user.getLikedDogs(), user.getUserID(), "userdogs");
+			Database.addUserDog(user.getPassedDogs(), user.getUserID(), "userpasseddogs");
+			int userId = user.getUserID();
+			Database.deletePreferenceTagsFromUser(userId);
+			Database.addPreferenceTagsToUser(user.getTagPreferences(), userId);
+			Database.deleteAppointment(userId);
+			Database.setUserAppointments(appointmentManager);
+			Database.deleteUserAttributePreferences(userId);
+			Database.addUserAttributePreferences(user.getAgePreferences(), userId);
+			Database.addUserAttributePreferences(user.getSexPreferences(), userId);
+			Database.addUserAttributePreferences(user.getEnergyLevelPreferences(), userId);
+			Database.addUserAttributePreferences(user.getSizePreferences(), userId);
+			Database.deleteRecurringPayments(user);
+			Database.addRecurringPayments(user, user.getWallet().getRecurringPayments());
+			Database.updateWallet(user);
+			ArrayList<Dog> dogLocalAdopted = user.getAdoptedDogs();
+		  for (Dog d : dogLocalAdopted) {
+			if (d.getAdopted()==true) {
+				Database.setDogAdopted(d);
+				Database.deleteAppointmentForDog(d);
+				Database.deleteRecurringPaymentsForDog(d);
+			}
+		}
+		  ArrayList<Poster> ratedPosters = user.getPostersRatedByUser();
+		  
+		  for (Poster poster : ratedPosters) {
+				  Database.updatePosterScore(poster.getUniqueId(), poster.getScore(), poster.getNumberofRatings());
+				  Database.addPosterRatedByUser(user.getUserID(),poster.getUniqueId());
+			  }
+		  
 	}
+}
 }
 

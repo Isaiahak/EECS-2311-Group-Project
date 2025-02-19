@@ -12,6 +12,10 @@ public AppointmentManager(int userID, ArrayList<Appointment> userAppointments) {
 	this.userAppointments = userAppointments;
 }
 
+public void reset() {
+	this.userAppointments.clear();
+}
+
 public int getUserID() {
 	return userID;
 }
@@ -37,19 +41,31 @@ public void removeAppointment(Appointment appointment) {
 	
 }
 
+
 public boolean appointmentExists(Appointment appointment) {
 	int posterID = appointment.getPosterID();
     int dogID = appointment.getDogID();
     
     for (Appointment existingAppointment : this.userAppointments) {
         if (existingAppointment.getPosterID() == posterID && existingAppointment.getDogID() == dogID) {
-        	System.out.println("other: p,d" + posterID + " " +dogID  );
-        	System.out.println("this: p,d" + existingAppointment.getPosterID() + " " +existingAppointment.getDogID()  );
         	return true;
         }
     }
     
     return false;
 	
+}
+@Override
+public String toString() {
+    StringBuilder sb = new StringBuilder();
+    sb.append("User ID: ").append(userID).append("\n");
+    sb.append("User Appointments:\n");
+    for (Appointment appointment : userAppointments) {
+        sb.append(appointment.toString()).append("\n");
+    }
+    return sb.toString();
+}
+public boolean contains(Appointment currentAppointment) {
+	return userAppointments.contains(currentAppointment);
 }
 }
