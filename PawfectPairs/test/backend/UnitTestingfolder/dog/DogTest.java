@@ -74,7 +74,9 @@ public class DogTest {
     public void testInvalidSizeCreation() {
         // Expecting IllegalArgumentException when creating Dog with invalid size
         assertThrows(ArrayIndexOutOfBoundsException.class, () -> {
-            new Dog("Max", 7, 7, 7, 7, 7,  pi.getUniqueId(), false,null,"bio");
+
+            new Dog("Max", 1, 3, 0, 10, 0,  pi.getUniqueId(), false,null,"bio");
+
         });
     }
 
@@ -85,7 +87,9 @@ public class DogTest {
         
         // Expecting IllegalArgumentException when setting invalid energy level
         assertThrows(ArrayIndexOutOfBoundsException.class, () -> {
+
         	Dog dog = new Dog("Max", 7, 7,7, 7, 7, pi.getUniqueId(), false,null,"bio");
+
         });
     }
 
@@ -95,7 +99,7 @@ public class DogTest {
 
         // Expecting IllegalArgumentException when setting invalid size
         assertThrows(ArrayIndexOutOfBoundsException.class, () -> {
-        	Dog dog = new Dog("Max", 7, 7,7, 7, 7, pi.getUniqueId(), false,null,"bio");
+        	Dog dog = new Dog("Max", 1, 3, 0, 11, 0, pi.getUniqueId(), false,null,"bio");
         });
     }
     

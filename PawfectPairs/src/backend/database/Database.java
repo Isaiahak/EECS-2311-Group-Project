@@ -27,11 +27,29 @@ import static java.util.List.copyOf;
  */
 public class Database {
 
+<<<<<<< HEAD
+
+	public static Connection connect() {
+		try {
+			Class.forName("org.postgresql.Driver"); // Replace with your database driver
+	//		Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/dbitr3", "postgres", "1234"); // zainab
+	//					Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/thebestoneyet", "postgres", "doglover123"); // katya
+			Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5434/bestoneyet", "postgres", "321123"); // isaiah
+			System.out.println( "Connected to the PostgreSQL server successfully.");
+			return connection;
+		} catch (ClassNotFoundException | SQLException e) {
+			System.out.println("Connection failed");
+			e.printStackTrace();
+		}
+		return null;
+	}
+=======
 	
 	public static Connection connect() {
 		try {
 			Class.forName("org.postgresql.Driver"); // Replace with your database driver
 //			Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/final", "postgres", "1234"); // zainab
+>>>>>>> aa54dc70b6012810ea65e2a6b58b5a5c42f03944
 
 
 			Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/thebestoneyet", "postgres", "doglover123"); // katya
@@ -50,7 +68,10 @@ public class Database {
 	/*
 	 * Appointment Methods
 	 */
+<<<<<<< HEAD
+=======
 	
+>>>>>>> aa54dc70b6012810ea65e2a6b58b5a5c42f03944
 	public static void deleteAppointment(int userID) {
 		Connection connection = null;
 		PreparedStatement statement = null;
@@ -61,6 +82,8 @@ public class Database {
 			statement.setInt(1, userID);
 			statement.executeUpdate();
 		} catch (SQLException e) {
+<<<<<<< HEAD
+=======
 			e.printStackTrace();
 		}
 	}
@@ -75,6 +98,7 @@ public class Database {
 			statement.setInt(1, d.getId());
 			statement.executeUpdate();
 		} catch (SQLException e) {
+>>>>>>> aa54dc70b6012810ea65e2a6b58b5a5c42f03944
 			e.printStackTrace();
 		}
 	}
@@ -228,15 +252,25 @@ public class Database {
 		try {
 			Statement statement = connection.createStatement();
 			Statement statement2 = connection.createStatement();
+<<<<<<< HEAD
+//		         ResultSet resultSet = statement.executeQuery ("SELECT * FROM dog WHERE dog.dogid NOT IN (SELECT userdogs.dogid FROM userdogs WHERE userdogs.userid = "+ user.getUserID() + " ) AND adopted = false;");
+			ResultSet resultSet = statement.executeQuery
+					("SELECT * FROM dog WHERE " +
+=======
 			ResultSet resultSet = statement.executeQuery
 					("SELECT * FROM dog WHERE dog.adopted =  'FALSE' AND " +
+>>>>>>> aa54dc70b6012810ea65e2a6b58b5a5c42f03944
 							"dog.dogid NOT IN (SELECT userdogs.dogid FROM userdogs WHERE userdogs.userid = " + user.getUserID() + " ) " +
 							"AND dog.dogid NOT IN (SELECT userpasseddogs.dogid FROM userpasseddogs WHERE userpasseddogs.userid = " + user.getUserID() + ")" +
 							"AND dog.ageid IN (SELECT userattributepreferences.attributeid FROM userattributepreferences WHERE userattributepreferences.userid = " + user.getUserID() + " AND userattributepreferences.attributetype = 0) " +
 							"AND dog.sizeid IN (SELECT userattributepreferences.attributeid FROM userattributepreferences WHERE userattributepreferences.userid = " + user.getUserID() + " AND userattributepreferences.attributetype = 3) " +
 							"AND dog.sexid IN (SELECT userattributepreferences.attributeid FROM userattributepreferences WHERE userattributepreferences.userid = " + user.getUserID() + " AND userattributepreferences.attributetype = 1) " +
+<<<<<<< HEAD
+							"AND dog.energylevelid IN (SELECT userattributepreferences.attributeid FROM userattributepreferences WHERE userattributepreferences.userid = " + user.getUserID() + " AND userattributepreferences.attributetype = 2);");
+=======
 							"AND dog.energylevelid IN (SELECT userattributepreferences.attributeid FROM userattributepreferences WHERE userattributepreferences.userid = " + user.getUserID() + " AND userattributepreferences.attributetype = 2)"
 									);
+>>>>>>> aa54dc70b6012810ea65e2a6b58b5a5c42f03944
 			while (resultSet.next()) {
 				// only add a dog if adoption = false and its id is not negative (if negative, its a dummy dog)
 
@@ -263,6 +297,21 @@ public class Database {
 						biography
 				);
 
+<<<<<<< HEAD
+
+				dog.setTags(getDogTags(dogId, statement2));
+
+
+				dog.calculateScore(user.getTagPreferences()); // initialise dog score
+//				    System.out.println("key set =" + dogProfiles.keySet().toString());
+
+//			    for(Dog d : queue) {
+//		        	 System.out.println(d.getName() + d.getPosterId());
+//		         }
+				dogProfiles.get(posterId).add(dog);
+			}
+
+=======
 
 				dog.setTags(getDogTags(dogId, statement2));
 
@@ -271,6 +320,7 @@ public class Database {
 				dogProfiles.get(posterId).add(dog);
 			}
 
+>>>>>>> aa54dc70b6012810ea65e2a6b58b5a5c42f03944
 			connection.close();
 
 		} catch (SQLException e) {
@@ -279,7 +329,11 @@ public class Database {
 		}
 		return dogProfiles;
 	}
+<<<<<<< HEAD
+
+=======
 	
+>>>>>>> aa54dc70b6012810ea65e2a6b58b5a5c42f03944
 	public static Hashtable<Integer, ArrayList<Dog>> getAllDogsNoPreferences(User user, Set<Integer> posterIds) {
 
 
@@ -292,6 +346,10 @@ public class Database {
 		try {
 			Statement statement = connection.createStatement();
 			Statement statement2 = connection.createStatement();
+<<<<<<< HEAD
+//		         ResultSet resultSet = statement.executeQuery ("SELECT * FROM dog WHERE dog.dogid NOT IN (SELECT userdogs.dogid FROM userdogs WHERE userdogs.userid = "+ user.getUserID() + " ) AND adopted = false;");
+=======
+>>>>>>> aa54dc70b6012810ea65e2a6b58b5a5c42f03944
 			ResultSet resultSet = statement.executeQuery
 					("SELECT * FROM dog");
 			while (resultSet.next()) {
@@ -325,7 +383,15 @@ public class Database {
 
 
 				dog.calculateScore(user.getTagPreferences()); // initialise dog score
+<<<<<<< HEAD
+//				    System.out.println("key set =" + dogProfiles.keySet().toString());
 
+//			    for(Dog d : queue) {
+//		        	 System.out.println(d.getName() + d.getPosterId());
+//		         }
+=======
+
+>>>>>>> aa54dc70b6012810ea65e2a6b58b5a5c42f03944
 				dogProfiles.get(posterId).add(dog);
 			}
 
@@ -397,12 +463,20 @@ public class Database {
 	}
 
 	public static void removeLikedDog(int dogID, int userID) {
+<<<<<<< HEAD
+
+=======
+>>>>>>> aa54dc70b6012810ea65e2a6b58b5a5c42f03944
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 
 		try {
 			connection = Database.connect();
+<<<<<<< HEAD
+			preparedStatement = connection.prepareStatement("DELETE FROM userdogs WHERE dogid = " + dogID + "AND userid  =" + userID + ";");
+=======
 			preparedStatement = connection.prepareStatement("DELETE FROM userdogs WHERE dogid =? AND userid =?;");
+>>>>>>> aa54dc70b6012810ea65e2a6b58b5a5c42f03944
 			preparedStatement.setInt(1, dogID);
 			preparedStatement.setInt(2, userID);
 			int rowsAffected = preparedStatement.executeUpdate();
@@ -459,6 +533,10 @@ public class Database {
 				int energyId = resultSet.getInt("energylevelid");
 				int sizeId = resultSet.getInt("sizeid");
 				int sexId = resultSet.getInt("sexid");
+<<<<<<< HEAD
+//			int posterId = resultSet.getInt("posterid");
+=======
+>>>>>>> aa54dc70b6012810ea65e2a6b58b5a5c42f03944
 				boolean adoptedBool = resultSet.getBoolean("adopted");
 				String imagePath = resultSet.getString("imagePath");
 				String biography = resultSet.getString("biography");
@@ -486,6 +564,32 @@ public class Database {
 		}
 		return dogProfiles;
 	}
+<<<<<<< HEAD
+
+	public static void addUserDog(ArrayList<Dog> dogList, int userID, String table) {
+		if (dogList.size() > 0) {
+			Connection connection = null;
+			PreparedStatement preparedStatement = null;
+			try {
+				connection = Database.connect();
+				Statement statement = connection.createStatement();
+				StringBuilder query = new StringBuilder("INSERT INTO " + table + " (dogid, userid) VALUES ");
+				for (int i = 0; i < dogList.size(); i++) {
+					if (i != 0) {
+						query.append(", ");
+					}
+					query.append("( " + dogList.get(i).getId() + ", " + userID + ")");
+				}
+
+				query.append(" ON CONFLICT (userid,dogid) DO NOTHING;");
+
+				statement.addBatch(query.toString());
+				statement.executeBatch();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+=======
 	
 	/*Poster ratings*/ 
 	public static void deletePostersRatedByUser(User user) {
@@ -616,12 +720,86 @@ public class Database {
 	    }
 	    return ratedposterlist;
 		
+>>>>>>> aa54dc70b6012810ea65e2a6b58b5a5c42f03944
 	}
 
 	
 	/*
 	 * Tag Methods
 	 */
+<<<<<<< HEAD
+
+	public static HashMap<Integer, Tag> getAllTags() {
+
+		HashMap<Integer, Tag> tags = new HashMap<Integer, Tag>();
+
+		try {
+			Connection connection = Database.connect();
+			Statement statement = connection.createStatement();
+			ResultSet resultSet = statement.executeQuery("SELECT * FROM tags");
+			while (resultSet.next()) {
+				tags.put(resultSet.getInt("tagid"), new Tag(resultSet.getString("tagname"), resultSet.getInt("tagid")));
+
+			}
+			connection.close();
+
+		} catch (SQLException e) {
+			System.out.println("Connection failure.");
+			e.printStackTrace();
+		}
+		return tags;
+	}
+
+	/*public static void addPreferenceTagsToUser(Hashtable<Integer,Tag> tags, int userId){
+
+		if(tags.values().size() > 0) {
+			Connection connection = null;
+			PreparedStatement preparedStatement = null;
+
+	        try {
+	        	 connection = Database.connect();
+				 Statement statement = connection.createStatement();
+				 Collection<Tag> tagList = tags.values();
+				 Iterator<Tag> iterator = tagList.iterator();
+				 ArrayList<Tag> tagsList = new ArrayList<>();
+				 while(iterator.hasNext()){
+					 tagsList.add(iterator.next());
+				 }
+				StringBuilder query = new StringBuilder("INSERT INTO usertagpreferences (userid, tagid) VALUES ");
+	        	 for(int i = 0; i < tagsList.size();i++) {
+					 if (i != 0){
+						 query.append(", ");
+					 }
+					 query.append("( " + userId + ", " + tagsList.get(i).getTagId() +" )");
+			    }
+
+				 query.append(";");
+
+				 statement.addBatch(query.toString());
+				 statement.executeBatch();
+	        }
+	        catch (SQLException e) {
+	            e.printStackTrace();
+
+	        }
+	}}*/
+
+	public static void addPreferenceTagsToUser(Hashtable<Integer, Tag> tags, int userId) {
+		/*
+		 * Add tags to user preferences in the database
+		 */
+		if (tags.values().size() > 0) {
+			Connection connection = null;
+			PreparedStatement preparedStatement = null;
+
+			try {
+				connection = Database.connect();
+				preparedStatement = connection.prepareStatement("INSERT INTO usertagpreferences (userid, tagid) VALUES (?, ?)");
+
+				// Set auto-commit to false for batch processing
+				connection.setAutoCommit(false);
+
+=======
 
 	public static HashMap<Integer, Tag> getAllTags() {
 
@@ -659,6 +837,7 @@ public class Database {
 				// Set auto-commit to false for batch processing
 				connection.setAutoCommit(false);
 
+>>>>>>> aa54dc70b6012810ea65e2a6b58b5a5c42f03944
 				for (Tag tag : tags.values()) {
 					// Check if the tagid exists in the tags table
 					if (isTagExists(connection, tag.getTagId())) {
@@ -778,6 +957,7 @@ public class Database {
 
 		return result;
 	}
+
 	public static int getUserid(String username){
 		Connection connection = null;
 		int result = 0;
@@ -798,6 +978,7 @@ public class Database {
 		return result;
 	}
 	
+
 	public static String passwordChecker(String username, String password){
 		Connection connection = null;
 		String result = "";
@@ -820,6 +1001,7 @@ public class Database {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		User user = null;
+
 
 		try {
 			connection = Database.connect();
@@ -889,6 +1071,7 @@ public class Database {
 	}
 
 
+
 	public static ArrayList<Attribute> getUsersPreferredAttributes(int userid, int attType) {
 
 		ArrayList<Attribute> newList = new ArrayList<Attribute>();
@@ -930,8 +1113,7 @@ public class Database {
 	public static Hashtable<Integer, Tag> getUsersPreferredTags(int userId) {
 		Hashtable<Integer, Tag> tags = new Hashtable<Integer, Tag>();
 		Connection connection = null;
-		// get all tags in dogtag data table associated with the dog id
-//	
+
 		try {
 			connection = Database.connect();
 			Statement statement = connection.createStatement();
@@ -946,6 +1128,7 @@ public class Database {
 
 		return tags;
 	}
+
 public static boolean updateUsernamePassword (String newUsername, String newPassword, int userid) {
 	Connection connection = null;
 	PreparedStatement preparedStatement = null;
@@ -1019,10 +1202,12 @@ public static boolean updateUsernamePassword (String newUsername, String newPass
 			preparedStatement.setDouble(3, 0);
 			int rowsAffected = preparedStatement.executeUpdate();
 			if (rowsAffected > 0) {
+
 				sql = "SELECT userid FROM users WHERE username = '" + username + "' AND userpassword = '" + password + "';";
 				Statement statement = connection.createStatement();
 				ResultSet result = statement.executeQuery(sql);
 				if (result.next()) {
+
 					int userid = result.getInt("userid");
 					String sql2 = "INSERT INTO userattributepreferences (userid, attributetype, attributeid) VALUES ";
 					for (int type = 0; type < allAttributes.keySet().size(); type++) {
@@ -1037,10 +1222,12 @@ public static boolean updateUsernamePassword (String newUsername, String newPass
 					preparedStatement2.executeUpdate();
 					return true;
 				}
+
 			} else {
 				System.out.println("Failed to add User.");
 				return false;
 			}
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 
@@ -1057,6 +1244,7 @@ public static boolean updateUsernamePassword (String newUsername, String newPass
 			}
 		}
 		return false;
+
 	}
 
 	public static void deleteUserAttributePreferences(int userId) {
@@ -1104,6 +1292,7 @@ public static boolean updateUsernamePassword (String newUsername, String newPass
 		try {
 			connection = Database.connect();
 
+
 			String sql = "SELECT * FROM users WHERE userid = ?";
 
 			preparedStatement = connection.prepareStatement(sql);
@@ -1122,6 +1311,9 @@ public static boolean updateUsernamePassword (String newUsername, String newPass
 			String sql2 = "SELECT * FROM userpayments WHERE userid = " + userid;
 			preparedStatement = connection.prepareStatement(sql2);
 
+			resultSet = preparedStatement.executeQuery();
+
+
 			while (resultSet.next()) {
 				wallet.addRecurringPayment(
 						new RecurringPayment(resultSet.getDouble("paymentamount"),
@@ -1132,6 +1324,7 @@ public static boolean updateUsernamePassword (String newUsername, String newPass
 						)
 				);
 			}
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 
@@ -1207,6 +1400,7 @@ public static boolean updateUsernamePassword (String newUsername, String newPass
 
 		} catch (SQLException e) {
 
+
 			e.printStackTrace();
 
 		}
@@ -1264,7 +1458,7 @@ public static boolean updateUsernamePassword (String newUsername, String newPass
 		}
 	return null;
 	}
-	
+
 	
 	public static ArrayList<String> getallUserNames() {
 		ArrayList<String> usernames = new ArrayList<>();
@@ -1327,3 +1521,4 @@ public static boolean updateUsernamePassword (String newUsername, String newPass
 	}
 }
 }
+

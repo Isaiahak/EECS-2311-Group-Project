@@ -39,6 +39,10 @@ public class Poster implements Comparable<Poster> {
 
 	}
 
+	public ArrayList<Dog> getDogList(){
+		return this.dogList;
+	}
+
 	public String getEmail() {
 		return this.email;
 

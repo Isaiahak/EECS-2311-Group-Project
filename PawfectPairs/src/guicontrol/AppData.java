@@ -222,10 +222,12 @@ public class AppData {
 		this.allAttributes.put(attEx.getType(), ageList);
 		
 	}
+
 	public HashMap<Integer, ArrayList<Attribute>> getAllAttributes(){
 		return this.allAttributes;
 		
 	}
+
 	private void setOtherUsersAppointments() {
 		this.otherUsersAppointments = Database.getOtherUserAppointments(user.getUserID()); 
 	}
@@ -259,6 +261,7 @@ public class AppData {
 		this.user.getWallet().setRecurringPayments(Database.getRecurringPayment(user.getUserID()));
 
 	}
+
 
 	public Hashtable<Integer, ArrayList<Dog>> getAllDogs() {
 		return this.allDogs;

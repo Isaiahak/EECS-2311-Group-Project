@@ -178,7 +178,7 @@ public class User {
 
 	public boolean arePreferencesEqual(Hashtable<Integer, Tag> tags) {
 		
-    	Hashtable<Integer,Tag> currTags = this.getTagPreferences(); 
+    	Hashtable<Integer,Tag> currTags = this.tagPreferences;
     	Hashtable<Integer,Tag> oldTags = tags;
     	Set<Integer >oldKeys = oldTags.keySet();
     	Set<Integer >currKeys = currTags.keySet();
@@ -222,7 +222,9 @@ public class User {
 		Hashtable<Integer,Tag> preferences = new Hashtable<>();
 		Collection<Tag> tags = TagPreferences.values();
 		for(Tag tag : tags){
+
 			preferences.put(tag.getTagId(),(new Tag(tag.getTagName(),tag.getTagId())));
+
 		}
 		return preferences;
 	}
