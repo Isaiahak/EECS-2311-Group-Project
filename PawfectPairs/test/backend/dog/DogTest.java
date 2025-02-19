@@ -22,8 +22,8 @@ public class DogTest {
         assertEquals(1, dog.getId());
         Age newAge = new Age(3);
         assertEquals(newAge.toString(), dog.getAge().toString());
-        assertEquals("Lazy", dog.getEnergyLevel().toString()); //  energy level 0 corresponds to "Lazy"
-        assertEquals("Medium", dog.getSize().toString()); //  size 1 corresponds to "Small"
+        assertEquals("Vegetable", dog.getEnergyLevel().toString()); //  energy level 0 corresponds to "Lazy"
+        assertEquals("Small", dog.getSize().toString()); //  size 1 corresponds to "Small"
         assertEquals("Male", dog.getSex().toString());
         assertFalse(dog.getAdopted());
        // assertNotNull(dog.getPoster());
@@ -66,7 +66,7 @@ public class DogTest {
     public void testInvalidEnergyLevelCreation() {
         // Expecting IllegalArgumentException when creating Dog with invalid energy level
         assertThrows(ArrayIndexOutOfBoundsException.class, () -> {
-            new Dog("Max", 1, 3, 3, 1, 0, pi.getUniqueId(), false,null,"bio");
+            new Dog("Max", 1, 3, 5, 1, 0, pi.getUniqueId(), false,null,"bio");
         });
     }
 
@@ -74,7 +74,7 @@ public class DogTest {
     public void testInvalidSizeCreation() {
         // Expecting IllegalArgumentException when creating Dog with invalid size
         assertThrows(ArrayIndexOutOfBoundsException.class, () -> {
-            new Dog("Max", 1, 3, 0, 3, 0,  pi.getUniqueId(), false,null,"bio");
+            new Dog("Max", 1, 3, 0, 10, 0,  pi.getUniqueId(), false,null,"bio");
         });
     }
 
@@ -85,7 +85,7 @@ public class DogTest {
         
         // Expecting IllegalArgumentException when setting invalid energy level
         assertThrows(ArrayIndexOutOfBoundsException.class, () -> {
-        	Dog dog = new Dog("Max", 1, 3, 3, 2, 0, pi.getUniqueId(), false,null,"bio");
+        	Dog dog = new Dog("Max", 1, 3, -1, 2, 0, pi.getUniqueId(), false,null,"bio");
         });
     }
 
@@ -95,7 +95,7 @@ public class DogTest {
 
         // Expecting IllegalArgumentException when setting invalid size
         assertThrows(ArrayIndexOutOfBoundsException.class, () -> {
-        	Dog dog = new Dog("Max", 1, 3, 0, 3, 0, pi.getUniqueId(), false,null,"bio");
+        	Dog dog = new Dog("Max", 1, 3, 0, 11, 0, pi.getUniqueId(), false,null,"bio");
         });
     }
     

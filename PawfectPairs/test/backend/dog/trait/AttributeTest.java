@@ -16,7 +16,7 @@ public class AttributeTest {
 	    public void testEnergyLevelConstructorAndGetters() {
 	        EnergyLevel energyLevel = new EnergyLevel(1);
 	        assertEquals(1, energyLevel.getWeight());
-	        assertEquals("Moderate", energyLevel.getName());
+	        assertEquals("Lazy", energyLevel.getName());
 
 //	        energyLevel.setWeight(2);
 //	        assertEquals(2, energyLevel.getWeight());
@@ -26,7 +26,7 @@ public class AttributeTest {
 	    @Test
 	    public void testEnergyLevelToString() {
 	        EnergyLevel energyLevel = new EnergyLevel(0);
-	        assertEquals("Lazy", energyLevel.toString());
+	        assertEquals("Vegetable", energyLevel.toString());
 	    }
 	    
 	    
@@ -56,7 +56,7 @@ public class AttributeTest {
 	    public void testSizeConstructorAndGetters() {
 	        Size size = new Size(2);
 	        assertEquals(2, size.getWeight());
-	        assertEquals("Large", size.getName());
+	        assertEquals("Medium", size.getName());
 
 //	        size.setWeight(0);
 //	        assertEquals(0, size.getWeight());
@@ -66,7 +66,7 @@ public class AttributeTest {
 	    @Test
 	    public void testSizeToString() {
 	        Size size = new Size(1);
-	        assertEquals("Medium", size.toString());
+	        assertEquals("Small", size.toString());
 	    }
 
 	    // Add more tests as needed
@@ -75,7 +75,7 @@ public class AttributeTest {
 	    public void testAgeConstructorAndGetters() {
 	        Age age = new Age(4);
 	        assertEquals(4, age.getWeight());
-	        assertEquals("Senior 9 +", age.getName());
+	        assertEquals("Senior: 9 +", age.getName());
 
 //	        age.setWeight(1);
 //	        assertEquals(1, age.getWeight());
@@ -85,7 +85,7 @@ public class AttributeTest {
 	    @Test
 	    public void testAgeToString() {
 	        Age age = new Age(2);
-	        assertEquals("Adult 2 and 6", age.toString());
+	        assertEquals("Adult: 2 to 6", age.toString());
 	    }
 
 	    // Add more tests as needed

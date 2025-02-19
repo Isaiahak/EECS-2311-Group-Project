@@ -168,10 +168,12 @@ public class AppData {
 		this.allAttributes.put(attEx.getType(), ageList);
 		
 	}
+
 	public HashMap<Integer, ArrayList<Attribute>> getAllAttributes(){
 		return this.allAttributes;
 		
 	}
+
 	private void setOtherUsersAppointments() {
 		this.otherUsersAppointments = Database.getOtherUserAppointments(user.getUserID()); 
 	}
@@ -199,7 +201,6 @@ public class AppData {
 		
 
 	}
-
 
 	public ArrayList<Appointment> getOtherUsersAppointments() {
 		return this.otherUsersAppointments;

@@ -81,7 +81,7 @@ public class Dog  implements Comparable<Dog>{
 
 	    public int calculateScore(Hashtable<Integer, Tag> tags) {
 	    	int scoreCalc = 0 ;
-	    	Set<Integer> currDogTags = this.getTags().keySet();
+	    	Set<Integer> currDogTags = this.tags.keySet();
 	    	for(int key : currDogTags) {
 	    		if(tags.containsKey(key)) {
 	    			scoreCalc++;
@@ -96,7 +96,7 @@ public class Dog  implements Comparable<Dog>{
 	    }
 
 	    public int getOldScore() {
-	    	return this.getOldScore();
+	    	return this.oldScore;
 	    }
 
 	    public int getScore() {return this.score;}
@@ -105,6 +105,9 @@ public class Dog  implements Comparable<Dog>{
 	    	return this.imagePath;
 	    }
 
+		public void setImagePath(String path){
+			this.imagePath = path;
+		}
 	    public Hashtable<Integer, Tag> getTags() {
 	        return tags;
 	    }
@@ -184,6 +187,9 @@ public class Dog  implements Comparable<Dog>{
 			return this.biography;
 		}
 
+		public void setBiography(String bio){
+			this.biography = bio;
+		}
 		@Override
 	    public String toString() {
 	        StringBuilder stringBuilder = new StringBuilder();

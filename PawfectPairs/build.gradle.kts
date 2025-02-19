@@ -3,6 +3,7 @@
  */
 
 plugins {
+    jacoco
 	java
     `java-library`
     id("application")
@@ -13,6 +14,9 @@ plugins {
 javafx {
     version = "21"
     modules("javafx.controls", "javafx.fxml")
+}
+jacoco {
+    toolVersion = "0.8.10"  // Ensure you are using a compatible version
 }
 
 repositories {
@@ -40,15 +44,36 @@ sourceSets {
 
     test {
         java {
-            setSrcDirs(listOf("test"))
+            setSrcDirs(listOf("testManual","test","testLLM"))
         }
     }
 }
 
 tasks.test {
     useJUnitPlatform()
+    finalizedBy(tasks.jacocoTestReport)
     testLogging {
         events("passed", "skipped", "failed")
+    }
+}
+tasks.jacocoTestReport {
+    dependsOn(tasks.test)
+    classDirectories.setFrom(
+        fileTree(mapOf(
+            "dir" to "${buildDir}/classes/java/main",
+            "includes" to listOf("**/*.class"),
+            "excludes" to listOf(
+                "guicontrol/**",
+                "guilayout/**",
+            )
+        ))
+    )
+    sourceDirectories.setFrom(files("src/backend/"))
+    executionData.setFrom(files("${buildDir}/jacoco/test.exec"))
+
+    reports {
+        xml.required.set(true)
+        html.required.set(true)
     }
 }
 
